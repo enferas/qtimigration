@@ -70,7 +70,7 @@ class QTIParserV1Options:
 		self.noComment=0
 		self.dtdDir=''
 		self.cpPath=''
-		
+		self.x=False
 		
 # QTIException Class
 # ------------------
@@ -543,7 +543,7 @@ class QTIItem(QTIMetadataContainer):
 		self.item.SetTitle(value)
 	
 	def SetAttribute_xml_lang (self,lang):
-		self.item.SetLanguage(value)
+		self.item.SetLanguage(lang)
 
 	def GetItemV1 (self):
 		return self

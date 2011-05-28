@@ -30,7 +30,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."""
 
 
-MIGRATION_VERSION="2008-06-12"
+MIGRATION_VERSION="2011-05-27"
 
 import os, sys
 from stat import *
@@ -38,7 +38,7 @@ from stat import *
 SPLASH_LOG=[
 "IMS QTIv1.2 to QTIv2.1 Migration Tool, by Steve Lay",
 "",
-"Copyright (c) 2004 - 2008, University of Cambridge",
+"Copyright (c) 2011, Steve Lay, adapted from code Copyright (c) 2004 - 2008, University of Cambridge",
 "GUI Code Copyright (c) 2004 - 2008, Pierre Gorissen",
 "All Rights Reserved",
 "See README file for licensing information",
@@ -50,6 +50,7 @@ HELP_TEXT=[
 	"Usage: migrate.py [options] [--cpout=output directory] [input file|directory]",
 	"",
 	"Recognized options:",
+	"  --x               : use experimental pyslet-based converstion"
 	"  --ucvars          : force upper case variable names",
 	"  --qmdextensions   : allows metadata extension fields",
 	"  --lang=<language> : set default language",
@@ -63,6 +64,7 @@ HELP_TEXT=[
 
 
 NO_GUI=0
+
 
 if __name__ == '__main__':
 	wd=os.getcwd()
@@ -88,6 +90,8 @@ if __name__ == '__main__':
 				else:
 					SPLASH_LOG.append("Warning: --cpout points to file, ignoring")
 					options.cpPath=''
+		elif x.lower()=="-x":
+			options.x=1
 		elif x.lower()=="--ucvars":
 			options.ucVars=1
 		elif x.lower()=="--qmdextensions":
@@ -126,9 +130,17 @@ if __name__ == '__main__':
 	if NO_GUI:
 		for line in SPLASH_LOG:
 			print line
-		parser=imsqtiv1.QTIParserV1(options)
-		parser.ProcessFiles(os.getcwd(),fileNames)
-		parser.DumpCP()
+		if options.x:
+			import qtish
+			sh=qtish.QTIMigrationShell()
+			if options.cpPath:
+				sh.do_open(options.cpPath)
+			for fName in fileNames:
+				sh.do_import(fName)			
+		else:
+			parser=imsqtiv1.QTIParserV1(options)
+			parser.ProcessFiles(os.getcwd(),fileNames)
+			parser.DumpCP()
 	else:
 		print "Application is active..."
 		print "Do not close this window because it will also close the GUI!"

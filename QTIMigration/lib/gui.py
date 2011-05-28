@@ -1,18 +1,21 @@
 #! /usr/bin/env python
 """
+Copyright (c) 2011, Steve Lay
+Adapted from original source by:
 GUI Script Code Copyright (c) 2004 - 2008, Pierre Gorissen
 All Other Code is Copyright (c) 2004 - 2008, University of Cambridge.
 """
 
 # Global options
 # --------------
-GUI_VERSION='Version: 2008-06-07'
+GUI_VERSION='Version: 2011-05-27'
 
 import	sys, os, time, string
 import	wx
 import	wx.lib.filebrowsebutton as filebrowse
 
 import imsqtiv1
+import qtish
 
 
 # ==============================================================================
@@ -31,7 +34,7 @@ ID_FORCEFIBFLOAT = 105
 ID_FORCEDTD = 106
 ID_FORCELANG = 107
 ID_NOCOMMENT = 108
-
+ID_XPYSLET = 109
 
 # ==============================================================================
 #
@@ -78,12 +81,16 @@ class MyFrame(wx.Frame):
 		menu2.Append(ID_NOCOMMENT, 'Suppress Comments',
 						'Suppress output of diagnostic comments in converted items',
 						wx.ITEM_CHECK)						
+		menu2.Append(ID_XPYSLET, 'Experimental Conversion',
+						'Convert files using the new pyslet modules (Experimental)',
+						wx.ITEM_CHECK)						
 
 		# Set the options
 		menu2.Check(ID_QMDEXTENSIONS, self.options.qmdExtensions)
 		menu2.Check(ID_UCVARS, self.options.ucVars)
 		menu2.Check(ID_FORCEFIBFLOAT, self.options.forceFloat)
 		menu2.Check(ID_NOCOMMENT, self.options.noComment)
+		menu2.Check(ID_XPYSLET, self.options.x)
 
 		menuBar = wx.MenuBar()
 		menuBar.Append(self.menu1, "&File");
@@ -99,6 +106,7 @@ class MyFrame(wx.Frame):
 		wx.EVT_MENU(self, ID_FORCEDTD,	 self.OnForceDTD)
 		wx.EVT_MENU(self, ID_FORCELANG, self.OnForceLANG)
 		wx.EVT_MENU(self, ID_NOCOMMENT, self.OnSuppressComments)
+		wx.EVT_MENU(self, ID_XPYSLET, self.OnXPyslet)
 		
 		# close event for main window
 		self.Bind(wx.EVT_CLOSE, self.TimeToQuit)
@@ -223,19 +231,36 @@ class MyFrame(wx.Frame):
 			self.SetStatusText("Parser aborted...")
 		
 	def ProcessFiles(self,fileNames):
-		self.SetStatusText("Parsing input files...")
-		parser=imsqtiv1.QTIParserV1(self.options)
-		parser.ProcessFiles(os.getcwd(),fileNames)
-		if self.options.cpPath:
-			print "Parsing complete"
-			self.SetStatusText("Creating content package...")
-			parser.DumpCP()
-			print "Migration completed..."
-			self.SetStatusText("")
+		if self.options.x:
+			self.SetStatusText("Experimental mode selected...")
+			sh=qtish.QTIMigrationShell()
+			if self.options.cpPath:
+				self.SetStatusText("Opening content package...")
+				sh.do_open(self.options.cpPath)
+			self.SetStatusText("Parsing input files...")
+			for fName in fileNames:
+				sh.do_import(fName)
+			if self.options.cpPath:
+				print "Migration completed..."
+				self.SetStatusText("")
+			else:
+				print "No output set. Parsing complete"
+				self.SetStatusText("Parsing complete (dry run)")
+			sh.cp.Close()
 		else:
-			print "No output set. Parsing complete"
-			self.SetStatusText("Parsing complete (dry run)")
-		parser=None
+			self.SetStatusText("Parsing input files...")
+			parser=imsqtiv1.QTIParserV1(self.options)
+			parser.ProcessFiles(os.getcwd(),fileNames)
+			if self.options.cpPath:
+				print "Parsing complete"
+				self.SetStatusText("Creating content package...")
+				parser.DumpCP()
+				print "Migration completed..."
+				self.SetStatusText("")
+			else:
+				print "No output set. Parsing complete"
+				self.SetStatusText("Parsing complete (dry run)")
+			parser=None
 		
 	# ===============================
 	# toggles visibility of either
@@ -319,6 +344,13 @@ class MyFrame(wx.Frame):
 	#
 	def OnSuppressComments(self, event):
 		self.options.noComment=abs(self.options.noComment-1)
+
+
+	# ===============================
+	# check / uncheck noComment option
+	#
+	def OnXPyslet(self, event):
+		self.options.x=not self.options.x
 
 
 	# ===============================

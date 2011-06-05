@@ -1,13 +1,14 @@
 #! /usr/bin/env python
 
 import cmd, getopt
-import os, os.path, sys, urllib
+import os, os.path, sys
 from xml.sax import SAXException
 import string
 
 import pyslet.imscpv1p2 as imscp
 import pyslet.imsqtiv1p2p1 as qti1
 import pyslet.imsqtiv2p1 as qti2
+import pyslet.rfc2396 as uri
 
 VERSION="20110129"
 
@@ -382,7 +383,7 @@ List the resources in the content package"""
 
 	def LoadQTI1(self,fPath):
 		"""Loads a QTI v1 file from the given file path."""
-		doc=qti1.QTIDocument(baseURI=urllib.pathname2url(fPath))
+		doc=qti1.QTIDocument(baseURI=str(uri.URIFactory.URLFromPathname(fPath)))
 		try:
 			doc.Read()
 		except SAXException, e:

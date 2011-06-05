@@ -1,5 +1,6 @@
-Copyright (c) 2004-2008, University of Cambridge.
-GUI Code Copyright (c) 2004-2008, Pierre Gorissen
+Copyright (c) 2011, Steve Lay.
+Migration script based on original Copyright (c) 2004-2008, University of Cambridge.
+GUI Code adapted from original Copyright (c) 2004-2008, Pierre Gorissen
 
 All rights reserved.
 

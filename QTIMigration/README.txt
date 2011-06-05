@@ -4,9 +4,14 @@ QTI Migration Tool
 This is the QTI migration tool, use is governed by the license at the bottom of
 this file.
 
-For up to date information about the migration tool and related initiatives go
-to http://qtitools.caret.cam.ac.uk/ - Please direct any comments to
-swl10@cam.ac.uk
+For up to date information about the migration tool and related initiatives
+subscribe to my blog: http://swl10.blogspot.com
+
+For information about this development project go to
+http://code.google.com/p/qtimigration/ - Please direct any comments to
+steve.w.lay@gmail.com
+
+
 
 
 Installation
@@ -146,6 +151,17 @@ incorporate changes for the next release so that everyone benefits.
 
 Migration Tool Options
 ----------------------
+
+-x
+"Options: Experimental Conversion" in the GUI
+
+The -x option is used to select experimental mode.  The migration code is being
+rewritten as part of the pyslet package.  This options selects the pyslet-based
+conversion code instead of the original conversion code.  The differences in the
+output are mainly stylistic but as the pyslet package develops significant
+improvements in the output can be expected.
+
+In experimental mode, --cpout is the only other option recognized.
 
 --cpout=<path to package directory>
 "Save files to... Select Directory" in the GUI
@@ -300,6 +316,12 @@ All needed tools are available for free download.
 Change Log
 ----------
 
+Version: 20110527
+
+New features:
+
+* Experiment Conversion mode added to start testing pyslet package
+
 
 Version: 20080612
 
@@ -412,8 +434,9 @@ bank.
 License
 -------
 
-Copyright (c) 2004-2008, University of Cambridge.
-GUI Code Copyright (c) 2004-2008, Pierre Gorissen
+Copyright (c) 2011, Steve Lay.
+Migration script based on original Copyright (c) 2004-2008, University of Cambridge.
+GUI Code adapted from original Copyright (c) 2004-2008, Pierre Gorissen
 
 All rights reserved.
 

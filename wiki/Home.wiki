@@ -1,0 +1,17 @@
+#summary Documentation Home
+
+= Documentation =
+
+The best place to understand how to use the tool is currently the README file in the current source package.
+
+For information about the Pyslet python package for working with IMS QTI files in python scripts see PysletHome
+
+== Future Documentation Goals ==
+
+The remainder of this page contains an outline of areas of documentation that are required.
+
+  * Downloading and Installing the QTI Migration Tool
+  * Using the QTI Migration Tool
+  * Providing Feedback
+  * Information for Developers
+

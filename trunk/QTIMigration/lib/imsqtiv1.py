@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
-"""Copyright (c) 2004-2008, University of Cambridge.
+"""Copyright (c) 2011, Steve Lay
+
+Modified from original source Copyright (c) 2004-2008, University of Cambridge.
 
 All rights reserved.
 
@@ -42,6 +44,7 @@ try:
 	GOT_VOBJECT=1
 except:
 	GOT_VOBJECT=0
+import pyslet.imsqtiv2p1 as qti2
 	
 RESPONSE_PREFIX="RESPONSE_"
 OUTCOME_PREFIX="OUTCOME_"
@@ -146,36 +149,13 @@ class QTIObjectV1:
 			return default
 
 	def ReadIdentifier (self,value,prefix="ID-"):
-		value=self.CheckNMTOKEN(value.strip(),prefix)
-		if ":" in value:
-			self.PrintWarning('Warning: removing colon from identifier "%s"'%value)
-			value=value.replace(':','_')
-		if "." in value:
-			self.PrintWarning('Warning: removing period from identifier "%s"'%value)
-			value=value.replace('.','_')
-		return value
-	
-	def CheckNMTOKEN (self,token,prefix):
-		unchecked=0
-		newtoken=""
-		bad=0
-		for c in token:
-			if not c in NMTOKEN_CHARS:
-				if ord(c)<128:
-					# character not allowed
-					bad=1
-					c="-"
-				else:
-					unchecked=1
-			if not newtoken and not (c in NMSTART_CHARS):
-				bad=1
-				newtoken=prefix
-			newtoken=newtoken+c
-		if unchecked:
-			self.PrintWarning('Warning: couldn\'t check NMTOKEN with non-ascii character(s): "%s"'%token)
-		if bad:
-			self.PrintWarning('Warning: replacing bad NMTOKEN "%s" with "%s"'%(token,newtoken))
-		return newtoken
+		value=value.strip()
+		newValue=qti2.ValidateIdentifier(value,prefix)
+		if "." in newValue:
+			newValue=newValue.replace('.','_')
+		if newValue!=value:
+			self.PrintWarning('Warning: replacing bad identifier "%s" with "%s"'%(value,newValue))
+		return newValue
 	
 	def ReadView (self,value):
 		view=value.strip().lower()
@@ -3665,7 +3645,7 @@ class VarThing(QTIObjectV1):
 		if baseType in ('pair','directedPair'):
 			self.value=self.value.replace(',',' ')
 		elif baseType=='identifier':
-			self.value=self.CheckNMTOKEN(self.value,RESPONSE_PREFIX)
+			self.value=self.ReadIdentifier(self.value,RESPONSE_PREFIX)
 		self.valExpression=BaseValueOperator(baseType,self.value)
 		self.valCardinality='single'
 		

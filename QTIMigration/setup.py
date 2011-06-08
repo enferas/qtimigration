@@ -35,8 +35,8 @@ if sys.platform == 'darwin':
 elif sys.platform == 'win32':
 	from distutils.core import setup
 	import py2exe
-        extra_options = dict(
-                options=dict(py2exe=dict(dll_excludes=["MSVCP90.dll"])),
+	extra_options = dict(
+		options=dict(py2exe=dict(dll_excludes=["MSVCP90.dll"])),
 		setup_requires=['py2exe'],
 		app=[mainscript],
 		console=[dict(script='migrate.py',icon_resources=[(1,"QTIMigrate.ico"),(2,"folder.ico"),(3,"readme.ico")])]
@@ -47,11 +47,11 @@ else:
 	
 setup(
 	name="QTIMigration",
-        description = "Tool for migrating QTI v1.x to QTI v2",
-        author = "Steve Lay",
-        author_email ="steve.w.lay@gmail.com",
-        license = "New BSD Licence",
-        url = "http://code.google.com/p/qtimigration/",
-	data_files = ['IMSLogo.bmp'],
+	description = "Tool for migrating QTI v1.x to QTI v2",
+	author = "Steve Lay",
+	author_email ="steve.w.lay@gmail.com",
+	license = "New BSD Licence",
+	url = "http://code.google.com/p/qtimigration/",
+	data_files = ['Splash.bmp'],
 	**extra_options
 )

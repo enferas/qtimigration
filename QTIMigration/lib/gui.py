@@ -404,7 +404,7 @@ def opj(path):
 #
 class MySplashScreen(wx.SplashScreen):
 	def __init__(self):
-		bmp = wx.Image(opj("IMSLogo.bmp")).ConvertToBitmap()
+		bmp = wx.Image(opj("Splash.bmp")).ConvertToBitmap()
 		wx.SplashScreen.__init__(self, bmp,
 								 wx.SPLASH_CENTRE_ON_SCREEN | wx.SPLASH_TIMEOUT,
 								 3000, None, -1)

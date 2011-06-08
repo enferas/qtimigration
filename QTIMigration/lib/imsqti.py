@@ -1,4 +1,6 @@
-"""Copyright (c) 2004-2008, University of Cambridge.
+"""Copyright (c) 2011, Steve Lay
+
+Modified from original source Copyright (c) 2004-2008, University of Cambridge.
 
 All rights reserved.
 

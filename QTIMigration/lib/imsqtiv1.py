@@ -30,7 +30,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."""
 
 
-MIGRATION_VERSION="Version: 2008-06-??"
+MIGRATION_VERSION="Version: 2011-06-08"
 
 from types import *
 import string
@@ -2862,7 +2862,7 @@ class ResponseLabel(QTIObjectV1):
 	"""
 	def __init__(self,name,attrs,parent):
 		self.parent=parent
-		self.rshuffle=0
+		self.rshuffle=1
 		self.shape='default'
 		self.labelrefid=None
 		self.identifier=None

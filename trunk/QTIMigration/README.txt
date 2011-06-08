@@ -293,23 +293,30 @@ executable files.
 For Windows, you will need py2exe. The compile.bat file contains the command
 required to trigger the build given a typical Python 2.5 installation:
 
-python setup_migrate.py py2exe --packages encodings
+python setup.py py2exe --packages encodings
 
 The executable files are created in the dist directory. These can be packaged into
 an installer using the Inno Setup tool, a suitable installation script is provided in
 migrate_w32.iss.
 
-For Mac OS, you will need to install py2app and setuptools.  You can then build
-the binary application using the command:
+For Mac OS, you will need to install py2app and setuptools.  To get py2app
+working properly you should download and install Python 2 for 32bit OSX systems
+from the main Python website and use this python to install py2app, more
+information available from my blog post:
+http://swl10.blogspot.com/2011/05/snow-leopard-wxpython-and-py2app.html
 
-python setup.py py2app
+You can then build the binary application using a command like:
 
-To build the binary releases you *must* have VObject installed.
+python2.7 setup.py py2app
+
+To build the binary releases you *must* have the latest pyslet package and
+VObject installed.
 
 python: http://www.python.org/download/
 py2exe: http://www.py2exe.org/
 Inno Setup: http://www.jrsoftware.org/isinfo.php
 VObject: http://vobject.skyhouseconsulting.com/
+pyslet: http://code.google.com/p/qtimigration/
 
 All needed tools are available for free download.
 

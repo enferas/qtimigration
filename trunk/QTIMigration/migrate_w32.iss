@@ -28,7 +28,7 @@ Name: {group}\Migrate QTIv1.2 to QTIv2; Filename: {app}\migrate.exe; WorkingDir:
 Filename: {app}\readme.txt; Description: Show Readme File; Flags: postinstall shellexec; WorkingDir: {app}
 [Files]
 Source: dist\bz2.pyd; DestDir: {app}
-Source: dist\IMSLogo.bmp; DestDir: {app}
+Source: dist\Splash.bmp; DestDir: {app}
 Source: dist\library.zip; DestDir: {app}
 Source: dist\migrate.exe; DestDir: {app}
 Source: dist\pyexpat.pyd; DestDir: {app}

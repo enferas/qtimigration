@@ -1,4 +1,4 @@
-# Instructions for downloading and installing the QTI Migration Tool
+#summary Instructions for downloading and installing the QTI Migration Tool
 
 = Mac OS X =
 

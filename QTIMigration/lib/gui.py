@@ -8,7 +8,6 @@ All Other Code is Copyright (c) 2004 - 2008, University of Cambridge.
 
 # Global options
 # --------------
-GUI_VERSION='Version: 2011-05-27'
 
 import	sys, os, time, string
 import	wx

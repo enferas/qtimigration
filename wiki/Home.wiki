@@ -10,8 +10,7 @@ For information about the Pyslet python package for working with IMS QTI files i
 
 The remainder of this page contains an outline of areas of documentation that are required.
 
-  * Downloading and Installing the QTI Migration Tool
+  * [QTIMigInstall Downloading and Installing the QTI Migration Tool]
   * Using the QTI Migration Tool
   * Providing Feedback
   * Information for Developers
-

@@ -30,7 +30,9 @@ if sys.platform == 'darwin':
 		app=[mainscript],
 		# Cross-platform applications generally expect sys.argv to
 		# be used for opening files.
-		options=dict(py2app=dict(argv_emulation=True)),
+		options=dict(py2app=dict(argv_emulation=True,
+			iconfile='logoiconosx.icns',
+			plist={'CFBundleShortVersionString':'1.9.20110609',})),
 	)
 elif sys.platform == 'win32':
 	from distutils.core import setup
@@ -39,7 +41,7 @@ elif sys.platform == 'win32':
 		options=dict(py2exe=dict(dll_excludes=["MSVCP90.dll"])),
 		setup_requires=['py2exe'],
 		app=[mainscript],
-		console=[dict(script='migrate.py',icon_resources=[(1,"QTIMigrate.ico"),(2,"folder.ico"),(3,"readme.ico")])]
+		console=[dict(script='migrate.py',icon_resources=[(1,"logoiconwin.ico"),(2,"folder.ico"),(3,"readme.ico")])]
 	)
 else:
 	print "ERROR: build for unsupported target"

@@ -1,13 +1,23 @@
 #summary Instructions for downloading and installing the QTI Migration Tool
 
-= Mac OS X =
+== Downloading and Installing ==
 
-Users of Mac OS X can download the Mac OS X disk image file (.dmg) features in the [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].
+This page contain information about downloading and installing the migration tool.  Once you have done this, move on to [MigGettingStarted Getting Started].
 
-= Windows =
+=== Windows ===
 
-A Windows installer is in preparation.
+Users of Windows should download the Windows installer executable (.exe) featured in the [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].  The installer works in the usual way and will install the QTI Migration Tool executable and supporting files.
 
-= Other/Source =
+=== Mac OS X ===
+
+Users of Mac OS X should download the Mac OS X disk image file (.dmg) featured in the [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].
+
+The disk image contains the QTI Migratino Tool application which can be dropped into the Applications folder in the normal way.
+
+=== Other/Source ===
 
 Other UNIX-based platforms should use the source distribution instead (currently by checking out the trunk of the source tree).
+
+----
+
+No move on to [MigGettingStarted Getting Started].

@@ -2,17 +2,21 @@
 
 == Downloading and Installing ==
 
-This page contain information about downloading and installing the migration tool.  Once you have done this, move on to [MigGettingStarted Getting Started].
+This page contains information about downloading and installing the migration tool.  Once you have done this, move on to [MigGettingStarted Getting Started].
 
 === Windows ===
 
 Users of Windows should download the Windows installer executable (.exe) featured in the [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].  The installer works in the usual way and will install the QTI Migration Tool executable and supporting files.
 
+==== Troubleshooting the Windows Installation ==== 
+
+The Windows installer is missing an important DLL (due to a licensing issue).  In most cases, this DLL will already be on your system and you won't have a problem but if you do have an unexpected problem running the tool you may need to download and install the [http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en Microsoft Visual C++ 2008 Redistributable Package (x86)].
+
 === Mac OS X ===
 
 Users of Mac OS X should download the Mac OS X disk image file (.dmg) featured in the [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].
 
-The disk image contains the QTI Migratino Tool application which can be dropped into the Applications folder in the normal way.
+The disk image contains the QTI Migration Tool application which can be dropped into the Applications folder in the normal way.
 
 === Other/Source ===
 
@@ -20,4 +24,4 @@ Other UNIX-based platforms should use the source distribution instead (currently
 
 ----
 
-No move on to [MigGettingStarted Getting Started].
+Now move on to [MigGettingStarted Getting Started].

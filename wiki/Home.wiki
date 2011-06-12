@@ -5,6 +5,7 @@
 
  * [QTIMigInstall Downloading and Installing the QTI Migration Tool]
  * [MigGettingStarted Getting Started with the QTI Migration Tool]
+ * [MigHistory History of the QTI Migration Tool]
 
 More information is available in the README file distributed with the current source package.
 

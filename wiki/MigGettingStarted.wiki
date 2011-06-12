@@ -2,7 +2,7 @@
 
 == Getting Started ==
 
-Firstly, following the instructions for [QTIMigInstall downloading and installing] the tool for your platform.
+Firstly, follow the instructions for [QTIMigInstall downloading and installing] the tool for your platform.
 
 When you launch the migration tool you'll see a splash screen with the tool's icon and then a simple file/folder selection dialog.
 

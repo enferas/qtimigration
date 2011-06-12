@@ -1,4 +1,5 @@
 #summary Documentation Home
+#labels Featured
 
 = Documentation =
 

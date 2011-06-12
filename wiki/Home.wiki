@@ -3,15 +3,23 @@
 
 = Documentation =
 
-The best place to understand how to use the tool is currently the README file in the current source package.
+ * [QTIMigInstall Downloading and Installing the QTI Migration Tool]
+ * [MigGettingStarted Getting Started with the QTI Migration Tool]
 
-For information about the Pyslet python package for working with IMS QTI files in python scripts see PysletHome
+More information is available in the README file distributed with the current source package.
 
 == Future Documentation Goals ==
 
-The remainder of this page contains an outline of areas of documentation that are required.
+These documentation pages are 'under construction':
 
-  * [QTIMigInstall Downloading and Installing the QTI Migration Tool]
-  * Using the QTI Migration Tool
+  * QTI Migration Tool Reference
   * Providing Feedback
   * Information for Developers
+
+== [PysletHome Pyslet] ==
+
+For information about the Pyslet python package for working with IMS QTI files in python scripts see the [PysletHome Pyslet home page].
+
+== Historical Interest Only ==
+
+ * PyAssess

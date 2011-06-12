@@ -1,4 +1,5 @@
 #summary Instructions for downloading and installing the QTI Migration Tool
+#labels Phase-Deploy
 
 == Downloading and Installing ==
 

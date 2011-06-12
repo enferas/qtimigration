@@ -9,7 +9,7 @@ When you launch the migration tool you'll see a splash screen with the tool's ic
 To start with, use the "Single QTI v1.2 File" part of the dialog to browse for an input file from your disk.  In the screen shot I've selected mchc_i_001.xml, one of the basic examples from the standard set distributed with the [http://www.imsglobal.org/question/ QTI v1.2 specification].
 
 [http://qtimigration.googlecode.com/svn/images/screen01.png http://qtimigration.googlecode.com/svn/images/screen01thumb.png]
-(Click to seen the full size screen shot.)
+(Click to see the full size screen shot.)
 
 Next, click the "Convert..." button.  By default, the tool prints information about the conversion process to the machine console (shown in the background) but you can select "Show Output Log" under the File menu to open an application window to show the output instead (shown as the frontmost window).
 

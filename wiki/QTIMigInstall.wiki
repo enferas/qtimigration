@@ -20,15 +20,17 @@ The disk image contains the QTI Migration Tool application which can be dropped 
 
 === Source Package (all other platforms) ===
 
-Other UNIX-based platforms should use the source distribution instead by downloading the QTIMigrationTool tgz package featured in [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].  (You can use the source package on Mac and Windows-based systems too, Windows uses may find the [http://docs.python.org/faq/windows#how-do-i-run-a-python-program-under-windows FAQ on running python programs under Windows] useful.)
+Other UNIX-based platforms should use the source distribution instead by downloading the QTIMigrationTool tgz package featured in [http://code.google.com/p/qtimigration/downloads/list downloads section of the site].  (You can use the source package on Mac and Windows-based systems too, Windows users may find the [http://docs.python.org/faq/windows#how-do-i-run-a-python-program-under-windows FAQ on running python programs under Windows] useful.)
 
-The tool is written in the [http://www.python.org/ Python programming language].  In most cases you'll already have python installed but if not, download and install the latest Python 2.7 from the main python website.  (The migration tool should work just fine with newer version of Python 2, however it is not compatible with Python 3 at this point.)  
+The tool is written in the [http://www.python.org/ Python programming language].  In most cases you'll already have python installed but if not, download and install the latest Python 2.7 from the main python website.  (The migration tool should work just fine with newer versions of Python 2, however it is not compatible with Python 3 at this point.)  
 
 Once you have python installed you will need to install some additional packages.  If you are not sure if you already have a package and/or what version you already have installed you can use the python interpreter to tell you.  Start the python interpreter (e.g., by typing 'python' at the terminal prompt) and the use a command like this:
 
-{{{>>> import pkg_resources
+{{{
+>>> import pkg_resources
 >>> pkg_resources.get_distribution("wxPython").version
-'2.8.12.0'}}}
+'2.8.12.0'
+}}}
 
 In this case we asked the interpreter for the installed version of the wxPython package.  (The '>>>' is the python interpreter's prompt by the way.)  If you get an error ending in something like: `pkg_resources.DistributionNotFound` then the package in question isn't installed yet.  Although less likely, you may get an error when typing the first command `import pkg_resources`, if you do then you need to install setuptools too (the first one in the list below).
 
@@ -49,7 +51,7 @@ Once you have all the prerequisites installed you can navigate to the directory 
 
 {{{python migrate.py}}}
 
-If you have installed wxPython then the tools will start the graphical user interface, otherwise it will run in command-line mode.  In the latter case, it will print a brief message to the console and exit.  For a brief summary of the available options pass "--help" when launching:
+If you have installed wxPython then the tool will start the graphical user interface, otherwise it will run in command-line mode.  In the latter case, it will print a brief message to the console and exit.  For a brief summary of the available options pass "--help" when launching:
 
 {{{python migrate.py --help}}}
 

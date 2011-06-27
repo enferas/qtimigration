@@ -1,0 +1,3 @@
+#summary Pyslet is a Python package for Standards in Learning Education and Training
+
+The latest package documentation can be found here [http://qtimigration.googlecode.com/svn/doc/pyslet/index.html]

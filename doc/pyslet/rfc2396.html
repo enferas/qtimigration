@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.3. Uniform Resource Identifiers (RFC2396) &mdash; Pyslet v0.3.20110621 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110621',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet v0.3.20110621 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="prev" title="2.2. HTML" href="html40_19991224.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.2. HTML"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.rfc2396">
+<span id="uniform-resource-identifiers-rfc2396"></span><h1>2.3. Uniform Resource Identifiers (RFC2396)<a class="headerlink" href="#module-pyslet.rfc2396" title="Permalink to this headline">¶</a></h1>
+<p>This module defines functions and classes for working with URIs as defined by
+RFC2396: <a class="reference external" href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></p>
+<p>In addition to parsing and formating URI from strings of octets, this module also supports computing and resolving relative URI.  To do this we define two notaional operators.</p>
+<p>The resolve operator:</p>
+<div class="highlight-python"><pre>U = B [*] R</pre>
+</div>
+<p>calculates a new URI &#8216;U&#8217; from a base URI &#8216;B&#8217; and a relative URI &#8216;R&#8217;.</p>
+<p>The relative operator:</p>
+<div class="highlight-python"><pre>U [/] B = R</pre>
+</div>
+<p>calcualtes the relative URI &#8216;R&#8217; formed by expressing &#8216;U&#8217; relative to &#8216;B&#8217;.</p>
+<p>Clearly the Relative operator defines the reverse of the resolve operator, however note that in some cases several different values of R can resolve to the same URL with a common base URI.</p>
+<div class="section" id="creating-uri-instances">
+<h2>2.3.1. Creating URI Instances<a class="headerlink" href="#creating-uri-instances" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pyslet.rfc2396.URIFactory">
+<tt class="descclassname">pyslet.rfc2396.</tt><tt class="descname">URIFactory</tt><a class="headerlink" href="#pyslet.rfc2396.URIFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>An instance of <a class="reference internal" href="#pyslet.rfc2396.URIFactoryClass" title="pyslet.rfc2396.URIFactoryClass"><tt class="xref py py-class docutils literal"><span class="pre">URIFactoryClass</span></tt></a> that can be used for creating <a class="reference internal" href="#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> instances.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2396.URIFactoryClass">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2396.</tt><tt class="descname">URIFactoryClass</tt><a class="headerlink" href="#pyslet.rfc2396.URIFactoryClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>A factory class that contains methods for creating <a class="reference internal" href="#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> instances.</p>
+<dl class="method">
+<dt id="pyslet.rfc2396.URIFactoryClass.URI">
+<tt class="descname">URI</tt><big>(</big><em>octets</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URIFactoryClass.URI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of <a class="reference internal" href="#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> from a string of octets.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URIFactoryClass.URLFromPathname">
+<tt class="descname">URLFromPathname</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URIFactoryClass.URLFromPathname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a local file path into a <a class="reference internal" href="#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> instance.</p>
+<p>If the path is not absolute it is made absolute by resolving it relative
+to the current working directory before converting it to a URI.</p>
+<p>Under Windows, the URL is constructed according to the recommendations
+on this blog post:
+<a class="reference external" href="http://blogs.msdn.com/b/ie/archive/2006/12/06/file-uris-in-windows.aspx">http://blogs.msdn.com/b/ie/archive/2006/12/06/file-uris-in-windows.aspx</a>
+So UNC paths are mapped to both the network location and path components
+of the resulting URI.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URIFactoryClass.Resolve">
+<tt class="descname">Resolve</tt><big>(</big><em>b</em>, <em>r</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URIFactoryClass.Resolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the resolve operator B [*] R, resolving R relative to B</p>
+<p>The input parameters are converted to URI objects if necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URIFactoryClass.Relative">
+<tt class="descname">Relative</tt><big>(</big><em>u</em>, <em>b</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URIFactoryClass.Relative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the relative operator U [/] B, returning U relative to B</p>
+<p>The input parameters are converted to URI objects if necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.rfc2396.EncodeUnicodeURI">
+<tt class="descclassname">pyslet.rfc2396.</tt><tt class="descname">EncodeUnicodeURI</tt><big>(</big><em>uSrc</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.EncodeUnicodeURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a unicode string that is supposed to be a URI and returns an octent string.</p>
+<p>The encoding algorithm used is the same as the one adopted by HTML: utf-8
+and then %-escape. This is not part of the RFC standard which only defines
+the behaviour for streams of octets.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="uri">
+<h2>2.3.2. URI<a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.rfc2396.URI">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2396.</tt><tt class="descname">URI</tt><big>(</big><em>octets</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to represent URI Reference.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2396.URI.octets">
+<tt class="descname">octets</tt><a class="headerlink" href="#pyslet.rfc2396.URI.octets" title="Permalink to this definition">¶</a></dt>
+<dd><p>The octet string representing this URI.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2396.URI.fragment">
+<tt class="descname">fragment</tt><a class="headerlink" href="#pyslet.rfc2396.URI.fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fragment string that was appended to the URI or None if no fragment was given.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2396.URI.scheme">
+<tt class="descname">scheme</tt><a class="headerlink" href="#pyslet.rfc2396.URI.scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URI scheme, if present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2396.URI.schemeSpecificPart">
+<tt class="descname">schemeSpecificPart</tt><a class="headerlink" href="#pyslet.rfc2396.URI.schemeSpecificPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scheme specific part of the URI.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.GetFileName">
+<tt class="descname">GetFileName</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.GetFileName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the file name associated with this resource or None if the
+URL scheme does not have the concept.  By default the file name is
+extracted from the last component of the path. Note the subtle
+difference between returning None and returning an empty string
+(indicating that the URI represents a directory-like object).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.Resolve">
+<tt class="descname">Resolve</tt><big>(</big><em>base</em>, <em>current=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.Resolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves the current (relative) URI relative to base</p>
+<p>If the current URI is also relative then the result is a relative URI,
+otherwise the result is an absolute URI.  The RFC does not actually go
+into the procedure for combining relative URIs but if B is an absolute
+URI and R1 and R2 are relative URIs then using the resolve operator:</p>
+<div class="highlight-python"><pre>U1 = B [*] R1
+U2 = U1 [*] R2
+U2 = ( B [*] R1 ) [*] R2</pre>
+</div>
+<p>The last expression prompts the issue of associativity, in other words,
+is the following expression also valid?</p>
+<div class="highlight-python"><pre>U2 = B [*] ( R1 [*] R2 )</pre>
+</div>
+<p>For this to work it must be possible to use the resolve operator to
+combine two relative URIs to make a third, which is what we allow
+here.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.Relative">
+<tt class="descname">Relative</tt><big>(</big><em>base</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.Relative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Relative operator, returning the current URI expressed relative to base</p>
+<p>As we also allow the Resolve method for relative paths it makes sense
+for the Relative operator to also be defined:</p>
+<div class="highlight-python"><pre>R3 = R1 [*] R2
+R3 [/] R1 = R2</pre>
+</div>
+<p>Note that there are some restrictions....</p>
+<div class="highlight-python"><pre>U = B [*] R</pre>
+</div>
+<p>If R is absolute, or simply more specified than B on the following scale:</p>
+<p>absolute URI &gt; authority &gt; absolute path &gt; relative path</p>
+<p>then U = R regardless of the value of B and therefore:</p>
+<div class="highlight-python"><pre>U [/] B = U if B is less specified than U.</pre>
+</div>
+<p>Also note that if U is a relative URI then B cannot be absolute. In fact
+B must always be less than, or equally specified to U because B is the
+base URI from which U has been derived.</p>
+<div class="highlight-python"><pre>U [/] B = undefined if B is more specified than U</pre>
+</div>
+<p>Therefore the only interesting cases are when B is equally specified to
+U.  To give a concrete example:</p>
+<div class="highlight-python"><pre>U = /HD/User/setting.txt
+B = /HD/folder/file.txt
+
+/HD/User/setting.txt [\] /HD/folder/file.txt = ../User/setting.txt
+/HD/User/setting.txt = /HD/folder/file.txt [*] ../User/setting.txt</pre>
+</div>
+<p>And for relative paths:</p>
+<div class="highlight-python"><pre>U = User/setting.txt
+B = User/folder/file.txt
+
+User/setting.txt [\] User/folder/file.txt = ../setting.txt
+User/setting.txt = User/folder/file.txt [*] ../setting.txt              </pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.Match">
+<tt class="descname">Match</tt><big>(</big><em>otherURI</em><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.Match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares this URI against otherURI returning True if they match.</p>
+<p>At the moment this is a very simple algorithm: just compare the octet
+strings.  In the future we should canonicalize before comparing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.IsAbsolute">
+<tt class="descname">IsAbsolute</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.IsAbsolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this URI is absolute, i.e., fully specified with a scheme name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2396.URI.__str__">
+<tt class="descclassname">URI.</tt><tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2396.URI.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>URI are always returned as a string (of bytes), not a unicode string.</p>
+<p>The reason for this restriction is best illustrated with an example:</p>
+<p>The URI %E8%8B%B1%E5%9B%BD.xml is a UTF-8 and URL-encoded path segment
+using the Chinese word for United Kingdom.  When we remove the
+URL-encoding we get the string &#8216;\xe8\x8b\xb1\xe5\x9b\xbd.xml&#8217;
+which must be interpreted with utf-8 to get the intended path segment
+value: u&#8217;\u82f1\u56fd.xml&#8217;.  However, if the URL was marked as being a
+unicode string of characters then this second stage would not be carried
+out and the result would be the unicode string
+u&#8217;\xe8\x8b\xb1\xe5\x9b\xbd&#8217;, which is a meaningless string of 6
+characters taken from the European Latin-1 character set.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.3. Uniform Resource Identifiers (RFC2396)</a><ul>
+<li><a class="reference internal" href="#creating-uri-instances">2.3.1. Creating URI Instances</a></li>
+<li><a class="reference internal" href="#uri">2.3.2. URI</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="html40_19991224.html"
+                        title="previous chapter">2.2. HTML</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/rfc2396.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.2. HTML"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

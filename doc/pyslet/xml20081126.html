@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1. XML: Basic Constructs &mdash; Pyslet v0.3.20110621 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110621',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet v0.3.20110621 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.2. HTML" href="html40_19991224.html" />
+    <link rel="prev" title="2. Supporting Standards" href="general.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.2. HTML"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.xml20081126">
+<span id="xml-basic-constructs"></span><h1>2.1. XML: Basic Constructs<a class="headerlink" href="#module-pyslet.xml20081126" title="Permalink to this headline">¶</a></h1>
+<p>This module defines classes for working with XML documents.  The version of the
+standard implemented is the Extensible Markup Language (Fifth Edition), for more
+info see: <a class="reference external" href="http://www.w3.org/TR/xml/">http://www.w3.org/TR/xml/</a></p>
+<p>XML is an integral part of many standards for LET but Pyslet takes a slightly
+different approach from the pre-existing XML support in the Python language. XML
+elements are represented by instances of a basic <a class="reference internal" href="#pyslet.xml20081126.XMLElement" title="pyslet.xml20081126.XMLElement"><tt class="xref py py-class docutils literal"><span class="pre">XMLElement</span></tt></a> class which
+can be used as a base class to customize document processing for specific types
+of XML document.  It also allows these XML elements to &#8216;come live&#8217; with
+additional methods and behaviours.</p>
+<p>This module also exposes a number of internal functions typically defined
+privately in XML parser implementations which make it easier to reuse concepts
+from XML in other modules. For example, the <a class="reference internal" href="#pyslet.xml20081126.IsNameStartChar" title="pyslet.xml20081126.IsNameStartChar"><tt class="xref py py-func docutils literal"><span class="pre">IsNameStartChar()</span></tt></a> tells you if
+a character matches the production for NameStartChar in the XML standard.</p>
+<dl class="class">
+<dt id="pyslet.xml20081126.XMLDocument">
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLDocument</tt><big>(</big><em>root=None</em>, <em>baseURI=None</em>, <em>defaultNS=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ContentHandler</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ErrorHandler</span></tt></p>
+<p>Initialises a new XMLDocument from optional keyword arguments.</p>
+<p>With no arguments, a new XMLDocument is created with no baseURI
+or root element.</p>
+<p>If root is a class object (descended from XMLElement) it is used
+to create the root element of the document.</p>
+<p>baseURI can be set on construction (see SetBase)</p>
+<p>The defaultNS used for elements without an associated namespace
+can be specified on construction.</p>
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.GetElementClass">
+<tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.GetElementClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a class object suitable for representing name</p>
+<p>name is a unicode string representing the element name.</p>
+<p>The default implementation returns XMLElement.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.ChildElement">
+<tt class="descname">ChildElement</tt><big>(</big><em>childClass</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.ChildElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the root element of the given document.</p>
+<p>The signature of this method matches the ChildElement method of
+XMLElement but no custom factory method mechanism exists.  If there
+is already a root element it is detached from the document first.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.SetBase">
+<tt class="descname">SetBase</tt><big>(</big><em>baseURI</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.SetBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the baseURI of the document to the given URI.</p>
+<p>If the baseURI is a local file or relative path then the file path
+is updated to point to the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.SetLang">
+<tt class="descname">SetLang</tt><big>(</big><em>lang</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.SetLang" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default language for the document.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.GetLang">
+<tt class="descname">GetLang</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.GetLang" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default language for the document.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.ValidationError">
+<tt class="descname">ValidationError</tt><big>(</big><em>msg</em>, <em>element</em>, <em>data=None</em>, <em>aname=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.ValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when a validation error is triggered by element.</p>
+<p>This method is designed to be overriden to implement custom error
+handling or logging (which is likely to be added in future to this
+module).</p>
+<p>msg contains a brief message suitable for describing the error in a log
+file.  data and aname have the same meanings as
+XMLElement.ValidationError.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.Create">
+<tt class="descname">Create</tt><big>(</big><em>dst=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.Create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the XMLDocument.</p>
+<p>Create outputs the document as an XML stream.  The stream is written
+to the baseURI by default but if the &#8216;dst&#8217; argument is provided then
+it is written directly to there instead.  dst can be any object that
+supports the writing of unicode strings.</p>
+<p>Currently only documents with file type baseURIs are supported.  The
+file&#8217;s parent directories are created if required.  The file is
+always written using the UTF-8 as per the XML standard.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.Update">
+<tt class="descname">Update</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.Update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the XMLDocument.</p>
+<p>Update outputs the document as an XML stream.  The stream is written
+to the baseURI which must already exist!  Currently only documents
+with file type baseURIs are supported.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLDocument.DiffString">
+<tt class="descname">DiffString</tt><big>(</big><em>otherDoc</em>, <em>before=10</em>, <em>after=5</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.DiffString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares this document to otherDoc and returns first point of difference.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.xml20081126.XMLElement">
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GetDocument">
+<tt class="descname">GetDocument</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the document that contains the element.</p>
+<p>If the element is an orphan, or is the descendent of an orphan
+then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.SetID">
+<tt class="descname">SetID</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.SetID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the id of the element, registering the change with the enclosing document.</p>
+<p>If the id is already taken then XMLIDClashError is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GetAttributes">
+<tt class="descname">GetAttributes</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary object that maps attribute names onto values.</p>
+<p>Each attribute value is represented as a (possibly unicode) string.
+Derived classes should override this method if they define any custom
+attribute setters.</p>
+<p>The dictionary returned represents a copy of the information in the element
+and so may be modified by the caller.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.SetAttribute">
+<tt class="descname">SetAttribute</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.SetAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of an attribute.</p>
+<p>The attribute name is assumed to be a string or unicode string.</p>
+<p>The default implementation checks for a custom setter which can be defined
+in one of three ways.</p>
+<p>(1) For simple assignement of the string value to an attribute of the
+instance just add an attribute to the class of the form
+XMLATTR_xmlname=&#8217;member&#8217; where &#8216;xmlname&#8217; is the attribute name used in
+the XML tag and &#8216;member&#8217; is the attribute name to use in the instance.</p>
+<p>(2) More complex attributes can be handled by setting XMLATTR_xmlname to
+a tuple of (&#8216;member&#8217;,decodeFunction,encodeFunction) where the
+decodeFunction is a simple function that take a string argument and
+returns the decoded value of the attribute, the encodeFunction performs
+the reverse transformation.</p>
+<p>In cases (1) and (2), once the member name has been determined the
+existing value of the member is used to determine how to set the value:</p>
+<p>List: split the value by whitespace and assign list of decoded values</p>
+<p>Dict: split the value by whitespace and create a mapping from decoded
+values to the original text used to represent it in the attribute.</p>
+<p>Any other type: the member is set to the decoded value</p>
+<p>A values of None or a missing member is as treated as for &#8216;any other type&#8217;.</p>
+<p>(3) Finally, if the <em>instance</em> has a method called Set_xmlname then that
+is called with the value.</p>
+<p>In the first two cases, GetAttributes will handle the generation of the
+attribute automatically, in the third case you must override the
+GetAttributes method to set the attributes appropriately during
+serialization back to XML.</p>
+<p>XML attribute names may contain many characters that are not legal in
+Python method names but, in practice, the only significant limitation is
+the colon.  This is replaced by &#8216;_&#8217; before searching for a custom setter.</p>
+<p>If no custom setter is defined then the default processing stores the
+attribute in a local dictionary, a copy of which can be obtained with
+the GetAttributes method.  Additionally, if the class has an ID
+attribute it is used as the name of the attribute that represents the
+element&#8217;s ID.  ID handling is performed automatically at document level
+and the element&#8217;s &#8216;id&#8217; attribute is set accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.IsEmpty">
+<tt class="descname">IsEmpty</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.IsEmpty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True/False indicating whether this element <em>must</em> be empty.</p>
+<p>If the class defines the XMLCONTENT attribute then the model is taken
+from there and this method return True only if XMLCONTENT is XMLEmpty.</p>
+<p>Otherwise, the method defaults to False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.IsMixed">
+<tt class="descname">IsMixed</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.IsMixed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether or not the element <em>may</em> contain mixed content.</p>
+<p>If the class defines the XMLCONTENT attribute then the model is taken
+from there and this method return True only if XMLCONTENT is
+XMLMixedContent.</p>
+<p>Otherwise, the method default ot True</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GetChildren">
+<tt class="descname">GetChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the element&#8217;s children.</p>
+<p>This method returns a copy of local list of children and so may be
+modified by the caller.  Derived classes with custom factory methods
+must override this method.</p>
+<p>Each child is either a string type, unicode string type or instance of
+XMLElement (or a derived class thereof)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GetCanonicalChildren">
+<tt class="descname">GetCanonicalChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetCanonicalChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the element&#8217;s children canonicalized for white space.</p>
+<p>We check the current setting of xml:space, returning the same list
+of children as GetChildren if &#8216;preserve&#8217; is in force.  Otherwise we
+remove any leading space and collapse all others to a single space character.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.ChildElement">
+<tt class="descname">ChildElement</tt><big>(</big><em>childClass</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ChildElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new child of the given class attached to this element.</p>
+<p>A new child is created and attached to the element&#8217;s model unless the
+model supports a single element of the given childClass and the element
+already exists, in which case the existing instance is returned.</p>
+<p>childClass is a class (or callable) used to create a new instance.</p>
+<p>name is the name given to the element (by the caller).  If no name is
+given then the default name for the child should be used.  When the
+child returned is an existing instance, name is ignored.</p>
+<p>The default implementation checks for a custom factory method and calls
+it if defined and does no further processing.  A custom factory method
+is a method of the form ClassName or an attribute that is being used to
+hold instances of this child.  The attribute must already exist and can
+be one of None (optional child, new child is created), a list (optional
+repeatable child, new child is created and appended) or an instance of
+childClass (required/existing child, no new child is created, existing
+instance returned).</p>
+<p>When no custom factory method is found the class hierarchy is also searched
+enabling generic members/methods to be used to hold similar objects.</p>
+<p>If no custom factory method is defined then the default processing
+simply creates an instance of child (if necessary) and attaches it to
+the local list of children.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.DeleteChild">
+<tt class="descname">DeleteChild</tt><big>(</big><em>child</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.DeleteChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the given child from this element&#8217;s children.</p>
+<p>We follow the same factory conventions as for child creation except
+that an attribute pointing to a single child (or this class) will be
+replaced with None.  If a custom factory method is found then the
+corresponding Delete_ClassName method must also be defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.FindChildren">
+<tt class="descname">FindChildren</tt><big>(</big><em>childClass</em>, <em>childList</em>, <em>max=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.FindChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds up to max children of class childClass from the element and
+its children.</p>
+<p>All matching children are added to childList.  If specifing a max number
+of matches then the incoming list must originally be empty to prevent
+early termination.</p>
+<p>Note that if max is None, the default, then all children of the given
+class are returned with the proviso that nested matches are not
+included.  In other words, if the model of childClass allows further
+elements of type childClass as children (directly or indirectly) then
+only the top-level match is returned.</p>
+<p>Effectively this method provides a breadth-first list of children.  For
+example, to get all &lt;div&gt; elements in an HTML &lt;body&gt; you would have to
+recurse over the resulting list calling FindChildren again until the
+list of matching children stops growing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.FindParent">
+<tt class="descname">FindParent</tt><big>(</big><em>parentClass</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.FindParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the first parent of class parentClass of this element.</p>
+<p>If this element has no parent of the given class then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.AttachToDocument">
+<tt class="descname">AttachToDocument</tt><big>(</big><em>doc=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.AttachToDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the element is first attached to a document.</p>
+<p>The default implementation ensures that any ID attributes belonging
+to this element or its descendents are registered.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.DetachFromDocument">
+<tt class="descname">DetachFromDocument</tt><big>(</big><em>doc=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.DetachFromDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when an element is being detached from a document.</p>
+<p>The default implementation ensure that an ID attributes belonging
+to this element or its descendents are unregistered.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.AddData">
+<tt class="descname">AddData</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.AddData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a string or unicode string to this element&#8217;s children.</p>
+<p>If the element does not have mixed content then the data is ignored if
+it is white space, otherwise, ValidationError is called with the
+offending data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GotChildren">
+<tt class="descname">GotChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GotChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notifies an element that all children have been added or created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.GetValue">
+<tt class="descname">GetValue</tt><big>(</big><em>ignoreElements=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single unicode string representing the element&#8217;s data.</p>
+<p>If the element contains child elements and ignoreElements is False
+then XMLMixedContentError is raised.</p>
+<p>If the element is empty None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces the value of the element with the (unicode) value.</p>
+<p>If the element has mixed content then XMLMixedContentError is
+raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.ValidationError">
+<tt class="descname">ValidationError</tt><big>(</big><em>msg</em>, <em>data=None</em>, <em>aname=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates that a validation error occurred in this element.</p>
+<p>An error message indicates the nature of the error.</p>
+<p>The data that caused the error may be given in data.</p>
+<p>Furthermore, the  attribute name may also be given indicating that the
+offending data was in an attribute of the element and not the element
+itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.SortNames">
+<tt class="descname">SortNames</tt><big>(</big><em>nameList</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.SortNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of element or attribute names, sorts them in a predictable order</p>
+<p>The default implementation assumes that the names are strings or unicode strings
+so uses the default sort method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.Copy">
+<tt class="descname">Copy</tt><big>(</big><em>parent=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.Copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new instance of this element which is a deep copy of this one.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.ResolveBase">
+<tt class="descname">ResolveBase</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ResolveBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a fully specified URI for the base of the current element.</p>
+<p>The URI is calculated using any xml:base values of the element or its
+ancestors and ultimately relative to the baseURI.</p>
+<p>If the element is not contained by an XMLDocument, or the document does
+not have a fully specified baseURI then the return result may be a
+relative path or even None, if no base information is available.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.ResolveURI">
+<tt class="descname">ResolveURI</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ResolveURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a fully specified URL, resolving URI in the current context.</p>
+<p>The uri is resolved relative to the xml:base values of the element&#8217;s
+ancestors and ultimately relative to the document&#8217;s baseURI.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.RelativeURI">
+<tt class="descname">RelativeURI</tt><big>(</big><em>href</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.RelativeURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns href expressed relative to the element&#8217;s base.</p>
+<p>If href is a relative URI then it is converted to a fully specified URL
+by interpreting it as being the URI of a file expressed relative to the
+current working directory.</p>
+<p>If the element does not have a fully-specified base URL then href is
+returned as a fully-specified URL itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.ResolveLang">
+<tt class="descname">ResolveLang</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ResolveLang" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the effective language for the current element.</p>
+<p>The language is resolved using the xml:lang value of the element or its
+ancestors.  If no xml:lang is in effect then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.PrettyPrint">
+<tt class="descname">PrettyPrint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.PrettyPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates if this element&#8217;s content should be pretty-printed.</p>
+<p>This method is used when formatting XML files to text streams.  The
+behaviour can be affected by the xml:space attribute or by derived
+classes that can override the default behaviour.</p>
+<p>If this element has xml:space set to &#8216;preserve&#8217; then we return False.
+If self.parent.PrettyPrint() returns False then we return False.</p>
+<p>Otherwise we return False if we know the element is (or should be) mixed
+content, True otherwise.</p>
+<p>Note: an element on undetermined content model that contains only elements
+and white space <em>is</em> pretty printed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.XMLElement.WriteXMLAttributes">
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x17e0030&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds strings representing the element&#8217;s attributes</p>
+<p>attributes is a list of unicode strings.  Attributes should be appended
+as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately
+for XML output.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="parsing-functions">
+<h2>2.1.1. Parsing Functions<a class="headerlink" href="#parsing-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyslet.xml20081126.IsNameStartChar">
+<tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">IsNameStartChar</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.IsNameStartChar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1. XML: Basic Constructs</a><ul>
+<li><a class="reference internal" href="#parsing-functions">2.1.1. Parsing Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="general.html"
+                        title="previous chapter">2. Supporting Standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="html40_19991224.html"
+                        title="next chapter">2.2. HTML</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/xml20081126.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.2. HTML"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

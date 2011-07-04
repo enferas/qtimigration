@@ -1,7 +1,7 @@
 [Setup]
 InternalCompressLevel=max
 VersionInfoVersion=1.9
-VersionInfoDescription=QTI Migration Tool 1.9.20110609
+VersionInfoDescription=QTI Migration Tool 1.9.20110704
 AppCopyright=University of Camebridge
 AppName=IMS QTI Migration tool
 AppVerName=IMS QTI Migration tool GUI

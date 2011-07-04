@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2. HTML &mdash; Pyslet v0.3.20110621 documentation</title>
+    <title>2.2. HTML &mdash; Pyslet v0.3.20110627 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.3.20110621',
+        VERSION:     '0.3.20110627',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet v0.3.20110621 documentation" href="index.html" />
+    <link rel="top" title="Pyslet v0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
     <link rel="next" title="2.3. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" />
     <link rel="prev" title="2.1. XML: Basic Constructs" href="xml20081126.html" /> 
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="xml20081126.html" title="2.1. XML: Basic Constructs"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -77,8 +77,55 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
 <dd><p>The namespace to use in the delcaration of an XHTML document</p>
 </dd></dl>
 
+<div class="section" id="x-html-documents">
+<h2>2.2.1. (X)HTML Documents<a class="headerlink" href="#x-html-documents" title="Permalink to this headline">¶</a></h2>
+<p>This module contains an experimental class for working with HTML documents.  At
+the time of writing the implementation is designed to provide just enough HTML
+parsing to support the use of HTML within other standards (such as Atom and
+QTI).</p>
+<dl class="class">
+<dt id="pyslet.html40_19991224.XHTMLDocument">
+<em class="property">class </em><tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">XHTMLDocument</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.XHTMLDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument</span></tt></p>
+<p>Represents an HTML document.</p>
+<p>Although HTML documents are not always represented using XML they can be,
+and therefore we base our implementation on the
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument</span></tt> class - a namespace-aware
+variant of the basic <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.XMLDocument" title="pyslet.xml20081126.XMLDocument"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.XMLDocument</span></tt></a> class.</p>
+<dl class="attribute">
+<dt id="pyslet.html40_19991224.XHTMLDocument.classMap">
+<tt class="descname">classMap</tt><a class="headerlink" href="#pyslet.html40_19991224.XHTMLDocument.classMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data member used to store a mapping from element names to the classes
+used to represent them.  This mapping is initialized when the module is
+loaded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.html40_19991224.XHTMLDocument.ReadFromEntity">
+<tt class="descname">ReadFromEntity</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.XHTMLDocument.ReadFromEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>We override the basic XML parsing to use a custom parser that is
+intelligent about the use of omitted tags, elements defined to have
+CDATA content and other SGML-based variations.  Note that if the
+document starts with an XML declaration then the normal XML parser is
+used instead.</p>
+<p>You won&#8217;t normally need to call this method as it is invoked automatically
+when you call <tt class="xref py py-meth docutils literal"><span class="pre">pyslet.xml20081126.XMLDocument.Read()</span></tt>.</p>
+<p>The result is always a proper element hierarchy rooted in an HTML node,
+even if no tags are present at all the parser will construct an HTML
+document containing a single Div element to hold the parsed text.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="basic-types">
-<h2>2.2.1. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
+<h2>2.2.2. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="length-values">
+<h3>2.2.2.1. Length Values<a class="headerlink" href="#length-values" title="Permalink to this headline">¶</a></h3>
+<p>Length values are used in many places in HTML, the most common being the width
+and height values on images.  There are two ways of specifying a Length, a
+simple integer number of pixels or a percentage of some base length defined by
+the context (such as the width of the browser window).</p>
 <dl class="class">
 <dt id="pyslet.html40_19991224.LengthType">
 <em class="property">class </em><tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">LengthType</tt><big>(</big><em>value</em>, <em>valueType=None</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType" title="Permalink to this definition">¶</a></dt>
@@ -130,16 +177,24 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
 
 <dl class="function">
 <dt id="pyslet.html40_19991224.DecodeLength">
-<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeLength</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeLength" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a length from src returning an instance of LengthType</p>
+<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeLength</tt><big>(</big><em>strValue</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a length from a string returning an instance of LengthType</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pyslet.html40_19991224.EncodeLength">
 <tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">EncodeLength</tt><big>(</big><em>length</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.EncodeLength" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encodes a length value from an instance of LengthType.</p>
+<dd><p>Encodes a length value as a unicode string from an instance of LengthType.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="coordinate-values">
+<h3>2.2.2.2. Coordinate Values<a class="headerlink" href="#coordinate-values" title="Permalink to this headline">¶</a></h3>
+<p>Coordinate values are simple lists of Lengths.  In most cases Pyslet doesn&#8217;t
+define special types for lists of basic types but coordinates are represented in
+attribute values using comma separation, not space-separation.  As a result they
+require special processing in order to be decoded/encoded correctly from/to XML
+streams.</p>
 <dl class="class">
 <dt id="pyslet.html40_19991224.Coords">
 <em class="property">class </em><tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">Coords</tt><big>(</big><em>values=None</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords" title="Permalink to this definition">¶</a></dt>
@@ -170,15 +225,42 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
 <dl class="function">
 <dt id="pyslet.html40_19991224.DecodeCoords">
 <tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeCoords</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes coords from an attribute value into an Coords instance.</p>
+<dd><p>Decodes coords from an attribute value string into a Coords instance.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pyslet.html40_19991224.EncodeCoords">
 <tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">EncodeCoords</tt><big>(</big><em>coords</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.EncodeCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encodes an Coords instance as an attribute value.</p>
+<dd><p>Encodes a Coords instance as an attribute value string.</p>
 </dd></dl>
 
+</div>
+<div class="section" id="uris">
+<h3>2.2.2.3. URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h3>
+<p>URIs are represented by instances of the underlying <tt class="xref py py-class docutils literal"><span class="pre">pyselt.rfc2396.URI</span></tt>
+class, these functions provide a simple wrapper around the functions defined in
+that module.</p>
+<dl class="function">
+<dt id="pyslet.html40_19991224.DecodeURI">
+<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeURI</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a URI from src:</p>
+<div class="highlight-python"><pre>&lt;!ENTITY % URI "CDATA"  -- a Uniform Resource Identifier --&gt;</pre>
+</div>
+<p>Note that we adopt the algorithm recommended in Appendix B of the specification,
+which involves replacing non-ASCII characters with percent-encoded UTF-sequences.</p>
+<p>For more information see <tt class="xref py py-func docutils literal"><span class="pre">psylet.rfc2396.EncodeUnicodeURI()</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.html40_19991224.EncodeURI">
+<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">EncodeURI</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.EncodeURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encoding a URI means just converting it into a string.</p>
+<p>By definition, a URI will only result in ASCII characters that can be freely converted
+to Unicode by the default encoding.  However, it does mean that this function doesn&#8217;t
+adhere to the principal of using the ASCII encoding only at the latest possible time.</p>
+</dd></dl>
+
+</div>
 </div>
 </div>
 
@@ -191,7 +273,13 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">2.2. HTML</a><ul>
-<li><a class="reference internal" href="#basic-types">2.2.1. Basic Types</a></li>
+<li><a class="reference internal" href="#x-html-documents">2.2.1. (X)HTML Documents</a></li>
+<li><a class="reference internal" href="#basic-types">2.2.2. Basic Types</a><ul>
+<li><a class="reference internal" href="#length-values">2.2.2.1. Length Values</a></li>
+<li><a class="reference internal" href="#coordinate-values">2.2.2.2. Coordinate Values</a></li>
+<li><a class="reference internal" href="#uris">2.2.2.3. URIs</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -239,7 +327,7 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
         <li class="right" >
           <a href="xml20081126.html" title="2.1. XML: Basic Constructs"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>

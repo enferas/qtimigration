@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1. XML: Basic Constructs &mdash; Pyslet v0.3.20110621 documentation</title>
+    <title>2.1. XML: Basic Constructs &mdash; Pyslet v0.3.20110627 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.3.20110621',
+        VERSION:     '0.3.20110627',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet v0.3.20110621 documentation" href="index.html" />
+    <link rel="top" title="Pyslet v0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
     <link rel="next" title="2.2. HTML" href="html40_19991224.html" />
     <link rel="prev" title="2. Supporting Standards" href="general.html" /> 
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="general.html" title="2. Supporting Standards"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -70,7 +70,7 @@ from XML in other modules. For example, the <a class="reference internal" href="
 a character matches the production for NameStartChar in the XML standard.</p>
 <dl class="class">
 <dt id="pyslet.xml20081126.XMLDocument">
-<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLDocument</tt><big>(</big><em>root=None</em>, <em>baseURI=None</em>, <em>defaultNS=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLDocument</tt><big>(</big><em>root=None</em>, <em>baseURI=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ContentHandler</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ErrorHandler</span></tt></p>
 <p>Initialises a new XMLDocument from optional keyword arguments.</p>
 <p>With no arguments, a new XMLDocument is created with no baseURI
@@ -78,8 +78,6 @@ or root element.</p>
 <p>If root is a class object (descended from XMLElement) it is used
 to create the root element of the document.</p>
 <p>baseURI can be set on construction (see SetBase)</p>
-<p>The defaultNS used for elements without an associated namespace
-can be specified on construction.</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.XMLDocument.GetElementClass">
 <tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.GetElementClass" title="Permalink to this definition">¶</a></dt>
@@ -416,7 +414,7 @@ relative path or even None, if no base information is available.</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.XMLElement.ResolveURI">
 <tt class="descname">ResolveURI</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.ResolveURI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a fully specified URL, resolving URI in the current context.</p>
+<dd><p>Returns a fully specified URL, resolving uri in the current context.</p>
 <p>The uri is resolved relative to the xml:base values of the element&#8217;s
 ancestors and ultimately relative to the document&#8217;s baseURI.</p>
 </dd></dl>
@@ -457,7 +455,7 @@ and white space <em>is</em> pretty printed.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.XMLElement.WriteXMLAttributes">
-<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x17e0030&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x17e65f0&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds strings representing the element&#8217;s attributes</p>
 <p>attributes is a list of unicode strings.  Attributes should be appended
 as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately
@@ -533,7 +531,7 @@ for XML output.</p>
         <li class="right" >
           <a href="general.html" title="2. Supporting Standards"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet v0.3.20110621 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>

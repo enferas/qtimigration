@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import cmd, getopt
-import os, os.path, sys
+import os, os.path, sys, traceback
 from xml.sax import SAXException
 import string
 
@@ -304,7 +304,9 @@ about the location where it was found."""
 						for line in log:
 							print "\t%s"%line
 				except:
-					print "Unexpected error: %s (%s)\n%s"%sys.exc_info()
+					type,value,tb=sys.exc_info()
+					print "Unexpected error: %s (%s)"%(type,value)
+					traceback.print_tb(tb)
 			
 	def help_import(self,args):
 		print """import <path to file or directory>

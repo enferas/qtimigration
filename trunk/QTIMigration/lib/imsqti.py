@@ -1123,7 +1123,7 @@ class Hotspot:
 		cStrs=[]
 		for c in self.coords:
 			cStrs.append(str(c))
-		f.write(' coords="'+string.join(cStrs,' ')+'"')
+		f.write(' coords="'+string.join(cStrs,',')+'"')
 		if self.hotspotLabel:
 			f.write(' hotspotLabel="'+XMLString(self.hotspotLabel)+'"')
 		

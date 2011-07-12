@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3. IMS Basic Learning Tools Interoperability (version 1.0) &mdash; Pyslet v0.3.20110627 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet v0.3.20110627 documentation" href="index.html" />
+    <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
+    <link rel="next" title="2. Supporting Standards" href="general.html" />
+    <link rel="prev" title="1.2. IMS Question and Test Interoperability (version 2.1)" href="imsqtiv2p1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="imsqtiv2p1.html" title="1.2. IMS Question and Test Interoperability (version 2.1)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="ims.html" accesskey="U">1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ims-basic-learning-tools-interoperability-version-1-0">
+<h1>1.3. IMS Basic Learning Tools Interoperability (version 1.0)<a class="headerlink" href="#ims-basic-learning-tools-interoperability-version-1-0" title="Permalink to this headline">¶</a></h1>
+<p>The IMS Basic Learning Tools Interoperability (BLTI) specification was released
+in 2010. The purpose of the specification is to provide a link between tool
+consumers (such as Learning Management Systems and portals) and Tools (such as
+specialist assessment management systems).  Official information about the
+specification is available from the IMS GLC: <a class="reference external" href="http://www.imsglobal.org/lti/">http://www.imsglobal.org/lti/</a></p>
+<p>This module requires the oauth module to be installed.  The oauth module is
+available from <a class="reference external" href="http://pypi.python.org/pypi/oauth/1.0.1">http://pypi.python.org/pypi/oauth/1.0.1</a></p>
+<span class="target" id="module-pyslet.imsbltiv1p0"></span><p>This module is written from the point of view of the Tool Provider.  Consumers
+are modeled by the BLTIConsumer class which does nothing more than implement the
+recommended algorithm for checking the Nonces as recommended in the
+specification.</p>
+<p>Typical usage would be in an HTTP request handler, this code is modelled on the
+code provided with the oauth module:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.imsbltiv1p0</span> <span class="kn">as</span> <span class="nn">blti</span>
+
+<span class="k">class</span> <span class="nc">BLTIRequestHandler</span><span class="p">(</span><span class="n">BaseHTTPRequestHandler</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">=</span><span class="n">blti</span><span class="o">.</span><span class="n">BLTIToolProvider</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">LoadFromFile</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;consumers.txt&#39;</span><span class="p">))</span>
+                <span class="n">BaseHTTPRequestHandler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">postdata</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">==</span><span class="s">&#39;POST&#39;</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                                <span class="n">length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;content-length&#39;</span><span class="p">))</span>
+                                <span class="n">postdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+                        <span class="k">except</span><span class="p">:</span>
+                                <span class="k">pass</span>
+                <span class="n">parts</span><span class="o">=</span><span class="n">urlparse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+                        <span class="n">scheme</span><span class="o">=</span><span class="s">&#39;http&#39;</span> <span class="c"># change here for https</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+                                <span class="n">netloc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;Host&#39;</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                                <span class="n">netloc</span><span class="o">=</span><span class="n">parts</span><span class="o">.</span><span class="n">netloc</span>
+                        <span class="n">url</span><span class="o">=</span><span class="n">urlparse</span><span class="o">.</span><span class="n">urlunsplit</span><span class="p">([</span><span class="n">scheme</span><span class="p">,</span><span class="n">netloc</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+                <span class="k">try</span><span class="p">:</span>
+                        <span class="n">consumer</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tp</span><span class="o">.</span><span class="n">Launch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">query_string</span><span class="o">=</span><span class="n">postdata</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ReturnPage</span><span class="p">(</span><span class="s">&quot;LTI Provider authorized request with parameters: </span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+                <span class="k">except</span> <span class="n">blti</span><span class="o">.</span><span class="n">BLTIOAuthParameterError</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ReturnUnauthorized</span><span class="p">(</span><span class="s">&quot;Missing or incomplete authentication parameters in request&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">blti</span><span class="o">.</span><span class="n">BLTIAuthenticationError</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ReturnUnauhtorized</span><span class="p">(</span><span class="s">&quot;Access denied: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+                <span class="k">return</span>
+
+        <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_GET</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">ReturnPage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="s">&#39;OK&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s">&#39;Content-Type&#39;</span><span class="p">,</span><span class="s">&#39;text/plain&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s">&#39;Content-Length&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">ReturnUnauthorized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">msg</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">403</span><span class="p">,</span><span class="s">&quot;Unauthorized&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="reference">
+<h2>1.3.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider">
+<em class="property">class </em><tt class="descclassname">pyslet.imsbltiv1p0.</tt><tt class="descname">BLTIToolProvider</tt><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">oauth.oauth.OAuthDataStore</span></tt></p>
+<p>Represents a Tool Provider.</p>
+<dl class="attribute">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.consumers">
+<tt class="descname">consumers</tt><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.consumers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of <a class="reference internal" href="#pyslet.imsbltiv1p0.BLTIConsumer" title="pyslet.imsbltiv1p0.BLTIConsumer"><tt class="xref py py-class docutils literal"><span class="pre">BLTIConsumer</span></tt></a> instances keyed on the consumer key.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.GenerateKey">
+<tt class="descname">GenerateKey</tt><big>(</big><em>keyLength=128</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.GenerateKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new key with at least keyLength bits of information
+in.  The key is returned as a sequence of 16 bit hexadecimal strings
+separated by &#8216;.&#8217; to make them easier to read and transcribe into
+other systems.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.NewConsumer">
+<tt class="descname">NewConsumer</tt><big>(</big><em>key=None</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.NewConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new BLTIConsumer instance and adds it to the dictionary
+of consumers authorized to use this tool.  The consumer key and
+secret are automatically generated using <a class="reference internal" href="#pyslet.imsbltiv1p0.BLTIToolProvider.GenerateKey" title="pyslet.imsbltiv1p0.BLTIToolProvider.GenerateKey"><tt class="xref py py-meth docutils literal"><span class="pre">GenerateKey()</span></tt></a> but key
+can be passed as an argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.LoadFromFile">
+<tt class="descname">LoadFromFile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.LoadFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the list of trusted consumers from a simple file of key,
+secret pairs formatted as:</p>
+<div class="highlight-python"><pre>&lt;consumer key&gt; [SPACE]+ &lt;consumer secret&gt;</pre>
+</div>
+<p>Lines starting with a &#8216;#&#8217; are ignored as comments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.SaveToFile">
+<tt class="descname">SaveToFile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.SaveToFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the list of trusted consumers to a simple file suitable for
+reading with <a class="reference internal" href="#pyslet.imsbltiv1p0.BLTIToolProvider.LoadFromFile" title="pyslet.imsbltiv1p0.BLTIToolProvider.LoadFromFile"><tt class="xref py py-meth docutils literal"><span class="pre">LoadFromFile()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIToolProvider.Launch">
+<tt class="descname">Launch</tt><big>(</big><em>command</em>, <em>url</em>, <em>headers</em>, <em>query_string</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIToolProvider.Launch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks a launch request for authorization returning a
+BLTIConsumer instance and a dictionary of parameters on success. If
+the incoming request is not authorized then
+<a class="reference internal" href="#pyslet.imsbltiv1p0.BLTIAuthenticationError" title="pyslet.imsbltiv1p0.BLTIAuthenticationError"><tt class="xref py py-class docutils literal"><span class="pre">BLTIAuthenticationError</span></tt></a> is raised.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsbltiv1p0.BLTIConsumer">
+<em class="property">class </em><tt class="descclassname">pyslet.imsbltiv1p0.</tt><tt class="descname">BLTIConsumer</tt><big>(</big><em>key</em>, <em>secret</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">oauth.oauth.OAuthConsumer</span></tt></p>
+<dl class="method">
+<dt id="pyslet.imsbltiv1p0.BLTIConsumer.CheckNonce">
+<tt class="descname">CheckNonce</tt><big>(</big><em>nonce</em><big>)</big><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIConsumer.CheckNonce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the nonce has been checked in the last 90 mins</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsbltiv1p0.BLTIError">
+<em class="property">class </em><tt class="descclassname">pyslet.imsbltiv1p0.</tt><tt class="descname">BLTIError</tt><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base class for BLTI errors.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsbltiv1p0.BLTIAuthenticationError">
+<em class="property">class </em><tt class="descclassname">pyslet.imsbltiv1p0.</tt><tt class="descname">BLTIAuthenticationError</tt><a class="headerlink" href="#pyslet.imsbltiv1p0.BLTIAuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imsbltiv1p0.BLTIError" title="pyslet.imsbltiv1p0.BLTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imsbltiv1p0.BLTIError</span></tt></a></p>
+<p>Error raised when a launch request cannot be authorized.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3. IMS Basic Learning Tools Interoperability (version 1.0)</a><ul>
+<li><a class="reference internal" href="#reference">1.3.1. Reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="imsqtiv2p1.html"
+                        title="previous chapter">1.2. IMS Question and Test Interoperability (version 2.1)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="general.html"
+                        title="next chapter">2. Supporting Standards</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/imsbltiv1p0.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="imsqtiv2p1.html" title="1.2. IMS Question and Test Interoperability (version 2.1)"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet v0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

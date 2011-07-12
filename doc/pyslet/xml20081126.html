@@ -70,14 +70,40 @@ from XML in other modules. For example, the <a class="reference internal" href="
 a character matches the production for NameStartChar in the XML standard.</p>
 <dl class="class">
 <dt id="pyslet.xml20081126.XMLDocument">
-<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLDocument</tt><big>(</big><em>root=None</em>, <em>baseURI=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ContentHandler</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">xml.sax.handler.ErrorHandler</span></tt></p>
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLDocument</tt><big>(</big><em>root=None</em>, <em>baseURI=None</em>, <em>reqManager=None</em>, <em>**args</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.XMLElementContainerMixin</span></tt></p>
+<p>Base class for all XML documents.</p>
 <p>Initialises a new XMLDocument from optional keyword arguments.</p>
 <p>With no arguments, a new XMLDocument is created with no baseURI
 or root element.</p>
 <p>If root is a class object (descended from XMLElement) it is used
 to create the root element of the document.</p>
-<p>baseURI can be set on construction (see SetBase)</p>
+<p>baseURI can be set on construction (see SetBase) and a reqManager object
+can optionally be passed for managing and http(s) connections.</p>
+<dl class="attribute">
+<dt id="pyslet.xml20081126.XMLDocument.baseURI">
+<tt class="descname">baseURI</tt><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.baseURI" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base uri of the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.XMLDocument.lang">
+<tt class="descname">lang</tt><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.lang" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default language of the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.XMLDocument.root">
+<tt class="descname">root</tt><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>The root element or None if no root element has been created yet.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.XMLDocument.cObject">
+<tt class="descname">cObject</tt><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.cObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>The element currently being parsed by the parser.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyslet.xml20081126.XMLDocument.GetElementClass">
 <tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLDocument.GetElementClass" title="Permalink to this definition">¶</a></dt>
@@ -160,7 +186,8 @@ with file type baseURIs are supported.</p>
 <dl class="class">
 <dt id="pyslet.xml20081126.XMLElement">
 <em class="property">class </em><tt class="descclassname">pyslet.xml20081126.</tt><tt class="descname">XMLElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.XMLElementContainerMixin</span></tt></p>
+<dl class="method">
 <dt id="pyslet.xml20081126.XMLElement.GetDocument">
 <tt class="descname">GetDocument</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.GetDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the document that contains the element.</p>
@@ -231,7 +258,7 @@ and the element&#8217;s &#8216;id&#8217; attribute is set accordingly.</p>
 <tt class="descname">IsEmpty</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.IsEmpty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True/False indicating whether this element <em>must</em> be empty.</p>
 <p>If the class defines the XMLCONTENT attribute then the model is taken
-from there and this method return True only if XMLCONTENT is XMLEmpty.</p>
+from there and this method returns True only if XMLCONTENT is XMLEmpty.</p>
 <p>Otherwise, the method defaults to False</p>
 </dd></dl>
 
@@ -455,7 +482,7 @@ and white space <em>is</em> pretty printed.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.XMLElement.WriteXMLAttributes">
-<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x17e65f0&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x17e7870&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.XMLElement.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds strings representing the element&#8217;s attributes</p>
 <p>attributes is a list of unicode strings.  Attributes should be appended
 as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately

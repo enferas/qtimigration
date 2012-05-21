@@ -1,0 +1,1339 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2. XML: Parsing XML Documents &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.3. HTML" href="html40_19991224.html" />
+    <link rel="prev" title="2.1. XML: Basic Constructs" href="xml20081126.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.3. HTML"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.html" title="2.1. XML: Basic Constructs"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.xml20081126.parser">
+<span id="xml-parsing-xml-documents"></span><h1>2.2. XML: Parsing XML Documents<a class="headerlink" href="#module-pyslet.xml20081126.parser" title="Permalink to this headline">¶</a></h1>
+<p>This module exposes a number of internal functions typically defined privately
+in XML parser implementations which make it easier to reuse concepts from XML in
+other modules. For example, the <tt class="xref py py-func docutils literal"><span class="pre">IsNameStartChar()</span></tt> tells you if a character
+matches the production for NameStartChar in the XML standard.</p>
+<dl class="class">
+<dt id="pyslet.xml20081126.parser.XMLParser">
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.parser.</tt><tt class="descname">XMLParser</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an XMLParser object constructed from the <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLEntity" title="pyslet.xml20081126.structures.XMLEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLEntity</span></tt></a> to parse.</p>
+<p>XMLParser objects are used to parse entities for the constructs defined
+by the numbered productions in the XML specification.</p>
+<p>XMLParser has a number of optional attributes, all of which default to
+False. If any option is set to True then the resulting parser will not
+behave as a conforming XML processor.</p>
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.DocumentClassTable">
+<tt class="descname">DocumentClassTable</tt><em class="property"> = {}</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.DocumentClassTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary mapping doctype parameters onto class objects.</p>
+<p>For more information about how this is used see <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.GetDocumentClass" title="pyslet.xml20081126.parser.XMLParser.GetDocumentClass"><tt class="xref py py-meth docutils literal"><span class="pre">GetDocumentClass()</span></tt></a> and
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.RegisterDocumentClass" title="pyslet.xml20081126.structures.RegisterDocumentClass"><tt class="xref py py-func docutils literal"><span class="pre">RegisterDocumentClass()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeNone">
+<tt class="descname">RefModeNone</tt><em class="property"> = 0</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeNone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default constant used for setting <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.refMode" title="pyslet.xml20081126.parser.XMLParser.refMode"><tt class="xref py py-attr docutils literal"><span class="pre">refMode</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeInContent">
+<tt class="descname">RefModeInContent</tt><em class="property"> = 1</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeInContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Treat references as per &#8220;in Content&#8221; rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeInAttributeValue">
+<tt class="descname">RefModeInAttributeValue</tt><em class="property"> = 2</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeInAttributeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Treat references as per &#8220;in Attribute Value&#8221; rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeAsAttributeValue">
+<tt class="descname">RefModeAsAttributeValue</tt><em class="property"> = 3</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeAsAttributeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Treat references as per &#8220;as Attribute Value&#8221; rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeInEntityValue">
+<tt class="descname">RefModeInEntityValue</tt><em class="property"> = 4</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeInEntityValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Treat references as per &#8220;in EntityValue&#8221; rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.RefModeInDTD">
+<tt class="descname">RefModeInDTD</tt><em class="property"> = 5</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.RefModeInDTD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Treat references as per &#8220;in DTD&#8221; rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.PredefinedEntities">
+<tt class="descname">PredefinedEntities</tt><em class="property"> = {'amp': '&amp;', 'lt': '&lt;', 'gt': '&gt;', 'apos': &quot;'&quot;, 'quot': '&quot;'}</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.PredefinedEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from the names of the predefined entities (lt, gt, amp, apos, quot) to their
+replacement characters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.checkValidity">
+<tt class="descname">checkValidity</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.checkValidity" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks XML validity constraints</p>
+<p>If <em>checkValidity</em> is True, and all other options are left at their
+default (False) setting then the parser will behave as a validating XML
+parser.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.valid">
+<tt class="descname">valid</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag indicating if the document is valid, only set if <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.checkValidity" title="pyslet.xml20081126.parser.XMLParser.checkValidity"><tt class="xref py py-attr docutils literal"><span class="pre">checkValidity</span></tt></a> is True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.nonFatalErrors">
+<tt class="descname">nonFatalErrors</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.nonFatalErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of non-fatal errors discovered during parsing, only populated if <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.checkValidity" title="pyslet.xml20081126.parser.XMLParser.checkValidity"><tt class="xref py py-attr docutils literal"><span class="pre">checkValidity</span></tt></a> is True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.checkCompatibility">
+<tt class="descname">checkCompatibility</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.checkCompatibility" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks XML compatibility constraints; will cause <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.checkValidity" title="pyslet.xml20081126.parser.XMLParser.checkValidity"><tt class="xref py py-attr docutils literal"><span class="pre">checkValidity</span></tt></a> to be set to True when parsing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.raiseValidityErrors">
+<tt class="descname">raiseValidityErrors</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.raiseValidityErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>treats validity errors as fatal errors</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness">
+<tt class="descname">dontCheckWellFormedness</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a loose parser for XML-like documents</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.sgmlNamecaseGeneral">
+<tt class="descname">sgmlNamecaseGeneral</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.sgmlNamecaseGeneral" title="Permalink to this definition">¶</a></dt>
+<dd><p>option that simulates SGML&#8217;s NAMECASE GENERAL YES</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.sgmlNamecaseEntity">
+<tt class="descname">sgmlNamecaseEntity</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.sgmlNamecaseEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>option that simulates SGML&#8217;s NAMECASE ENTITY YES</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.sgmlOmittag">
+<tt class="descname">sgmlOmittag</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="Permalink to this definition">¶</a></dt>
+<dd><p>option that simulates SGML&#8217;s OMITTAG YES</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.sgmlShorttag">
+<tt class="descname">sgmlShorttag</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.sgmlShorttag" title="Permalink to this definition">¶</a></dt>
+<dd><p>option that simulates SGML&#8217;s SHORTTAG YES</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.sgmlContent">
+<tt class="descname">sgmlContent</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.sgmlContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option simulates some aspects of SGML content handling based on class
+attributes of the element being parsed.</p>
+<ul class="simple">
+<li>Element classes with XMLCONTENT=:py:data:<cite>XMLEmpty</cite> are treated
+as elements declared EMPTY, these elements are treated as if they
+were introduced with an empty element tag even if they weren&#8217;t, as per SGML&#8217;s
+rules.  Note that this SGML feature &#8220;has nothing to do with markup
+minimization&#8221; (i.e., <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a>.)</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.refMode">
+<tt class="descname">refMode</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.refMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current parser mode for interpreting references.</p>
+<p>XML documents can contain five different types of reference: parameter
+entity, internal general entity, external parsed entity, (external)
+unparsed entity and character entity.</p>
+<p>The rules for interpreting these references vary depending on the
+current mode of the parser, for example, in content a reference to an
+internal entity is replaced, but in the definition of an entity value it
+is not.  This means that the behaviour of the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseReference" title="pyslet.xml20081126.parser.XMLParser.ParseReference"><tt class="xref py py-meth docutils literal"><span class="pre">ParseReference()</span></tt></a>
+method will differ depending on the mode.</p>
+<p>The parser takes care of setting the mode automatically but if you wish
+to use some of the parsing methods in isolation to parse fragments of
+XML documents, then you will need to set the <em>refMode</em> directly using
+one of the RefMode* family of constants defined above.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.entity">
+<tt class="descname">entity</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current entity being parsed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.theChar">
+<tt class="descname">theChar</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.theChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>the current character; None indicates end of stream</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.declaration">
+<tt class="descname">declaration</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.declaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>The declaration parsed or None.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.dtd">
+<tt class="descname">dtd</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.dtd" title="Permalink to this definition">¶</a></dt>
+<dd><p>The documnet type declaration of the document being parsed.</p>
+<p>This member is initialised to None as well-formed XML documents are not
+required to have an associated dtd.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.doc">
+<tt class="descname">doc</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>The document being parsed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.docEntity">
+<tt class="descname">docEntity</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.docEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The document entity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.element">
+<tt class="descname">element</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.element" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current element being parsed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.parser.XMLParser.elementType">
+<tt class="descname">elementType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.elementType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The element type of the current element.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.NextChar">
+<tt class="descname">NextChar</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.NextChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves to the next character in the stream.</p>
+<p>The current character can always be read from <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.theChar" title="pyslet.xml20081126.parser.XMLParser.theChar"><tt class="xref py py-attr docutils literal"><span class="pre">theChar</span></tt></a>.  If
+there are no characters left in the current entity then entities are
+popped from an internal entity stack automatically.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.PushEntity">
+<tt class="descname">PushEntity</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.PushEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts parsing <em>entity</em></p>
+<p><a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.theChar" title="pyslet.xml20081126.parser.XMLParser.theChar"><tt class="xref py py-attr docutils literal"><span class="pre">theChar</span></tt></a> is set to the current character in the entity&#8217;s
+stream.  The current entity is pushed onto an internal stack and will be
+resumed when this entity has been parsed completely.</p>
+<p>Note that in the degenerate case where the entity being pushed is empty
+(or is already positioned at the end of the file) then PushEntity does
+nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.GetExternalEntity">
+<tt class="descname">GetExternalEntity</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.GetExternalEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the external entity currently being parsed.</p>
+<p>If no external entity is being parsed then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.Standalone">
+<tt class="descname">Standalone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.Standalone" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the document being parsed should be treated as standalone.</p>
+<p>A document may be declared standalone or it may effectively be standalone
+due to the absence of a DTD, or the absence of an external DTD subset and
+parameter entity references.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.DeclaredStandalone">
+<tt class="descname">DeclaredStandalone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.DeclaredStandalone" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the current document was declared standalone.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.WellFormednessError">
+<tt class="descname">WellFormednessError</tt><big>(</big><em>msg='well-formedness error'</em>, <em>errorClass=&lt;class 'pyslet.xml20081126.structures.XMLWellFormedError'&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.WellFormednessError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises an XMLWellFormedError error.</p>
+<p>Called by the parsing methods whenever a well-formedness constraint is
+violated. The method takes an optional message string, <em>msg</em> and an
+optional error class which must be a class object derived from
+py:class:<cite>XMLWellFormednessError</cite>.</p>
+<p>The method raises an instance of <em>errorClass</em> and does not return.  This
+method can be overridden by derived parsers to implement more
+sophisticated error logging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ValidityError">
+<tt class="descname">ValidityError</tt><big>(</big><em>msg='validity error'</em>, <em>error=&lt;class 'pyslet.xml20081126.structures.XMLValidityError'&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ValidityError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the parser encounters a validity error.</p>
+<p>The method takes an optional message string, <em>msg</em> and an optional error
+class or instance which must be a (class) object derived from
+py:class:<cite>XMLValidityError</cite>.</p>
+<p>The behaviour varies depending on the setting of the
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.checkValidity" title="pyslet.xml20081126.parser.XMLParser.checkValidity"><tt class="xref py py-attr docutils literal"><span class="pre">checkValidity</span></tt></a> and <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.raiseValidityErrors" title="pyslet.xml20081126.parser.XMLParser.raiseValidityErrors"><tt class="xref py py-attr docutils literal"><span class="pre">raiseValidityErrors</span></tt></a> options. The
+default (both False) causes validity errors to be ignored.  When
+checking validity an error message is logged to
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.nonFatalErrors" title="pyslet.xml20081126.parser.XMLParser.nonFatalErrors"><tt class="xref py py-attr docutils literal"><span class="pre">nonFatalErrors</span></tt></a> and <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.valid" title="pyslet.xml20081126.parser.XMLParser.valid"><tt class="xref py py-attr docutils literal"><span class="pre">valid</span></tt></a> is set to False. 
+Furthermore, if <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.raiseValidityErrors" title="pyslet.xml20081126.parser.XMLParser.raiseValidityErrors"><tt class="xref py py-attr docutils literal"><span class="pre">raiseValidityErrors</span></tt></a> is True <em>error</em> is raised
+(or a new instance of <em>error</em> is raised) and parsing terminates.</p>
+<p>This method can be overridden by derived parsers to implement more
+sophisticated error logging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.CompatibilityError">
+<tt class="descname">CompatibilityError</tt><big>(</big><em>msg='compatibility error'</em>, <em>error=&lt;class 'pyslet.xml20081126.structures.XMLCompatibilityError'&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.CompatibilityError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when the parser encounters a compatibility error.</p>
+<p>The method takes an optional message string, <em>msg</em> and an optional error
+class or instance which must be a (class) object derived from
+py:class:<cite>XMLCompatibilityError</cite>.</p>
+<p>The behaviour varies depending on the setting of the
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.checkCompatibility" title="pyslet.xml20081126.parser.XMLParser.checkCompatibility"><tt class="xref py py-attr docutils literal"><span class="pre">checkCompatibility</span></tt></a> flag.  The default (False) causes
+compatibility errors to be ignored.  When checking compatibility an
+error message is logged to <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.nonFatalErrors" title="pyslet.xml20081126.parser.XMLParser.nonFatalErrors"><tt class="xref py py-attr docutils literal"><span class="pre">nonFatalErrors</span></tt></a>.</p>
+<p>This method can be overridden by derived parsers to implement more
+sophisticated error logging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseLiteral">
+<tt class="descname">ParseLiteral</tt><big>(</big><em>match</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a literal string, passed in <em>match</em>.</p>
+<p>Returns True if <em>match</em> is successfully parsed and False otherwise. 
+There is no partial matching, if <em>match</em> is not found then the parser is
+left in its original position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseRequiredLiteral">
+<tt class="descname">ParseRequiredLiteral</tt><big>(</big><em>match</em>, <em>production='Literal String'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseRequiredLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a required literal string raising a wellformed error if not matched.</p>
+<p><em>production</em> is an optional string describing the context in which the
+literal was expected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseDecimalDigits">
+<tt class="descname">ParseDecimalDigits</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseDecimalDigits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a, possibly empty, string of decimal digits matching [0-9]*.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseRequiredDecimalDigits">
+<tt class="descname">ParseRequiredDecimalDigits</tt><big>(</big><em>production='Digits'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseRequiredDecimalDigits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a required sring of decimal digits matching [0-9]+.</p>
+<p><em>production</em> is an optional string describing the context in which the
+digits were expected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseHexDigits">
+<tt class="descname">ParseHexDigits</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseHexDigits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a, possibly empty, string of hexadecimal digits matching [0-9a-fA-F].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseRequiredHexDigits">
+<tt class="descname">ParseRequiredHexDigits</tt><big>(</big><em>production='Hex Digits'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseRequiredHexDigits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a required sring of hexadecimal digits matching [0-9a-fA-F].</p>
+<p><em>production</em> is an optional string describing the context in which the
+hexadecimal digits were expected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseQuote">
+<tt class="descname">ParseQuote</tt><big>(</big><em>q=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseQuote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the quote character, <em>q</em>, or one of &#8220;&#8217;&#8221; or &#8216;&#8221;&#8217; if q is None.</p>
+<p>Returns the character parsed or raises a well formed error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseDocument">
+<tt class="descname">ParseDocument</tt><big>(</big><em>doc=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>[1] document: parses an Document.</p>
+<p><em>doc</em> is the <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document" title="pyslet.xml20081126.structures.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>
+instance that will be parsed.  The declaration, dtd and elements are
+added to this document.  If <em>doc</em> is None then a new instance is created
+using <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.GetDocumentClass" title="pyslet.xml20081126.parser.XMLParser.GetDocumentClass"><tt class="xref py py-meth docutils literal"><span class="pre">GetDocumentClass()</span></tt></a> to identify the correct class to use
+to represent the document based on information in the prolog or, if the
+prolog lacks a declaration, the root element.</p>
+<p>This method returns the document that was parsed, an instance of
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document" title="pyslet.xml20081126.structures.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.GetDocumentClass">
+<tt class="descname">GetDocumentClass</tt><big>(</big><em>dtd</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.GetDocumentClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a class object derived from
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document" title="pyslet.xml20081126.structures.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> suitable for
+representing a document with the given document type declaration.</p>
+<p>In cases where no doctype declaration is made a dummy declaration is
+created based on the name of the root element.  For example, if the root
+element is called &#8220;database&#8221; then the dtd is treated as if it was
+declared as follows:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE database&gt;</pre>
+</div>
+<p>This default implementation uses the following three pieces of
+information to locate class registered with
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.RegisterDocumentClass" title="pyslet.xml20081126.structures.RegisterDocumentClass"><tt class="xref py py-func docutils literal"><span class="pre">RegisterDocumentClass()</span></tt></a>.  The
+PublicID, SystemID and the name of the root element.  If an exact match
+is not found then wildcard matches are attempted, ignoring the SystemID,
+PublicID and finally the root element in turn.  If a document class
+still cannot be found then wildcard matches are tried matching <em>only</em>
+the PublicID, SystemID and root element in turn.</p>
+<p>If no document class cab be found,
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document" title="pyslet.xml20081126.structures.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseS">
+<tt class="descname">ParseS</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseS" title="Permalink to this definition">¶</a></dt>
+<dd><p>[3] S: Parses white space from the stream matching the production for S.</p>
+<p>If there is no white space at the current position then an empty string
+is returned.</p>
+<p>The productions in the specification do not make explicit mention of 
+parameter entity references, they are covered by the general statement
+that &#8220;Parameter entity references are recognized anwhere in the DTD...&#8221;
+In practice, this means that while parsing the DTD, anywhere that an S
+is permitted a parameter entity reference may also be recognized.  This
+method implements this behaviour, recognizing parameter entity references
+within S when <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.refMode" title="pyslet.xml20081126.parser.XMLParser.refMode"><tt class="xref py py-attr docutils literal"><span class="pre">refMode</span></tt></a> is <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.RefModeInDTD" title="pyslet.xml20081126.parser.XMLParser.RefModeInDTD"><tt class="xref py py-attr docutils literal"><span class="pre">RefModeInDTD</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseRequiredS">
+<tt class="descname">ParseRequiredS</tt><big>(</big><em>production='[3] S'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseRequiredS" title="Permalink to this definition">¶</a></dt>
+<dd><p>[3] S: Parses required white space from the stream.</p>
+<p>If there is no white space then a well-formedness error is raised. 
+<em>production</em> is an optional string describing the context in which the
+space was expected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseName">
+<tt class="descname">ParseName</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseName" title="Permalink to this definition">¶</a></dt>
+<dd><p>[5] Name: parses a Name</p>
+<p>The name is returned as a unicode string.  If no Name can be parsed then
+None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseRequiredName">
+<tt class="descname">ParseRequiredName</tt><big>(</big><em>production='Name'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseRequiredName" title="Permalink to this definition">¶</a></dt>
+<dd><p>[5] Name: Parses a required Name.</p>
+<p>If no name can be parsed then a well-formed error is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNames">
+<tt class="descname">ParseNames</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>[6] Names: parses a list of Names.</p>
+<p>This method returns a tuple of unicode strings.  If no names can be
+parsed then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNmtoken">
+<tt class="descname">ParseNmtoken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNmtoken" title="Permalink to this definition">¶</a></dt>
+<dd><p>[7] Nmtoken: parses a single Nmtoken.</p>
+<p>If no Nmtoken can be parsed then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNmtokens">
+<tt class="descname">ParseNmtokens</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNmtokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>[8] Nmtokens: parses a list of Nmtokens.</p>
+<p>This method returns a tuple of unicode strings.  If no tokens can be
+parsed then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEntityValue">
+<tt class="descname">ParseEntityValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEntityValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>[9] EntityValue: parses an EntityValue, returning it as a unicode string.</p>
+<p>This method automatically expands other parameter entity references but
+does not expand general or character references.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseAttValue">
+<tt class="descname">ParseAttValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseAttValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>[10] AttValue: parses an attribute value.</p>
+<p>The value is returned without the surrounding quotes and with any references
+expanded.</p>
+<p>The behaviour of this method is affected significantly by the setting of
+the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness" title="pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness"><tt class="xref py py-attr docutils literal"><span class="pre">dontCheckWellFormedness</span></tt></a> flag.  When set, attribute values
+can be parsed without surrounding quotes.  For compatibility with SGML
+these values should match one of the formal value types (e.g., Name) but
+this is not enforced so values like width=100% can be parsed without
+error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseSystemLiteral">
+<tt class="descname">ParseSystemLiteral</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseSystemLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>[11] SystemLiteral: Parses a literal value matching the production for SystemLiteral.</p>
+<p>The value of the literal is returned as a string <em>without</em> the enclosing
+quotes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePubidLiteral">
+<tt class="descname">ParsePubidLiteral</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePubidLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>[12] PubidLiteral: Parses a literal value matching the production for PubidLiteral.</p>
+<p>The value of the literal is returned as a string <em>without</em> the enclosing
+quotes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCharData">
+<tt class="descname">ParseCharData</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCharData" title="Permalink to this definition">¶</a></dt>
+<dd><p>[14] CharData: parses a run of character data</p>
+<p>The method adds the parsed data to the current element.  In the default
+parsing mode it returns None.</p>
+<p>When the parser option <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a> is selected the method
+returns any parsed character data that could not be added to the current
+element due to a model violation.  Note that in this SGML-like mode any
+S is treated as being in the current element as the violation doesn&#8217;t
+occurr until the first non-S character (so any implied start tag is
+treated as being immediately prior to the first non-S).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseComment">
+<tt class="descname">ParseComment</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseComment" title="Permalink to this definition">¶</a></dt>
+<dd><p>[15] Comment: parses a comment.</p>
+<p>If <em>gotLiteral</em> is True then the method assumes that the &#8216;&lt;!&#8211;&#8217; literal
+has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePI">
+<tt class="descname">ParsePI</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePI" title="Permalink to this definition">¶</a></dt>
+<dd><p>[16] PI: parses a processing instruction.</p>
+<p>This method calls the
+<tt class="xref py py-meth docutils literal"><span class="pre">Node.ProcessingInstruction()</span></tt> of the current
+element or of the document if no element has been parsed yet.</p>
+<p>If <em>gotLiteral</em> is True the method assumes the &#8216;&lt;?&#8217; literal has already
+been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePITarget">
+<tt class="descname">ParsePITarget</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePITarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>[17] PITarget: parses a processing instruction target name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCDSect">
+<tt class="descname">ParseCDSect</tt><big>(</big><em>gotLiteral=False</em>, <em>cdEnd=u']]&gt;'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCDSect" title="Permalink to this definition">¶</a></dt>
+<dd><p>[18] CDSect: parses a CDATA section.</p>
+<p>This method adds any parsed data to the current element.</p>
+<p>If <em>gotLiteral</em> is True then the method assumes the initial literal has
+already been parsed.  (By default, CDStart.)  The literal used to
+signify the end of the CDATA section can be overridden by passing an
+alternative literal in <em>cdEnd</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCDStart">
+<tt class="descname">ParseCDStart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCDStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>[19] CDStart: parses the literal that starts a CDATA section.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCData">
+<tt class="descname">ParseCData</tt><big>(</big><em>cdEnd=']]&gt;'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCData" title="Permalink to this definition">¶</a></dt>
+<dd><p>[20] CData: parses a run of CData up to but not including <em>cdEnd</em>.</p>
+<p>This method adds any parsed data to the current element.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCDEnd">
+<tt class="descname">ParseCDEnd</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCDEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>[21] CDEnd: parses the end of a CDATA section.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseProlog">
+<tt class="descname">ParseProlog</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseProlog" title="Permalink to this definition">¶</a></dt>
+<dd><p>[22] prolog: parses the document prolog, including the XML declaration and dtd.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseXMLDecl">
+<tt class="descname">ParseXMLDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseXMLDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[23] XMLDecl: parses an XML declaration.</p>
+<p>This method returns an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLDeclaration" title="pyslet.xml20081126.structures.XMLDeclaration"><tt class="xref py py-class docutils literal"><span class="pre">XMLDeclaration</span></tt></a> instance.  Also, if an
+encoding is given in the declaration then the method changes the
+encoding of the current entity to match.  For more information see
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLEntity.ChangeEncoding" title="pyslet.xml20081126.structures.XMLEntity.ChangeEncoding"><tt class="xref py py-meth docutils literal"><span class="pre">ChangeEncoding()</span></tt></a>.</p>
+<p>If <em>gotLiteral</em> is True the initial literal &#8216;&lt;?xml&#8217; is assumed to have
+already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseVersionInfo">
+<tt class="descname">ParseVersionInfo</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseVersionInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>[24] VersionInfo: parses XML version number.</p>
+<p>The version number is returned as a string.  If <em>gotLiteral</em> is True then
+it is assumed that the preceding white space and &#8216;version&#8217; literal have
+already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEq">
+<tt class="descname">ParseEq</tt><big>(</big><em>production='[25] Eq'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEq" title="Permalink to this definition">¶</a></dt>
+<dd><p>[25] Eq: parses an equal sign, optionally surrounded by white space</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseVersionNum">
+<tt class="descname">ParseVersionNum</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseVersionNum" title="Permalink to this definition">¶</a></dt>
+<dd><p>[26] VersionNum: parses the XML version number, returns it as a string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseMisc">
+<tt class="descname">ParseMisc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseMisc" title="Permalink to this definition">¶</a></dt>
+<dd><p>[27] Misc: parses multiple Misc items.</p>
+<p>This method parses everything that matches the production Misc*</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseDoctypedecl">
+<tt class="descname">ParseDoctypedecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseDoctypedecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[28] doctypedecl: parses a doctype declaration.</p>
+<p>This method creates a new instance of
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLDTD" title="pyslet.xml20081126.structures.XMLDTD"><tt class="xref py py-class docutils literal"><span class="pre">XMLDTD</span></tt></a> and assigns it to
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.dtd" title="pyslet.xml20081126.parser.XMLParser.dtd"><tt class="xref py py-attr docutils literal"><span class="pre">dtd</span></tt></a>, it also returns this instance as the result.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the initial literal
+&#8216;&lt;!DOCTYPE&#8217; has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseDeclSep">
+<tt class="descname">ParseDeclSep</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseDeclSep" title="Permalink to this definition">¶</a></dt>
+<dd><p>[28a] DeclSep: parses a declaration separator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseIntSubset">
+<tt class="descname">ParseIntSubset</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseIntSubset" title="Permalink to this definition">¶</a></dt>
+<dd><p>[28b] intSubset: parses an internal subset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseMarkupDecl">
+<tt class="descname">ParseMarkupDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseMarkupDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[29] markupDecl: parses a markup declaration.</p>
+<p>Returns True if a markupDecl was found, False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseExtSubset">
+<tt class="descname">ParseExtSubset</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseExtSubset" title="Permalink to this definition">¶</a></dt>
+<dd><p>[30] extSubset: parses an external subset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseExtSubsetDecl">
+<tt class="descname">ParseExtSubsetDecl</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseExtSubsetDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[31] extSubsetDecl: parses declarations in the external subset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.CheckPEBetweenDeclarations">
+<tt class="descname">CheckPEBetweenDeclarations</tt><big>(</big><em>checkEntity</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.CheckPEBetweenDeclarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>[31] extSubsetDecl: checks the well-formedness constraint on use of PEs between declarations.</p>
+<p><em>checkEntity</em> is the entity we should still be in!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseSDDecl">
+<tt class="descname">ParseSDDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseSDDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[32] SDDecl: parses a standalone declaration</p>
+<p>Returns True if the document should be treated as standalone; False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseElement">
+<tt class="descname">ParseElement</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>[39] element: parses an element, including its content.</p>
+<p>The class used to represent the element is determined by calling the
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document.GetElementClass" title="pyslet.xml20081126.structures.Document.GetElementClass"><tt class="xref py py-meth docutils literal"><span class="pre">GetElementClass()</span></tt></a> method of the current document.
+If there is no document yet then a new document is created automatically
+(see <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseDocument" title="pyslet.xml20081126.parser.XMLParser.ParseDocument"><tt class="xref py py-meth docutils literal"><span class="pre">ParseDocument()</span></tt></a> for more information).</p>
+<p>The element is added as a child of the current element using
+<tt class="xref py py-meth docutils literal"><span class="pre">Node.ChildElement()</span></tt>.</p>
+<p>The method returns:</p>
+<ul class="simple">
+<li>True: indicates that an element was parsed normally</li>
+<li>False: indicates that the element is not allowed in this context</li>
+</ul>
+<p>The second case only occurs when the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a> option is in
+use and it indicates that the content of the enclosing element has
+ended.  The Tag is buffered so that it can be reparsed when the stack of
+nested <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseContent" title="pyslet.xml20081126.parser.XMLParser.ParseContent"><tt class="xref py py-meth docutils literal"><span class="pre">ParseContent()</span></tt></a> and <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseElement" title="pyslet.xml20081126.parser.XMLParser.ParseElement"><tt class="xref py py-meth docutils literal"><span class="pre">ParseElement()</span></tt></a> calls is
+unwound to the point where it is allowed by the context.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.CheckAttributes">
+<tt class="descname">CheckAttributes</tt><big>(</big><em>name</em>, <em>attrs</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.CheckAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks <em>attrs</em> against the declarations for element <em>name</em>.</p>
+<p>This method will add any omitted defaults to the attribute list.  Also,
+checking the validity of the attributes may result in values being
+further normalized as per the rules for collapsing spaces in tokenized
+values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.MatchXMLName">
+<tt class="descname">MatchXMLName</tt><big>(</big><em>element</em>, <em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.MatchXMLName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if <em>name</em> is a possible name for this element.</p>
+<p>This method is used by the parser to determine if an end tag is the end
+tag of this element.  It is provided a separate method to allow it to be
+overridden by derived parsers</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.CheckExpectedParticle">
+<tt class="descname">CheckExpectedParticle</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.CheckExpectedParticle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if &lt;name&gt; fits with the cursor and raises a validity error if not.</p>
+<p>An empty string for <em>name</em> indicates the enclosing end tag was found.</p>
+<p>The method updates the current cursor as appropriate.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.GetSTagClass">
+<tt class="descname">GetSTagClass</tt><big>(</big><em>name</em>, <em>attrs=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.GetSTagClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>[40] STag: returns information suitable for starting element <em>name</em> with
+attributes <em>attrs</em> in the current context</p>
+<p>If there is no <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document" title="pyslet.xml20081126.structures.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>
+instance yet this method assumes that it is being called for the root
+element and selects an appropriate class based on the contents of the
+prolog and/or <em>name</em>.</p>
+<p>When using the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a> option <em>name</em> may be None
+indicating that the method should return information about the element
+implied by PCDATA in the current context (only called when an attempt to
+add data to the current context has already failed).</p>
+<p>The result is a triple of:</p>
+<ul class="simple">
+<li>elementClass:
+the element class that this STag must introduce or None if this STag
+does not belong (directly or indirectly) in the current context</li>
+<li>elementName:
+the name of the element (to pass to ChildElement) or None to use the
+default</li>
+<li>buffFlag:
+True indicates an omitted tag and that the triggering STag (i.e.,
+the STag with name <em>name</em>) should be buffered.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseSTag">
+<tt class="descname">ParseSTag</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseSTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>[40] STag, [44] EmptyElemTag: parses a start tag or an empty element tag.</p>
+<p>This method returns a triple of name, attrs, emptyFlag where:</p>
+<ul class="simple">
+<li><em>name</em> 
+is the name of the element parsed.</li>
+<li><em>attrs</em>
+is a dictionary of attribute values keyed by attribute name</li>
+<li><em>emptyFlag</em>
+is a boolean; True indicates that the tag was an empty element
+tag.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseAttribute">
+<tt class="descname">ParseAttribute</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>[41] Attribute: parses an attribute</p>
+<p>Returns <em>name</em>, <em>value</em> where:</p>
+<ul class="simple">
+<li>name 
+is the name of the attribute or None if <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlShorttag" title="pyslet.xml20081126.parser.XMLParser.sgmlShorttag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlShorttag</span></tt></a> is
+True and a short form attribute value was supplied.</li>
+<li>value is the attribute value.</li>
+</ul>
+<p>If <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness" title="pyslet.xml20081126.parser.XMLParser.dontCheckWellFormedness"><tt class="xref py py-attr docutils literal"><span class="pre">dontCheckWellFormedness</span></tt></a> the parser uses a very generous
+form of parsing attribute values to accomodate common syntax errors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseETag">
+<tt class="descname">ParseETag</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseETag" title="Permalink to this definition">¶</a></dt>
+<dd><p>[42] ETag: parses an end tag</p>
+<p>If <em>gotLiteral</em> is True then the method assumes the initial &#8216;&lt;/&#8217; literal
+has been parsed alread.</p>
+<p>The method returns the name of the end element parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseContent">
+<tt class="descname">ParseContent</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>[43] content: parses the content of an element.</p>
+<p>The method returns:</p>
+<ul class="simple">
+<li>True:
+indicates that the content was parsed normally</li>
+<li>False:
+indicates that the content contained data or markup not allowed in
+this context</li>
+</ul>
+<p>The second case only occurs when the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a> option is in
+use and it indicates that the enclosing element has ended (i.e., the
+element&#8217;s ETag has been omitted).  See py:meth:<cite>ParseElement</cite> for more
+information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.HandleData">
+<tt class="descname">HandleData</tt><big>(</big><em>data</em>, <em>cdata=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.HandleData" title="Permalink to this definition">¶</a></dt>
+<dd><p>[43] content: handles character data in content.</p>
+<p>When validating, the data is checked to see if it is optional white
+space.  However, if <em>cdata</em> is True the data is treated as character
+data (even if it matches the production for S).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.UnhandledData">
+<tt class="descname">UnhandledData</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.UnhandledData" title="Permalink to this definition">¶</a></dt>
+<dd><p>[43] content: manages unhandled data in content.</p>
+<p>This method is only called when the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.sgmlOmittag" title="pyslet.xml20081126.parser.XMLParser.sgmlOmittag"><tt class="xref py py-attr docutils literal"><span class="pre">sgmlOmittag</span></tt></a> option is in use.
+It processes <em>data</em> that occurs in a context where data is not allowed.</p>
+<p>It returns a boolean result:</p>
+<ul class="simple">
+<li>True:
+the data was consumed by a sub-element (with an omitted start tag)</li>
+<li>False:
+the data has been buffered and indicates the end of the current
+content (an omitted end tag).</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEmptyElemTag">
+<tt class="descname">ParseEmptyElemTag</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEmptyElemTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>[44] EmptyElemTag: there is no method for parsing empty element tags alone.</p>
+<p>This method raises NotImplementedError.  Instead, you should call
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseSTag" title="pyslet.xml20081126.parser.XMLParser.ParseSTag"><tt class="xref py py-meth docutils literal"><span class="pre">ParseSTag()</span></tt></a> and examine the result.  If it returns False then
+an empty element was parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseElementDecl">
+<tt class="descname">ParseElementDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseElementDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[45] elementdecl: parses an element declaration</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the &#8216;&lt;!ELEMENT&#8217; literal
+has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseContentSpec">
+<tt class="descname">ParseContentSpec</tt><big>(</big><em>eType</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseContentSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>[46] contentspec: parses the content specification for an element type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseChildren">
+<tt class="descname">ParseChildren</tt><big>(</big><em>gotLiteral=False</em>, <em>groupEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>[47] children: parses an element content model comprising children.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the initial &#8216;(&#8216; literal
+has already been parsed, including any following white space.</p>
+<p>The method returns an instance of <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLContentParticle" title="pyslet.xml20081126.structures.XMLContentParticle"><tt class="xref py py-class docutils literal"><span class="pre">XMLContentParticle</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCP">
+<tt class="descname">ParseCP</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCP" title="Permalink to this definition">¶</a></dt>
+<dd><p>[48] cp: parses a content particle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseChoice">
+<tt class="descname">ParseChoice</tt><big>(</big><em>firstChild=None</em>, <em>groupEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>[49] choice: parses a sequence of content particles.</p>
+<p><em>firstChild</em> is an optional
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLContentParticle" title="pyslet.xml20081126.structures.XMLContentParticle"><tt class="xref py py-class docutils literal"><span class="pre">XMLContentParticle</span></tt></a> instance. 
+If present the method assumes that the first particle and any following
+white space has already been parsed.  If <em>firstChild</em> is given then
+<em>groupEntity</em> must be the entity in which the opening &#8216;(&#8216; was parsed
+which started the choice group.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseSeq">
+<tt class="descname">ParseSeq</tt><big>(</big><em>firstChild=None</em>, <em>groupEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseSeq" title="Permalink to this definition">¶</a></dt>
+<dd><p>[50] seq: parses a sequence of content particles.</p>
+<p><em>firstChild</em> is an optional <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLContentParticle" title="pyslet.xml20081126.structures.XMLContentParticle"><tt class="xref py py-class docutils literal"><span class="pre">XMLContentParticle</span></tt></a> instance.  If
+present the method assumes that the first particle and any following
+white space has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseMixed">
+<tt class="descname">ParseMixed</tt><big>(</big><em>gotLiteral=False</em>, <em>groupEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseMixed" title="Permalink to this definition">¶</a></dt>
+<dd><p>[51] Mixed: parses a mixed content type.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the #PCDATA literal has
+already been parsed.  In this case, <em>groupEntity</em> must be set to the
+entity which contained the opening &#8216;(&#8216; literal.</p>
+<p>Returns an instance of <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLChoiceList" title="pyslet.xml20081126.structures.XMLChoiceList"><tt class="xref py py-class docutils literal"><span class="pre">XMLChoiceList</span></tt></a> with occurrence
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLContentParticle.ZeroOrMore" title="pyslet.xml20081126.structures.XMLContentParticle.ZeroOrMore"><tt class="xref py py-attr docutils literal"><span class="pre">ZeroOrMore</span></tt></a> representing the list of
+elements that may appear in the mixed content model. If the mixed model
+contains #PCDATA only then the choice list will be empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseAttlistDecl">
+<tt class="descname">ParseAttlistDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseAttlistDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[52] AttlistDecl: parses an attribute list definition.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the &#8216;&lt;!ATTLIST&#8217; literal
+has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseAttDef">
+<tt class="descname">ParseAttDef</tt><big>(</big><em>gotS=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseAttDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>[53] AttDef: parses an attribute definition.</p>
+<p>If <em>gotS</em> is True the method assumes that the leading S has already been
+parsed.</p>
+<p>Returns an instance of <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseAttType">
+<tt class="descname">ParseAttType</tt><big>(</big><em>a</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseAttType" title="Permalink to this definition">¶</a></dt>
+<dd><p>[54] AttType: parses an attribute type.</p>
+<p><em>a</em> must be an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a> instance.  This method sets the
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.type" title="pyslet.xml20081126.structures.XMLAttributeDefinition.type"><tt class="xref py py-attr docutils literal"><span class="pre">type</span></tt></a> and <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.values" title="pyslet.xml20081126.structures.XMLAttributeDefinition.values"><tt class="xref py py-attr docutils literal"><span class="pre">values</span></tt></a>
+fields of <em>a</em>.</p>
+<p>Note that, to avoid unnecessary look ahead, this method does not call
+<a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseStringType" title="pyslet.xml20081126.parser.XMLParser.ParseStringType"><tt class="xref py py-meth docutils literal"><span class="pre">ParseStringType()</span></tt></a> or <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseEnumeratedType" title="pyslet.xml20081126.parser.XMLParser.ParseEnumeratedType"><tt class="xref py py-meth docutils literal"><span class="pre">ParseEnumeratedType()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseStringType">
+<tt class="descname">ParseStringType</tt><big>(</big><em>a</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseStringType" title="Permalink to this definition">¶</a></dt>
+<dd><p>[55] StringType: parses an attribute&#8217;s string type.</p>
+<p>This method is provided for completeness.  It is not called during normal
+parsing operations.</p>
+<p><em>a</em> must be an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a> instance.  This method sets the
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.type" title="pyslet.xml20081126.structures.XMLAttributeDefinition.type"><tt class="xref py py-attr docutils literal"><span class="pre">type</span></tt></a> and <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.values" title="pyslet.xml20081126.structures.XMLAttributeDefinition.values"><tt class="xref py py-attr docutils literal"><span class="pre">values</span></tt></a>
+fields of <em>a</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseTokenizedType">
+<tt class="descname">ParseTokenizedType</tt><big>(</big><em>a</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseTokenizedType" title="Permalink to this definition">¶</a></dt>
+<dd><p>[56] TokenizedType: parses an attribute&#8217;s tokenized type.</p>
+<p><em>a</em> must be an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a> instance.  This method sets the
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.type" title="pyslet.xml20081126.structures.XMLAttributeDefinition.type"><tt class="xref py py-attr docutils literal"><span class="pre">type</span></tt></a> and <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.values" title="pyslet.xml20081126.structures.XMLAttributeDefinition.values"><tt class="xref py py-attr docutils literal"><span class="pre">values</span></tt></a>
+fields of <em>a</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEnumeratedType">
+<tt class="descname">ParseEnumeratedType</tt><big>(</big><em>a</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEnumeratedType" title="Permalink to this definition">¶</a></dt>
+<dd><p>[57] EnumeratedType: parses an attribute&#8217;s enumerated type.</p>
+<p>This method is provided for completeness.  It is not called during normal
+parsing operations.</p>
+<p><em>a</em> must be an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a> instance.  This method sets the
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.type" title="pyslet.xml20081126.structures.XMLAttributeDefinition.type"><tt class="xref py py-attr docutils literal"><span class="pre">type</span></tt></a> and <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition.values" title="pyslet.xml20081126.structures.XMLAttributeDefinition.values"><tt class="xref py py-attr docutils literal"><span class="pre">values</span></tt></a>
+fields of <em>a</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNotationType">
+<tt class="descname">ParseNotationType</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNotationType" title="Permalink to this definition">¶</a></dt>
+<dd><p>[58] NotationType: parses a notation type.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the leading &#8216;NOTATION&#8217; literal
+has already been parsed.</p>
+<p>Returns a list of strings representing the names of the declared notations being
+referred to.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEnumeration">
+<tt class="descname">ParseEnumeration</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>[59] Enumeration: parses an enumeration.</p>
+<p>Returns a dictionary of strings representing the tokens in the enumeration.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseDefaultDecl">
+<tt class="descname">ParseDefaultDecl</tt><big>(</big><em>a</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseDefaultDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[60] DefaultDecl: parses an attribute&#8217;s default declaration.</p>
+<p><em>a</em> must be an
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLAttributeDefinition" title="pyslet.xml20081126.structures.XMLAttributeDefinition"><tt class="xref py py-class docutils literal"><span class="pre">XMLAttributeDefinition</span></tt></a>
+instance.  This method sets the
+<tt class="xref py py-attr docutils literal">
+<span class="pre">defaultValue</span></tt> fields of <em>a</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseConditionalSect">
+<tt class="descname">ParseConditionalSect</tt><big>(</big><em>gotLiteralEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseConditionalSect" title="Permalink to this definition">¶</a></dt>
+<dd><p>[61] conditionalSect: parses a conditional section.</p>
+<p>If <em>gotLiteralEntity</em> is set to an <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLEntity" title="pyslet.xml20081126.structures.XMLEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLEntity</span></tt></a> object the
+method assumes that the initial literal &#8216;&lt;![&#8216; has already been parsed
+from that entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseIncludeSect">
+<tt class="descname">ParseIncludeSect</tt><big>(</big><em>gotLiteralEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseIncludeSect" title="Permalink to this definition">¶</a></dt>
+<dd><p>[62] includeSect: parses an included section.</p>
+<p>If <em>gotLiteralEntity</em> is set to an
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLEntity" title="pyslet.xml20081126.structures.XMLEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLEntity</span></tt></a> object the method
+assumes that the production, up to and including the keyword &#8216;INCLUDE&#8217;
+has already been parsed and that the opening &#8216;&lt;![&#8216; literal was parsed
+from that entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseIgnoreSect">
+<tt class="descname">ParseIgnoreSect</tt><big>(</big><em>gotLiteralEntity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseIgnoreSect" title="Permalink to this definition">¶</a></dt>
+<dd><p>[63] ignoreSect: parses an ignored section.</p>
+<p>If <em>gotLiteralEntity</em> is set to an
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLEntity" title="pyslet.xml20081126.structures.XMLEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLEntity</span></tt></a> object the method
+assumes that the production, up to and including the keyword &#8216;IGNORE&#8217;
+has already been parsed and that the opening &#8216;&lt;![&#8216; literal was parsed
+from that entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseIgnoreSectContents">
+<tt class="descname">ParseIgnoreSectContents</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseIgnoreSectContents" title="Permalink to this definition">¶</a></dt>
+<dd><p>[64] ignoreSectContents: parses the contents of an ignored section.</p>
+<p>The method returns no data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseIgnore">
+<tt class="descname">ParseIgnore</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseIgnore" title="Permalink to this definition">¶</a></dt>
+<dd><p>[65] Ignore: parses a run of characters in an ignored section.</p>
+<p>This method returns no data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseCharRef">
+<tt class="descname">ParseCharRef</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseCharRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>[66] CharRef: parses a character reference.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the leading &#8216;&amp;&#8217; literal
+has already been parsed.</p>
+<p>The method returns a unicode string containing the character referred
+to.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseReference">
+<tt class="descname">ParseReference</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>[67] Reference: parses a reference.</p>
+<p>This method returns any data parsed as a result of the reference.  For a
+character reference this will be the character referred to.  For a
+general entity the data returned will depend on the parsing context. For
+more information see <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.ParseEntityRef" title="pyslet.xml20081126.parser.XMLParser.ParseEntityRef"><tt class="xref py py-meth docutils literal"><span class="pre">ParseEntityRef()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEntityRef">
+<tt class="descname">ParseEntityRef</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEntityRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>[68] EntityRef: parses a general entity reference.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the leading &#8216;&amp;&#8217; literal
+has already been parsed.</p>
+<p>This method returns any data parsed as a result of the reference.  For
+example, if this method is called in a context where entity references
+are bypassed then the string returned will be the literal characters
+parsed, e.g., &#8220;&amp;ref;&#8221;.</p>
+<p>If the entity reference is parsed successfully in a context where Entity
+references are recognized, the reference is looked up according to the
+rules for validating and non-validating parsers and, if required by the
+parsing mode, the entity is opened and pushed onto the parser so that
+parsing continues with the first character of the entity&#8217;s replacement
+text.</p>
+<p>A special case is made for the predefined entities.  When parsed in a
+context where entity references are recognized these entities are
+expanded immediately and the resulting character returned.  For example,
+the entity &amp;amp; returns the &#8216;&amp;&#8217; character instead of pushing an entity
+with replacement text &#8216;&amp;#38;&#8217;.</p>
+<p>Inclusion of an unescaped &amp; is common so when we are not checking well-
+formedness we treat &#8216;&amp;&#8217; not followed by a name as if it were &#8216;&amp;amp;&#8217;.
+Similarly we are generous about the missing &#8216;;&#8217;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.LookupPredefinedEntity">
+<tt class="descname">LookupPredefinedEntity</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.LookupPredefinedEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function used to look up pre-defined entities, e.g., &#8220;lt&#8221;</p>
+<p>This method can be overridden by variant parsers to implement other pre-defined
+entity tables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePEReference">
+<tt class="descname">ParsePEReference</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePEReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>[69] PEReference: parses a parameter entity reference.</p>
+<p>If <em>gotLiteral</em> is True the method assumes that the initial &#8216;%&#8217; literal
+has already been parsed.</p>
+<p>This method returns any data parsed as a result of the reference.  Normally
+this will be an empty string because the method is typically called in
+contexts where PEReferences are recognized.  However, if this method is
+called in a context where PEReferences are not recognized the returned
+string will be the literal characters parsed, e.g., &#8220;%ref;&#8221;</p>
+<p>If the parameter entity reference is parsed successfully in a context
+where PEReferences are recognized, the reference is looked up according
+to the rules for validating and non-validating parsers and, if required
+by the parsing mode, the entity is opened and pushed onto the parser so
+that parsing continues with the first character of the entity&#8217;s
+replacement text.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEntityDecl">
+<tt class="descname">ParseEntityDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEntityDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[70] EntityDecl: parses an entity declaration.</p>
+<p>Returns an instance of either <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLGeneralEntity" title="pyslet.xml20081126.structures.XMLGeneralEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLGeneralEntity</span></tt></a> or
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLParameterEntity" title="pyslet.xml20081126.structures.XMLParameterEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLParameterEntity</span></tt></a> depending on the type of entity parsed. 
+If <em>gotLiteral</em> is True the method assumes that the leading &#8216;&lt;!ENTITY&#8217;
+literal has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseGEDecl">
+<tt class="descname">ParseGEDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseGEDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[71] GEDecl: parses a general entity declaration.</p>
+<p>Returns an instance of <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLGeneralEntity" title="pyslet.xml20081126.structures.XMLGeneralEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLGeneralEntity</span></tt></a>.  If <em>gotLiteral</em> is
+True the method assumes that the leading &#8216;&lt;!ENTITY&#8217; literal <em>and the
+required S</em> have already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePEDecl">
+<tt class="descname">ParsePEDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePEDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[72] PEDecl: parses a parameter entity declaration.</p>
+<p>Returns an instance of <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLParameterEntity" title="pyslet.xml20081126.structures.XMLParameterEntity"><tt class="xref py py-class docutils literal"><span class="pre">XMLParameterEntity</span></tt></a>.  If <em>gotLiteral</em>
+is True the method assumes that the leading &#8216;&lt;!ENTITY&#8217; literal <em>and the
+required S</em> have already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEntityDef">
+<tt class="descname">ParseEntityDef</tt><big>(</big><em>ge</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEntityDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>[73] EntityDef: parses the definition of a general entity.</p>
+<p>The general entity being parsed must be passed in <em>ge</em>.  This method
+sets the <tt class="xref py py-attr docutils literal"><span class="pre">definition</span></tt> and
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLGeneralEntity.notation" title="pyslet.xml20081126.structures.XMLGeneralEntity.notation"><tt class="xref py py-attr docutils literal"><span class="pre">notation</span></tt></a> fields from the parsed entity
+definition.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePEDef">
+<tt class="descname">ParsePEDef</tt><big>(</big><em>pe</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePEDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>[74] PEDef: parses a parameter entity definition.</p>
+<p>The parameter entity being parsed must be passed in <em>pe</em>.  This method
+sets the <tt class="xref py py-attr docutils literal"><span class="pre">definition</span></tt> field from the parsed
+parameter entity definition.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseExternalID">
+<tt class="descname">ParseExternalID</tt><big>(</big><em>allowPublicOnly=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseExternalID" title="Permalink to this definition">¶</a></dt>
+<dd><p>[75] ExternalID: parses an external ID returning an XMLExternalID instance.</p>
+<p>An external ID must have a SYSTEM literal, and may have a PUBLIC identifier.
+If <em>allowPublicOnly</em> is True then the method will also allow an external
+identifier with a PUBLIC identifier but no SYSTEM literal.  In this mode
+the parser behaves as it would when parsing the production:</p>
+<div class="highlight-python"><pre>(ExternalID | PublicID) S?</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ResolveExternalID">
+<tt class="descname">ResolveExternalID</tt><big>(</big><em>externalID</em>, <em>entity=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ResolveExternalID" title="Permalink to this definition">¶</a></dt>
+<dd><p>[75] ExternalID: resolves an external ID, returning a URI reference.</p>
+<p>Returns an instance of <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> or None if the
+external ID cannot be resolved.</p>
+<p><em>entity</em> can be used to force the resolution of relative URI to be
+relative to the base of the given entity.  If it is None then the
+currently open external entity (where available) is used instead.</p>
+<p>The default implementation simply calls
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.XMLExternalID.GetLocation" title="pyslet.xml20081126.structures.XMLExternalID.GetLocation"><tt class="xref py py-meth docutils literal"><span class="pre">GetLocation()</span></tt></a> with the entities base URL and
+ignores the public ID.  Derived parsers may recognize public identifiers
+and resolve accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNDataDecl">
+<tt class="descname">ParseNDataDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNDataDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[76] NDataDecl: parses an unparsed entity notation reference.</p>
+<p>Returns the name of the notation used by the unparsed entity as a string
+without the preceding &#8216;NDATA&#8217; literal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseTextDecl">
+<tt class="descname">ParseTextDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseTextDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[77] TextDecl: parses a text declataion.</p>
+<p>Returns an XMLTextDeclaration instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEncodingDecl">
+<tt class="descname">ParseEncodingDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEncodingDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[80] EncodingDecl: parses an encoding declaration</p>
+<p>Returns the declaration name without the enclosing quotes.  If <em>gotLiteral</em> is
+True then the method assumes that the literal &#8216;encoding&#8217; has already been parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseEncName">
+<tt class="descname">ParseEncName</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseEncName" title="Permalink to this definition">¶</a></dt>
+<dd><p>[81] EncName: parses an encoding declaration name</p>
+<p>Returns the encoding name as a string or None if no valid encoding name
+start character was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParseNotationDecl">
+<tt class="descname">ParseNotationDecl</tt><big>(</big><em>gotLiteral=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParseNotationDecl" title="Permalink to this definition">¶</a></dt>
+<dd><p>[82] NotationDecl: Parses a notation declaration matching production NotationDecl</p>
+<p>This method assumes that the literal &#8216;&lt;!NOTATION&#8217; has already been parsed.  It
+declares the notation in the <a class="reference internal" href="#pyslet.xml20081126.parser.XMLParser.dtd" title="pyslet.xml20081126.parser.XMLParser.dtd"><tt class="xref py py-attr docutils literal"><span class="pre">dtd</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.parser.XMLParser.ParsePublicID">
+<tt class="descname">ParsePublicID</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.parser.XMLParser.ParsePublicID" title="Permalink to this definition">¶</a></dt>
+<dd><p>[83] PublicID: Parses a literal matching the production for PublicID.</p>
+<p>The literal string is returned without the PUBLIC prefix or the
+enclosing quotes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="xml20081126.html"
+                        title="previous chapter">2.1. XML: Basic Constructs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="html40_19991224.html"
+                        title="next chapter">2.3. HTML</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/xml20081126.parser.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.3. HTML"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.html" title="2.1. XML: Basic Constructs"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

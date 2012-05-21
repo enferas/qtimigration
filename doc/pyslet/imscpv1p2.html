@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.1. IMS Content Packaging (version 1.2) &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
+    <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
+    <link rel="next" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="imsqtiv1p2p1.html" />
+    <link rel="prev" title="1. IMS Global Learning Consortium Specifications" href="ims.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ims.html" title="1. IMS Global Learning Consortium Specifications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="ims.html" accesskey="U">1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ims-content-packaging-version-1-2">
+<h1>1.1. IMS Content Packaging (version 1.2)<a class="headerlink" href="#ims-content-packaging-version-1-2" title="Permalink to this headline">¶</a></h1>
+<p>The IMS Content Packaging specification defines methods for packaging and
+organizing resources and their associated metadata for transmission between
+systems.  There is a small amount of information on Wikipedia about content
+packaging in general, see <a class="reference external" href="http://en.wikipedia.org/wiki/Content_package">http://en.wikipedia.org/wiki/Content_package</a>.  The
+main use of IMS Content Packaging in the market place is through the SCORM
+profile.  Content Packaging is also used as the basis for the new IMS Common
+Cartridge, and a method of packaging assessment materials using the
+speicifcation is also described by IMS QTI version 2.1.</p>
+<p>Official information about the specification is available from the IMS GLC:
+<a class="reference external" href="http://www.imsglobal.org/content/packaging/index.html">http://www.imsglobal.org/content/packaging/index.html</a></p>
+<span class="target" id="module-pyslet.imscpv1p2"></span><div class="section" id="example">
+<h2>1.1.1. Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following example script illustrates the use of this module.  The script
+takes two arguments, a resource file to be packaged (such as an index.html file)
+and the path to save the zipped package to.  The script creates a new package
+containing a single resource with the entry point set to point to the resource
+file.  It also adds any other files in the same directory as the resource file,
+using the python os.walk function to include files in sub-directories too.  The
+<a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFilePath" title="pyslet.imscpv1p2.ContentPackage.IgnoreFilePath"><tt class="xref py py-meth docutils literal"><span class="pre">ContentPackage.IgnoreFilePath()</span></tt></a> method is used to ensure that hidden
+files are not added:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span><span class="o">,</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">pyslet.imscpv1p2</span> <span class="kn">import</span> <span class="n">ContentPackage</span><span class="p">,</span> <span class="n">PathInPath</span>
+<span class="kn">from</span> <span class="nn">pyslet.rfc2396</span> <span class="kn">import</span> <span class="n">URIFactory</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">!=</span><span class="mi">3</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Usage: makecp &lt;resource file&gt; &lt;package file&gt;&quot;</span>
+                <span class="k">return</span>
+        <span class="n">resFile</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pkgFile</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">pkg</span><span class="o">=</span><span class="n">ContentPackage</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">resFile</span><span class="p">):</span>
+                        <span class="k">print</span> <span class="s">&quot;Resource entry point must be a file, not a directory.&quot;</span>
+                        <span class="k">return</span>
+                <span class="n">resHREF</span><span class="o">=</span><span class="n">URIFactory</span><span class="o">.</span><span class="n">URLFromPathname</span><span class="p">(</span><span class="n">resFile</span><span class="p">)</span>
+                <span class="n">srcDir</span><span class="p">,</span><span class="n">srcFile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">resFile</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">Resources</span><span class="o">.</span><span class="n">ChildElement</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">Resources</span><span class="o">.</span><span class="n">ResourceClass</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">href</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">resHREF</span><span class="o">.</span><span class="n">Relative</span><span class="p">(</span><span class="n">URIFactory</span><span class="o">.</span><span class="n">URLFromPathname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srcDir</span><span class="p">,</span><span class="s">&#39;imsmanifest.xml&#39;</span><span class="p">))))</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">type</span><span class="o">==</span><span class="s">&#39;webcontent&#39;</span>
+                <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span><span class="n">dirnames</span><span class="p">,</span><span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">srcDir</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+                                <span class="n">srcPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">IgnoreFilePath</span><span class="p">(</span><span class="n">srcPath</span><span class="p">):</span>
+                                        <span class="k">print</span> <span class="s">&quot;Skipping: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">srcPath</span>
+                                        <span class="k">continue</span>
+                                <span class="n">dstPath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">dPath</span><span class="p">,</span><span class="n">PathInPath</span><span class="p">(</span><span class="n">srcPath</span><span class="p">,</span><span class="n">srcDir</span><span class="p">))</span>
+                                <span class="c"># copy the file</span>
+                                <span class="n">dName</span><span class="p">,</span><span class="n">fName</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dstPath</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dName</span><span class="p">):</span>
+                                        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dName</span><span class="p">)</span>
+                                <span class="k">print</span> <span class="s">&quot;Copying: </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">srcPath</span>
+                                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">srcPath</span><span class="p">,</span><span class="n">dstPath</span><span class="p">)</span>
+                                <span class="n">pkg</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">URIFactory</span><span class="o">.</span><span class="n">URLFromPathname</span><span class="p">(</span><span class="n">dstPath</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pkgFile</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&quot;Are you sure you want to overwrite </span><span class="si">%s</span><span class="s">? (y/n) &quot;</span><span class="o">%</span><span class="n">pkgFile</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">!=</span><span class="s">&#39;y&#39;</span><span class="p">:</span>
+                                <span class="k">return</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">ExportToPIF</span><span class="p">(</span><span class="n">pkgFile</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note the use of the try:... finally: construct to ensure that the
+<a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage" title="pyslet.imscpv1p2.ContentPackage"><tt class="xref py py-class docutils literal"><span class="pre">ContentPackage</span></tt></a> object is properly closed when it is finished with.
+Note also the correct way to create elements within the manifest, using the
+dependency safe *Class attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">r</span><span class="o">=</span><span class="n">pkg</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">Resources</span><span class="o">.</span><span class="n">ChildElement</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">Resources</span><span class="o">.</span><span class="n">ResourceClass</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This line creates a new resource element as a child of the (required) Resources element.</p>
+<p>At the end of the script the <a class="reference internal" href="#pyslet.imscpv1p2.ManifestDocument" title="pyslet.imscpv1p2.ManifestDocument"><tt class="xref py py-class docutils literal"><span class="pre">ManifestDocument</span></tt></a> is updated on the disk
+using the inherited <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Document.Update" title="pyslet.xml20081126.structures.Document.Update"><tt class="xref py py-meth docutils literal"><span class="pre">Update()</span></tt></a>
+method.  The package can then be exported to the zip file format.</p>
+</div>
+<div class="section" id="reference">
+<h2>1.1.2. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.imscpv1p2.ContentPackage">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">ContentPackage</tt><big>(</big><em>dPath=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a content package.</p>
+<p>When constructed with no arguments a new package is created.  A temporary folder to hold the contents
+of the package is created and will not be cleaned up until the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.Close" title="pyslet.imscpv1p2.ContentPackage.Close"><tt class="xref py py-meth docutils literal"><span class="pre">Close()</span></tt></a> method is called.</p>
+<p>Alternatively, you can pass an operating system file path to a content package directory, to
+an imsmanifest.xml file or to a Package Interchange Format file.  In the latter case, the file
+is unzipped into a temporary folder to facilitate manipulation of the package contents.</p>
+<p>A new manifest file is created and written to the file system when creating
+a new package, or if it is missing from an existing package or directory.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.ContentPackage.ManifestDocumentClass">
+<tt class="descname">ManifestDocumentClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.ManifestDocumentClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class for representing the Manifest file</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.ManifestDocument" title="pyslet.imscpv1p2.ManifestDocument"><tt class="xref py py-class docutils literal"><span class="pre">ManifestDocument</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.ContentPackage.dPath">
+<tt class="descname">dPath</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.dPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>the operating system path to the package&#8217;s directory</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.ContentPackage.manifest">
+<tt class="descname">manifest</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#pyslet.imscpv1p2.ManifestDocument" title="pyslet.imscpv1p2.ManifestDocument"><tt class="xref py py-class docutils literal"><span class="pre">ManifestDocument</span></tt></a> object representing the imsmanifest.xml file.</p>
+<p>The file is read (or created) on construction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.ContentPackage.fileTable">
+<tt class="descname">fileTable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fileTable is a dictionary that maps package relative file system paths
+to the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> objects that represent them in the manifest.</p>
+<p>It is possible for a file to be referenced multiple times (although
+dependencies were designed to take care of most cases it is still
+possible for two resources to share a physical file, or even for a
+resource to contain multiple references to the same file.)  Therefore,
+the dictionary values are lists of <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> objects.</p>
+<p>If a file path maps to an empty list then a file exists in the package
+which is not referenced by any resource.  In some packages it is commone
+for auxiliary files such as supporting schemas to be included in
+packages without a corresponding <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object so an empty
+list does not indicate that the file can be removed safely.  These files
+are still included when packaging the content package for
+interchange.</p>
+<p>Finally, if a file referred to by a <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object in the
+manifest is missing an entry is still created in the fileTable.  You
+can walk the keys of the fileTable testing if each file exists to
+determine if some expected files are missing from the package.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles">
+<tt class="descname">SetIgnoreFiles</tt><big>(</big><em>ignoreFiles</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the regular expression used to determine if a file should be ignored.</p>
+<p>Some operating systems and utilities create hidden files or other spurious data
+inside the content package directory.  For example, Apple&#8217;s OS X creates .DS_Store
+files and the svn source control utility creates .svn directories.  The files shouldn&#8217;t
+generally be included in exported packages as they may confuse the recipient (who
+may be using a system on which these files and directories are not hidden) and be
+deemed to violate the specification, not to mention adding unnecessarily to the size
+of the package and perhaps even leaking information unintentionally.</p>
+<p>To help avoid this type of problem the class uses a regular expression to determine
+if a file should be considered part of the package.  When listing directories, the
+names of the files found are compared against this regular expression and are ignored
+if they match.</p>
+<p>By default, the pattern is set to match all directories and files with
+names beginning &#8216;.&#8217; so you will not normally need to call this
+method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.IgnoreFile">
+<tt class="descname">IgnoreFile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares an operating system file or directory name against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.IgnoreFilePath">
+<tt class="descname">IgnoreFilePath</tt><big>(</big><em>fPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFilePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares an operating system file path against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a></p>
+<p>The path is normalised before comparison and any segments consisting of
+the string &#8216;..&#8217; are skipped.  The method returns True if any of the
+remaining path components matches the ignore pattern.  In other words,
+if the path describes a file that is is in a directory that should be
+ignored it will also be ignored.</p>
+<p>The path can be relative or absolute.  Relative paths are <em>not</em> made
+absolute prior to comparison so this method is not affected by the
+current directory, even if the current diretory would itself be
+ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.RebuildFileTable">
+<tt class="descname">RebuildFileTable</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.RebuildFileTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescans the file system and manifest and rebuilds the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="pyslet.imscpv1p2.ContentPackage.fileTable"><tt class="xref py py-attr docutils literal"><span class="pre">fileTable</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.PackagePath">
+<tt class="descname">PackagePath</tt><big>(</big><em>fPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.PackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an absolute file path into a canonical package-relative path</p>
+<p>Returns None if fPath is not inside the package.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.ExportToPIF">
+<tt class="descname">ExportToPIF</tt><big>(</big><em>zPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.ExportToPIF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports the content package, saving the zipped package in <em>zPath</em></p>
+<p><em>zPath</em> is overwritten by this operation.</p>
+<p>In order to make content packages more interoperable this method goes
+beyond the basic zip specification and ensures that pathnames are always
+UTF-8 encoded when added to the archive.  When creating instances of
+<a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage" title="pyslet.imscpv1p2.ContentPackage"><tt class="xref py py-class docutils literal"><span class="pre">ContentPackage</span></tt></a> from an existing archive the reverse
+transformation is performed.  When exchanging PIF files between systems
+with different native file path encodings, as indicated by the built-in
+python function sys.getfilesystemencoding(), encoding erros may
+occurr.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.GetUniqueFile">
+<tt class="descname">GetUniqueFile</tt><big>(</big><em>suggestedPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.GetUniqueFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a unique file path suitable for creating a new file in the package.</p>
+<p>suggestedPath is used to provide a suggested path for the file.  This
+may be relative (to the root and manifest) or absolute but it must
+resolve to a file (potentially) in the package.</p>
+<p>When suggestedPath is relative, it is forced to lower-case.  This is
+consistent with the behaviour of os.path.normcase on systems that are
+case insensitive.  The trouble with case insensitive file systems is
+that it may be impossible to unpack a content package created on a case
+sensitive system and store it on a case insenstive one.  By channelling
+all file storage through this method (and constructing any URIs <em>after</em>
+the file has been stored) the resulting packages will be more portable.</p>
+<p>If suggestedPath already corresponds to a file already in the package,
+or to a file already referred to in the manifest, then a random string
+is added to it while preserving the suggested extension in order to make
+it unique.</p>
+<p>The return result is always normalized and returned relative to the
+package root.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.File">
+<tt class="descname">File</tt><big>(</big><em>resource</em>, <em>href</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object attached to <em>resource</em></p>
+<p><em>href</em> is the URI of the file expressed relative to the resource element
+in the manifest.  Although this is normally the same as the URI
+expressed relative to the package, a resource may have an xml:base
+attribute that alters the base for resolving relative URIs.</p>
+<p><em>href</em> may of course be an absolute URI to an external resource.  If an
+absolute URI is given to a local file it must be located inside the
+package.</p>
+<p>Attempting to add a <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object representing the manifest
+file iteself will raise <tt class="xref py py-class docutils literal"><span class="pre">CPFilePathError</span></tt>.</p>
+<p>The <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="pyslet.imscpv1p2.ContentPackage.fileTable"><tt class="xref py py-attr docutils literal"><span class="pre">fileTable</span></tt></a> is updated automatically by this method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.FileCopy">
+<tt class="descname">FileCopy</tt><big>(</big><em>resource</em>, <em>srcURL</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.FileCopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object copied into the package from <em>srcURL</em>, attached to <em>resource</em>.</p>
+<p>The file is copied to the same directory as the resource&#8217;s entry point
+or to the main package directory if the resource has no entry point.</p>
+<p>The <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object is actually created with the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-meth docutils literal"><span class="pre">File()</span></tt></a> method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.DeleteFile">
+<tt class="descname">DeleteFile</tt><big>(</big><em>href</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.DeleteFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the file at <em>href</em> from the file system</p>
+<p>This method also removes any file references to it from resources in the
+manifest. href may be given relative to the package root directory.  The
+entry in <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="pyslet.imscpv1p2.ContentPackage.fileTable"><tt class="xref py py-attr docutils literal"><span class="pre">fileTable</span></tt></a> is also removed.</p>
+<p><tt class="xref py py-class docutils literal"><span class="pre">CPFileTypeError</span></tt> is raised if the file is not a regular file</p>
+<p><tt class="xref py py-class docutils literal"><span class="pre">CPFilePathError</span></tt> is raised if the file is an
+<a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFile" title="pyslet.imscpv1p2.ContentPackage.IgnoreFile"><tt class="xref py py-meth docutils literal"><span class="pre">IgnoreFile()</span></tt></a>, the manifest itself or outside of the content
+package.</p>
+<p><tt class="xref py py-class docutils literal"><span class="pre">CPProtocolError</span></tt> is raised if the indicated file is not in
+the local file system.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.GetPackageName">
+<tt class="descname">GetPackageName</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.GetPackageName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human readable name for the package</p>
+<p>The name is determined by the method used to create the object. The
+purpose is to return a name that would be intuitive to the user if it
+were to be used as the name of the package directory or the stem of a
+file name when exporting to a PIF file.</p>
+<p>Note that the name is returned as a unicode string suitable for showing
+to the user and may need to be encoded before being used in file path
+operations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.Close">
+<tt class="descname">Close</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.Close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the content package, removing any temporary files.</p>
+<p>This method must be called to clean up any temporary files created when
+processing the content package.  Temporary files are created inside a
+special temporary directory created using the builtin python
+tempdir.mkdtemp function.  They are not automatically cleaned up when
+the process exits or when the garbage collector disposes of the object. 
+Use of try:... finally: to clean up the package is recommended.  For
+example:</p>
+<div class="highlight-python"><pre>pkg=ContentPackage("MyPackage.zip")
+try:
+        # do stuff with the content package here
+finally:
+        pkg.Close()</pre>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.ManifestDocument">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">ManifestDocument</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ManifestDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument</span></tt></p>
+<p>Represents the imsmanifest.xml file itself.</p>
+<p>Buildong on <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument</span></tt> this class is used
+for parsing and writing manifest files.</p>
+<p>The constructor defines three additional prefixes using
+<tt class="xref py py-meth docutils literal"><span class="pre">MakePrefix()</span></tt>, mapping xsi
+onto XML schema, imsmd onto the IMS LRM namespace and imsqti onto the IMS
+QTI 2.1 namespace.  It also adds a schemaLocation attribute.  The elements
+defined by the <tt class="xref py py-mod docutils literal"><span class="pre">pyslet.imsmdv1p2p1</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">pyslet.imsqtiv2p1</span></tt>
+modules are added to the <tt class="xref py py-attr docutils literal"><span class="pre">classMap</span></tt> to ensure that metadata from
+those schemas are bound to the special classes defined there.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.ManifestDocument.defaultNS">
+<tt class="descname">defaultNS</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ManifestDocument.defaultNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default namespace is set to <a class="reference internal" href="#pyslet.imscpv1p2.IMSCP_NAMESPACE" title="pyslet.imscpv1p2.IMSCP_NAMESPACE"><tt class="xref py py-const docutils literal"><span class="pre">IMSCP_NAMESPACE</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ManifestDocument.GetElementClass">
+<tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ManifestDocument.GetElementClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <tt class="xref py py-meth docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument.GetElementClass()</span></tt> to look up name.</p>
+<p>The class contains a mapping from (namespace,element name) pairs to
+class objects representing the elements.  Any element not in the class
+map returns <tt class="xref py py-meth docutils literal"><span class="pre">XMLNSElement()</span></tt> instead.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="constants">
+<h3>1.1.2.1. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<p>The following constants are used for setting and interpreting XML documents that conform
+to the Content Packaging specification</p>
+<dl class="data">
+<dt id="pyslet.imscpv1p2.IMSCP_NAMESPACE">
+<tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">IMSCP_NAMESPACE</tt><em class="property"> = 'http://www.imsglobal.org/xsd/imscp_v1p1'</em><a class="headerlink" href="#pyslet.imscpv1p2.IMSCP_NAMESPACE" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>String constant for the main namespace</div></blockquote>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.imscpv1p2.IMSCP_SCHEMALOCATION">
+<tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">IMSCP_SCHEMALOCATION</tt><em class="property"> = 'http://www.imsglobal.org/xsd/imscp_v1p1.xsd'</em><a class="headerlink" href="#pyslet.imscpv1p2.IMSCP_SCHEMALOCATION" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>String constant for the official schema location</div></blockquote>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.imscpv1p2.IMSCPX_NAMESPACE">
+<tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">IMSCPX_NAMESPACE</tt><em class="property"> = 'http://www.imsglobal.org/xsd/imscp_extensionv1p2'</em><a class="headerlink" href="#pyslet.imscpv1p2.IMSCPX_NAMESPACE" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>String constant for the 1.2 extension elements&#8217; namespace</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="elements">
+<h3>1.1.2.2. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.imscpv1p2.CPElement">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">CPElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.CPElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSElement</span></tt></p>
+<p>Base class for all elements defined by the Content Packaging specification.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Manifest">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Manifest</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the manifest element, the root element of the imsmanifest file.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.MetadataClass">
+<tt class="descname">MetadataClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.MetadataClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the metadata element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Metadata" title="pyslet.imscpv1p2.Metadata"><tt class="xref py py-class docutils literal"><span class="pre">Metadata</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.OrganizationsClass">
+<tt class="descname">OrganizationsClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.OrganizationsClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the organizations element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Organizations" title="pyslet.imscpv1p2.Organizations"><tt class="xref py py-class docutils literal"><span class="pre">Organizations</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.ResourcesClass">
+<tt class="descname">ResourcesClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.ResourcesClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the resources element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Resources" title="pyslet.imscpv1p2.Resources"><tt class="xref py py-class docutils literal"><span class="pre">Resources</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.ManifestClass">
+<tt class="descname">ManifestClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.ManifestClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent child manifest elements</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Manifest" title="pyslet.imscpv1p2.Manifest"><tt class="xref py py-class docutils literal"><span class="pre">Manifest</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.Metadata">
+<tt class="descname">Metadata</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.Metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>the manifest&#8217;s metadata element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.Organizations">
+<tt class="descname">Organizations</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.Organizations" title="Permalink to this definition">¶</a></dt>
+<dd><p>the organizations element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.Resources">
+<tt class="descname">Resources</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.Resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>the resources element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Manifest.Manifest">
+<tt class="descname">Manifest</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Manifest.Manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of child manifest elements</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Metadata">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Metadata</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the Metadata element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Metadata.SchemaClass">
+<tt class="descname">SchemaClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Metadata.SchemaClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the schema element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Schema" title="pyslet.imscpv1p2.Schema"><tt class="xref py py-class docutils literal"><span class="pre">Schema</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Metadata.SchemaVersionClass">
+<tt class="descname">SchemaVersionClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Metadata.SchemaVersionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the schemaVersion element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.SchemaVersion" title="pyslet.imscpv1p2.SchemaVersion"><tt class="xref py py-class docutils literal"><span class="pre">SchemaVersion</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Metadata.Schema">
+<tt class="descname">Schema</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Metadata.Schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>the optional schema element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Metadata.SchemaVersion">
+<tt class="descname">SchemaVersion</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Metadata.SchemaVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>the optional schemaversion element</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Schema">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Schema</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the schema element.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.SchemaVersion">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">SchemaVersion</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.SchemaVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the schemaversion element.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Organizations">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Organizations</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Organizations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the organizations element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Organizations.OrganizationClass">
+<tt class="descname">OrganizationClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Organizations.OrganizationClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the organization element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Organization" title="pyslet.imscpv1p2.Organization"><tt class="xref py py-class docutils literal"><span class="pre">Organization</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Organizations.Organization">
+<tt class="descname">Organization</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Organizations.Organization" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of organization elements</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Organization">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Organization</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Organization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the organization element.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Resources">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Resources</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the resources element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resources.ResourceClass">
+<tt class="descname">ResourceClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Resources.ResourceClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the resource element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Resource" title="pyslet.imscpv1p2.Resource"><tt class="xref py py-class docutils literal"><span class="pre">Resource</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resources.Resource">
+<tt class="descname">Resource</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resources.Resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of resources in the manifest</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Resource">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Resource</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the resource element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.MetadataClass">
+<tt class="descname">MetadataClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Resource.MetadataClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the metadata element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Metadata" title="pyslet.imscpv1p2.Metadata"><tt class="xref py py-class docutils literal"><span class="pre">Metadata</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.FileClass">
+<tt class="descname">FileClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Resource.FileClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the file element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.DependencyClass">
+<tt class="descname">DependencyClass</tt><a class="headerlink" href="#pyslet.imscpv1p2.Resource.DependencyClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default class to represent the dependency element</p>
+<p>alias of <a class="reference internal" href="#pyslet.imscpv1p2.Dependency" title="pyslet.imscpv1p2.Dependency"><tt class="xref py py-class docutils literal"><span class="pre">Dependency</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.type">
+<tt class="descname">type</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resource.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the type of the resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.href">
+<tt class="descname">href</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resource.href" title="Permalink to this definition">¶</a></dt>
+<dd><p>the href pointing at the resource&#8217;s entry point</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.Metadata">
+<tt class="descname">Metadata</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resource.Metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>the resource&#8217;s optional metadata element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.File">
+<tt class="descname">File</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resource.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of file elements associated with the resource</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Resource.Dependency">
+<tt class="descname">Dependency</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Resource.Dependency" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of dependencies of this resource</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.Resource.GetEntryPoint">
+<tt class="descname">GetEntryPoint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Resource.GetEntryPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object that is identified as the entry point.</p>
+<p>If there is no entry point, or no <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object with a
+matching href, then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.Resource.SetEntryPoint">
+<tt class="descname">SetEntryPoint</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Resource.SetEntryPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set&#8217;s the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> object that is identified as the resource&#8217;s entry point.</p>
+<p>The File must already exist and be associated with the resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.File">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">File</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the file element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.File.href">
+<tt class="descname">href</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.File.href" title="Permalink to this definition">¶</a></dt>
+<dd><p>the href used to locate the file object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.File.PackagePath">
+<tt class="descname">PackagePath</tt><big>(</big><em>cp</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.File.PackagePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the normalized file path relative to the root of the content package, <em>cp</em>.</p>
+<p>If the href does not point to a local file then None is returned.
+Otherwise, this function calculates an absolute path to the file and
+then calls the content package&#8217;s <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.PackagePath" title="pyslet.imscpv1p2.ContentPackage.PackagePath"><tt class="xref py py-meth docutils literal"><span class="pre">ContentPackage.PackagePath()</span></tt></a>
+method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imscpv1p2.Dependency">
+<em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">Dependency</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.Dependency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.imscpv1p2.CPElement" title="pyslet.imscpv1p2.CPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.imscpv1p2.CPElement</span></tt></a></p>
+<p>Represents the dependency element.</p>
+<dl class="attribute">
+<dt id="pyslet.imscpv1p2.Dependency.identifierref">
+<tt class="descname">identifierref</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.Dependency.identifierref" title="Permalink to this definition">¶</a></dt>
+<dd><p>the identifier of the resource in this dependency</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utilities">
+<h3>1.1.2.3. Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pyslet.imscpv1p2.PathInPath">
+<tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">PathInPath</tt><big>(</big><em>childPath</em>, <em>parentPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.PathInPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that returns childPath expressed relative to parentPath</p>
+<p>This function processes file system paths, not the path components of URI.</p>
+<p>Both paths are normalized to remove any redundant navigational segments
+before any processing, the resulting path will not contain these either.</p>
+<p>If childPath is not contained in parentPath then None is returned.</p>
+<p>If childPath and parentPath are equal an empty string is returned.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.1. IMS Content Packaging (version 1.2)</a><ul>
+<li><a class="reference internal" href="#example">1.1.1. Example</a></li>
+<li><a class="reference internal" href="#reference">1.1.2. Reference</a><ul>
+<li><a class="reference internal" href="#constants">1.1.2.1. Constants</a></li>
+<li><a class="reference internal" href="#elements">1.1.2.2. Elements</a></li>
+<li><a class="reference internal" href="#utilities">1.1.2.3. Utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ims.html"
+                        title="previous chapter">1. IMS Global Learning Consortium Specifications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="imsqtiv1p2p1.html"
+                        title="next chapter">1.2. IMS Question and Test Interoperability (version 1.2)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/imscpv1p2.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ims.html" title="1. IMS Global Learning Consortium Specifications"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

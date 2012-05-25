@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1. The Atom Syndication Format (RFC4287) &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.2. The Atom Publishing Protocol (RFC5023)" href="rfc5023.html" />
+    <link rel="prev" title="2. Supporting Standards" href="general.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rfc5023.html" title="2.2. The Atom Publishing Protocol (RFC5023)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.rfc4287">
+<span id="the-atom-syndication-format-rfc4287"></span><h1>2.1. The Atom Syndication Format (RFC4287)<a class="headerlink" href="#module-pyslet.rfc4287" title="Permalink to this headline">¶</a></h1>
+<p>This module defines functions and classes for working with the Atom Syndication
+Format as defined by RFC4287: <a class="reference external" href="http://www.ietf.org/rfc/rfc4287.txt">http://www.ietf.org/rfc/rfc4287.txt</a></p>
+<div class="section" id="reference">
+<h2>2.1.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="elements">
+<h3>2.1.1.1. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.rfc4287.Feed">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Feed</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Feed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Source" title="pyslet.rfc4287.Source"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Source</span></tt></a></p>
+<p>Represents an Atom feed.</p>
+<p>This is the document (i.e., top-level) element of an Atom Feed Document,
+acting as a container for metadata and data associated with the feed</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Feed.Entry">
+<tt class="descname">Entry</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Feed.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomEntry</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Source">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Source</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Entity" title="pyslet.rfc4287.Entity"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Entity</span></tt></a></p>
+<p>Metadata from the original source feed of an entry.</p>
+<p>This class is also used a base class for <a class="reference internal" href="#pyslet.rfc4287.Feed" title="pyslet.rfc4287.Feed"><tt class="xref py py-class docutils literal"><span class="pre">Feed</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Source.Generator">
+<tt class="descname">Generator</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Source.Generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomGenerator</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Source.Icon">
+<tt class="descname">Icon</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Source.Icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomIcon</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Source.Logo">
+<tt class="descname">Logo</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Source.Logo" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomLogo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Source.Subtitle">
+<tt class="descname">Subtitle</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Source.Subtitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomSubtitle</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Entry">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Entry</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Entity" title="pyslet.rfc4287.Entity"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Entity</span></tt></a></p>
+<p>An individual entry, acting as a container for metadata and data associated with the entry.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Entity">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Entity</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>Base class for feed, entry and source elements.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.AtomId">
+<tt class="descname">AtomId</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.AtomId" title="Permalink to this definition">¶</a></dt>
+<dd><p>the atomId of the object</p>
+<p>Note that we qualify the class name used to represent the id to avoid
+confusion with the existing &#8216;id&#8217; attribute in
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element" title="pyslet.xml20081126.structures.Element"><tt class="xref py py-class docutils literal"><span class="pre">Element</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Author">
+<tt class="descname">Author</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Author" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomAuthor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Category">
+<tt class="descname">Category</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomCategory</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Contributor">
+<tt class="descname">Contributor</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Contributor" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomContributor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Link">
+<tt class="descname">Link</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomLink</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Rights">
+<tt class="descname">Rights</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Rights" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomRights</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Title">
+<tt class="descname">Title</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Title" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomTitle</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Entity.Updated">
+<tt class="descname">Updated</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Entity.Updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>atomUpdated</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Author">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Author</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Person" title="pyslet.rfc4287.Person"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Person</span></tt></a></p>
+<p>A Person construct that indicates the author of the entry or feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Category">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Category</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>Information about a category associated with an entry or feed.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Category.term">
+<tt class="descname">term</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Category.term" title="Permalink to this definition">¶</a></dt>
+<dd><p>a string that identifies the category to which the entry or feed belongs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Category.scheme">
+<tt class="descname">scheme</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Category.scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>an IRI that identifies a categorization scheme.</p>
+<p>This is not converted to a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance as it
+is not normally resolved to a resource.  Instead it defines a type of
+namespace.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Category.label">
+<tt class="descname">label</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Category.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>a human-readable label for display in end-user applications</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Content">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Content</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Text</span></tt></a></p>
+<p>Contains or links to the content of the entry.</p>
+<p>Although derived from <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">Text</span></tt></a> this class overloads the meaning of
+the <tt class="xref py py-attr docutils literal"><span class="pre">Text.type</span></tt> attribute allowing it to be a media type.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Content.src">
+<tt class="descname">src</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Content.src" title="Permalink to this definition">¶</a></dt>
+<dd><p>link to remote content</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Content.GetValue">
+<tt class="descname">GetValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Content.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a single unicode string representing the value of the element.</p>
+<p>Overloads the basic
+<a class="reference internal" href="#pyslet.rfc4287.Text.GetValue" title="pyslet.rfc4287.Text.GetValue"><tt class="xref py py-meth docutils literal"><span class="pre">GetValue()</span></tt></a>, if <tt class="xref py py-attr docutils literal"><span class="pre">type</span></tt> is a media type rather
+than one of the text types then a ValueError is raised.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Contributor">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Contributor</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Contributor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Person" title="pyslet.rfc4287.Person"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Person</span></tt></a></p>
+<p>A Person construct that indicates a person or other entity who contributed to the entry or feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Generator">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Generator</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>Identifies the agent used to generate a feed, for debugging and other purposes.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Generator.uri">
+<tt class="descname">uri</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Generator.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>the uri of the tool used to generate the feed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Generator.version">
+<tt class="descname">version</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Generator.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>the version of the tool used to generate the feed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Generator.SetPysletInfo">
+<tt class="descname">SetPysletInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Generator.SetPysletInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets this generator to a default representation of this Pyslet module.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Icon">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Icon</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>Identifies an image that provides iconic visual identification for a feed.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Icon.uri">
+<tt class="descname">uri</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Icon.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> instance representing the URI of the icon</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Icon.GetValue">
+<tt class="descname">GetValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Icon.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.GetValue" title="pyslet.xml20081126.structures.Element.GetValue"><tt class="xref py py-meth docutils literal"><span class="pre">GetValue()</span></tt></a>, returning a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Icon.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Icon.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.SetValue" title="pyslet.xml20081126.structures.Element.SetValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetValue()</span></tt></a>, enabling the value to be set from a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance.</p>
+<p>If <em>value</em> is a string it is used to set the element&#8217;s content,
+<a class="reference internal" href="#pyslet.rfc4287.Icon.ContentChanged" title="pyslet.rfc4287.Icon.ContentChanged"><tt class="xref py py-meth docutils literal"><span class="pre">ContentChanged()</span></tt></a> is then called to update the value of
+<a class="reference internal" href="#pyslet.rfc4287.Icon.uri" title="pyslet.rfc4287.Icon.uri"><tt class="xref py py-attr docutils literal"><span class="pre">uri</span></tt></a>.  If <em>value</em> is a URI instance then <a class="reference internal" href="#pyslet.rfc4287.Icon.uri" title="pyslet.rfc4287.Icon.uri"><tt class="xref py py-attr docutils literal"><span class="pre">uri</span></tt></a> is set
+directory and it is then converted to a string and used to set the
+element&#8217;s content.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Icon.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Icon.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-reads the value of the element and sets <a class="reference internal" href="#pyslet.rfc4287.Icon.uri" title="pyslet.rfc4287.Icon.uri"><tt class="xref py py-attr docutils literal"><span class="pre">uri</span></tt></a> accordingly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.AtomId">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">AtomId</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.AtomId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>A permanent, universally unique identifier for an entry or feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Link">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Link</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>A reference from an entry or feed to a Web resource.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.href">
+<tt class="descname">href</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.href" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> instance, the link&#8217;s IRI</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.rel">
+<tt class="descname">rel</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.rel" title="Permalink to this definition">¶</a></dt>
+<dd><p>a string indicating the link relation type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.type">
+<tt class="descname">type</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>an advisory media type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.hreflang">
+<tt class="descname">hreflang</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.hreflang" title="Permalink to this definition">¶</a></dt>
+<dd><p>the language of the resource pointed to by <a class="reference internal" href="#pyslet.rfc4287.Link.href" title="pyslet.rfc4287.Link.href"><tt class="xref py py-attr docutils literal"><span class="pre">href</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.title">
+<tt class="descname">title</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>human-readable information about the link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Link.length">
+<tt class="descname">length</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Link.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>an advisory length of the linked content in octets</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Logo">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Logo</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Logo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Icon" title="pyslet.rfc4287.Icon"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Icon</span></tt></a></p>
+<p>An image that provides visual identification for a feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Published">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Published</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Published" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Date" title="pyslet.rfc4287.Date"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Date</span></tt></a></p>
+<p>A Date construct indicating an instant in time associated with an event early in the life cycle of the entry.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Rights">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Rights</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Rights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Text</span></tt></a></p>
+<p>A Text construct that conveys information about rights held in and over an entry or feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Subtitle">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Subtitle</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Subtitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Text</span></tt></a></p>
+<p>A <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">Text</span></tt></a> construct that conveys a human-readable description or subtitle for a feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Summary">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Summary</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Text</span></tt></a></p>
+<p>A <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">Text</span></tt></a> construct that conveys a short summary, abstract, or excerpt of an entry.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Title">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Title</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Text</span></tt></a></p>
+<p>A <a class="reference internal" href="#pyslet.rfc4287.Text" title="pyslet.rfc4287.Text"><tt class="xref py py-class docutils literal"><span class="pre">Text</span></tt></a> construct that conveys a human-readable title for an entry or feed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Updated">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Updated</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.Date" title="pyslet.rfc4287.Date"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.Date</span></tt></a></p>
+<p>A Date construct indicating the most recent instant in time when an entry or feed was modified in a way the publisher considers significant.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="base-classes">
+<h3>2.1.1.2. Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.rfc4287.Person">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Person</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Person" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>An element that describes a person, corporation, or similar entity</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Person.NameClass">
+<tt class="descname">NameClass</tt><a class="headerlink" href="#pyslet.rfc4287.Person.NameClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc4287.Name" title="pyslet.rfc4287.Name"><tt class="xref py py-class docutils literal"><span class="pre">Name</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Person.URIClass">
+<tt class="descname">URIClass</tt><a class="headerlink" href="#pyslet.rfc4287.Person.URIClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc4287.URI" title="pyslet.rfc4287.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Name">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Name</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>A human-readable name for a person.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.URI">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">URI</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.URI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>An IRI associated with a person</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Email">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Email</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>An e-mail address associated with a person</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Text">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Text</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>Base class for atomPlainTextConstruct and atomXHTMLTextConstruct.</p>
+<dl class="method">
+<dt id="pyslet.rfc4287.Text.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>type=1</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Text.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the element.  <em>type</em> must be a value from the <a class="reference internal" href="#pyslet.rfc4287.TextType" title="pyslet.rfc4287.TextType"><tt class="xref py py-class docutils literal"><span class="pre">TextType</span></tt></a> enumeration</p>
+<p>Overloads the basic
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.SetValue" title="pyslet.xml20081126.structures.Element.SetValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetValue()</span></tt></a>
+implementation, adding an additional <em>type</em> attribute to enable the
+value to be set to either a plain TextType.text, TextType.html or
+TextType.xhtml value.  In the case of an xhtml type, <em>value</em> is parsed
+for the required XHTML div element and this becomes the only child of
+the element.  Given that the div itself is not considered to be part
+of the content the value can be given without the enclosing div, in
+which case it is generated automatically.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Text.GetValue">
+<tt class="descname">GetValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Text.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a single unicode string representing the value of the element.</p>
+<p>Overloads the basic
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.GetValue" title="pyslet.xml20081126.structures.Element.GetValue"><tt class="xref py py-meth docutils literal"><span class="pre">GetValue()</span></tt></a>
+implementation to add support for text of type xhtml.</p>
+<p>When getting the value of TextType.xhtml text the child div element is
+not returned as it is not considered to be part of the content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.TextType">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">TextType</tt><a class="headerlink" href="#pyslet.rfc4287.TextType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>text type enumeration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;text&quot;</span> <span class="o">|</span> <span class="s">&quot;html&quot;</span> <span class="o">|</span> <span class="s">&quot;xhtml&quot;</span>
+</pre></div>
+</div>
+<p>This enumeration is used for setting the <tt class="xref py py-attr docutils literal"><span class="pre">Text.type</span></tt> attribute.</p>
+<p>Usage: TextType.text, TextType.html, TextType.xhtml</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.Date">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">Date</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc4287.AtomElement" title="pyslet.rfc4287.AtomElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomElement</span></tt></a></p>
+<p>An element conforming to the definition of date-time in RFC3339.</p>
+<p>This class is modeled using the iso8601 module.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc4287.Date.date">
+<tt class="descname">date</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc4287.Date.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt> instance representing this date</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Date.GetValue">
+<tt class="descname">GetValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Date.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.GetValue" title="pyslet.xml20081126.structures.Element.GetValue"><tt class="xref py py-meth docutils literal"><span class="pre">GetValue()</span></tt></a>, returning a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Date.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Date.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.SetValue" title="pyslet.xml20081126.structures.Element.SetValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetValue()</span></tt></a>, enabling the value to be set from a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance.</p>
+<p>If <em>value</em> is a string the behaviour is unchanged, if <em>value</em> is a
+TimePoint instance then it is formatted using the extended format of ISO
+8601 in accordance with the requirements of the Atom specification.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc4287.Date.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc4287.Date.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-reads the value of the element and sets <a class="reference internal" href="#pyslet.rfc4287.Date.date" title="pyslet.rfc4287.Date.date"><tt class="xref py py-attr docutils literal"><span class="pre">date</span></tt></a> accordingly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc4287.AtomElement">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">AtomElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc4287.AtomElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSElement</span></tt></p>
+<p>Base class for all APP elements.</p>
+<p>All atom elements can have xml:base and xml:lang attributes, these are
+handled by the <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element" title="pyslet.xml20081126.structures.Element"><tt class="xref py py-class docutils literal"><span class="pre">Element</span></tt></a> base
+class.</p>
+<p>See <a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.GetLang" title="pyslet.xml20081126.structures.Element.GetLang"><tt class="xref py py-meth docutils literal"><span class="pre">GetLang()</span></tt></a> and
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.SetLang" title="pyslet.xml20081126.structures.Element.SetLang"><tt class="xref py py-meth docutils literal"><span class="pre">SetLang()</span></tt></a>,
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.GetBase" title="pyslet.xml20081126.structures.Element.GetBase"><tt class="xref py py-meth docutils literal"><span class="pre">GetBase()</span></tt></a> and
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element.SetBase" title="pyslet.xml20081126.structures.Element.SetBase"><tt class="xref py py-meth docutils literal"><span class="pre">SetBase()</span></tt></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h3>2.1.1.3. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="pyslet.rfc4287.ATOM_NAMESPACE">
+<tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">ATOM_NAMESPACE</tt><em class="property"> = 'http://www.w3.org/2005/Atom'</em><a class="headerlink" href="#pyslet.rfc4287.ATOM_NAMESPACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The namespace to use for Atom Document elements</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc4287.ATOM_MIMETYPE">
+<tt class="descclassname">pyslet.rfc4287.</tt><tt class="descname">ATOM_MIMETYPE</tt><em class="property"> = 'application/atom+xml'</em><a class="headerlink" href="#pyslet.rfc4287.ATOM_MIMETYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mime type for Atom Document</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1. The Atom Syndication Format (RFC4287)</a><ul>
+<li><a class="reference internal" href="#reference">2.1.1. Reference</a><ul>
+<li><a class="reference internal" href="#elements">2.1.1.1. Elements</a></li>
+<li><a class="reference internal" href="#base-classes">2.1.1.2. Base Classes</a></li>
+<li><a class="reference internal" href="#constants">2.1.1.3. Constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="general.html"
+                        title="previous chapter">2. Supporting Standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rfc5023.html"
+                        title="next chapter">2.2. The Atom Publishing Protocol (RFC5023)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/rfc4287.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rfc5023.html" title="2.2. The Atom Publishing Protocol (RFC5023)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

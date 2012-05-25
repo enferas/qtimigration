@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.2. The Atom Publishing Protocol (RFC5023) &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.3. XML: Basic Constructs" href="xml20081126.html" />
+    <link rel="prev" title="2.1. The Atom Syndication Format (RFC4287)" href="rfc4287.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.html" title="2.3. XML: Basic Constructs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="rfc4287.html" title="2.1. The Atom Syndication Format (RFC4287)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.rfc5023">
+<span id="the-atom-publishing-protocol-rfc5023"></span><h1>2.2. The Atom Publishing Protocol (RFC5023)<a class="headerlink" href="#module-pyslet.rfc5023" title="Permalink to this headline">¶</a></h1>
+<p>This module defines functions and classes for working with the Atom Publishing
+Protocl as defined by RFC5023: <a class="reference external" href="http://www.ietf.org/rfc/rfc5023.txt">http://www.ietf.org/rfc/rfc5023.txt</a></p>
+<div class="section" id="reference">
+<h2>2.2.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="elements">
+<h3>2.2.1.1. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.rfc5023.Service">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Service</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc5023.APPElement" title="pyslet.rfc5023.APPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.APPElement</span></tt></a></p>
+<p>The container for service information associated with one or more Workspaces.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Service.Workspace">
+<tt class="descname">Workspace</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Service.Workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of <a class="reference internal" href="#pyslet.rfc5023.Workspace" title="pyslet.rfc5023.Workspace"><tt class="xref py py-class docutils literal"><span class="pre">Workspace</span></tt></a> instances</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc5023.Workspace">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Workspace</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc5023.APPElement" title="pyslet.rfc5023.APPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.APPElement</span></tt></a></p>
+<p>Workspaces are server-defined groups of Collections.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Workspace.Title">
+<tt class="descname">Title</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Workspace.Title" title="Permalink to this definition">¶</a></dt>
+<dd><p>the title of workspace</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Workspace.Collection">
+<tt class="descname">Collection</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Workspace.Collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of <a class="reference internal" href="#pyslet.rfc5023.Collection" title="pyslet.rfc5023.Collection"><tt class="xref py py-class docutils literal"><span class="pre">Collection</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc5023.Collection">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Collection</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc5023.APPElement" title="pyslet.rfc5023.APPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.APPElement</span></tt></a></p>
+<p>Describes a collection (feed).</p>
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Collection.href">
+<tt class="descname">href</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Collection.href" title="Permalink to this definition">¶</a></dt>
+<dd><p>the URI of the collection (feed)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Collection.Title">
+<tt class="descname">Title</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Collection.Title" title="Permalink to this definition">¶</a></dt>
+<dd><p>the human readable title of the collection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Collection.Accept">
+<tt class="descname">Accept</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Collection.Accept" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of <a class="reference internal" href="#pyslet.rfc5023.Accept" title="pyslet.rfc5023.Accept"><tt class="xref py py-class docutils literal"><span class="pre">Accept</span></tt></a> media ranges that can be posted to the collection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Collection.Categories">
+<tt class="descname">Categories</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Collection.Categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of <a class="reference internal" href="#pyslet.rfc5023.Categories" title="pyslet.rfc5023.Categories"><tt class="xref py py-class docutils literal"><span class="pre">Categories</span></tt></a> that can be applied to members of the collection</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc5023.Collection.GetFeedURL">
+<tt class="descname">GetFeedURL</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Collection.GetFeedURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a fully resolved URL for the collection (feed).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc5023.Categories">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Categories</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc5023.APPElement" title="pyslet.rfc5023.APPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.APPElement</span></tt></a></p>
+<p>The root of a Category Document.</p>
+<p>A category document is a document that describes the categories allowed in a collection.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Categories.href">
+<tt class="descname">href</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Categories.href" title="Permalink to this definition">¶</a></dt>
+<dd><p>an optional <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a> to the category</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Categories.fixed">
+<tt class="descname">fixed</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Categories.fixed" title="Permalink to this definition">¶</a></dt>
+<dd><p>indicates whether the list of categories is a fixed set.  By default they&#8217;re open.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Categories.scheme">
+<tt class="descname">scheme</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Categories.scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>identifies the default scheme for categories defined by this element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc5023.Categories.Category">
+<tt class="descname">Category</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc5023.Categories.Category" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of categories, instances of :py:class:~pyslet.rfc4287.Category</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="base-classes">
+<h3>2.2.1.2. Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.rfc5023.Accept">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Accept</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Accept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc5023.APPElement" title="pyslet.rfc5023.APPElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.APPElement</span></tt></a></p>
+<p>Represents the accept element.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc5023.Document">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">Document</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc4287.AtomDocument</span></tt></p>
+<p>Class for working with APP documents.</p>
+<p>This call can represent both APP and Atom documents.</p>
+<dl class="method">
+<dt id="pyslet.rfc5023.Document.ValidateMimeType">
+<tt class="descname">ValidateMimeType</tt><big>(</big><em>mimetype</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Document.ValidateMimeType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks <em>mimetype</em> against the mime types given in the APP or Atom specifications.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc5023.Document.GetElementClass">
+<tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.Document.GetElementClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the APP or Atom class used to represent name.</p>
+<p>Overrides <tt class="xref py py-meth docutils literal"><span class="pre">GetElementClass()</span></tt> when
+the namespace is <a class="reference internal" href="#pyslet.rfc5023.APP_NAMESPACE" title="pyslet.rfc5023.APP_NAMESPACE"><tt class="xref py py-data docutils literal"><span class="pre">APP_NAMESPACE</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc5023.APPElement">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">APPElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc5023.APPElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSElement</span></tt></p>
+<p>Base class for all APP elements.</p>
+<p>All APP elements can have xml:base, xml:lang and/or xml:space attributes. 
+These are handled by the base
+<a class="reference internal" href="xml20081126.html#pyslet.xml20081126.structures.Element" title="pyslet.xml20081126.structures.Element"><tt class="xref py py-class docutils literal"><span class="pre">Element</span></tt></a> base class.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h3>2.2.1.3. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="pyslet.rfc5023.APP_NAMESPACE">
+<tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">APP_NAMESPACE</tt><em class="property"> = 'http://www.w3.org/2007/app'</em><a class="headerlink" href="#pyslet.rfc5023.APP_NAMESPACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The namespace to use for Atom Publishing Protocol elements</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc5023.ATOMSVC_MIMETYPE">
+<tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">ATOMSVC_MIMETYPE</tt><em class="property"> = 'application/atomsvc+xml'</em><a class="headerlink" href="#pyslet.rfc5023.ATOMSVC_MIMETYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mime type for service documents</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc5023.ATOMCAT_MIMETYPE">
+<tt class="descclassname">pyslet.rfc5023.</tt><tt class="descname">ATOMCAT_MIMETYPE</tt><em class="property"> = 'application/atomcat+xml'</em><a class="headerlink" href="#pyslet.rfc5023.ATOMCAT_MIMETYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mime type for category documents</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.2. The Atom Publishing Protocol (RFC5023)</a><ul>
+<li><a class="reference internal" href="#reference">2.2.1. Reference</a><ul>
+<li><a class="reference internal" href="#elements">2.2.1.1. Elements</a></li>
+<li><a class="reference internal" href="#base-classes">2.2.1.2. Base Classes</a></li>
+<li><a class="reference internal" href="#constants">2.2.1.3. Constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="rfc4287.html"
+                        title="previous chapter">2.1. The Atom Syndication Format (RFC4287)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="xml20081126.html"
+                        title="next chapter">2.3. XML: Basic Constructs</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/rfc5023.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.html" title="2.3. XML: Basic Constructs"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="rfc4287.html" title="2.1. The Atom Syndication Format (RFC4287)"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

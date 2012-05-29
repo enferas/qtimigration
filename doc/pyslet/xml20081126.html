@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.3. XML: Basic Constructs &mdash; Pyslet 0.3.20110627 documentation</title>
+    <title>2.4. XML: Basic Constructs &mdash; Pyslet 0.3.20110627 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
-    <link rel="next" title="2.4. XML: Parsing XML Documents" href="xml20081126.parser.html" />
-    <link rel="prev" title="2.2. The Atom Publishing Protocol (RFC5023)" href="rfc5023.html" /> 
+    <link rel="next" title="2.5. XML: Parsing XML Documents" href="xml20081126.parser.html" />
+    <link rel="prev" title="2.3. The Atom Publishing Protocol (RFC5023)" href="rfc5023.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,10 +41,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.4. XML: Parsing XML Documents"
+          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="rfc5023.html" title="2.2. The Atom Publishing Protocol (RFC5023)"
+          <a href="rfc5023.html" title="2.3. The Atom Publishing Protocol (RFC5023)"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
@@ -57,7 +57,7 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.xml20081126.structures">
-<span id="xml-basic-constructs"></span><h1>2.3. XML: Basic Constructs<a class="headerlink" href="#module-pyslet.xml20081126.structures" title="Permalink to this headline">¶</a></h1>
+<span id="xml-basic-constructs"></span><h1>2.4. XML: Basic Constructs<a class="headerlink" href="#module-pyslet.xml20081126.structures" title="Permalink to this headline">¶</a></h1>
 <p>This module defines classes for working with XML documents.  The version of the
 standard implemented is the Extensible Markup Language (Fifth Edition), for more
 info see: <a class="reference external" href="http://www.w3.org/TR/xml/">http://www.w3.org/TR/xml/</a></p>
@@ -68,7 +68,7 @@ can be used as a base class to customize document processing for specific types
 of XML document.  It also allows these XML elements to &#8216;come live&#8217; with
 additional methods and behaviours.</p>
 <div class="section" id="documents">
-<h2>2.3.1. Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
+<h2>2.4.1. Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.xml20081126.structures.Node">
 <em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">Node</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Node" title="Permalink to this definition">¶</a></dt>
@@ -139,6 +139,9 @@ the parser while parsing this object&#8217;s content.</p>
 or root element.</p>
 <p>If root is a class object (descended from Element) it is used
 to create the root element of the document.</p>
+<p>If root is an orphan instance of Element (i.e., it has no parent) is is
+used as the root element of the document and its
+<a class="reference internal" href="#pyslet.xml20081126.structures.Element.AttachToDocument" title="pyslet.xml20081126.structures.Element.AttachToDocument"><tt class="xref py py-meth docutils literal"><span class="pre">Element.AttachToDocument()</span></tt></a> method is called.</p>
 <p>baseURI can be set on construction (see SetBase) and a reqManager object
 can optionally be passed for managing and http(s) connections.</p>
 <dl class="attribute">
@@ -302,7 +305,7 @@ that the document class can match any system ID.</li>
 </dd></dl>
 
 <div class="section" id="characters">
-<h3>2.3.1.1. Characters<a class="headerlink" href="#characters" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.1.1. Characters<a class="headerlink" href="#characters" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.IsChar">
 <tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">IsChar</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.IsChar" title="Permalink to this definition">¶</a></dt>
@@ -320,7 +323,7 @@ available in the narrow python build.</p>
 
 </div>
 <div class="section" id="common-syntactic-constructs">
-<h3>2.3.1.2. Common Syntactic Constructs<a class="headerlink" href="#common-syntactic-constructs" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.1.2. Common Syntactic Constructs<a class="headerlink" href="#common-syntactic-constructs" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.IsS">
 <tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">IsS</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.IsS" title="Permalink to this definition">¶</a></dt>
@@ -356,7 +359,7 @@ character&#8221;</p>
 
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.CollapseSpace">
-<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x1e9c930&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x18c62b0&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns data with all spaces collapsed to a single space.</p>
 <p>sMode determines the fate of any leading space, by default it is True and
 leading spaces are ignored provided the string has some non-space
@@ -400,7 +403,7 @@ data then a single space is returned (regardless of sMode).</p>
 
 </div>
 <div class="section" id="character-data-and-markup">
-<h3>2.3.1.3. Character Data and Markup<a class="headerlink" href="#character-data-and-markup" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.1.3. Character Data and Markup<a class="headerlink" href="#character-data-and-markup" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.EscapeCharData">
 <tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">EscapeCharData</tt><big>(</big><em>src</em>, <em>quote=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.EscapeCharData" title="Permalink to this definition">¶</a></dt>
@@ -417,7 +420,7 @@ is True then the string is returned as a quoted attribute value.</p>
 
 </div>
 <div class="section" id="cdata-sections">
-<h3>2.3.1.4. CDATA Sections<a class="headerlink" href="#cdata-sections" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.1.4. CDATA Sections<a class="headerlink" href="#cdata-sections" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.EscapeCDSect">
 <tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">EscapeCDSect</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.EscapeCDSect" title="Permalink to this definition">¶</a></dt>
@@ -428,7 +431,7 @@ by the clumsy sequence: ]]&gt;]]&amp;gt;&lt;!CDATA[[</p>
 
 </div>
 <div class="section" id="prolog-and-document-type-declaration">
-<h3>2.3.1.5. Prolog and Document Type Declaration<a class="headerlink" href="#prolog-and-document-type-declaration" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.1.5. Prolog and Document Type Declaration<a class="headerlink" href="#prolog-and-document-type-declaration" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyslet.xml20081126.structures.XMLDTD">
 <em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">XMLDTD</tt><a class="headerlink" href="#pyslet.xml20081126.structures.XMLDTD" title="Permalink to this definition">¶</a></dt>
@@ -590,11 +593,17 @@ there is no standalone declaration.</p>
 </div>
 </div>
 <div class="section" id="logical-structures">
-<h2>2.3.2. Logical Structures<a class="headerlink" href="#logical-structures" title="Permalink to this headline">¶</a></h2>
+<h2>2.4.2. Logical Structures<a class="headerlink" href="#logical-structures" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.xml20081126.structures.Element">
 <em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">Element</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.xml20081126.structures.Node" title="pyslet.xml20081126.structures.Node"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.structures.Node</span></tt></a></p>
+<dl class="method">
+<dt id="pyslet.xml20081126.structures.Element.Reset">
+<tt class="descname">Reset</tt><big>(</big><em>resetAttributes=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.Reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears all attributes and (optional) children.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.GetDocument">
 <tt class="descname">GetDocument</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GetDocument" title="Permalink to this definition">¶</a></dt>
@@ -926,7 +935,7 @@ and white space <em>is</em> pretty printed.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.WriteXMLAttributes">
-<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x1e8c470&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x18abb70&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds strings representing the element&#8217;s attributes</p>
 <p>attributes is a list of unicode strings.  Attributes should be appended
 as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately
@@ -1271,7 +1280,7 @@ model.</p>
 
 </div>
 <div class="section" id="physical-structures">
-<h2>2.3.3. Physical Structures<a class="headerlink" href="#physical-structures" title="Permalink to this headline">¶</a></h2>
+<h2>2.4.3. Physical Structures<a class="headerlink" href="#physical-structures" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.xml20081126.structures.XMLEntity">
 <em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">XMLEntity</tt><big>(</big><em>src=None</em>, <em>encoding='utf-8'</em>, <em>reqManager=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity" title="Permalink to this definition">¶</a></dt>
@@ -1419,6 +1428,15 @@ headers.</p>
 <p>The optional <em>reqManager</em> allows you to pass an existing instance of
 <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.HTTPRequestManager</span></tt> for handling URI with
 http or https schemes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.structures.XMLEntity.OpenHTTPResponse">
+<tt class="descname">OpenHTTPResponse</tt><big>(</big><em>src</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenHTTPResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the entity from an HTTP response passed in <em>src</em>.</p>
+<p>The optional <em>encoding</em> provides a hint as to the intended encoding of
+the data and defaults to UTF-8.  This parameter is only used if the
+charset cannot be read successfully from the HTTP response headers.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1596,7 +1614,7 @@ used.</p>
 </dd></dl>
 
 <div class="section" id="character-classes">
-<h3>2.3.3.1. Character Classes<a class="headerlink" href="#character-classes" title="Permalink to this headline">¶</a></h3>
+<h3>2.4.3.1. Character Classes<a class="headerlink" href="#character-classes" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.IsLetter">
 <tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">IsLetter</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.IsLetter" title="Permalink to this definition">¶</a></dt>
@@ -1645,18 +1663,18 @@ used.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2.3. XML: Basic Constructs</a><ul>
-<li><a class="reference internal" href="#documents">2.3.1. Documents</a><ul>
-<li><a class="reference internal" href="#characters">2.3.1.1. Characters</a></li>
-<li><a class="reference internal" href="#common-syntactic-constructs">2.3.1.2. Common Syntactic Constructs</a></li>
-<li><a class="reference internal" href="#character-data-and-markup">2.3.1.3. Character Data and Markup</a></li>
-<li><a class="reference internal" href="#cdata-sections">2.3.1.4. CDATA Sections</a></li>
-<li><a class="reference internal" href="#prolog-and-document-type-declaration">2.3.1.5. Prolog and Document Type Declaration</a></li>
+<li><a class="reference internal" href="#">2.4. XML: Basic Constructs</a><ul>
+<li><a class="reference internal" href="#documents">2.4.1. Documents</a><ul>
+<li><a class="reference internal" href="#characters">2.4.1.1. Characters</a></li>
+<li><a class="reference internal" href="#common-syntactic-constructs">2.4.1.2. Common Syntactic Constructs</a></li>
+<li><a class="reference internal" href="#character-data-and-markup">2.4.1.3. Character Data and Markup</a></li>
+<li><a class="reference internal" href="#cdata-sections">2.4.1.4. CDATA Sections</a></li>
+<li><a class="reference internal" href="#prolog-and-document-type-declaration">2.4.1.5. Prolog and Document Type Declaration</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#logical-structures">2.3.2. Logical Structures</a></li>
-<li><a class="reference internal" href="#physical-structures">2.3.3. Physical Structures</a><ul>
-<li><a class="reference internal" href="#character-classes">2.3.3.1. Character Classes</a></li>
+<li><a class="reference internal" href="#logical-structures">2.4.2. Logical Structures</a></li>
+<li><a class="reference internal" href="#physical-structures">2.4.3. Physical Structures</a><ul>
+<li><a class="reference internal" href="#character-classes">2.4.3.1. Character Classes</a></li>
 </ul>
 </li>
 </ul>
@@ -1665,10 +1683,10 @@ used.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="rfc5023.html"
-                        title="previous chapter">2.2. The Atom Publishing Protocol (RFC5023)</a></p>
+                        title="previous chapter">2.3. The Atom Publishing Protocol (RFC5023)</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="xml20081126.parser.html"
-                        title="next chapter">2.4. XML: Parsing XML Documents</a></p>
+                        title="next chapter">2.5. XML: Parsing XML Documents</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/xml20081126.txt"
@@ -1701,10 +1719,10 @@ used.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.4. XML: Parsing XML Documents"
+          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
              >next</a> |</li>
         <li class="right" >
-          <a href="rfc5023.html" title="2.2. The Atom Publishing Protocol (RFC5023)"
+          <a href="rfc5023.html" title="2.3. The Atom Publishing Protocol (RFC5023)"
              >previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.5. HTML &mdash; Pyslet 0.3.20110627 documentation</title>
+    <title>2.6. HTML &mdash; Pyslet 0.3.20110627 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
-    <link rel="next" title="2.6. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" />
-    <link rel="prev" title="2.4. XML: Parsing XML Documents" href="xml20081126.parser.html" /> 
+    <link rel="next" title="2.7. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" />
+    <link rel="prev" title="2.5. XML: Parsing XML Documents" href="xml20081126.parser.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,10 +41,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
+          <a href="rfc2396.html" title="2.7. Uniform Resource Identifiers (RFC2396)"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.4. XML: Parsing XML Documents"
+          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
@@ -57,7 +57,7 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.html40_19991224">
-<span id="html"></span><h1>2.5. HTML<a class="headerlink" href="#module-pyslet.html40_19991224" title="Permalink to this headline">¶</a></h1>
+<span id="html"></span><h1>2.6. HTML<a class="headerlink" href="#module-pyslet.html40_19991224" title="Permalink to this headline">¶</a></h1>
 <p>This module defines functions and classes for working with HTML documents.  The
 version of the standard implemented is, loosely speaking, the HTML 4.0.1
 Specification: <a class="reference external" href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a></p>
@@ -81,7 +81,7 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
 </dd></dl>
 
 <div class="section" id="x-html-documents">
-<h2>2.5.1. (X)HTML Documents<a class="headerlink" href="#x-html-documents" title="Permalink to this headline">¶</a></h2>
+<h2>2.6.1. (X)HTML Documents<a class="headerlink" href="#x-html-documents" title="Permalink to this headline">¶</a></h2>
 <p>This module contains an experimental class for working with HTML documents.  At
 the time of writing the implementation is designed to provide just enough HTML
 parsing to support the use of HTML within other standards (such as Atom and
@@ -134,9 +134,9 @@ document containing a single Div element to hold the parsed text.</p>
 
 </div>
 <div class="section" id="basic-types">
-<h2>2.5.2. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
+<h2>2.6.2. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="length-values">
-<h3>2.5.2.1. Length Values<a class="headerlink" href="#length-values" title="Permalink to this headline">¶</a></h3>
+<h3>2.6.2.1. Length Values<a class="headerlink" href="#length-values" title="Permalink to this headline">¶</a></h3>
 <p>Length values are used in many places in HTML, the most common being the width
 and height values on images.  There are two ways of specifying a Length, a
 simple integer number of pixels or a percentage of some base length defined by
@@ -204,7 +204,7 @@ the context (such as the width of the browser window).</p>
 
 </div>
 <div class="section" id="coordinate-values">
-<h3>2.5.2.2. Coordinate Values<a class="headerlink" href="#coordinate-values" title="Permalink to this headline">¶</a></h3>
+<h3>2.6.2.2. Coordinate Values<a class="headerlink" href="#coordinate-values" title="Permalink to this headline">¶</a></h3>
 <p>Coordinate values are simple lists of Lengths.  In most cases Pyslet doesn&#8217;t
 define special types for lists of basic types but coordinates are represented in
 attribute values using comma separation, not space-separation.  As a result they
@@ -251,7 +251,7 @@ streams.</p>
 
 </div>
 <div class="section" id="uris">
-<h3>2.5.2.3. URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h3>
+<h3>2.6.2.3. URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h3>
 <p>URIs are represented by instances of the underlying <tt class="xref py py-class docutils literal"><span class="pre">pyselt.rfc2396.URI</span></tt>
 class, these functions provide a simple wrapper around the functions defined in
 that module.</p>
@@ -287,12 +287,12 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2.5. HTML</a><ul>
-<li><a class="reference internal" href="#x-html-documents">2.5.1. (X)HTML Documents</a></li>
-<li><a class="reference internal" href="#basic-types">2.5.2. Basic Types</a><ul>
-<li><a class="reference internal" href="#length-values">2.5.2.1. Length Values</a></li>
-<li><a class="reference internal" href="#coordinate-values">2.5.2.2. Coordinate Values</a></li>
-<li><a class="reference internal" href="#uris">2.5.2.3. URIs</a></li>
+<li><a class="reference internal" href="#">2.6. HTML</a><ul>
+<li><a class="reference internal" href="#x-html-documents">2.6.1. (X)HTML Documents</a></li>
+<li><a class="reference internal" href="#basic-types">2.6.2. Basic Types</a><ul>
+<li><a class="reference internal" href="#length-values">2.6.2.1. Length Values</a></li>
+<li><a class="reference internal" href="#coordinate-values">2.6.2.2. Coordinate Values</a></li>
+<li><a class="reference internal" href="#uris">2.6.2.3. URIs</a></li>
 </ul>
 </li>
 </ul>
@@ -301,10 +301,10 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="xml20081126.parser.html"
-                        title="previous chapter">2.4. XML: Parsing XML Documents</a></p>
+                        title="previous chapter">2.5. XML: Parsing XML Documents</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="rfc2396.html"
-                        title="next chapter">2.6. Uniform Resource Identifiers (RFC2396)</a></p>
+                        title="next chapter">2.7. Uniform Resource Identifiers (RFC2396)</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/html40_19991224.txt"
@@ -337,10 +337,10 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
+          <a href="rfc2396.html" title="2.7. Uniform Resource Identifiers (RFC2396)"
              >next</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.4. XML: Parsing XML Documents"
+          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
              >previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 

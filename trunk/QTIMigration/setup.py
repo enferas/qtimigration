@@ -23,6 +23,12 @@ except:
 	print "ERROR: vobject should be installed when creating binary executables"
 	sys.exit(1)
 
+import wx
+if "cocoa" in wx.version():
+	suffix="-Cocoa"
+else:
+	suffix="-Carbon"
+	
 if sys.platform == 'darwin':
 	from setuptools import setup
 	extra_options = dict(
@@ -32,7 +38,7 @@ if sys.platform == 'darwin':
 		# be used for opening files.
 		options=dict(py2app=dict(argv_emulation=True,
 			iconfile='logoiconosx.icns',
-			plist={'CFBundleShortVersionString':'1.9.20110609',})),
+			plist={'CFBundleShortVersionString':'1.9.20120605',})),
 	)
 elif sys.platform == 'win32':
 	from distutils.core import setup
@@ -48,7 +54,7 @@ else:
 	sys.exit(1)
 	
 setup(
-	name="QTIMigration",
+	name="QTIMigration"+suffix,
 	description = "Tool for migrating QTI v1.x to QTI v2",
 	author = "Steve Lay",
 	author_email ="steve.w.lay@gmail.com",

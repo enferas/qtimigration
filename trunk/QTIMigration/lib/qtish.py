@@ -268,6 +268,7 @@ package directory and worked on in place."""
 			stem,ext=os.path.splitext(fName)
 			fPath=os.path.join(dirname,fName)
 			if os.path.isfile(fPath) and ext.lower() in filter:
+				print "Examining file: %s"%fPath
 				doc=self.LoadQTI1(fPath)
 				if doc is not None:
 					# success; add the file name to result

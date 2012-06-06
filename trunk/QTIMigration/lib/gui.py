@@ -44,6 +44,8 @@ ID_XPYSLET = 109
 class MyFrame(wx.Frame):
 
 	def __init__(self, parent, ID, title):
+		import traceback
+		traceback.print_stack()
 		self.app=wx.GetApp()
 		self.options=self.app.options
 		wx.Frame.__init__(self, parent, ID, title,
@@ -411,6 +413,7 @@ class MySplashScreen(wx.SplashScreen):
 
 	def OnClose(self, evt):
 		self.Hide()
+		self.Bind(wx.EVT_CLOSE, None)
 		# Open the main window
 		frame = MyFrame(None, -1, "QTI Migration Tool")
 		frame.Show(True)

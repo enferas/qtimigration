@@ -30,7 +30,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."""
 
 
-MIGRATION_VERSION="1.9.20110704"
+MIGRATION_VERSION="1.9.20120605"
 
 import os, sys
 from stat import *
@@ -44,7 +44,7 @@ SPLASH_LOG=[
 "See README file for licensing information",
 "Version: %s"%MIGRATION_VERSION,
 ""
-]	
+]
 
 HELP_TEXT=[
 	"Usage: migrate.py [options] [--cpout=output directory] [input file|directory]",

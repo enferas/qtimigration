@@ -27,7 +27,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
-    <link rel="next" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="imsqtiv2p1.html" />
+    <link rel="next" title="1.2.1. Core Types and Utilities" href="qtiv1/core.html" />
     <link rel="prev" title="1.1. IMS Content Packaging (version 1.2)" href="imscpv1p2.html" /> 
   </head>
   <body>
@@ -41,7 +41,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+          <a href="qtiv1/core.html" title="1.2.1. Core Types and Utilities"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="imscpv1p2.html" title="1.1. IMS Content Packaging (version 1.2)"
@@ -64,6 +64,35 @@ culminating in version 2 of the specification, published first in 2005.  For
 information about the history of the specification see
 <a class="reference external" href="http://en.wikipedia.org/wiki/QTI">http://en.wikipedia.org/wiki/QTI</a> - official information about the specification
 is available from the IMS GLC: <a class="reference external" href="http://www.imsglobal.org/question/index.html">http://www.imsglobal.org/question/index.html</a></p>
+<p>The purpose of this module is to allow documents in QTI v1 format to be parsed
+and then transformed into objects representing the QTI v2 data model where more
+sophisticated processing can be performed.  Effectively, the native model of
+assessment items in Pyslet (and in the PyAssess package it supersedes) is QTI v2
+and this module simply provides an import capability for legacy data marked up
+as QTI v1 items.</p>
+<p>Class methods or functions with names beginning MigrateV2 use a common pattern
+for performing the conversion.  Errors and warnings are logged during conversion
+to a list passed in as the <em>log</em> parameter.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qtiv1/core.html">1.2.1. Core Types and Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/core.html#enumerations">1.2.1.1. Enumerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/core.html#utility-functions">1.2.1.2. Utility Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/core.html#constants">1.2.1.3. Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/core.html#exceptions">1.2.1.4. Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/core.html#abstract-elements">1.2.1.5. Abstract Elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qtiv1/common.html">1.2.2. Common Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/common.html#content-model">1.2.2.1. Content Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/common.html#metadata-model">1.2.2.2. Metadata Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/common.html#objectives-rubric">1.2.2.3. Objectives &amp; Rubric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/common.html#response-processing-model">1.2.2.4. Response Processing Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv1/common.html#miscellaneous-classes">1.2.2.5. Miscellaneous Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <span class="target" id="module-pyslet.imsqtiv1p2p1"></span><dl class="class">
 <dt id="pyslet.imsqtiv1p2p1.QTIDocument">
 <em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">QTIDocument</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument" title="Permalink to this definition">¶</a></dt>
@@ -76,10 +105,10 @@ entities to augment the specification or to define boiler-plate code.
 If this causes problems then you can turn the setting back on again for
 specific instances of the parser that will be used with that type of
 data.</p>
-<dl class="attribute">
-<dt id="pyslet.imsqtiv1p2p1.QTIDocument.classMap">
-<tt class="descname">classMap</tt><em class="property"> = {'selection': &lt;class pyslet.imsqtiv1p2p1.QTISelection at 0x19a2f10&gt;, 'varlte': &lt;class pyslet.imsqtiv1p2p1.QTIVarLTE at 0x199cea0&gt;, 'selection_ordering': &lt;class pyslet.imsqtiv1p2p1.QTISelectionOrdering at 0x19a2340&gt;, 'objectbank': &lt;class pyslet.imsqtiv1p2p1.QTIObjectBank at 0x19a2618&gt;, 'response_lid': &lt;class pyslet.imsqtiv1p2p1.QTIResponseLId at 0x19a2a40&gt;, 'rubric': &lt;class pyslet.imsqtiv1p2p1.QTIRubric at 0x19a2260&gt;, 'sectioncontrol': &lt;class pyslet.imsqtiv1p2p1.QTISectionControl at 0x19a27a0&gt;, 'qmd_organization': &lt;class pyslet.imsqtiv1p2p1.QMDOrganization at 0x199c378&gt;, 'durlt': &lt;class pyslet.imsqtiv1p2p1.QTIDurLT at 0x19a2068&gt;, 'render_extension': &lt;class pyslet.imsqtiv1p2p1.QTIRenderExtension at 0x19a2458&gt;, 'hint': &lt;class pyslet.imsqtiv1p2p1.QTIHint at 0x19a2ea0&gt;, 'unanswered': &lt;class pyslet.imsqtiv1p2p1.QTIUnanswered at 0x19a2148&gt;, 'solutionmaterial': &lt;class pyslet.imsqtiv1p2p1.QTISolutionMaterial at 0x19a2e68&gt;, 'vargt': &lt;class pyslet.imsqtiv1p2p1.QTIVarGT at 0x199ced8&gt;, 'selection_number': &lt;class pyslet.imsqtiv1p2p1.QTISelectionNumber at 0x19a2f80&gt;, 'presentation': &lt;class pyslet.imsqtiv1p2p1.QTIPresentation at 0x19a2998&gt;, 'var_extension': &lt;class pyslet.imsqtiv1p2p1.QTIVarExtension at 0x19a23e8&gt;, 'outcomes_metadata': &lt;class pyslet.imsqtiv1p2p1.QTIOutcomesMetadata at 0x19a8228&gt;, 'material': &lt;class pyslet.imsqtiv1p2p1.QTIMaterial at 0x199c8b8&gt;, 'presentation_material': &lt;class pyslet.imsqtiv1p2p1.QTIPresentationMaterial at 0x19a22d0&gt;, 'qmd_renderingtype': &lt;class pyslet.imsqtiv1p2p1.QMDRenderingType at 0x199c3b0&gt;, 'conditionvar': &lt;class pyslet.imsqtiv1p2p1.QTIConditionVar at 0x199cca8&gt;, 'not': &lt;class pyslet.imsqtiv1p2p1.QTINot at 0x199cd18&gt;, 'sequence_parameter': &lt;class pyslet.imsqtiv1p2p1.QTISequenceParameter at 0x19a8030&gt;, 'outcomes': &lt;class pyslet.imsqtiv1p2p1.QTIOutcomes at 0x19a2d50&gt;, 'qmd_solutionspermitted': &lt;class pyslet.imsqtiv1p2p1.QMDSolutionsPermitted at 0x199c458&gt;, 'varequal': &lt;class pyslet.imsqtiv1p2p1.QTIVarEqual at 0x199cdf8&gt;, 'and': &lt;class pyslet.imsqtiv1p2p1.QTIAnd at 0x199cd50&gt;, 'or_test': &lt;class pyslet.imsqtiv1p2p1.QTIOrTest at 0x19a83b0&gt;, 'qmd_topic': &lt;class pyslet.imsqtiv1p2p1.QMDTopic at 0x199c5a8&gt;, 'item': &lt;class pyslet.imsqtiv1p2p1.QTIItem at 0x19a2848&gt;, 'section': &lt;class pyslet.imsqtiv1p2p1.QTISection at 0x19a26c0&gt;, 'fieldentry': &lt;class pyslet.imsqtiv1p2p1.QTIFieldEntry at 0x199c7a0&gt;, 'qmd_itemtype': &lt;class pyslet.imsqtiv1p2p1.QMDItemType at 0x199c2d0&gt;, 'itemrubric': &lt;class pyslet.imsqtiv1p2p1.QTIItemRubric at 0x19a2960&gt;, 'reference': &lt;class pyslet.imsqtiv1p2p1.QTIReference at 0x19a2308&gt;, 'varsubstring': &lt;class pyslet.imsqtiv1p2p1.QTIVarSubString at 0x199cfb8&gt;, 'response_grp': &lt;class pyslet.imsqtiv1p2p1.QTIResponseGrp at 0x19a2b20&gt;, 'matvideo': &lt;class pyslet.imsqtiv1p2p1.QTIMatVideo at 0x199ca08&gt;, 'solution': &lt;class pyslet.imsqtiv1p2p1.QTISolution at 0x19a2df8&gt;, 'duration': &lt;class pyslet.imsqtiv1p2p1.QTIDuration at 0x19a21b8&gt;, 'outcomes_processing': &lt;class pyslet.imsqtiv1p2p1.QTIOutcomesProcessing at 0x19a2378&gt;, 'qmd_author': &lt;class pyslet.imsqtiv1p2p1.QMDAuthor at 0x199c180&gt;, 'itemproc_extension': &lt;class pyslet.imsqtiv1p2p1.QTIItemProcExtension at 0x19a2500&gt;, 'test_variable': &lt;class pyslet.imsqtiv1p2p1.QTITestVariable at 0x19a8308&gt;, 'render_fib': &lt;class pyslet.imsqtiv1p2p1.QTIRenderFIB at 0x19a2ce0&gt;, 'varinside': &lt;class pyslet.imsqtiv1p2p1.QTIVarInside at 0x199cf80&gt;, 'sectionprecondition': &lt;class pyslet.imsqtiv1p2p1.QTISectionPrecondition at 0x19a2730&gt;, 'sectionpostcondition': &lt;class pyslet.imsqtiv1p2p1.QTISectionPostcondition at 0x19a2768&gt;, 'flow_mat': &lt;class pyslet.imsqtiv1p2p1.QTIFlowMat at 0x19a2298&gt;, 'matemtext': &lt;class pyslet.imsqtiv1p2p1.QTIMatEmText at 0x199c960&gt;, 'respcondition': &lt;class pyslet.imsqtiv1p2p1.QTIRespCondition at 0x19a2d88&gt;, 'qmd_weighting': &lt;class pyslet.imsqtiv1p2p1.QMDWeighting at 0x199c688&gt;, 'qmd_timedependence': &lt;class pyslet.imsqtiv1p2p1.QMDTimeDependence at 0x199c4c8&gt;, 'qmd_maximumscore': &lt;class pyslet.imsqtiv1p2p1.QMDMaximumScore at 0x199c340&gt;, 'itemmetadata': &lt;class pyslet.imsqtiv1p2p1.QTIItemMetadata at 0x19a2880&gt;, 'matapplet': &lt;class pyslet.imsqtiv1p2p1.QTIMatApplet at 0x199ca40&gt;, 'qmd_keywords': &lt;class pyslet.imsqtiv1p2p1.QMDKeywords at 0x199c308&gt;, 'durlte': &lt;class pyslet.imsqtiv1p2p1.QTIDurLTE at 0x19a20a0&gt;, 'vargte': &lt;class pyslet.imsqtiv1p2p1.QTIVarGTE at 0x199cf10&gt;, 'sectionref': &lt;class pyslet.imsqtiv1p2p1.QTIAssessmentFeedback at 0x19a26f8&gt;, 'sectionfeedback': &lt;class pyslet.imsqtiv1p2p1.QTISectionFeedback at 0x19a2810&gt;, 'qmd_responsetype': &lt;class pyslet.imsqtiv1p2p1.QMDResponseType at 0x199c3e8&gt;, 'qmd_material': &lt;class pyslet.imsqtiv1p2p1.QMDMaterial at 0x199c5e0&gt;, 'varsubset': &lt;class pyslet.imsqtiv1p2p1.QTIVarSubset at 0x199cf48&gt;, 'qmd_domain': &lt;class pyslet.imsqtiv1p2p1.QMDDomain at 0x199c228&gt;, 'qmd_description': &lt;class pyslet.imsqtiv1p2p1.QMDDescription at 0x199c1f0&gt;, 'order_extension': &lt;class pyslet.imsqtiv1p2p1.QTIOrderExtension at 0x19a25e0&gt;, 'sectionproc_extension': &lt;class pyslet.imsqtiv1p2p1.QTISectionProcExtension at 0x19a24c8&gt;, 'qmd_title': &lt;class pyslet.imsqtiv1p2p1.QMDTitle at 0x199c538&gt;, 'render_choice': &lt;class pyslet.imsqtiv1p2p1.QTIRenderChoice at 0x19a2c38&gt;, 'map_input': &lt;class pyslet.imsqtiv1p2p1.QTIMapInput at 0x19a81b8&gt;, 'or_objects': &lt;class pyslet.imsqtiv1p2p1.QTIOrObjects at 0x19a8298&gt;, 'objectscond_extension': &lt;class pyslet.imsqtiv1p2p1.QTIObjectsCondExtension at 0x19a25a8&gt;, 'qmd_timelimit': &lt;class pyslet.imsqtiv1p2p1.QMDTimeLimit at 0x199c500&gt;, 'selection_metadata': &lt;class pyslet.imsqtiv1p2p1.QTISelectionMetadata at 0x19a2fb8&gt;, 'response_xy': &lt;class pyslet.imsqtiv1p2p1.QTIResponseXY at 0x19a2a78&gt;, 'response_num': &lt;class pyslet.imsqtiv1p2p1.QTIResponseNum at 0x19a2ae8&gt;, 'or': &lt;class pyslet.imsqtiv1p2p1.QTIOr at 0x199cd88&gt;, 'and_selection': &lt;class pyslet.imsqtiv1p2p1.QTIAndSelection at 0x19a80a0&gt;, 'response_label': &lt;class pyslet.imsqtiv1p2p1.QTIResponseLabel at 0x19a2b58&gt;, 'itemprecondition': &lt;class pyslet.imsqtiv1p2p1.QTIItemPreCondition at 0x19a28f0&gt;, 'durgte': &lt;class pyslet.imsqtiv1p2p1.QTIDurGTE at 0x19a2110&gt;, 'objects_parameter': &lt;class pyslet.imsqtiv1p2p1.QTIObjectsParameter at 0x19a8458&gt;, 'questestinterop': &lt;class pyslet.imsqtiv1p2p1.QTIQuesTestInterop at 0x198af80&gt;, 'qtimetadata': &lt;class pyslet.imsqtiv1p2p1.QTIMetadata at 0x199c6c0&gt;, 'assessproc_extension': &lt;class pyslet.imsqtiv1p2p1.QTIAssessProcExtension at 0x19a2490&gt;, 'qmd_hintspermitted': &lt;class pyslet.imsqtiv1p2p1.QMDHintsPermitted at 0x199c298&gt;, 'objectives': &lt;class pyslet.imsqtiv1p2p1.QTIObjectives at 0x19a2228&gt;, 'qmd_feedbackpermitted': &lt;class pyslet.imsqtiv1p2p1.QMDFeedbackPermitted at 0x199c260&gt;, 'matapplication': &lt;class pyslet.imsqtiv1p2p1.QTIMatApplication at 0x199ca78&gt;, 'variable_test': &lt;class pyslet.imsqtiv1p2p1.QTIVariableTest at 0x19a8420&gt;, 'respcond_extension': &lt;class pyslet.imsqtiv1p2p1.QTIRespCondExtension at 0x19a2538&gt;, 'assessment': &lt;class pyslet.imsqtiv1p2p1.QTIAssessment at 0x19a2650&gt;, 'objects_condition': &lt;class pyslet.imsqtiv1p2p1.QTIObjectsCondition at 0x19a8148&gt;, 'fieldlabel': &lt;class pyslet.imsqtiv1p2p1.QTIFieldLabel at 0x199c768&gt;, 'mat_extension': &lt;class pyslet.imsqtiv1p2p1.QTIMatExtension at 0x19a23b0&gt;, 'itemfeedback': &lt;class pyslet.imsqtiv1p2p1.QTIItemFeedback at 0x19a2dc0&gt;, 'render_slider': &lt;class pyslet.imsqtiv1p2p1.QTIRenderSlider at 0x19a2ca8&gt;, 'not_objects': &lt;class pyslet.imsqtiv1p2p1.QTINotObjects at 0x19a82d0&gt;, 'response_str': &lt;class pyslet.imsqtiv1p2p1.QTIResponseStr at 0x19a2ab0&gt;, 'matbreak': &lt;class pyslet.imsqtiv1p2p1.QTIMatBreak at 0x199cab0&gt;, 'assessmentcontrol': &lt;class pyslet.imsqtiv1p2p1.QTIAssessmentControl at 0x19a2688&gt;, 'qmd_status': &lt;class pyslet.imsqtiv1p2p1.QMDStatus at 0x199c490&gt;, 'qmd_typeofsolution': &lt;class pyslet.imsqtiv1p2p1.QMDTypeOfSolution at 0x199c618&gt;, 'mataudio': &lt;class pyslet.imsqtiv1p2p1.QTIMatAudio at 0x199c9d0&gt;, 'response_na': &lt;class pyslet.imsqtiv1p2p1.QTIResponseNA at 0x19a2bc8&gt;, 'render_hotspot': &lt;class pyslet.imsqtiv1p2p1.QTIRenderHotspot at 0x19a2c70&gt;, 'durequal': &lt;class pyslet.imsqtiv1p2p1.QTIDurEqual at 0x19a2030&gt;, 'outcomes_feedback_test': &lt;class pyslet.imsqtiv1p2p1.QTIOutcomesFeedbackTest at 0x19a81f0&gt;, 'decvar': &lt;class pyslet.imsqtiv1p2p1.QTIDecVar at 0x199cbc8&gt;, 'selection_extension': &lt;class pyslet.imsqtiv1p2p1.QTISelectionExtension at 0x19a2570&gt;, 'not_test': &lt;class pyslet.imsqtiv1p2p1.QTINotTest at 0x19a83e8&gt;, 'matref': &lt;class pyslet.imsqtiv1p2p1.QTIMatRef at 0x199cae8&gt;, 'qticomment': &lt;class pyslet.imsqtiv1p2p1.QTIComment at 0x199c7d8&gt;, 'other': &lt;class pyslet.imsqtiv1p2p1.QTIOther at 0x19a2180&gt;, 'material_ref': &lt;class pyslet.imsqtiv1p2p1.QTIAltMaterial at 0x199cb58&gt;, 'displayfeedback': &lt;class pyslet.imsqtiv1p2p1.QTIDisplayFeedback at 0x19a21f0&gt;, 'setvar': &lt;class pyslet.imsqtiv1p2p1.QTISetVar at 0x199cc38&gt;, 'mattext': &lt;class pyslet.imsqtiv1p2p1.QTIMatText at 0x199c928&gt;, 'matimage': &lt;class pyslet.imsqtiv1p2p1.QTIMatImage at 0x199c998&gt;, 'vocabulary': &lt;class pyslet.imsqtiv1p2p1.QTIVocabulary at 0x199c6f8&gt;, 'itemref': &lt;class pyslet.imsqtiv1p2p1.QTIItemRef at 0x19a27d8&gt;, 'map_output': &lt;class pyslet.imsqtiv1p2p1.QTIMapOutput at 0x19a8180&gt;, 'qtimetadatafield': &lt;class pyslet.imsqtiv1p2p1.QTIMetadataField at 0x199c730&gt;, 'processing_parameter': &lt;class pyslet.imsqtiv1p2p1.QTIProcessingParameter at 0x19a8340&gt;, 'and_test': &lt;class pyslet.imsqtiv1p2p1.QTIAndTest at 0x19a8378&gt;, 'qmd_scoringpermitted': &lt;class pyslet.imsqtiv1p2p1.QMDScoringPermitted at 0x199c420&gt;, 'hintmaterial': &lt;class pyslet.imsqtiv1p2p1.QTIHintMaterial at 0x19a2ed8&gt;, 'durgt': &lt;class pyslet.imsqtiv1p2p1.QTIDurGT at 0x19a20d8&gt;, 'interpretvar': &lt;class pyslet.imsqtiv1p2p1.QTIInterpretVar at 0x199cc70&gt;, 'qmd_levelofdifficulty': &lt;class pyslet.imsqtiv1p2p1.QMDLevelOfDifficulty at 0x199c650&gt;, 'sourcebank_ref': &lt;class pyslet.imsqtiv1p2p1.QTISourcebankRef at 0x19a8068&gt;, 'itemcontrol': &lt;class pyslet.imsqtiv1p2p1.QTIItemControl at 0x19a28b8&gt;, 'response_extension': &lt;class pyslet.imsqtiv1p2p1.QTIResponseExtension at 0x19a2420&gt;, 'varlt': &lt;class pyslet.imsqtiv1p2p1.QTIVarLT at 0x199ce68&gt;, 'and_objects': &lt;class pyslet.imsqtiv1p2p1.QTIAndObjects at 0x19a8260&gt;, 'or_selection': &lt;class pyslet.imsqtiv1p2p1.QTIOrSelection at 0x19a80d8&gt;, 'qmd_computerscored': &lt;class pyslet.imsqtiv1p2p1.QMDComputerScored at 0x199c1b8&gt;, 'qmd_toolvendor': &lt;class pyslet.imsqtiv1p2p1.QMDToolVendor at 0x199c570&gt;, 'flow': &lt;class pyslet.imsqtiv1p2p1.QTIFlow at 0x19a29d0&gt;, 'flow_label': &lt;class pyslet.imsqtiv1p2p1.QTIFlowLabel at 0x19a2b90&gt;, 'itempostcondition': &lt;class pyslet.imsqtiv1p2p1.QTIItemPostCondition at 0x19a2928&gt;, 'not_selection': &lt;class pyslet.imsqtiv1p2p1.QTINotSelection at 0x19a8110&gt;, 'resprocessing': &lt;class pyslet.imsqtiv1p2p1.QTIResProcessing at 0x19a2d18&gt;, 'order': &lt;class pyslet.imsqtiv1p2p1.QTIOrder at 0x19a2f48&gt;}</em><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.classMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>classMap is a mapping from element names to the class object that will be used to represent them.</p>
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.QTIDocument.XMLParser">
+<tt class="descname">XMLParser</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.XMLParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds some options to the basic XMLParser to improve QTI compatibility.</p>
 </dd></dl>
 
 <dl class="method">
@@ -87,14 +116,42 @@ data.</p>
 <tt class="descname">GetElementClass</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.GetElementClass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the class to use to represent an element with the given name.</p>
 <p>This method is used by the XML parser.  The class object is looked up in
-<a class="reference internal" href="#pyslet.imsqtiv1p2p1.QTIDocument.classMap" title="pyslet.imsqtiv1p2p1.QTIDocument.classMap"><tt class="xref py py-attr docutils literal"><span class="pre">classMap</span></tt></a>, if no specialized class is found then the general
+the classMap, if no specialized class is found then the general
 <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.Element</span></tt> class is returned.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyslet.imsqtiv1p2p1.QTIDocument.RegisterMatThing">
 <tt class="descname">RegisterMatThing</tt><big>(</big><em>matThing</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.RegisterMatThing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers a QTIMatThing instance in the dictionary of matThings.</p>
+<dd><p>Registers a MatThing instance in the dictionary of matThings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.QTIDocument.FindMatThing">
+<tt class="descname">FindMatThing</tt><big>(</big><em>linkRefID</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.FindMatThing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mat&lt;thing&gt; element with label matching the <em>linkRefID</em>.</p>
+<p>The specification says that material_ref should be used if you want to
+refer a material object, not matref, however this rule is not
+universally observed so if we don&#8217;t find a basic mat&lt;thing&gt; we will
+search the material objects too and return a <tt class="xref py py-class docutils literal"><span class="pre">Material</span></tt>
+instance instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.QTIDocument.RegisterMaterial">
+<tt class="descname">RegisterMaterial</tt><big>(</big><em>material</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.RegisterMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a Material instance in the dictionary of labelled material objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.QTIDocument.FindMaterial">
+<tt class="descname">FindMaterial</tt><big>(</big><em>linkRefID</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QTIDocument.FindMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the material element with label matching <em>linkRefID</em>.</p>
+<p>Like <a class="reference internal" href="#pyslet.imsqtiv1p2p1.QTIDocument.FindMatThing" title="pyslet.imsqtiv1p2p1.QTIDocument.FindMatThing"><tt class="xref py py-meth docutils literal"><span class="pre">FindMatThing()</span></tt></a> this method will search for instances of
+<tt class="xref py py-class docutils literal"><span class="pre">MatThingMixin</span></tt> if it can&#8217;t find a <tt class="xref py py-class docutils literal"><span class="pre">Material</span></tt>
+element to match.  The specification is supposed to be strict about
+matching the two types of reference but errors are common, even in the
+official example set.</p>
 </dd></dl>
 
 <dl class="method">
@@ -104,12 +161,133 @@ data.</p>
 <p>The output is stored into the content package passed in cp.  Errors and
 warnings generated by the migration process are added as annotations to
 the resulting resource objects in the content package.</p>
-<p>The function returns a list of 3-tuples, one for each object migrated.</p>
-<p>Each tuple comprises ( &lt;QTI v2 Document&gt;, &lt;LOM Metadata&gt;, &lt;log&gt; )</p>
+<p>The function returns a list of 4-tuples, one for each object migrated.</p>
+<p>Each tuple comprises ( &lt;QTI v2 Document&gt;, &lt;LOM Metadata&gt;, &lt;log&gt;, &lt;Resource&gt; )</p>
 </dd></dl>
 
 </dd></dl>
 
+<div class="section" id="questestinterop-elements">
+<h2>1.2.3. QuesTestInterop Elements<a class="headerlink" href="#questestinterop-elements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.QuesTestInterop">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">QuesTestInterop</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QuesTestInterop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
+<p>The &lt;questestinterop&gt; element is the outermost container for the QTI
+contents i.e. the container of the Assessment(s), Section(s) and Item(s):</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT questestinterop (qticomment? , (objectbank | assessment | (section | item)+))&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.QuesTestInterop.MigrateV2">
+<tt class="descname">MigrateV2</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.QuesTestInterop.MigrateV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this element to QTI v2</p>
+<p>Returns a list of tuples of the form:
+( &lt;QTIv2 Document&gt;, &lt;Metadata&gt;, &lt;List of Log Messages&gt; ).</p>
+<p>One tuple is returned for each of the objects found. In QTIv2 there is
+no equivalent of QuesTestInterop.  The baseURI of each document is set
+from the baseURI of the QuesTestInterop element using the object
+identifier to derive a file name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="object-bank-elements">
+<h2>1.2.4. Object Bank Elements<a class="headerlink" href="#object-bank-elements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.ObjectBank">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">ObjectBank</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.ObjectBank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.MetadataContainerMixin" title="pyslet.qtiv1.common.MetadataContainerMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MetadataContainerMixin</span></tt></a>, <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
+<p>This is the container for the Section(s) and/or Item(s) that are to be
+grouped as an object-bank. The object-bank is assigned its own unique
+identifier and can have the full set of QTI-specific meta-data:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT objectbank (qticomment? , qtimetadata* , (section | item)+)&gt;  
+&lt;!ATTLIST objectbank  ident CDATA  #REQUIRED &gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="assessment-elements">
+<h2>1.2.5. Assessment Elements<a class="headerlink" href="#assessment-elements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.Assessment">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">Assessment</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.Assessment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
+<p>The Assessment data structure is used to contain the exchange of test
+data structures. It will always contain at least one Section and may contain
+meta-data, objectives, rubric control switches, assessment-level processing,
+feedback and selection and sequencing information for sections:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT assessment (qticomment? ,
+        duration? ,
+        qtimetadata* ,
+        objectives* ,
+        assessmentcontrol* ,
+        rubric* ,
+        presentation_material? ,
+        outcomes_processing* ,
+        assessproc_extension? ,
+        assessfeedback* ,
+        selection_ordering? ,
+        reference? ,
+        (sectionref | section)+
+        )&gt;
+&lt;!ATTLIST assessment  ident CDATA  #REQUIRED
+                                           %I_Title;
+                                           xml:lang CDATA  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.imsqtiv1p2p1.Assessment.MigrateV2">
+<tt class="descname">MigrateV2</tt><big>(</big><em>output</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.Assessment.MigrateV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this assessment to QTI v2</p>
+<p>For details, see QuesTestInterop.MigrateV2.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.AssessmentControl">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">AssessmentControl</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.AssessmentControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
+<p>The control switches that are used to enable or disable the display of
+hints, solutions and feedback within the Assessment:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT assessmentcontrol (qticomment?)&gt;
+&lt;!ATTLIST assessmentcontrol
+        hintswitch  (Yes | No )  'Yes'
+        solutionswitch  (Yes | No )  'Yes'
+        view    (All | Administrator | AdminAuthority | Assessor | Author |
+                        Candidate | InvigilatorProctor | Psychometrician | Scorer | 
+                        Tutor ) 'All'
+        feedbackswitch  (Yes | No )  'Yes' &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.AssessProcExtension">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">AssessProcExtension</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.AssessProcExtension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>This is used to contain proprietary alternative Assessment-level
+processing functionality:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT assessproc_extension ANY&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.imsqtiv1p2p1.AssessFeedback">
+<em class="property">class </em><tt class="descclassname">pyslet.imsqtiv1p2p1.</tt><tt class="descname">AssessFeedback</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.imsqtiv1p2p1.AssessFeedback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>The container for the Assessment-level feedback that is to be presented
+as a result of Assessment-level processing of the user responses:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT assessfeedback (qticomment? , (material+ | flow_mat+))&gt;
+&lt;!ATTLIST assessfeedback  
+        view    (All | Administrator | AdminAuthority | Assessor | Author |
+                        Candidate | InvigilatorProctor | Psychometrician | Scorer | 
+                        Tutor ) 'All'
+        ident CDATA  #REQUIRED
+        title CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -118,12 +296,22 @@ the resulting resource objects in the content package.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.2. IMS Question and Test Interoperability (version 1.2)</a><ul>
+<li><a class="reference internal" href="#questestinterop-elements">1.2.3. QuesTestInterop Elements</a></li>
+<li><a class="reference internal" href="#object-bank-elements">1.2.4. Object Bank Elements</a></li>
+<li><a class="reference internal" href="#assessment-elements">1.2.5. Assessment Elements</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="imscpv1p2.html"
                         title="previous chapter">1.1. IMS Content Packaging (version 1.2)</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="imsqtiv2p1.html"
-                        title="next chapter">1.3. IMS Question and Test Interoperability (version 2.1)</a></p>
+  <p class="topless"><a href="qtiv1/core.html"
+                        title="next chapter">1.2.1. Core Types and Utilities</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/imsqtiv1p2p1.txt"
@@ -156,7 +344,7 @@ the resulting resource objects in the content package.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+          <a href="qtiv1/core.html" title="1.2.1. Core Types and Utilities"
              >next</a> |</li>
         <li class="right" >
           <a href="imscpv1p2.html" title="1.1. IMS Content Packaging (version 1.2)"
@@ -167,7 +355,7 @@ the resulting resource objects in the content package.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

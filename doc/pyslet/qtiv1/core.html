@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.2.1. Core Types and Utilities &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="up" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="../imsqtiv1p2p1.html" />
+    <link rel="next" title="1.2.2. Common Classes" href="common.html" />
+    <link rel="prev" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="../imsqtiv1p2p1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="common.html" title="1.2.2. Common Classes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv1p2p1.html" accesskey="U">1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv1.core">
+<span id="core-types-and-utilities"></span><h1>1.2.1. Core Types and Utilities<a class="headerlink" href="#module-pyslet.qtiv1.core" title="Permalink to this headline">¶</a></h1>
+<p>This module contains a number core classes used to support the standard.</p>
+<div class="section" id="enumerations">
+<h2>1.2.1.1. Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<p>Where the DTD defines enumerated attribute values we define special enumeration classes.
+These follow a common pattern in which the values are represented by constant members of
+the class.  The classes are not designed to be instantiated but they do define class
+methods for decoding and encoding from and to text strings.</p>
+<dl class="class">
+<dt id="pyslet.qtiv1.core.Action">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">Action</tt><a class="headerlink" href="#pyslet.qtiv1.core.Action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Action enumeration (for <a class="reference internal" href="common.html#pyslet.qtiv1.common.SetVar" title="pyslet.qtiv1.common.SetVar"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.SetVar</span></tt></a>:</p>
+<div class="highlight-python"><pre>(Set | Add | Subtract | Multiply | Divide )  'Set'      </pre>
+</div>
+<p>Defines constants for the above action types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Action</span><span class="o">.</span><span class="n">Add</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Action</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">Action</span><span class="o">.</span><span class="n">Set</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.Area">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">Area</tt><a class="headerlink" href="#pyslet.qtiv1.core.Area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Area enumeration:</p>
+<div class="highlight-python"><pre>(Ellipse | Rectangle | Bounded )  'Ellipse'</pre>
+</div>
+<p>Defines constants for the above area types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Area</span><span class="o">.</span><span class="n">Rectangle</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Area</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">Area</span><span class="o">.</span><span class="n">Ellipse</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MigrateV2AreaCoords">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2AreaCoords</tt><big>(</big><em>area</em>, <em>value</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2AreaCoords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (shape,coords array) representing the area.</p>
+<ul class="simple">
+<li><em>area</em> is one of the <a class="reference internal" href="#pyslet.qtiv1.core.Area" title="pyslet.qtiv1.core.Area"><tt class="xref py py-class docutils literal"><span class="pre">Area</span></tt></a> constants.</li>
+<li><em>value</em> is the string containing the content of the element to which
+the area applies.</li>
+</ul>
+<p>This conversion is generous because the separators have never been well
+defined and in some cases content uses a mixture of space and &#8216;,&#8217;.</p>
+<p>Note also that the definition of rarea was updated in the 1.2.1 errata and
+this affects this algorithm.  The clarification on the definition of ellipse
+from radii to diameters might mean that some content ends up with hotspots
+that are too small but this is safer than hotspots that are too large.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.qtiv1.core</span> <span class="kn">as</span> <span class="nn">qticore1</span>
+<span class="kn">import</span> <span class="nn">pyslet.qtiv2.core</span> <span class="kn">as</span> <span class="nn">qticore2</span>
+<span class="n">log</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">shape</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="n">qticore1</span><span class="o">.</span><span class="n">MigrateV2AreaCoords</span><span class="p">(</span><span class="n">qticore1</span><span class="o">.</span><span class="n">Area</span><span class="o">.</span><span class="n">Ellipse</span><span class="p">,</span><span class="s">&quot;10,10,2,2&quot;</span><span class="p">,</span><span class="n">log</span><span class="p">)</span>
+<span class="c"># returns (qticore2.Shape.circle, [10, 10, 1])</span>
+</pre></div>
+</div>
+<p>Note that Ellipse was deprecated in QTI version 2:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.qtiv1.core</span> <span class="kn">as</span> <span class="nn">qticore1</span>
+<span class="n">log</span><span class="o">=</span><span class="p">[]</span>
+<span class="n">shape</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="n">qticore1</span><span class="o">.</span><span class="n">MigrateV2AreaCoords</span><span class="p">(</span><span class="n">qticore1</span><span class="o">.</span><span class="n">Area</span><span class="o">.</span><span class="n">Ellipse</span><span class="p">,</span><span class="s">&quot;10,10,2,4&quot;</span><span class="p">,</span><span class="n">log</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">log</span>
+<span class="c"># outputs the following...</span>
+
+<span class="p">[</span><span class="s">&#39;Warning: ellipse shape is deprecated in version 2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.FeedbackStyle">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">FeedbackStyle</tt><a class="headerlink" href="#pyslet.qtiv1.core.FeedbackStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>feedbackstyle enumeration:</p>
+<div class="highlight-python"><pre>(Complete | Incremental | Multilevel | Proprietary )  'Complete'</pre>
+</div>
+<p>Defines constants for the above feedback style.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FeedbackStyle</span><span class="o">.</span><span class="n">Decimal</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FeedbackStyle</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">FeedbackStyle</span><span class="o">.</span><span class="n">Complete</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.FeedbackType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">FeedbackType</tt><a class="headerlink" href="#pyslet.qtiv1.core.FeedbackType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>feedbacktype enumeration:</p>
+<div class="highlight-python"><pre>(Response | Solution | Hint )  'Response'</pre>
+</div>
+<p>Defines constants for the above types of feedback.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FeedbackType</span><span class="o">.</span><span class="n">Decimal</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FeedbackType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">FeedbackType</span><span class="o">.</span><span class="n">Response</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.FIBType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">FIBType</tt><a class="headerlink" href="#pyslet.qtiv1.core.FIBType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Fill-in-the-blank type enumeration:</p>
+<div class="highlight-python"><pre>(String | Integer | Decimal | Scientific )  'String'</pre>
+</div>
+<p>Defines constants for the above fill-in-the-blank types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FIBType</span><span class="o">.</span><span class="n">Decimal</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FIBType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">FIBType</span><span class="o">.</span><span class="n">String</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.MDOperator">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MDOperator</tt><a class="headerlink" href="#pyslet.qtiv1.core.MDOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Metadata operator enumeration for <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.sao.SelectionMetadata</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">EQ</span> <span class="o">|</span> <span class="n">NEQ</span> <span class="o">|</span> <span class="n">LT</span> <span class="o">|</span> <span class="n">LTE</span> <span class="o">|</span> <span class="n">GT</span> <span class="o">|</span> <span class="n">GTE</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Defines constants for the above operators.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MDOperator</span><span class="o">.</span><span class="n">EQ</span>
+</pre></div>
+</div>
+<p>Lower-case aliases of the constants are provided for compatibility.</p>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.NumType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">NumType</tt><a class="headerlink" href="#pyslet.qtiv1.core.NumType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>numtype enumeration:</p>
+<div class="highlight-python"><pre>(Integer | Decimal | Scientific )  'Integer'</pre>
+</div>
+<p>Defines constants for the above numeric types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NumType</span><span class="o">.</span><span class="n">Scientific</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NumType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">NumType</span><span class="o">.</span><span class="n">Integer</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.Orientation">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">Orientation</tt><a class="headerlink" href="#pyslet.qtiv1.core.Orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Orientation enumeration:</p>
+<div class="highlight-python"><pre>(Horizontal | Vertical )  'Horizontal'</pre>
+</div>
+<p>Defines constants for the above orientation types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MigrateV2Orientation">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2Orientation</tt><big>(</big><em>orientation</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2Orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a v1 orientation onto the corresponding v2 constant.</p>
+<p>Raises KeyError if <em>orientation</em> is not one of the <a class="reference internal" href="#pyslet.qtiv1.core.Orientation" title="pyslet.qtiv1.core.Orientation"><tt class="xref py py-class docutils literal"><span class="pre">Orientation</span></tt></a>
+constants.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.PromptType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">PromptType</tt><a class="headerlink" href="#pyslet.qtiv1.core.PromptType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Prompt type enumeration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">Box</span> <span class="o">|</span> <span class="n">Dashline</span> <span class="o">|</span> <span class="n">Asterisk</span> <span class="o">|</span> <span class="n">Underline</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Defines constants for the above prompt types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PromptType</span><span class="o">.</span><span class="n">Dashline</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.RCardinality">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">RCardinality</tt><a class="headerlink" href="#pyslet.qtiv1.core.RCardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>rcardinality enumeration:</p>
+<div class="highlight-python"><pre>(Single | Multiple | Ordered )  'Single'</pre>
+</div>
+<p>Defines constants for the above cardinality types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RCardinality</span><span class="o">.</span><span class="n">Multiple</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RCardinality</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">RCardinality</span><span class="o">.</span><span class="n">Single</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MigrateV2Cardinality">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2Cardinality</tt><big>(</big><em>rCardinality</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2Cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a v1 cardinality onto the corresponding v2 constant.</p>
+<p>Raises KeyError if <em>rCardinality</em> is not one of the <a class="reference internal" href="#pyslet.qtiv1.core.RCardinality" title="pyslet.qtiv1.core.RCardinality"><tt class="xref py py-class docutils literal"><span class="pre">RCardinality</span></tt></a>
+constants.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv1.core.TestOperator">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">TestOperator</tt><em class="property"> = &lt;class pyslet.qtiv1.core.MDOperator at 0x101a50120&gt;</em><a class="headerlink" href="#pyslet.qtiv1.core.TestOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple alias of <a class="reference internal" href="#pyslet.qtiv1.core.MDOperator" title="pyslet.qtiv1.core.MDOperator"><tt class="xref py py-class docutils literal"><span class="pre">MDOperator</span></tt></a> defined for
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.outcomes.VariableTest</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.VarType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">VarType</tt><a class="headerlink" href="#pyslet.qtiv1.core.VarType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>vartype enumeration:</p>
+<div class="highlight-python"><pre>(Integer | String | Decimal | Scientific | Boolean | Enumerated | Set )  'Integer'</pre>
+</div>
+<p>Defines constants for the above view types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">VarType</span><span class="o">.</span><span class="n">String</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">VarType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">VarType</span><span class="o">.</span><span class="n">Integer</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MigrateV2VarType">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2VarType</tt><big>(</big><em>vartype</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2VarType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the v2 BaseType representing the v1 <em>vartype</em>.</p>
+<p>Note that we reduce both Decimal and Scientific to the float types.  In
+version 2 the BaseType values were chosen to map onto the typical types
+available in most programming languages.  The representation of the number
+in decimal or exponent form is considered to be part of the interaction or
+the presentation rather than part of the underlying processing model. 
+Although there clearly are use cases where retaining this distinction would
+have been an advantage the quality of implementation was likely to be poor
+and use cases that require a distinction are now implemented in more
+cumbersome, but probably more interoperable ways.</p>
+<p>Note also that the poorly defined Set type in version 1 maps to an
+identifier in version 2 on the assumption that the cardinality will be
+upgraded as necessary.</p>
+<p>Raises KeyError if <em>vartype</em> is not one of the <a class="reference internal" href="#pyslet.qtiv1.core.VarType" title="pyslet.qtiv1.core.VarType"><tt class="xref py py-class docutils literal"><span class="pre">VarType</span></tt></a>
+constants.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.View">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">View</tt><a class="headerlink" href="#pyslet.qtiv1.core.View" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>View enumeration:</p>
+<div class="highlight-python"><pre>(All | Administrator | AdminAuthority | Assessor | Author | Candidate |
+InvigilatorProctor | Psychometrician | Scorer | Tutor )  'All'</pre>
+</div>
+<p>Defines constants for the above view types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">View</span><span class="o">.</span><span class="n">Candidate</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">View</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">View</span><span class="o">.</span><span class="n">All</span>
+</pre></div>
+</div>
+<p>In addition to the constants defined in the specification we add two aliases
+which are in common use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">Invigilator</span> <span class="o">|</span> <span class="n">Proctor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MigrateV2View">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2View</tt><big>(</big><em>view</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2View" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of v2 view values representing the v1 <em>view</em>.</p>
+<p>The use of a list as the return type enables mapping of the special value
+&#8216;All&#8217;, which has no direct equivalent in version 2 other than providing all
+the defined views.</p>
+<p>Raises KeyError if <em>view</em> is not one of the <a class="reference internal" href="#pyslet.qtiv1.core.View" title="pyslet.qtiv1.core.View"><tt class="xref py py-class docutils literal"><span class="pre">View</span></tt></a> constants.</p>
+<p>This function will log warnings when migrating the following v1 values:
+Administrator, AdminAuthority, Assessor and Psychometrician</p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions">
+<h2>1.2.1.2. Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyslet.qtiv1.core.MakeValidName">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MakeValidName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MakeValidName" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a string that is supposed to match the
+production for Name in XML and forces it to comply by replacing
+illegal characters with &#8216;_&#8217;.  If name starts with a valid name
+character but not a valid name start character, it is prefixed
+with &#8216;_&#8217; too.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.ParseYesNo">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">ParseYesNo</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.ParseYesNo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a True/False parsed from a &#8220;Yes&#8221; / &#8220;No&#8221; string.</p>
+<p>This function is generous in what it accepts, it will accept mixed case and
+strips surrounding space.  It returns True if the resulting string matches
+&#8220;yes&#8221; and False otherwise.</p>
+<p>Reverses the transformation defined by <a class="reference internal" href="#pyslet.qtiv1.core.FormatYesNo" title="pyslet.qtiv1.core.FormatYesNo"><tt class="xref py py-func docutils literal"><span class="pre">FormatYesNo()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.qtiv1.core.FormatYesNo">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">FormatYesNo</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.FormatYesNo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns &#8220;Yes&#8221; if <em>value</em> is True, &#8220;No&#8221; otherwise.</p>
+<p>Reverses the transformation defined by <a class="reference internal" href="#pyslet.qtiv1.core.ParseYesNo" title="pyslet.qtiv1.core.ParseYesNo"><tt class="xref py py-func docutils literal"><span class="pre">ParseYesNo()</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h2>1.2.1.3. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pyslet.qtiv1.core.QTI_SOURCE">
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">QTI_SOURCE</tt><em class="property"> = 'QTIv1'</em><a class="headerlink" href="#pyslet.qtiv1.core.QTI_SOURCE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant used for setting the LOM source value</p>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>1.2.1.4. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.core.QTIError">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">QTIError</tt><a class="headerlink" href="#pyslet.qtiv1.core.QTIError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>All errors raised by this module are derived from QTIError.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.QTIUnimplementedError">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">QTIUnimplementedError</tt><a class="headerlink" href="#pyslet.qtiv1.core.QTIUnimplementedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.core.QTIError" title="pyslet.qtiv1.core.QTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIError</span></tt></a></p>
+<p>A feature of QTI v1 that is not yet implemented by this module.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="abstract-elements">
+<h2>1.2.1.5. Abstract Elements<a class="headerlink" href="#abstract-elements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.core.QTIElement">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">QTIElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.QTIElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../xml20081126.html#pyslet.xml20081126.structures.Element" title="pyslet.xml20081126.structures.Element"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.structures.Element</span></tt></a></p>
+<p>Base class for all elements defined by the QTI specification</p>
+<dl class="method">
+<dt id="pyslet.qtiv1.core.QTIElement.DeclareMetadata">
+<tt class="descname">DeclareMetadata</tt><big>(</big><em>label</em>, <em>entry</em>, <em>definition=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.QTIElement.DeclareMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares a piece of metadata to be associated with the element.</p>
+<p>Most QTIElements will be contained by some type of metadata container
+that collects metadata in a format suitable for easy lookup and export
+to other metadata formats.  The default implementation simply passes the
+call to the parent element or, if there is no parent, the declaration is
+ignored.</p>
+<p>For more information see <tt class="xref py py-class docutils literal"><span class="pre">MetadataContainer</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.ObjectMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">ObjectMixin</tt><a class="headerlink" href="#pyslet.qtiv1.core.ObjectMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mix-in class for elements that can be inside <tt class="xref py py-class docutils literal"><span class="pre">ObjectBank</span></tt>:</p>
+<div class="highlight-python"><pre>(section | item)+</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.SectionItemMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">SectionItemMixin</tt><a class="headerlink" href="#pyslet.qtiv1.core.SectionItemMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mix-in class for objects that can be in section objects:</p>
+<div class="highlight-python"><pre>(itemref | item | sectionref | section)*</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.core.SectionMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">SectionMixin</tt><a class="headerlink" href="#pyslet.qtiv1.core.SectionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.core.SectionItemMixin" title="pyslet.qtiv1.core.SectionItemMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.SectionItemMixin</span></tt></a></p>
+<p>Mix-in class for objects that can be in assessment objects:</p>
+<div class="highlight-python"><pre>(sectionref | section)+</pre>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.2.1. Core Types and Utilities</a><ul>
+<li><a class="reference internal" href="#enumerations">1.2.1.1. Enumerations</a></li>
+<li><a class="reference internal" href="#utility-functions">1.2.1.2. Utility Functions</a></li>
+<li><a class="reference internal" href="#constants">1.2.1.3. Constants</a></li>
+<li><a class="reference internal" href="#exceptions">1.2.1.4. Exceptions</a></li>
+<li><a class="reference internal" href="#abstract-elements">1.2.1.5. Abstract Elements</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../imsqtiv1p2p1.html"
+                        title="previous chapter">1.2. IMS Question and Test Interoperability (version 1.2)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="common.html"
+                        title="next chapter">1.2.2. Common Classes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv1/core.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="common.html" title="1.2.2. Common Classes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv1p2p1.html" >1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

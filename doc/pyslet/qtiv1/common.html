@@ -1,0 +1,1101 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.2.2. Common Classes &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="up" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="../imsqtiv1p2p1.html" />
+    <link rel="next" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="prev" title="1.2.1. Core Types and Utilities" href="core.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="1.2.1. Core Types and Utilities"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv1p2p1.html" accesskey="U">1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv1.common">
+<span id="common-classes"></span><h1>1.2.2. Common Classes<a class="headerlink" href="#module-pyslet.qtiv1.common" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the common data elements defined in section 3.6 of the
+binding document. The doc string of each element defined by IMS is introduced
+with a quote from that document to provide context.  For more information see:
+<a class="reference external" href="http://www.imsglobal.org/question/qtiv1p2/imsqti_asi_bindv1p2.html">http://www.imsglobal.org/question/qtiv1p2/imsqti_asi_bindv1p2.html</a></p>
+<div class="section" id="content-model">
+<h2>1.2.2.1. Content Model<a class="headerlink" href="#content-model" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps the biggest change between version 1 and version 2 of the specification
+was the content model.  There were attempts to improve the original model through
+the introduction of the flow concept in version 1.2 but it wasn&#8217;t until the
+externally defined HTML content model was formally adopted in version 2 that some
+degree of predictability in rendering became possible.</p>
+<dl class="class">
+<dt id="pyslet.qtiv1.common.ContentMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">ContentMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin class for handling all content-containing elements.</p>
+<p>This class is used by all elements that behave as content, the default
+implementation provides an additional contentChildren member that should
+be used to collect any content-like children.</p>
+<dl class="attribute">
+<dt id="pyslet.qtiv1.common.ContentMixin.contentChildren">
+<tt class="descname">contentChildren</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.contentChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of content children</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.ContentMixin">
+<tt class="descname">ContentMixin</tt><big>(</big><em>childClass</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.ContentMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new ContentMixin child of this element.</p>
+<p>This factory method is called by the parser when it finds an element
+that is derived from ContentMixin.  By default we accept any type of
+content but derived classes override this behaviour to limit the range
+of elements to match their content models.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.GetContentChildren">
+<tt class="descname">GetContentChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.GetContentChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of the content children.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.IsInline">
+<tt class="descname">IsInline</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.IsInline" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if this element can be inlined, False if it is block level</p>
+<p>The default implementation returns True if all
+<a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin.contentChildren" title="pyslet.qtiv1.common.ContentMixin.contentChildren"><tt class="xref py py-attr docutils literal"><span class="pre">contentChildren</span></tt></a> can be inlined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.InlineChildren">
+<tt class="descname">InlineChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.InlineChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if all of this element&#8217;s <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin.contentChildren" title="pyslet.qtiv1.common.ContentMixin.contentChildren"><tt class="xref py py-attr docutils literal"><span class="pre">contentChildren</span></tt></a> can all be inlined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (&lt;text string&gt;, &lt;lang&gt;).</p>
+<p>Sometimes it is desirable to have a plain text representation of a
+content object.  For example, an element may permit arbitrary content
+but a synopsis is required to set a metadata value.</p>
+<p>Our algorithm for determining the language of the text is to first check
+if the language has been specified for the context.  If it has then that
+language is used.  Otherwise the first language attribute encountered in
+the content is used as the language.  If no language is found then None
+is returned as the second value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.ContentMixin.MigrateV2Content">
+<tt class="descname">MigrateV2Content</tt><big>(</big><em>parent</em>, <em>childType</em>, <em>log</em>, <em>children=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ContentMixin.MigrateV2Content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Migrates this content element to QTIv2.</p>
+<p>The resulting QTIv2 content is added to <em>parent</em>.</p>
+<p><em>childType</em> indicates whether the context allows block, inline or a
+mixture of element content types (flow).  It is set to one of the
+following HTML classes: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.BlockMixin</span></tt>,
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.InlineMixin</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.FlowMixin</span></tt>.</p>
+<p>The default implementation adds each of <em>children</em> or, if <em>children</em> is
+None, each of the local <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin.contentChildren" title="pyslet.qtiv1.common.ContentMixin.contentChildren"><tt class="xref py py-attr docutils literal"><span class="pre">contentChildren</span></tt></a>.  The algorithm
+handles flow elements by creating &lt;p&gt; elements where the context
+permits.  Nested flows are handled by the addition of &lt;br/&gt;.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Material">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Material</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>This is the container for any content that is to be displayed by the
+question-engine. The supported content types are text (emphasized or not),
+images, audio, video, application and applet. The content can be internally
+referenced to avoid the need for duplicate copies. Alternative information
+can be defined - this is used if the primary content cannot be displayed:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT material (qticomment? , (mattext | matemtext | matimage |
+        mataudio | matvideo | matapplet | matapplication | matref | matbreak
+        | mat_extension)+ , altmaterial*)&gt;
+&lt;!ATTLIST material
+        label CDATA  #IMPLIED
+        xml:lang CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.AltMaterial">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">AltMaterial</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.AltMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>This is the container for alternative content. This content is to be
+displayed if, for whatever reason, the primary content cannot be rendered.
+Alternative language implementations of the host &lt;material&gt; element are also
+supported using this structure:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT altmaterial (qticomment? ,
+        (mattext | matemtext | matimage | mataudio | matvideo |
+        matapplet | matapplication | matref | matbreak | mat_extension)+)&gt;
+&lt;!ATTLIST altmaterial  xml:lang CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatThingMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatThingMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.MatThingMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>An abstract class used to help identify the mat* elements.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.PositionMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">PositionMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.PositionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin to define the positional attributes</p>
+<div class="highlight-python"><pre>width   CDATA  #IMPLIED
+height  CDATA  #IMPLIED
+y0              CDATA  #IMPLIED
+x0              CDATA  #IMPLIED</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatText">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatText</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.PositionMixin" title="pyslet.qtiv1.common.PositionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.PositionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;mattext&gt; element contains any text that is to be displayed to the users</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT mattext (#PCDATA)&gt;    
+&lt;!ATTLIST mattext
+        texttype    CDATA  'text/plain'
+        label           CDATA  #IMPLIED
+        charset         CDATA  'ascii-us'
+        uri                     CDATA  #IMPLIED
+        xml:space       (preserve | default )  'default'
+        xml:lang        CDATA  #IMPLIED
+        entityref       ENTITY  #IMPLIED
+        width           CDATA  #IMPLIED
+        height          CDATA  #IMPLIED
+        y0                      CDATA  #IMPLIED
+        x0                      CDATA  #IMPLIED &gt;</pre>
+</div>
+<dl class="attribute">
+<dt id="pyslet.qtiv1.common.MatText.inlineWrapper">
+<tt class="descname">inlineWrapper</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv1.common.MatText.inlineWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>an inline html object used to wrap inline elements</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatEmText">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatEmText</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatEmText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.MatText" title="pyslet.qtiv1.common.MatText"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatText</span></tt></a></p>
+<p>The &lt;matemtext&gt; element contains any emphasized text that is to be
+displayed to the users. The type of emphasis is dependent on the
+question-engine rendering the text:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matemtext (#PCDATA)&gt;  
+&lt;!ATTLIST matemtext
+        texttype        CDATA  'text/plain'
+        label           CDATA  #IMPLIED
+        charset         CDATA  'ascii-us'
+        uri                     CDATA  #IMPLIED
+        xml:space       (preserve | default )  'default'
+        xml:lang        CDATA  #IMPLIED
+        entityref       ENTITY  #IMPLIED
+        width           CDATA  #IMPLIED
+        height          CDATA  #IMPLIED
+        y0                      CDATA  #IMPLIED
+        x0                      CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatBreak">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatBreak</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatBreak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The element that is used to insert a break in the flow of the associated
+material. The nature of the &#8216;break&#8217; is dependent on the display-rendering
+engine:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matbreak EMPTY&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatBreak.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatBreak.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a simple line break</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatImage">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatImage</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.PositionMixin" title="pyslet.qtiv1.common.PositionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.PositionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;matimage&gt; element is used to contain image content that is to be
+displayed to the users:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matimage (#PCDATA)&gt;   
+&lt;!ATTLIST matimage
+        imagtype    CDATA  'image/jpeg'
+        label           CDATA  #IMPLIED
+        height          CDATA  #IMPLIED
+        uri                     CDATA  #IMPLIED
+        embedded        CDATA  'base64'
+        width           CDATA  #IMPLIED
+        y0                      CDATA  #IMPLIED
+        x0                      CDATA  #IMPLIED
+        entityref       ENTITY #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatImage.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatImage.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>We cannot extract text from matimage so we return a simple string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatAudio">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatAudio</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatAudio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;mataudio&gt; element is used to contain audio content that is to be
+displayed to the users:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT mataudio (#PCDATA)&gt;   
+&lt;!ATTLIST mataudio
+        audiotype       CDATA  'audio/base'
+        label           CDATA  #IMPLIED
+        uri                     CDATA  #IMPLIED
+        embedded        CDATA  'base64'
+        entityref       ENTITY  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatAudio.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatAudio.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>We cannot extract text from mataudio so we return a simple string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatVideo">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatVideo</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatVideo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.PositionMixin" title="pyslet.qtiv1.common.PositionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.PositionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;matvideo&gt; element is used to contain video content that is to be
+displayed to the users:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matvideo (#PCDATA)&gt;   
+&lt;!ATTLIST matvideo
+        videotype       CDATA  'video/avi'
+        label           CDATA  #IMPLIED
+        uri                     CDATA  #IMPLIED
+        width           CDATA  #IMPLIED
+        height          CDATA  #IMPLIED
+        y0                      CDATA  #IMPLIED
+        x0                      CDATA  #IMPLIED
+        embedded        CDATA  'base64'
+        entityref       ENTITY  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatVideo.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatVideo.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>We cannot extract text from matvideo so we return a simple string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatApplet">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatApplet</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatApplet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.PositionMixin" title="pyslet.qtiv1.common.PositionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.PositionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;matapplet&gt; element is used to contain applet content that is to be
+displayed to the users. Parameters that are to be passed to the applet being
+launched should be enclosed in a CDATA block within the content of the
+&lt;matapplet&gt; element:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matapplet (#PCDATA)&gt;  
+&lt;!ATTLIST matapplet
+        label           CDATA  #IMPLIED
+        uri                     CDATA  #IMPLIED
+        y0                      CDATA  #IMPLIED
+        height          CDATA  #IMPLIED
+        width           CDATA  #IMPLIED
+        x0                      CDATA  #IMPLIED
+        embedded        CDATA  'base64'
+        entityref       ENTITY  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatApplet.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatApplet.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>We cannot extract text from matapplet so we return a simple string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatApplication">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatApplication</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The &lt;matapplication&gt; element is used to contain application content that
+is to be displayed to the users. Parameters that are to be passed to the
+application being launched should be enclosed in a CDATA block within the
+content of the &lt;matapplication&gt; element:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matapplication (#PCDATA)&gt;     
+&lt;!ATTLIST matapplication
+        apptype         CDATA  #IMPLIED
+        label           CDATA  #IMPLIED
+        uri                     CDATA  #IMPLIED
+        embedded        CDATA  'base64'
+        entityref       ENTITY  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.MatApplication.ExtractText">
+<tt class="descname">ExtractText</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatApplication.ExtractText" title="Permalink to this definition">¶</a></dt>
+<dd><p>We cannot extract text from matapplication so we return a simple string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatRef">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatRef</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a>, <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The &lt;matref&gt; element is used to contain a reference to the required
+material. This material will have had an identifier assigned to enable such
+a reference to be reconciled when the instance is parsed into the system.
+&lt;matref&gt; should only be used to reference a material component and not a
+&lt;material&gt; element (the element &lt;material_ref&gt; should be used for the
+latter):</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT matref EMPTY&gt; 
+&lt;!ATTLIST matref linkrefid CDATA  #REQUIRED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MatExtension">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MatExtension</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MatExtension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.MatThingMixin" title="pyslet.qtiv1.common.MatThingMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.MatThingMixin</span></tt></a></p>
+<p>The extension facility to enable proprietary types of material to be
+included with the corresponding data object:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT mat_extension ANY&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.FlowMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">FlowMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.FlowMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mix-in class to identify all flow elements:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span> <span class="n">flow</span> <span class="o">|</span> <span class="n">flow_mat</span> <span class="o">|</span> <span class="n">flow_label</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.FlowMatContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">FlowMatContainer</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FlowMatContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>Abstract class used to represent objects that contain flow_mat:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT XXXXXXXXXX (qticomment? , (material+ | flow_mat+))&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.FlowMat">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">FlowMat</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FlowMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.FlowMatContainer" title="pyslet.qtiv1.common.FlowMatContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.FlowMatContainer</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.FlowMixin" title="pyslet.qtiv1.common.FlowMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.FlowMixin</span></tt></a></p>
+<p>This element allows the materials to be displayed to the users to be
+grouped together using flows. The manner in which these flows are handled is
+dependent upon the display-engine:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT flow_mat (qticomment? , (flow_mat | material | material_ref)+)&gt;       
+&lt;!ATTLIST flow_mat  class CDATA  'Block' &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.FlowMat.IsInline">
+<tt class="descname">IsInline</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FlowMat.IsInline" title="Permalink to this definition">¶</a></dt>
+<dd><p>flowmat is always treated as a block if flowClass is specified, otherwise
+it is treated as a block unless it is an only child.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.FlowMat.MigrateV2Content">
+<tt class="descname">MigrateV2Content</tt><big>(</big><em>parent</em>, <em>childType</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FlowMat.MigrateV2Content" title="Permalink to this definition">¶</a></dt>
+<dd><p>flow typically maps to a div element.</p>
+<p>A flow with a specified class always becomes a div.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.PresentationMaterial">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">PresentationMaterial</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.PresentationMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.FlowMatContainer" title="pyslet.qtiv1.common.FlowMatContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.FlowMatContainer</span></tt></a></p>
+<p>This is material that must be presented to set the context of the parent
+evaluation. This could be at the Section level to contain common question
+material that is relevant to all of the contained Sections/Items. All the
+contained material must be presented:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT presentation_material (qticomment? , flow_mat+)&gt;</pre>
+</div>
+<p>Our interpretation is generous here, we also accept &lt;material&gt; by default
+from <a class="reference internal" href="#pyslet.qtiv1.common.FlowMatContainer" title="pyslet.qtiv1.common.FlowMatContainer"><tt class="xref py py-class docutils literal"><span class="pre">FlowMatContainer</span></tt></a>.  This element is one of the newer
+definitions in QTI v1, after the introduction of &lt;flow&gt;.  It excludes
+&lt;material&gt; because it was assumed there would no legacy content.  Adoption
+of flow was poor and it was replaced with direct inclusion of the html model
+in version 2 (where content is either inline or block level and flow is a
+general term to describe both for contexts where either is allowed).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Reference">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Reference</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>The container for all of the materials that can be referenced by other
+structures e.g. feedback material, presentation material etc. The
+presentation of this material is under the control of the structure that is
+referencing the material. There is no implied relationship between any of
+the contained material components:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT reference (qticomment? , (material | mattext | matemtext | matimage | mataudio |
+        matvideo | matapplet | matapplication | matbreak | mat_extension)+)&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.Reference.ContentMixin">
+<tt class="descname">ContentMixin</tt><big>(</big><em>childClass</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Reference.ContentMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>We override this method to prevent references from being included.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MaterialRef">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MaterialRef</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.MaterialRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The &lt;material_ref&gt; element is used to contain a reference to the required
+full material block. This material will have had an identifier assigned to
+enable such a reference to be reconciled when the instance is parsed into
+the system:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT material_ref EMPTY&gt;   
+&lt;!ATTLIST material_ref  linkrefid CDATA  #REQUIRED &gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="metadata-model">
+<h2>1.2.2.2. Metadata Model<a class="headerlink" href="#metadata-model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.common.MetadataContainerMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">MetadataContainerMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.MetadataContainerMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mix-in class used to hold dictionaries of metadata.</p>
+<p>There is a single dictionary maintained to hold all metadata values, each
+value is a list of tuples of the form (value string, defining element).
+Values are keyed on the field label or tag name with any leading qmd_ prefix
+removed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.QTIMetadata">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">QTIMetadata</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.QTIMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The container for all of the vocabulary-based QTI-specific meta-data.
+This structure is available to each of the four core ASI data structures:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT qtimetadata (vocabulary? , qtimetadatafield+)&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Vocabulary">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Vocabulary</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Vocabulary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The vocabulary to be applied to the associated meta-data fields. The
+vocabulary is defined either using an external file or it is included as a
+comma separated list:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT vocabulary (#PCDATA)&gt;
+&lt;!ATTLIST vocabulary
+        uri                     CDATA  #IMPLIED
+        entityref       ENTITY  #IMPLIED
+        vocab_type      CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.QTIMetadataField">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">QTIMetadataField</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.QTIMetadataField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The structure responsible for containing each of the QTI-specific
+meta-data fields:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT qtimetadatafield      (fieldlabel , fieldentry)&gt;
+&lt;!ATTLIST qtimetadatafield  xml:lang CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.FieldLabel">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">FieldLabel</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FieldLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>Used to contain the name of the QTI-specific meta-data field:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT fieldlabel (#PCDATA)&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.FieldEntry">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">FieldEntry</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.FieldEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>Used to contain the actual data entry of the QTI-specific meta-data field
+named using the associated &#8216;fieldlabel&#8217; element:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT fieldentry (#PCDATA)&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="objectives-rubric">
+<h2>1.2.2.3. Objectives &amp; Rubric<a class="headerlink" href="#objectives-rubric" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Objectives">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Objectives</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Objectives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.FlowMatContainer" title="pyslet.qtiv1.common.FlowMatContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.FlowMatContainer</span></tt></a></p>
+<p>The objectives element is used to store the information that describes
+the educational aims of the Item. These objectives can be defined for each
+of the different &#8216;view&#8217; perspectives. This element should not be used to
+contain information specific to an Item because the question-engine may not
+make this information available to the Item during the actual test:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT objectives (qticomment? , (material+ | flow_mat+))&gt;
+&lt;!ATTLIST objectives  view      (All | Administrator | AdminAuthority | Assessor | Author |
+                        Candidate | InvigilatorProctor | Psychometrician | Scorer | 
+                        Tutor ) 'All' &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.Objectives.MigrateV2">
+<tt class="descname">MigrateV2</tt><big>(</big><em>v2Item</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Objectives.MigrateV2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds rubric representing these objectives to the given item&#8217;s body</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv1.common.Objectives.LRMMigrateObjectives">
+<tt class="descname">LRMMigrateObjectives</tt><big>(</big><em>lom</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Objectives.LRMMigrateObjectives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds educational description from these objectives.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Rubric">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Rubric</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Rubric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.FlowMatContainer" title="pyslet.qtiv1.common.FlowMatContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.FlowMatContainer</span></tt></a></p>
+<p>The rubric element is used to contain contextual information that is
+important to the element e.g. it could contain standard data values that
+might or might not be useful for answering the question. Different sets of
+rubric can be defined for each of the possible &#8216;views&#8217;. The material
+contained within the rubric must be displayed to the participant:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT rubric (qticomment? , (material+ | flow_mat+))&gt;       
+&lt;!ATTLIST rubric  view  (All | Administrator | AdminAuthority | Assessor | Author |
+                        Candidate | InvigilatorProctor | Psychometrician | Scorer | 
+                        Tutor ) 'All' &gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="response-processing-model">
+<h2>1.2.2.4. Response Processing Model<a class="headerlink" href="#response-processing-model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DecVar">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DecVar</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DecVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The &lt;decvar&gt; element permits the declaration of the scoring variables</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT decvar (#PCDATA)&gt;
+&lt;!ATTLIST decvar  varname CDATA  'SCORE' ::
+        vartype         (Integer |  String |  Decimal |  Scientific |  Boolean | 
+                Enumerated | Set )  'Integer'
+        defaultval      CDATA  #IMPLIED
+        minvalue        CDATA  #IMPLIED
+        maxvalue        CDATA  #IMPLIED
+        members         CDATA  #IMPLIED
+        cutvalue        CDATA  #IMPLIED &gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.DecVar.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DecVar.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>The decvar element is supposed to be empty but QTI v1 content is all over the place.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.InterpretVar">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">InterpretVar</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.InterpretVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
+<p>The &lt;interpretvar&gt; element is used to provide statistical interpretation
+information about the associated variables:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT interpretvar (material | material_ref)&gt;       
+&lt;!ATTLIST interpretvar
+        view    (All | Administrator | AdminAuthority | Assessor | Author | Candidate |
+                InvigilatorProctor | Psychometrician | Scorer | Tutor )  'All'
+                varname CDATA  'SCORE' &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.SetVar">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">SetVar</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.SetVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The &lt;setvar&gt; element is responsible for changing the value of the scoring
+variable as a result of the associated response processing test:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT setvar (#PCDATA)&gt;     
+&lt;!ATTLIST setvar  varname CDATA  'SCORE'
+        action     (Set | Add | Subtract | Multiply | Divide )  'Set' &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DisplayFeedback">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DisplayFeedback</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DisplayFeedback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The &lt;displayfeedback&gt; element is responsible for assigning an associated
+feedback to the response processing if the &#8216;True&#8217; state is created through
+the associated response processing condition test:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT displayfeedback (#PCDATA)&gt;
+&lt;!ATTLIST displayfeedback
+        feedbacktype    (Response | Solution | Hint )  'Response'
+        linkrefid               CDATA  #REQUIRED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.ConditionVar">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">ConditionVar</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.ConditionVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The conditional test that is to be applied to the user&#8217;s response. A wide
+range of separate and combinatorial test can be applied:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT conditionvar (not | and | or | unanswered | other | varequal | varlt |
+        varlte | vargt | vargte | varsubset | varinside | varsubstring | durequal |
+        durlt | durlte | durgt | durgte | var_extension)+&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.ExtendableExpressionMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">ExtendableExpressionMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.ExtendableExpressionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract mixin class to indicate an expression, including var_extension</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.ExpressionMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">ExpressionMixin</tt><a class="headerlink" href="#pyslet.qtiv1.common.ExpressionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.ExtendableExpressionMixin" title="pyslet.qtiv1.common.ExtendableExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExtendableExpressionMixin</span></tt></a></p>
+<p>Abstract mixin class to indicate an expression excluding var_extension</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarThing">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarThing</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarThing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>Abstract class for var* elements</p>
+<div class="highlight-python"><pre>&lt;!ATTLIST *
+        respident       CDATA #REQUIRED
+        index           CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarEqual">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarEqual</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarEqual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarThing" title="pyslet.qtiv1.common.VarThing"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarThing</span></tt></a></p>
+<p>The &lt;varequal&gt; element is the test of equivalence. The data for the test
+is contained within the element&#8217;s PCDATA string and must be the same as one
+of the &lt;response_label&gt; values (this were assigned using the ident
+attribute):</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varequal (#PCDATA)&gt;   
+&lt;!ATTLIST varequal
+        case  (Yes | No )  'No'
+        respident CDATA  #REQUIRED"
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarInequality">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarInequality</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarInequality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarThing" title="pyslet.qtiv1.common.VarThing"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarThing</span></tt></a></p>
+<p>Abstract class for varlt, varlte, vargt and vargte.</p>
+<dl class="method">
+<dt id="pyslet.qtiv1.common.VarInequality.MigrateV2Inequality">
+<tt class="descname">MigrateV2Inequality</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarInequality.MigrateV2Inequality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the class to use in qtiv2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarLT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarLT</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarInequality" title="pyslet.qtiv1.common.VarInequality"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarInequality</span></tt></a></p>
+<p>The &lt;varlt&gt; element is the &#8216;less than&#8217; test. The data for the test is
+contained within the element&#8217;s PCDATA string and is assumed to be numerical
+in nature:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varlt (#PCDATA)&gt;
+&lt;!ATTLIST varlt
+        respident       CDATA  #REQUIRED"
+        index           CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarLTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarLTE</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarLTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarInequality" title="pyslet.qtiv1.common.VarInequality"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarInequality</span></tt></a></p>
+<p>The &lt;varlte&gt; element is the &#8216;less than or equal&#8217; test. The data for the
+test is contained within the element&#8217;s PCDATA string and is assumed to be
+numerical in nature:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varlte (#PCDATA)&gt;     
+&lt;!ATTLIST varlte
+        respident CDATA  #REQUIRED"
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarGT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarGT</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarGT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarInequality" title="pyslet.qtiv1.common.VarInequality"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarInequality</span></tt></a></p>
+<p>The &lt;vargt&gt; element is the &#8216;greater than&#8217; test. The data for the test is
+contained within the element&#8217;s PCDATA string and is assumed to be numerical
+in nature:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT vargt (#PCDATA)&gt;      
+&lt;!ATTLIST vargt
+        respident CDATA  #REQUIRED"
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarGTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarGTE</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarGTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarInequality" title="pyslet.qtiv1.common.VarInequality"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarInequality</span></tt></a></p>
+<p>The &lt;vargte&gt; element is the &#8216;greater than or equal to&#8217; test. The data for
+the test is contained within the element&#8217;s PCDATA string and is assumed to
+be numerical in nature:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT vargte (#PCDATA)&gt;     
+&lt;!ATTLIST vargte
+        respident CDATA  #REQUIRED"
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarSubset">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarSubset</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarSubset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;varsubset&gt; element is the &#8216;member of a list/set&#8217; test. The data for
+the test is contained within the element&#8217;s PCDATA string. The set is a comma
+separated list with no enclosing parentheses:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varsubset (#PCDATA)&gt;
+&lt;!ATTLIST varsubset
+        respident CDATA  #REQUIRED"
+        setmatch     (Exact | Partial )  'Exact'
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarSubString">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarSubString</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarSubString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;varsubstring&gt; element is used to determine if a given string is a
+substring of some other string:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varsubstring (#PCDATA)&gt;       
+&lt;!ATTLIST varsubstring
+        index CDATA  #IMPLIED
+        respident CDATA  #REQUIRED"
+        case  (Yes | No )  'No' &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarInside">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarInside</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarInside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv1.common.VarThing" title="pyslet.qtiv1.common.VarThing"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.VarThing</span></tt></a></p>
+<p>The &lt;varinside&gt; element is the &#8216;xy-co-ordinate inside an area&#8217; test. The
+data for the test is contained within the element&#8217;s PCDATA string and is a
+set of co-ordinates that define the area:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT varinside (#PCDATA)&gt;  
+&lt;!ATTLIST varinside
+        areatype     (Ellipse | Rectangle | Bounded )  #REQUIRED
+        respident CDATA  #REQUIRED"
+        index CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DurEqual">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DurEqual</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DurEqual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;durequal&gt; element is the &#8216;duration equal to&#8217; test i.e. a test on the
+time taken to make the response:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT durequal (#PCDATA)&gt;   
+&lt;!ATTLIST durequal
+        index CDATA  #IMPLIED
+        respident CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DurLT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DurLT</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DurLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;durlt&gt; element is the &#8216;duration less than&#8217; test i.e. a test on the
+time taken to make the response:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT durlt (#PCDATA)&gt;
+&lt;!ATTLIST durlt
+        index           CDATA  #IMPLIED
+        respident       CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DurLTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DurLTE</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DurLTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;durlte&gt; element is the &#8216;duration less than or equal to&#8217; test i.e. a
+test on the time taken to make the response:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT durlte (#PCDATA)&gt;     
+&lt;!ATTLIST durlte
+        index           CDATA  #IMPLIED
+        respident       CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DurGT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DurGT</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DurGT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;durgt&gt; element is the &#8216;duration greater than&#8217; test i.e. a test on
+the time taken to make the response:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT durgt (#PCDATA)&gt;      
+&lt;!ATTLIST durgt
+        index           CDATA  #IMPLIED
+        respident       CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.DurGTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">DurGTE</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.DurGTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;durgte&gt; element is the &#8216;duration greater than or equal to&#8217; test i.e.
+a test on the time taken to make the response:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT durgte (#PCDATA)&gt;     
+&lt;!ATTLIST durgte
+        index           CDATA  #IMPLIED
+        respident       CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Not">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Not</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Not" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;not&gt; element inverts the logical test outcome that is required. In
+the case of the &lt;varequal&gt; element produces a &#8216;not equals&#8217; test:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT not (and | or | not | unanswered | other | varequal | varlt | varlte |
+        vargt | vargte | varsubset | varinside | varsubstring | durequal | durlt |
+        durlte | durgt | durgte)&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.And">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">And</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;and&gt; element is used to create the Boolean &#8216;AND&#8217; operation between
+the two or more enclosed tests. The result &#8216;True&#8217; is returned if all of the
+tests return a &#8216;True&#8217; value:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT and (not | and | or | unanswered | other | varequal | varlt | varlte |
+        vargt | vargte | varsubset | varinside | varsubstring | durequal | durlt |
+        durlte | durgt | durgte)+&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Or">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Or</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;or&gt; element is used to create the Boolean &#8216;OR&#8217; operation between the
+two or more enclosed tests. The result &#8216;True&#8217; is returned if one or more of
+the tests return a &#8216;True&#8217; value:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT or (not | and | or | unanswered | other | varequal | varlt | varlte |
+        vargt | vargte | varsubset | varinside | varsubstring | durequal | durlt |
+        durlte | durgt | durgte)+&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Unanswered">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Unanswered</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Unanswered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;unanswered&gt; element is the condition to be applied if a response is
+not received for the Item i.e. it is unanswered:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT unanswered (#PCDATA)&gt;
+&lt;!ATTLIST unanswered  respident CDATA  #REQUIRED" &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Other">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Other</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Other" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExpressionMixin" title="pyslet.qtiv1.common.ExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExpressionMixin</span></tt></a></p>
+<p>The &lt;other&gt; element is used to trigger the condition when all of the
+other tests have not returned a &#8216;True&#8217; state:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT other (#PCDATA)&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.VarExtension">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">VarExtension</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.VarExtension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv1.common.ExtendableExpressionMixin" title="pyslet.qtiv1.common.ExtendableExpressionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ExtendableExpressionMixin</span></tt></a></p>
+<p>This element contains proprietary extensions to be applied to condition
+tests. This enables vendors to create their own conditional tests to be used
+on the participant responses:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT var_extension ANY&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="miscellaneous-classes">
+<h2>1.2.2.5. Miscellaneous Classes<a class="headerlink" href="#miscellaneous-classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv1.common.QTICommentContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">QTICommentContainer</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.QTICommentContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>Basic element to represent all elements that can contain a comment as their first child:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT XXXXXXXXXXXX (qticomment? , ....... )&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.QTIComment">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">QTIComment</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.QTIComment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>This element contains the comments that are relevant to the host element.
+The comment is contained as a string:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT qticomment (#PCDATA)&gt; 
+&lt;!ATTLIST qticomment  xml:lang CDATA  #IMPLIED &gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv1.common.Duration">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv1.common.</tt><tt class="descname">Duration</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.common.Duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
+<p>The duration permitted for the completion of a particular activity. The
+duration is defined as per the ISO8601 standard. The information is entered
+as a string:</p>
+<div class="highlight-python"><pre>&lt;!ELEMENT duration (#PCDATA)&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.2.2. Common Classes</a><ul>
+<li><a class="reference internal" href="#content-model">1.2.2.1. Content Model</a></li>
+<li><a class="reference internal" href="#metadata-model">1.2.2.2. Metadata Model</a></li>
+<li><a class="reference internal" href="#objectives-rubric">1.2.2.3. Objectives &amp; Rubric</a></li>
+<li><a class="reference internal" href="#response-processing-model">1.2.2.4. Response Processing Model</a></li>
+<li><a class="reference internal" href="#miscellaneous-classes">1.2.2.5. Miscellaneous Classes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="core.html"
+                        title="previous chapter">1.2.1. Core Types and Utilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../imsqtiv2p1.html"
+                        title="next chapter">1.3. IMS Question and Test Interoperability (version 2.1)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv1/common.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="1.2.1. Core Types and Utilities"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv1p2p1.html" >1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

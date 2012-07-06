@@ -1,0 +1,1112 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.1. Item Variables &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="next" title="1.3.2. Core Types and Utilities" href="core.html" />
+    <link rel="prev" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="1.3.2. Core Types and Utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.variables">
+<span id="item-variables"></span><h1>1.3.1. Item Variables<a class="headerlink" href="#module-pyslet.qtiv2.variables" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the basic run-time data model.  Although the specification
+does contain elements to represent the values of variables set at runtime the
+XML schema sometimes relies too much on context for an efficient implementation.
+For example, a &lt;value&gt; element is always a value of a specific base type but the
+base type is rarely specified on the value element itself as it is normally
+implicit in the context. such as a variable declaration.</p>
+<p>Although the expression model does contain an element that provides a more
+complete representation of single values (namely &lt;baseValue&gt;) we decide to make
+the distinction in this module with <a class="reference internal" href="#pyslet.qtiv2.variables.ValueElement" title="pyslet.qtiv2.variables.ValueElement"><tt class="xref py py-class docutils literal"><span class="pre">ValueElement</span></tt></a> representing the
+element and the abstract <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> being used as the root of the runtime
+object model.</p>
+<p>For example, to get the default value of a variable from a variable declaration
+you&#8217;ll use the <a class="reference internal" href="#pyslet.qtiv2.variables.VariableDeclaration.GetDefaultValue" title="pyslet.qtiv2.variables.VariableDeclaration.GetDefaultValue"><tt class="xref py py-meth docutils literal"><span class="pre">GetDefaultValue()</span></tt></a> method and it
+will return a <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance which could be of any cardinality or
+base type.</p>
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.VariableDeclaration">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">VariableDeclaration</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.VariableDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>Item variables are declared by variable declarations... The purpose of the
+declaration is to associate an identifier with the variable and to identify
+the runtime type of the variable&#8217;s value:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="variableDeclaration.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+        &lt;xsd:attribute name="cardinality" type="cardinality.Type" use="required"/&gt;
+        &lt;xsd:attribute name="baseType" type="baseType.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="variableDeclaration.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="defaultValue" minOccurs="0" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.VariableDeclaration.GetDefaultValue">
+<tt class="descname">GetDefaultValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.VariableDeclaration.GetDefaultValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance representing either the default
+value or an appropriately typed NULL value if there is no default
+defined.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.ValueElement">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">ValueElement</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ValueElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>A class that can represent a single value of any baseType in variable
+declarations and result reports:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="value.AttrGroup"&gt;
+        &lt;xsd:attribute name="fieldIdentifier" type="identifier.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="baseType" type="baseType.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.DefaultValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">DefaultValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.DefaultValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.DefinedValue</span></tt></p>
+<p>An optional default value for a variable. The point at which a variable
+is set to its default value varies depending on the type of item
+variable.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.Cardinality">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">Cardinality</tt><a class="headerlink" href="#pyslet.qtiv2.variables.Cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>An expression or itemVariable can either be single-valued or
+multi-valued. A multi-valued expression (or variable) is called a container.
+A container contains a list of values, this list may be empty in which case
+it is treated as NULL. All the values in a multiple or ordered container are
+drawn from the same value set:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="cardinality.Type"&gt;
+        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
+                &lt;xsd:enumeration value="multiple"/&gt;
+                &lt;xsd:enumeration value="ordered"/&gt;
+                &lt;xsd:enumeration value="record"/&gt;
+                &lt;xsd:enumeration value="single"/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>Defines constants for the above carinalities.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Cardinality</span><span class="o">.</span><span class="n">multiple</span>
+</pre></div>
+</div>
+<p>There is no default:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Cardinality</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.BaseType">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">BaseType</tt><a class="headerlink" href="#pyslet.qtiv2.variables.BaseType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>A base-type is simply a description of a set of atomic values (atomic to
+this specification). Note that several of the baseTypes used to define the
+runtime data model have identical definitions to those of the basic data
+types used to define the values for attributes in the specification itself.
+The use of an enumeration to define the set of baseTypes used in the runtime
+model, as opposed to the use of classes with similar names, is designed to
+help distinguish between these two distinct levels of modelling:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="baseType.Type"&gt;
+        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
+                &lt;xsd:enumeration value="boolean"/&gt;
+                &lt;xsd:enumeration value="directedPair"/&gt;
+                &lt;xsd:enumeration value="duration"/&gt;
+                &lt;xsd:enumeration value="file"/&gt;
+                &lt;xsd:enumeration value="float"/&gt;
+                &lt;xsd:enumeration value="identifier"/&gt;
+                &lt;xsd:enumeration value="integer"/&gt;
+                &lt;xsd:enumeration value="pair"/&gt;
+                &lt;xsd:enumeration value="point"/&gt;
+                &lt;xsd:enumeration value="string"/&gt;
+                &lt;xsd:enumeration value="uri"/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>Defines constants for the above base types.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BaseType</span><span class="o">.</span><span class="n">float</span>
+</pre></div>
+</div>
+<p>There is no default:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BaseType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.Mapping">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">Mapping</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>A special class used to create a mapping from a source set of any
+baseType (except file and duration) to a single float:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapping.AttrGroup"&gt;
+        &lt;xsd:attribute name="lowerBound" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="upperBound" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="defaultValue" type="float.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="mapping.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="mapEntry" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Mapping.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Mapping.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds an internal dictionary of the values being mapped.</p>
+<p>In order to fully specify the mapping we need to know the baseType of
+the source values.  (The targets are always floats.)  We do this based
+on our parent, orphan Mapping elements are treated as mappings from
+source strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Mapping.MapValue">
+<tt class="descname">MapValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Mapping.MapValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with the same base type as the
+mapping to an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with base type float.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.MapEntry">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">MapEntry</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MapEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>An entry in a <a class="reference internal" href="#pyslet.qtiv2.variables.Mapping" title="pyslet.qtiv2.variables.Mapping"><tt class="xref py py-class docutils literal"><span class="pre">Mapping</span></tt></a></p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapEntry.AttrGroup"&gt;
+        &lt;xsd:attribute name="mapKey" type="valueType.Type" use="required"/&gt;
+        &lt;xsd:attribute name="mappedValue" type="float.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.MapEntry.mapKey">
+<tt class="descname">mapKey</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.MapEntry.mapKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>The source value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.MapEntry.mappedValue">
+<tt class="descname">mappedValue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.MapEntry.mappedValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mapped value</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="response-variables">
+<h2>1.3.1.1. Response Variables<a class="headerlink" href="#response-variables" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.ResponseDeclaration">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">ResponseDeclaration</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ResponseDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.VariableDeclaration" title="pyslet.qtiv2.variables.VariableDeclaration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.VariableDeclaration</span></tt></a></p>
+<p>Response variables are declared by response declarations and bound to
+interactions in the itemBody:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="responseDeclaration.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="variableDeclaration.ContentGroup"/&gt;
+                &lt;xsd:element ref="correctResponse" minOccurs="0" maxOccurs="1"/&gt;
+                &lt;xsd:element ref="mapping" minOccurs="0" maxOccurs="1"/&gt;
+                &lt;xsd:element ref="areaMapping" minOccurs="0" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ResponseDeclaration.GetCorrectValue">
+<tt class="descname">GetCorrectValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ResponseDeclaration.GetCorrectValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance representing either the correct
+response value or an appropriately typed NULL value if there is no
+correct value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ResponseDeclaration.GetStageDimensions">
+<tt class="descname">GetStageDimensions</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ResponseDeclaration.GetStageDimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>For response variables with point type, returns a pair of integer
+values: width,height</p>
+<p>In HTML, shapes (including those used in the AreaMapping) can use
+relative coordinates. To interpret relative coordinates we need to know
+the size of the stage used to interpret the point values.  For a
+response variable that is typically the size of the image or object used
+in the interaction.</p>
+<p>This method searches for the interaction associated with the response
+and obtains the width and height of the corresponding object.</p>
+<p>[TODO: currently returns 100,100]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.CorrectResponse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">CorrectResponse</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.CorrectResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.DefinedValue</span></tt></p>
+<p>A response declaration may assign an optional correctResponse. This value
+may indicate the only possible value of the response variable to be
+considered correct or merely just a correct value.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.AreaMapping">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">AreaMapping</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>A special class used to create a mapping from a source set of point
+values to a target set of float values:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="areaMapping.AttrGroup"&gt;
+        &lt;xsd:attribute name="lowerBound" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="upperBound" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="defaultValue" type="float.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="areaMapping.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="areaMapEntry" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.AreaMapping.MapValue">
+<tt class="descname">MapValue</tt><big>(</big><em>value</em>, <em>width</em>, <em>height</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapping.MapValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with point base type to an
+instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with base type float.</p>
+<ul class="simple">
+<li>value is a <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> of base type point</li>
+<li>width is the integer width of the object on which the area is defined</li>
+<li>height is the integer height of the object on which the area is defined</li>
+</ul>
+<p>The width and height of the object are required because HTML allows
+relative values to be used when defining areas.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">AreaMapEntry</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>An <a class="reference internal" href="#pyslet.qtiv2.variables.AreaMapping" title="pyslet.qtiv2.variables.AreaMapping"><tt class="xref py py-class docutils literal"><span class="pre">AreaMapping</span></tt></a> is defined by a set of areaMapEntries, each of
+which maps an area of the coordinate space onto a single float:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="areaMapEntry.AttrGroup"&gt;
+        &lt;xsd:attribute name="shape" type="shape.Type" use="required"/&gt;
+        &lt;xsd:attribute name="coords" type="coords.Type" use="required"/&gt;
+        &lt;xsd:attribute name="mappedValue" type="float.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry.shape">
+<tt class="descname">shape</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shape</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry.coords">
+<tt class="descname">coords</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry.coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of Length values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry.mappedValue">
+<tt class="descname">mappedValue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry.mappedValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mapped value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry.TestPoint">
+<tt class="descname">TestPoint</tt><big>(</big><em>point</em>, <em>width</em>, <em>height</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry.TestPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests <em>point</em> to see if it is in this area.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.AreaMapEntry.TestEllipse">
+<tt class="descname">TestEllipse</tt><big>(</big><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.AreaMapEntry.TestEllipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests an x,y point against an ellipse with these coordinates.</p>
+<p>HTML does not define ellipse, we take our definition from the QTI
+specification itself: center-x, center-y, x-radius, y-radius.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="outcome-variables">
+<h2>1.3.1.2. Outcome Variables<a class="headerlink" href="#outcome-variables" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.OutcomeDeclaration">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">OutcomeDeclaration</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.OutcomeDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.VariableDeclaration" title="pyslet.qtiv2.variables.VariableDeclaration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.VariableDeclaration</span></tt></a></p>
+<p>Outcome variables are declared by outcome declarations</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="outcomeDeclaration.AttrGroup"&gt;
+        &lt;xsd:attributeGroup ref="variableDeclaration.AttrGroup"/&gt;
+        &lt;xsd:attribute name="view" use="optional"&gt;
+                &lt;xsd:simpleType&gt;
+                        &lt;xsd:list itemType="view.Type"/&gt;
+                &lt;/xsd:simpleType&gt;
+        &lt;/xsd:attribute&gt;
+        &lt;xsd:attribute name="interpretation" type="string.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="longInterpretation" type="uri.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="normalMaximum" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="normalMinimum" type="float.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="masteryValue" type="float.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="outcomeDeclaration.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="variableDeclaration.ContentGroup"/&gt;
+                &lt;xsd:group ref="lookupTable.ElementGroup" minOccurs="0" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.LookupTable">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">LookupTable</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.LookupTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>An abstract class associated with an outcomeDeclaration used to create a
+lookup table from a numeric source value to a single outcome value in the
+declared value set:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="lookupTable.AttrGroup"&gt;
+        &lt;xsd:attribute name="defaultValue" type="valueType.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.LookupTable.defaultValue">
+<tt class="descname">defaultValue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.LookupTable.defaultValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>a string from which the default is parsed when its base type is known</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.LookupTable.default">
+<tt class="descname">default</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.LookupTable.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance representing the default</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.MatchTable">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">MatchTable</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MatchTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.LookupTable" title="pyslet.qtiv2.variables.LookupTable"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.LookupTable</span></tt></a></p>
+<p>A matchTable transforms a source integer by finding the first
+matchTableEntry with an exact match to the source:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="matchTable.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="matchTableEntry" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.MatchTable.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MatchTable.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds an internal dictionary of the values being mapped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.MatchTable.Lookup">
+<tt class="descname">Lookup</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MatchTable.Lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with integer base type to an
+instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with the base type of the match table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.MatchTableEntry">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">MatchTableEntry</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MatchTableEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<dl class="docutils">
+<dt>sourceValue</dt>
+<dd>The source integer that must be matched exactly.</dd>
+<dt>targetValue</dt>
+<dd>The target value that is used to set the outcome when a match is found</dd>
+</dl>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="matchTableEntry.AttrGroup"&gt;
+        &lt;xsd:attribute name="sourceValue" type="integer.Type" use="required"/&gt;
+        &lt;xsd:attribute name="targetValue" type="valueType.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.InterpolationTable">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">InterpolationTable</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.InterpolationTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.LookupTable" title="pyslet.qtiv2.variables.LookupTable"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.LookupTable</span></tt></a></p>
+<p>An interpolationTable transforms a source float (or integer) by finding
+the first interpolationTableEntry with a sourceValue that is less than or
+equal to (subject to includeBoundary) the source value:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="interpolationTable.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref="interpolationTableEntry" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.InterpolationTable.ContentChanged">
+<tt class="descname">ContentChanged</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.InterpolationTable.ContentChanged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds an internal table of the values being mapped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.InterpolationTable.Lookup">
+<tt class="descname">Lookup</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.InterpolationTable.Lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with integer or float base type
+to an instance of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> with the base type of the
+interpolation table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.InterpolationTableEntry">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">InterpolationTableEntry</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.InterpolationTableEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<dl class="docutils">
+<dt>sourceValue</dt>
+<dd>The lower bound for the source value to match this entry.</dd>
+<dt>includeBoundary</dt>
+<dd>Determines if an exact match of sourceValue matches this entry. If true,
+the default, then an exact match of the value is considered a match of
+this entry.</dd>
+<dt>targetValue</dt>
+<dd>The target value that is used to set the outcome when a match is found</dd>
+</dl>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="interpolationTableEntry.AttrGroup"&gt;
+        &lt;xsd:attribute name="sourceValue" type="float.Type" use="required"/&gt;
+        &lt;xsd:attribute name="includeBoundary" type="boolean.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="targetValue" type="valueType.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="template-variables">
+<h2>1.3.1.3. Template Variables<a class="headerlink" href="#template-variables" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.TemplateDeclaration">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">TemplateDeclaration</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.TemplateDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.VariableDeclaration" title="pyslet.qtiv2.variables.VariableDeclaration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.VariableDeclaration</span></tt></a></p>
+<p>Template declarations declare item variables that are to be used
+specifically for the purposes of cloning items</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="templateDeclaration.AttrGroup"&gt;
+        &lt;xsd:attributeGroup ref="variableDeclaration.AttrGroup"/&gt;
+        &lt;xsd:attribute name="paramVariable" type="boolean.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="mathVariable" type="boolean.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="runtime-object-model">
+<h2>1.3.1.4. Runtime Object Model<a class="headerlink" href="#runtime-object-model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.ItemSessionState">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">ItemSessionState</tt><big>(</big><em>item</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the state of an item session.  Instances can be used as if
+they were dictionaries of <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a>.  <em>item</em> is the item from which
+the session should be created.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.BeginAttempt">
+<tt class="descname">BeginAttempt</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.BeginAttempt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the start of an attempt.</p>
+<p>This method sets the default RESPONSE values and completionStatus if
+this is the first attempt and increments numAttempts accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.EndAttempt">
+<tt class="descname">EndAttempt</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.EndAttempt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called at the end of an attempt.  Invokes response processing if present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.IsResponse">
+<tt class="descname">IsResponse</tt><big>(</big><em>varName</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.IsResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if <em>varName</em> is the name of a response variable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.IsOutcome">
+<tt class="descname">IsOutcome</tt><big>(</big><em>varName</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.IsOutcome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if <em>varName</em> is the name of an outcome variable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.IsTemplate">
+<tt class="descname">IsTemplate</tt><big>(</big><em>varName</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.IsTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if <em>varName</em> is the name of a template variable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.GetDeclaration">
+<tt class="descname">GetDeclaration</tt><big>(</big><em>varName</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.GetDeclaration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the declaration associated with <em>varName</em> or None if the
+variable is one of the built-in variables.  If <em>varName</em> is not a
+variable KeyError is raised.  To test for the existence of a variable
+just use the object as you would a dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># item is an AssessmentItem instance</span>
+<span class="n">state</span><span class="o">=</span><span class="n">ItemSessionState</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="k">if</span> <span class="s">&#39;RESPONSE&#39;</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;RESPONSE declared!&quot;</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>varName</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance corresponding to <em>varName</em> or
+raises KeyError if there is no variable with that name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.__setitem__">
+<tt class="descname">__setitem__</tt><big>(</big><em>varName</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of <em>varName</em> to the <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance <em>value</em>.</p>
+<p>The <em>baseType</em> and cardinality of <em>value</em> must match those expected for
+the variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.ItemSessionState.__weakref__">
+<tt class="descname">__weakref__</tt><a class="headerlink" href="#pyslet.qtiv2.variables.ItemSessionState.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.Value">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">Value</tt><a class="headerlink" href="#pyslet.qtiv2.variables.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents a single value in the processing model.</p>
+<p>This class is the heart of the QTI processing model.  This is an abstract
+base class of a class hierarchy that represents the various types of value
+that may be encountered when processing.</p>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.Value.baseType">
+<tt class="descname">baseType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.Value.baseType" title="Permalink to this definition">¶</a></dt>
+<dd><p>One of the <a class="reference internal" href="#pyslet.qtiv2.variables.BaseType" title="pyslet.qtiv2.variables.BaseType"><tt class="xref py py-class docutils literal"><span class="pre">BaseType</span></tt></a> constants or None if the baseType is unknown.</p>
+<p>An unknown baseType acts like a wild-card.  It means that the baseType
+is not determined and could potentially be any of the
+<a class="reference internal" href="#pyslet.qtiv2.variables.BaseType" title="pyslet.qtiv2.variables.BaseType"><tt class="xref py py-class docutils literal"><span class="pre">BaseType</span></tt></a> values. This distinction has implications for the
+way evaluation is done.  A value with a baseType of None will not raise
+TypeErrors during evaluation if the cardinalities match the context.
+This allows expressions which contain types bound only at runtime to be
+evaluated for validity checking.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.Value.value">
+<tt class="descname">value</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.Value.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value of the variable.  The following representations are used
+for values of single cardinality:</p>
+<dl class="docutils">
+<dt>NULL value</dt>
+<dd>Represented by None</dd>
+<dt>boolean</dt>
+<dd>One of the built-in Python values True and False</dd>
+<dt>directedPair</dt>
+<dd>A tuple of strings (&lt;source identifier&gt;, &lt;destination identifier&gt;)</dd>
+<dt>duration</dt>
+<dd>real number of seconds</dd>
+<dt>file</dt>
+<dd>a file like object (supporting seek)</dd>
+<dt>float</dt>
+<dd>real number</dd>
+<dt>identifier</dt>
+<dd>A text string</dd>
+<dt>integer</dt>
+<dd>A plain python integer (QTI does not support long integer values)</dd>
+<dt>pair</dt>
+<dd>A <em>sorted</em> tuple of strings (&lt;identifier A&gt;, &lt;identifier B&gt;).  We
+sort the identifiers in a pair by python&#8217;s native string sorting to
+ensure that pair values are comparable.</dd>
+<dt>point</dt>
+<dd>A tuple of integers (&lt;x-coordinate&gt;, &lt;y-coordinate&gt;)</dd>
+<dt>string</dt>
+<dd>A python string</dd>
+<dt>uri</dt>
+<dd>An instance of <a class="reference internal" href="../rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">URI</span></tt></a></dd>
+</dl>
+<p>For containers, we use the following structures:</p>
+<dl class="docutils">
+<dt>ordered</dt>
+<dd>A list of one of the above value types.</dd>
+<dt>multiple:</dt>
+<dd>A dictionary with keys that are one of the above value types and
+values that indicate the frequency of that value in the container.</dd>
+<dt>record:</dt>
+<dd>A dictionary with keys that are the field identifiers and
+values that Value instances.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Value.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Value.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value.</p>
+<p>All single values can be set from a single text string corresponding to
+their XML schema defined lexical values (<em>without</em> character level
+escaping).  If v is a single Value instance then the following always
+leaves v unchanged:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">v</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Value instances can also be set from values of the appropriate type as
+described in <a class="reference internal" href="#pyslet.qtiv2.variables.Value.value" title="pyslet.qtiv2.variables.Value.value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a>.  For base types that are represented with
+tuples we also accept and convert lists.</p>
+<p>Containers values cannot be set from strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Value.ValueError">
+<tt class="descname">ValueError</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Value.ValueError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a ValueError with a debug-friendly message string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Value.Cardinality">
+<tt class="descname">Cardinality</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Value.Cardinality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the cardinality of this value.  One of the <a class="reference internal" href="#pyslet.qtiv2.variables.Cardinality" title="pyslet.qtiv2.variables.Cardinality"><tt class="xref py py-class docutils literal"><span class="pre">Cardinality</span></tt></a> constants.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Value.IsNull">
+<tt class="descname">IsNull</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Value.IsNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True is this value is NULL, as defined by the QTI specification.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.qtiv2.variables.Value.NewValue">
+<em class="property">classmethod </em><tt class="descname">NewValue</tt><big>(</big><em>cardinality</em>, <em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Value.NewValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new value instance with <em>cardinality</em> and <em>baseType</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.SingleValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">SingleValue</tt><a class="headerlink" href="#pyslet.qtiv2.variables.SingleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Value</span></tt></a></p>
+<p>Represents all values with single cardinality.</p>
+<dl class="classmethod">
+<dt id="pyslet.qtiv2.variables.SingleValue.NewValue">
+<em class="property">classmethod </em><tt class="descname">NewValue</tt><big>(</big><em>baseType</em>, <em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.SingleValue.NewValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new instance of a single value with <em>baseType</em> and <em>value</em></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.BooleanValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">BooleanValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.BooleanValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single values of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.boolean</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.BooleanValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.BooleanValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>If value is a string it will be decoded according to the rules for representing
+boolean values.  Booleans and integers can be used directly in the normal python
+way but other values will raise ValueError.  To take advantage of a non-zero test
+you must explicitly force it to be a boolean.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># x is a value of unknown type with non-zero test implemented</span>
+<span class="n">v</span><span class="o">=</span><span class="n">BooleanValue</span><span class="p">()</span>
+<span class="n">v</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="bp">True</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.DirectedPairValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">DirectedPairValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.DirectedPairValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single values of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.directedPair</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.DirectedPairValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>nameCheck=False</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.DirectedPairValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>See comment on <tt class="xref py py-meth docutils literal"><span class="pre">Identifier.SetValue()</span></tt> for usage of <em>nameCheck</em>.</p>
+<p>Note that if value is a string then nameCheck is ignored and identifier
+validation is always performed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.DurationValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">DurationValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.DurationValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.FloatValue" title="pyslet.qtiv2.variables.FloatValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.FloatValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.duration</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.FileValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">FileValue</tt><a class="headerlink" href="#pyslet.qtiv2.variables.FileValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.file</span></tt>.</p>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.FileValue.contentType">
+<tt class="descname">contentType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.FileValue.contentType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The content type of the file, a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.HTTPMediaType</span></tt> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.qtiv2.variables.FileValue.fileName">
+<tt class="descname">fileName</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.variables.FileValue.fileName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The file name to use for the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.FileValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>type='application/octet-stream'</em>, <em>name='data.bin'</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.FileValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a file value from a file like object or a string.</p>
+<p>There are some important and subtle distinctions in this method.</p>
+<p>If value is a Unicode text string then it is parsed according to the
+MIME-like format defined in the QTI specification.  The values of
+<em>type</em> and <em>name</em> are only used as defaults if those values cannot
+be read from the value&#8217;s headers.</p>
+<p>If value is a plain string then it is assumed to represent the file&#8217;s
+data directly, <em>type</em> and <em>name</em> are used to interpret the data.
+Other file type objects are set in the same way.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.FloatValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">FloatValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.FloatValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.float</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.FloatValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.FloatValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will <em>not</em> convert integers to float values, you must do
+this explicitly if you want automatic conversion, for example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># x is a numeric value that may be float or integer</span>
+<span class="n">v</span><span class="o">=</span><span class="n">FloatValue</span><span class="p">()</span>
+<span class="n">v</span><span class="o">.</span><span class="n">SetValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.IdentifierValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">IdentifierValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.IdentifierValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.identifier</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.IdentifierValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>nameCheck=True</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.IdentifierValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>In general, to speed up computation we do not check the validity of
+identifiers unless parsing the value from a string representation (such
+as a value read from an XML input document).</p>
+<p>As values of baseType identifier are represented natively as strings we
+cannot tell if this method is being called with an existing,
+name-checked value or a new value being parsed from an external source.
+To speed up computation you can suppress the name check in the first
+case by setting <em>nameCheck</em> to False (the default is True).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.IntegerValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">IntegerValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.IntegerValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.integer</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.IntegerValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.IntegerValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Note that integers and floats are distinct types in QTI: we do not
+accept floats where we would expect integers or <em>vice versa</em>.  However,
+integers are accepted from long or plain integer values provided they
+are within the ranges specified in the QTI specification:
+-2147483648...2147483647.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.PairValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">PairValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.PairValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.DirectedPairValue" title="pyslet.qtiv2.variables.DirectedPairValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.DirectedPairValue</span></tt></a></p>
+<p>Represents single values of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.pair</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.PairValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>nameCheck=True</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.PairValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides DirectedPair&#8217;s implementation to force a predictable ordering on the identifiers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.PointValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">PointValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.PointValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.point</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.StringValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">StringValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.StringValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.string</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.URIValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">URIValue</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.URIValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.SingleValue" title="pyslet.qtiv2.variables.SingleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.SingleValue</span></tt></a></p>
+<p>Represents single value of type <tt class="xref py py-class docutils literal"><span class="pre">BaseType.uri</span></tt>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.URIValue.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.URIValue.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a uri value from a string or another URI instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.Container">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">Container</tt><big>(</big><em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Value</span></tt></a></p>
+<p>An abstract class for all container types.</p>
+<p>By default containers are empty (and are treated as NULL values).  You can
+force the type of an empty container by passing a baseType constant to the
+constructor.  This will cause the container to generate TypeError if used in
+a context where the specified baseType is not allowed.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.Container.GetValues">
+<tt class="descname">GetValues</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.Container.GetValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of the container&#8217;s values.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.OrderedContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">OrderedContainer</tt><big>(</big><em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.OrderedContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.Container" title="pyslet.qtiv2.variables.Container"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Container</span></tt></a></p>
+<p>Represents containers with ordered <a class="reference internal" href="#pyslet.qtiv2.variables.Cardinality" title="pyslet.qtiv2.variables.Cardinality"><tt class="xref py py-class docutils literal"><span class="pre">Cardinality</span></tt></a>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.OrderedContainer.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.OrderedContainer.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of this container from a list, tuple or other
+iterable. The list must contain valid representations of <em>baseType</em>,
+items may be None indicating a NULL value in the list.  In accordance
+with the specification&#8217;s multiple operator NULL values are ignored.</p>
+<p>If the input list of values empty, or contains only NULL values then the
+resulting container is empty.</p>
+<p>If <em>baseType</em> is None the base type specified when the container was
+constructed is assumed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.OrderedContainer.GetValues">
+<tt class="descname">GetValues</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.OrderedContainer.GetValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of values in the ordered container.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.MultipleContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">MultipleContainer</tt><big>(</big><em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MultipleContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.Container" title="pyslet.qtiv2.variables.Container"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Container</span></tt></a></p>
+<p>Represents containers with multiple <a class="reference internal" href="#pyslet.qtiv2.variables.Cardinality" title="pyslet.qtiv2.variables.Cardinality"><tt class="xref py py-class docutils literal"><span class="pre">Cardinality</span></tt></a>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.MultipleContainer.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em>, <em>baseType=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MultipleContainer.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of this container from a list, tuple or other
+iterable. The list must contain valid representations of <em>baseType</em>,
+items may be None indicating a NULL value in the list.  In accordance
+with the specification&#8217;s multiple operator NULL values are ignored.</p>
+<p>If the input list of values empty, or contains only NULL values then the
+resulting container is empty.</p>
+<p>If <em>baseType</em> is None the base type specified when the container was
+constructed is assumed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.MultipleContainer.GetValues">
+<tt class="descname">GetValues</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.MultipleContainer.GetValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of values in the ordered container.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.variables.RecordContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.variables.</tt><tt class="descname">RecordContainer</tt><a class="headerlink" href="#pyslet.qtiv2.variables.RecordContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.variables.Container" title="pyslet.qtiv2.variables.Container"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Container</span></tt></a></p>
+<p>Represents containers with record <a class="reference internal" href="#pyslet.qtiv2.variables.Cardinality" title="pyslet.qtiv2.variables.Cardinality"><tt class="xref py py-class docutils literal"><span class="pre">Cardinality</span></tt></a>.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.RecordContainer.SetValue">
+<tt class="descname">SetValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.RecordContainer.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of this container from an existing dictionary in which
+the keys are the field identifiers and the values are <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a>
+instances. You cannot parse containers from strings.</p>
+<p>Records are always treated as having a wild-card base type.</p>
+<p>If the input <em>value</em> contains any keys which map to None or to a NULL
+value then these fields are omitted from the resulting value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.RecordContainer.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>fieldIdentifier</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.RecordContainer.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a> instance corresponding to
+<em>fieldIdentifier</em> or raises KeyError if there is no field with that
+name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.variables.RecordContainer.__setitem__">
+<tt class="descname">__setitem__</tt><big>(</big><em>fieldIdentifier</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.variables.RecordContainer.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value in the named field to <em>value</em>.</p>
+<p>We add some special behaviour here.  If <em>value</em> is None or is a NULL
+value then we remove the field with the give name.  In other words:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">r</span><span class="o">=</span><span class="n">RecordContainer</span><span class="p">()</span>
+<span class="n">r</span><span class="p">[</span><span class="s">&#39;pi&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">FloatValue</span><span class="p">(</span><span class="mf">3.14</span><span class="p">)</span>
+<span class="n">r</span><span class="p">[</span><span class="s">&#39;pi&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">FloatValue</span><span class="p">()</span>     <span class="c"># a NULL value</span>
+<span class="k">print</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;pi&#39;</span><span class="p">]</span>            <span class="c"># raises KeyError</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.1. Item Variables</a><ul>
+<li><a class="reference internal" href="#response-variables">1.3.1.1. Response Variables</a></li>
+<li><a class="reference internal" href="#outcome-variables">1.3.1.2. Outcome Variables</a></li>
+<li><a class="reference internal" href="#template-variables">1.3.1.3. Template Variables</a></li>
+<li><a class="reference internal" href="#runtime-object-model">1.3.1.4. Runtime Object Model</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../imsqtiv2p1.html"
+                        title="previous chapter">1.3. IMS Question and Test Interoperability (version 2.1)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="core.html"
+                        title="next chapter">1.3.2. Core Types and Utilities</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/variables.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="1.3.2. Core Types and Utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../imsqtiv2p1.html" title="1.3. IMS Question and Test Interoperability (version 2.1)"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

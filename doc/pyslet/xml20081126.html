@@ -86,7 +86,7 @@ None.</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Node.GetChildren">
 <tt class="descname">GetChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Node.GetChildren" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of this object&#8217;s children.</p>
+<dd><p>Returns an iterator over this object&#8217;s children.</p>
 </dd></dl>
 
 <dl class="method">
@@ -359,7 +359,7 @@ character&#8221;</p>
 
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.CollapseSpace">
-<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x18c62b0&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x1071aa500&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns data with all spaces collapsed to a single space.</p>
 <p>sMode determines the fate of any leading space, by default it is True and
 leading spaces are ignored provided the string has some non-space
@@ -620,6 +620,20 @@ then None is returned.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pyslet.xml20081126.structures.Element.MangleAttributeName">
+<tt class="descname">MangleAttributeName</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.MangleAttributeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a mangled attribute name, used when setting attributes.</p>
+<p>If name cannot be mangled, None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.structures.Element.UnmangleAttributeName">
+<tt class="descname">UnmangleAttributeName</tt><big>(</big><em>mName</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.UnmangleAttributeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an unmangled attribute name, used when getting attributes.</p>
+<p>If mName is not a mangled name, None is returned.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.GetAttributes">
 <tt class="descname">GetAttributes</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GetAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary object that maps attribute names onto values.</p>
@@ -692,9 +706,9 @@ XMLMixedContent.</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.GetChildren">
 <tt class="descname">GetChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GetChildren" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of the element&#8217;s children.</p>
-<p>This method returns a copy of local list of children and so may be
-modified by the caller.  Derived classes with custom factory methods
+<dd><p>Returns an iterable of the element&#8217;s children.</p>
+<p>This method iterates through the local list of children and so may be
+modified by the caller.  Derived classes with custom factory elements
 must override this method.</p>
 <p>Each child is either a string type, unicode string type or instance of
 Element (or a derived class thereof)</p>
@@ -703,10 +717,11 @@ Element (or a derived class thereof)</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.GetCanonicalChildren">
 <tt class="descname">GetCanonicalChildren</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GetCanonicalChildren" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of the element&#8217;s children canonicalized for white space.</p>
-<p>We check the current setting of xml:space, returning the same list
-of children as GetChildren if &#8216;preserve&#8217; is in force.  Otherwise we
-remove any leading space and collapse all others to a single space character.</p>
+<dd><p>Returns an iterable of the element&#8217;s children canonicalized for white space.</p>
+<p>We check the current setting of xml:space, returning the same list of
+children as <a class="reference internal" href="#pyslet.xml20081126.structures.Element.GetChildren" title="pyslet.xml20081126.structures.Element.GetChildren"><tt class="xref py py-meth docutils literal"><span class="pre">GetChildren()</span></tt></a> if &#8216;preserve&#8217; is in force.  Otherwise
+we remove any leading space and collapse all others to a single space
+character.</p>
 </dd></dl>
 
 <dl class="method">
@@ -791,14 +806,8 @@ to this element or its descendents are unregistered.</p>
 <dt id="pyslet.xml20081126.structures.Element.AddData">
 <tt class="descname">AddData</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.AddData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a string or unicode string to this element&#8217;s children.</p>
-<p>This method should raise a ValidationError if the element cannot take
-data children, however, if <em>suggestClass</em> is True then the method may
-optionally return a class object (derived from <a class="reference internal" href="#pyslet.xml20081126.structures.Element" title="pyslet.xml20081126.structures.Element"><tt class="xref py py-class docutils literal"><span class="pre">Element</span></tt></a>)
-suggesting an element to create to contain the data.  This behaviour is
-intended to be used in conjunction with the
-<tt class="xref py py-attr docutils literal"><span class="pre">XMLParser.sgmlOmittag</span></tt> parsing option.  For example,
-attempting to add data to an HTML Body element would result in the
-suggestion to create a P element.</p>
+<p>This method raises a ValidationError if the element cannot take data
+children.</p>
 </dd></dl>
 
 <dl class="method">
@@ -935,7 +944,7 @@ and white space <em>is</em> pretty printed.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.WriteXMLAttributes">
-<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x18abb70&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x1071a60c8&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds strings representing the element&#8217;s attributes</p>
 <p>attributes is a list of unicode strings.  Attributes should be appended
 as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately
@@ -1283,7 +1292,7 @@ model.</p>
 <h2>2.4.3. Physical Structures<a class="headerlink" href="#physical-structures" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.xml20081126.structures.XMLEntity">
-<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">XMLEntity</tt><big>(</big><em>src=None</em>, <em>encoding='utf-8'</em>, <em>reqManager=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">XMLEntity</tt><big>(</big><em>src=None</em>, <em>encoding=None</em>, <em>reqManager=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object representing an entity.</p>
 <p>This object serves two purposes, it acts as both the object used to
 store information about declared entities and also as a parser for feeding
@@ -1323,6 +1332,14 @@ behaviour.  If using a file, the file must support seek behaviour.</p>
 <tt class="descname">charSource</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.charSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>A unicode data reader used to read characters from the entity.  If
 None, then the entity is closed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xml20081126.structures.XMLEntity.bom">
+<tt class="descname">bom</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.bom" title="Permalink to this definition">¶</a></dt>
+<dd><p>flag to indicate whether or not the byte order mark was detected.  If
+detected the flag is set to True.  An initial byte order mark is not
+reported in <a class="reference internal" href="#pyslet.xml20081126.structures.XMLEntity.theChar" title="pyslet.xml20081126.structures.XMLEntity.theChar"><tt class="xref py py-attr docutils literal"><span class="pre">theChar</span></tt></a> or by the <a class="reference internal" href="#pyslet.xml20081126.structures.XMLEntity.NextChar" title="pyslet.xml20081126.structures.XMLEntity.NextChar"><tt class="xref py py-meth docutils literal"><span class="pre">NextChar()</span></tt></a> method.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1398,12 +1415,13 @@ UnimplementedError.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.XMLEntity.OpenString">
-<tt class="descname">OpenString</tt><big>(</big><em>src</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenString" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">OpenString</tt><big>(</big><em>src</em>, <em>encoding=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the entity from a byte string.</p>
 <p>The optional <em>encoding</em> is used to convert the string to unicode and
-defaults to UTF-8.</p>
+defaults to None - meaning that the auto-detection method will be
+applied.</p>
 <p>The advantage of using this method instead of converting the string to
-unicode and calling <a class="reference internal" href="#pyslet.xml20081126.structures.XMLEntity.OpenUnicode" title="pyslet.xml20081126.structures.XMLEntity.OpenUnicode"><tt class="xref py py-meth docutils literal"><span class="pre">OpenUnicode()</span></tt></a> is that this method creates
+unicode and calling <a class="reference internal" href="#pyslet.xml20081126.structures.XMLEntity.OpenUnicode" title="pyslet.xml20081126.structures.XMLEntity.OpenUnicode"><tt class="xref py py-meth docutils literal"><span class="pre">OpenUnicode()</span></tt></a> is that this method creates a
 unicode reader object to parse the string instead of making a copy of it
 in memory.</p>
 </dd></dl>
@@ -1411,14 +1429,17 @@ in memory.</p>
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.XMLEntity.OpenFile">
 <tt class="descname">OpenFile</tt><big>(</big><em>src</em>, <em>encoding='utf-8'</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens the entity from an existing (open) file.</p>
+<dd><p>Opens the entity from an existing (open) binary file.</p>
 <p>The optional <em>encoding</em> provides a hint as to the intended encoding of
-the data and defaults to UTF-8.</p>
+the data and defaults to UTF-8.  Unlike other Open* methods we do not
+assume that the file is seekable however, if you may set encoding to
+None for a seekable file thus invoking auto-detection of the
+encoding.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.XMLEntity.OpenURI">
-<tt class="descname">OpenURI</tt><big>(</big><em>src</em>, <em>encoding='utf-8'</em>, <em>reqManager=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenURI" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">OpenURI</tt><big>(</big><em>src</em>, <em>encoding=None</em>, <em>reqManager=None</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.OpenURI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the entity from a URI passed in <em>src</em>.</p>
 <p>The file, http and https schemes are the only ones supported.</p>
 <p>The optional <em>encoding</em> provides a hint as to the intended encoding of
@@ -1460,6 +1481,13 @@ charset cannot be read successfully from the HTTP response headers.</p>
 <p>This method takes care of the End-of-Line handling rules for XML which force
 us to remove any CR characters and replace them with LF if they appear on their
 own or to silenty drop them if they appear as part of a CR-LF combination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xml20081126.structures.XMLEntity.AutoDetectEncoding">
+<tt class="descname">AutoDetectEncoding</tt><big>(</big><em>srcFile</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.XMLEntity.AutoDetectEncoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auto-detects the character encoding in <em>srcFile</em>.</p>
+<p>Should only be called for seek-able streams opened in binary mode.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1730,7 +1758,7 @@ used.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

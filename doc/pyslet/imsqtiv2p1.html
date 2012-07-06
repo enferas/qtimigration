@@ -27,8 +27,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Pyslet 0.3.20110627 documentation" href="index.html" />
     <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
-    <link rel="next" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)" href="imsbltiv1p0.html" />
-    <link rel="prev" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="imsqtiv1p2p1.html" /> 
+    <link rel="next" title="1.3.1. Item Variables" href="qtiv2/variables.html" />
+    <link rel="prev" title="1.2.2. Common Classes" href="qtiv1/common.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,10 +41,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="imsbltiv1p0.html" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)"
+          <a href="qtiv2/variables.html" title="1.3.1. Item Variables"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+          <a href="qtiv1/common.html" title="1.2.2. Common Classes"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="ims.html" accesskey="U">1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
@@ -61,7 +61,30 @@
 <p>The IMS Question and Test Interoperability specification version 2.1 has yet to be finalized and is currently only available as a &#8220;Public Draft Specification&#8221; from the IMS GLC website: <a class="reference external" href="http://www.imsglobal.org/question/index.html">http://www.imsglobal.org/question/index.html</a></p>
 <p>Version 2.1 is an extension of the pre-existing version 2.0 which was finalized in 2005.  For more information on the history of the specification see <a class="reference external" href="http://en.wikipedia.org/wiki/QTI">http://en.wikipedia.org/wiki/QTI</a></p>
 <p>This module implements version 2.1 of the specification in anticipation of the finalization of the specification by the consortium.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="qtiv2/variables.html">1.3.1. Item Variables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/variables.html#response-variables">1.3.1.1. Response Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/variables.html#outcome-variables">1.3.1.2. Outcome Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/variables.html#template-variables">1.3.1.3. Template Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/variables.html#runtime-object-model">1.3.1.4. Runtime Object Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qtiv2/expressions.html">1.3.2. Expressions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/expressions.html#built-in-general-expressions">1.3.2.1. Built-in General Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/expressions.html#expressions-used-only-in-outcomes-processing">1.3.2.2. Expressions Used only in Outcomes Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/expressions.html#operators">1.3.2.3. Operators</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qtiv2/core.html">1.3.3. Core Types and Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/core.html#constants">1.3.3.1. Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/core.html#exceptions">1.3.3.2. Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qtiv2/core.html#basic-data-types">1.3.3.3. Basic Data Types</a></li>
+</ul>
+</li>
+</ul>
 </div>
+<span class="target" id="module-pyslet.imsqtiv2p1"></span></div>
 
 
           </div>
@@ -70,11 +93,11 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="imsqtiv1p2p1.html"
-                        title="previous chapter">1.2. IMS Question and Test Interoperability (version 1.2)</a></p>
+  <p class="topless"><a href="qtiv1/common.html"
+                        title="previous chapter">1.2.2. Common Classes</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="imsbltiv1p0.html"
-                        title="next chapter">1.4. IMS Basic Learning Tools Interoperability (version 1.0)</a></p>
+  <p class="topless"><a href="qtiv2/variables.html"
+                        title="next chapter">1.3.1. Item Variables</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/imsqtiv2p1.txt"
@@ -107,10 +130,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="imsbltiv1p0.html" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)"
+          <a href="qtiv2/variables.html" title="1.3.1. Item Variables"
              >next</a> |</li>
         <li class="right" >
-          <a href="imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
+          <a href="qtiv1/common.html" title="1.2.2. Common Classes"
              >previous</a> |</li>
         <li><a href="index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
           <li><a href="ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
@@ -118,7 +141,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2011, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

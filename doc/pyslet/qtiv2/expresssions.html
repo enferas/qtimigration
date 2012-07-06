@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Expressions &mdash; Pyslet 0.3.20110627 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.20110627',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.expressions">
+<span id="expressions"></span><h1>Expressions<a class="headerlink" href="#module-pyslet.qtiv2.expressions" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Expression">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Expression</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<p>Abstract class for all expression elements.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.expressions.Expression.Evaluate">
+<tt class="descname">Evaluate</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression.Evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates this expression in the context of the session <em>state</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.expressions.Expression.IntegerOrTemplateRef">
+<tt class="descname">IntegerOrTemplateRef</tt><big>(</big><em>state</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression.IntegerOrTemplateRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a value of type integerOrTemplateRef this method returns the
+corresponding integer by looking up the value, if necessary, in
+<em>state</em>.  If value is a variable reference to a variable with NULL
+value then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.expressions.Expression.FloatOrTemplateRef">
+<tt class="descname">FloatOrTemplateRef</tt><big>(</big><em>state</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression.FloatOrTemplateRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a value of type floatOrTemplateRef this method returns the
+corresponding float by looking up the value, if necessary, in
+<em>state</em>.  If value is a variable reference to a variable with NULL
+value then None is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="built-in-general-expressions">
+<h2>Built-in General Expressions<a class="headerlink" href="#built-in-general-expressions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.BaseValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">BaseValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.BaseValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>The simplest expression returns a single value from the set defined by
+the given baseType</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="baseValue.AttrGroup"&gt;
+        &lt;xsd:attribute name="baseType" type="baseType.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:complexType name="baseValue.Type"&gt;
+        &lt;xsd:simpleContent&gt;
+                &lt;xsd:extension base="xsd:string"&gt;
+                        &lt;xsd:attributeGroup ref="baseValue.AttrGroup"/&gt;
+                &lt;/xsd:extension&gt;
+        &lt;/xsd:simpleContent&gt;
+&lt;/xsd:complexType&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Variable">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Variable</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>This expression looks up the value of an itemVariable that has been
+declared in a corresponding variableDeclaration or is one of the built-in
+variables:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="variable.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+        &lt;xsd:attribute name="weightIdentifier" type="identifier.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Default">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Default</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>This expression looks up the declaration of an itemVariable and returns
+the associated defaultValue or NULL if no default value was declared:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="default.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Correct">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Correct</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Correct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>This expression looks up the declaration of a response variable and
+returns the associated correctResponse or NULL if no correct value was
+declared:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="correct.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.MapResponse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">MapResponse</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.MapResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>This expression looks up the value of a response variable and then
+transforms it using the associated mapping, which must have been declared.
+The result is a single float:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapResponse.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.MapResponsePoint">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">MapResponsePoint</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.MapResponsePoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>This expression looks up the value of a response variable that must be of
+base-type point, and transforms it using the associated areaMapping:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapResponsePoint.AttrGroup"&gt;
+        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Null">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Null</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Null" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>null is a simple expression that returns the NULL value - the null value is
+treated as if it is of any desired baseType</p>
+<div class="highlight-python"><pre>&lt;xsd:complexType name="null.Type"/&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.RandomInteger">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">RandomInteger</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.RandomInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>Selects a random integer from the specified range [min,max] satisfying
+min + step * n for some integer n:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="randomInteger.AttrGroup"&gt;
+        &lt;xsd:attribute name="min" type="integerOrTemplateRef.Type" use="required"/&gt;
+        &lt;xsd:attribute name="max" type="integerOrTemplateRef.Type" use="required"/&gt;
+        &lt;xsd:attribute name="step" type="integerOrTemplateRef.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.RandomFloat">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">RandomFloat</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.RandomFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>Selects a random float from the specified range [min,max]</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="randomFloat.AttrGroup"&gt;
+        &lt;xsd:attribute name="min" type="floatOrTemplateRef.Type" use="required"/&gt;
+        &lt;xsd:attribute name="max" type="floatOrTemplateRef.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;</pre>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="expressions-used-only-in-outcomes-processing">
+<h2>Expressions Used only in Outcomes Processing<a class="headerlink" href="#expressions-used-only-in-outcomes-processing" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Expressions</a><ul>
+<li><a class="reference internal" href="#built-in-general-expressions">Built-in General Expressions</a></li>
+<li><a class="reference internal" href="#expressions-used-only-in-outcomes-processing">Expressions Used only in Outcomes Processing</a></li>
+<li><a class="reference internal" href="#operators">Operators</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/expresssions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

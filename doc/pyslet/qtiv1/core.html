@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.2.1. Core Types and Utilities &mdash; Pyslet 0.3.20110627 documentation</title>
+    <title>1.2.1. Core Types and Utilities &mdash; Pyslet 0.3.20120806 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.20110627',
+        VERSION:     '0.3.20120806',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="../index.html" />
     <link rel="up" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="../imsqtiv1p2p1.html" />
     <link rel="next" title="1.2.2. Common Classes" href="common.html" />
     <link rel="prev" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="../imsqtiv1p2p1.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="../imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv1p2p1.html" accesskey="U">1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
       </ul>
@@ -105,7 +105,7 @@ methods for decoding and encoding from and to text strings.</p>
 <dl class="function">
 <dt id="pyslet.qtiv1.core.MigrateV2AreaCoords">
 <tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">MigrateV2AreaCoords</tt><big>(</big><em>area</em>, <em>value</em>, <em>log</em><big>)</big><a class="headerlink" href="#pyslet.qtiv1.core.MigrateV2AreaCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a tuple of (shape,coords array) representing the area.</p>
+<dd><p>Returns a tuple of (shape,coords object) representing the area.</p>
 <ul class="simple">
 <li><em>area</em> is one of the <a class="reference internal" href="#pyslet.qtiv1.core.Area" title="pyslet.qtiv1.core.Area"><tt class="xref py py-class docutils literal"><span class="pre">Area</span></tt></a> constants.</li>
 <li><em>value</em> is the string containing the content of the element to which
@@ -114,19 +114,21 @@ the area applies.</li>
 <p>This conversion is generous because the separators have never been well
 defined and in some cases content uses a mixture of space and &#8216;,&#8217;.</p>
 <p>Note also that the definition of rarea was updated in the 1.2.1 errata and
-this affects this algorithm.  The clarification on the definition of ellipse
+that affects this algorithm.  The clarification on the definition of ellipse
 from radii to diameters might mean that some content ends up with hotspots
 that are too small but this is safer than hotspots that are too large.</p>
 <p>Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.qtiv1.core</span> <span class="kn">as</span> <span class="nn">qticore1</span>
 <span class="kn">import</span> <span class="nn">pyslet.qtiv2.core</span> <span class="kn">as</span> <span class="nn">qticore2</span>
+<span class="kn">import</span> <span class="nn">pyslet.html40_1991224</span> <span class="kn">as</span> <span class="nn">html</span>
 <span class="n">log</span><span class="o">=</span><span class="p">[]</span>
 <span class="n">shape</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="n">qticore1</span><span class="o">.</span><span class="n">MigrateV2AreaCoords</span><span class="p">(</span><span class="n">qticore1</span><span class="o">.</span><span class="n">Area</span><span class="o">.</span><span class="n">Ellipse</span><span class="p">,</span><span class="s">&quot;10,10,2,2&quot;</span><span class="p">,</span><span class="n">log</span><span class="p">)</span>
-<span class="c"># returns (qticore2.Shape.circle, [10, 10, 1])</span>
+<span class="c"># returns (qticore2.Shape.circle, html.Coords([10, 10, 1]) )</span>
 </pre></div>
 </div>
 <p>Note that Ellipse was deprecated in QTI version 2:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.qtiv1.core</span> <span class="kn">as</span> <span class="nn">qticore1</span>
+<span class="kn">import</span> <span class="nn">pyslet.html40_1991224</span> <span class="kn">as</span> <span class="nn">html</span>
 <span class="n">log</span><span class="o">=</span><span class="p">[]</span>
 <span class="n">shape</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="n">qticore1</span><span class="o">.</span><span class="n">MigrateV2AreaCoords</span><span class="p">(</span><span class="n">qticore1</span><span class="o">.</span><span class="n">Area</span><span class="o">.</span><span class="n">Ellipse</span><span class="p">,</span><span class="s">&quot;10,10,2,4&quot;</span><span class="p">,</span><span class="n">log</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">log</span>
@@ -294,7 +296,7 @@ constants.</p>
 
 <dl class="data">
 <dt id="pyslet.qtiv1.core.TestOperator">
-<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">TestOperator</tt><em class="property"> = &lt;class pyslet.qtiv1.core.MDOperator at 0x101a50120&gt;</em><a class="headerlink" href="#pyslet.qtiv1.core.TestOperator" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyslet.qtiv1.core.</tt><tt class="descname">TestOperator</tt><em class="property"> = &lt;class pyslet.qtiv1.core.MDOperator at 0x10f9f4e88&gt;</em><a class="headerlink" href="#pyslet.qtiv1.core.TestOperator" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple alias of <a class="reference internal" href="#pyslet.qtiv1.core.MDOperator" title="pyslet.qtiv1.core.MDOperator"><tt class="xref py py-class docutils literal"><span class="pre">MDOperator</span></tt></a> defined for
 <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.outcomes.VariableTest</span></tt></p>
 </dd></dl>
@@ -540,13 +542,13 @@ ignored.</p>
         <li class="right" >
           <a href="../imsqtiv1p2p1.html" title="1.2. IMS Question and Test Interoperability (version 1.2)"
              >previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv1p2p1.html" >1.2. IMS Question and Test Interoperability (version 1.2)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Steve Lay.
+        &copy; Copyright ©2012, Steve Lay.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.3.2. Expressions &mdash; Pyslet 0.3.20110627 documentation</title>
+    <title>1.3.2. Expressions &mdash; Pyslet 0.3.20120806 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.20110627',
+        VERSION:     '0.3.20120806',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="../index.html" />
     <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
     <link rel="next" title="1.3.3. Core Types and Utilities" href="core.html" />
     <link rel="prev" title="1.3.1. Item Variables" href="variables.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="variables.html" title="1.3.1. Item Variables"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
@@ -88,6 +88,43 @@ corresponding float by looking up the value, if necessary, in
 value then None is returned.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pyslet.qtiv2.expressions.Expression.StringOrTemplateRef">
+<tt class="descname">StringOrTemplateRef</tt><big>(</big><em>state</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression.StringOrTemplateRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a value of type stringOrTemplateRef this method returns the
+corresponding string by looking up the value, if necessary, in
+<em>state</em>.  If value is a variable reference to a variable with NULL
+value then None is returned.  Note that unlike the integer and float
+expansions this expansion will not raise an error if <em>value</em> is a
+syntactically valid reference to a non-existent template variable, as
+per this condition in the specification.</p>
+<blockquote>
+<div>&#8220;if a string attribute appears to be a reference to a template
+variable but there is no variable with the given name it should be
+treated simply as string value&#8221;</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.NOperator">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">NOperator</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.NOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>An abstract class to help implement operators which take multiple sub-expressions.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.expressions.NOperator.EvaluateChildren">
+<tt class="descname">EvaluateChildren</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.NOperator.EvaluateChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates all child expressions, returning an iterable of
+<tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt> instances.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.UnaryOperator">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">UnaryOperator</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.UnaryOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
+<p>An abstract class to help implement unary operators.</p>
 </dd></dl>
 
 <div class="section" id="built-in-general-expressions">
@@ -218,6 +255,702 @@ min + step * n for some integer n:</p>
 </div>
 <div class="section" id="operators">
 <h2>1.3.2.3. Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Multiple">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Multiple</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The multiple operator takes 0 or more sub-expressions all of which must
+have either single or multiple cardinality:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="multiple.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Ordered">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Ordered</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Ordered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The multiple operator takes 0 or more sub-expressions all of which must
+have either single or multiple cardinality:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="ordered.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.ContainerSize">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">ContainerSize</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.ContainerSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The containerSize operator takes a sub-expression with any base-type and
+either multiple or ordered cardinality:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="containerSize.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.IsNull">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">IsNull</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.IsNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The isNull operator takes a sub-expression with any base-type and
+cardinality</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="isNull.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Index">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Index</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The index operator takes a sub-expression with an ordered container value
+and any base-type</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="index.AttrGroup"&gt;
+        &lt;xsd:attribute name="n" type="integer.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="index.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.FieldValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">FieldValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.FieldValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The field-value operator takes a sub-expression with a record container
+value. The result is the value of the field with the specified
+fieldIdentifier:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="fieldValue.AttrGroup"&gt;
+        &lt;xsd:attribute name="fieldIdentifier" type="identifier.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="fieldValue.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Random">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Random</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The random operator takes a sub-expression with a multiple or ordered
+container value and any base-type. The result is a single value randomly
+selected from the container:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="random.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Member">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Member</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Member" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The member operator takes two sub-expressions which must both have the
+same base-type. The first sub-expression must have single cardinality and
+the second must be a multiple or ordered container. The result is a single
+boolean with a value of true if the value given by the first sub-expression
+is in the container defined by the second sub-expression:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="member.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Delete">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Delete</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The delete operator takes two sub-expressions which must both have the
+same base-type. The first sub-expression must have single cardinality and
+the second must be a multiple or ordered container. The result is a new
+container derived from the second sub-expression with all instances of the
+first sub-expression removed:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="delete.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Contains">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Contains</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The contains operator takes two sub-expressions which must both have the
+same base-type and cardinality &#8211; either multiple or ordered. The result is
+a single boolean with a value of true if the container given by the first
+sub-expression contains the value given by the second sub-expression and
+false if it doesn&#8217;t:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="contains.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.SubString">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">SubString</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.SubString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The substring operator takes two sub-expressions which must both have an
+effective base-type of string and single cardinality. The result is a single
+boolean with a value of true if the first expression is a substring of the
+second expression and false if it isn&#8217;t:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="substring.AttrGroup"&gt;
+        &lt;xsd:attribute name="caseSensitive" type="boolean.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="substring.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Not">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Not</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Not" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The not operator takes a single sub-expression with a base-type of
+boolean and single cardinality. The result is a single boolean with a value
+obtained by the logical negation of the sub-expression&#8217;s value:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="not.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.And">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">And</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The and operator takes one or more sub-expressions each with a base-type
+of boolean and single cardinality. The result is a single boolean which is
+true if all sub-expressions are true and false if any of them are false:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="and.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Or">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Or</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The or operator takes one or more sub-expressions each with a base-type
+of boolean and single cardinality. The result is a single boolean which is
+true if any of the sub-expressions are true and false if all of them are
+false:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="or.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.AnyN">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">AnyN</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.AnyN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The anyN operator takes one or more sub-expressions each with a base-type
+of boolean and single cardinality. The result is a single boolean which is
+true if at least min of the sub-expressions are true and at most max of the
+sub-expressions are true:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="anyN.AttrGroup"&gt;
+        &lt;xsd:attribute name="min" type="integerOrTemplateRef.Type" use="required"/&gt;
+        &lt;xsd:attribute name="max" type="integerOrTemplateRef.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="anyN.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Match">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Match</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The match operator takes two sub-expressions which must both have the
+same base-type and cardinality. The result is a single boolean with a value
+of true if the two expressions represent the same value and false if they do
+not:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="match.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.StringMatch">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">StringMatch</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.StringMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The stringMatch operator takes two sub-expressions which must have single
+and a base-type of string. The result is a single boolean with a value of
+true if the two strings match:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="stringMatch.AttrGroup"&gt;
+        &lt;xsd:attribute name="caseSensitive" type="boolean.Type" use="required"/&gt;
+        &lt;xsd:attribute name="substring" type="boolean.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="stringMatch.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.PatternMatch">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">PatternMatch</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.PatternMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The patternMatch operator takes a sub-expression which must have single
+cardinality and a base-type of string. The result is a single boolean with a
+value of true if the sub-expression matches the regular expression given by
+pattern and false if it doesn&#8217;t:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="patternMatch.AttrGroup"&gt;
+        &lt;xsd:attribute name="pattern" type="stringOrTemplateRef.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="patternMatch.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Equal">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Equal</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The equal operator takes two sub-expressions which must both have single
+cardinality and have a numerical base-type. The result is a single boolean
+with a value of true if the two expressions are numerically equal and false
+if they are not:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="equal.AttrGroup"&gt;
+        &lt;xsd:attribute name="toleranceMode" type="toleranceMode.Type" use="required"/&gt;
+        &lt;xsd:attribute name="tolerance" use="optional"&gt;
+                &lt;xsd:simpleType&gt;
+                        &lt;xsd:list itemType="floatOrTemplateRef.Type"/&gt;
+                &lt;/xsd:simpleType&gt;
+        &lt;/xsd:attribute&gt;
+        &lt;xsd:attribute name="includeLowerBound" type="boolean.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="includeUpperBound" type="boolean.Type" use="optional"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="equal.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.ToleranceMode">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">ToleranceMode</tt><a class="headerlink" href="#pyslet.qtiv2.expressions.ToleranceMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>When comparing two floating point numbers for equality it is often
+desirable to have a tolerance to ensure that spurious errors in scoring are
+not introduced by rounding errors. The tolerance mode determines whether the
+comparison is done exactly, using an absolute range or a relative range:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="toleranceMode.Type"&gt;
+        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
+                &lt;xsd:enumeration value="absolute"/&gt;
+                &lt;xsd:enumeration value="exact"/&gt;
+                &lt;xsd:enumeration value="relative"/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>Defines constants for the above modes.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ToleranceMode</span><span class="o">.</span><span class="n">exact</span>
+</pre></div>
+</div>
+<p>The default value is exact:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ToleranceMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">ToleranceMode</span><span class="o">.</span><span class="n">exact</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.EqualRounded">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">EqualRounded</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.EqualRounded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The equalRounded operator takes two sub-expressions which must both have
+single cardinality and have a numerical base-type. The result is a single
+boolean with a value of true if the two expressions are numerically equal
+after rounding and false if they are not:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="equalRounded.AttrGroup"&gt;
+        &lt;xsd:attribute name="roundingMode" type="roundingMode.Type" use="required"/&gt;
+        &lt;xsd:attribute name="figures" type="integerOrTemplateRef.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="equalRounded.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.RoundingMode">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">RoundingMode</tt><a class="headerlink" href="#pyslet.qtiv2.expressions.RoundingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Numbers are rounded to a given number of significantFigures or decimalPlaces:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="roundingMode.Type"&gt;
+        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
+                &lt;xsd:enumeration value="decimalPlaces"/&gt;
+                &lt;xsd:enumeration value="significantFigures"/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>Defines constants for the above modes.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RoundingMode</span><span class="o">.</span><span class="n">decimalPlaces</span>
+</pre></div>
+</div>
+<p>The default value is significantFigures:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RoundingMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">RoundingMode</span><span class="o">.</span><span class="n">significantFigures</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Inside">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Inside</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Inside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.ShapeElementMixin</span></tt></p>
+<p>The inside operator takes a single sub-expression which must have a
+baseType of point. The result is a single boolean with a value of true if
+the given point is inside the area defined by shape and coords. If the
+sub-expression is a container the result is true if any of the points are
+inside the area:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="inside.AttrGroup"&gt;
+        &lt;xsd:attribute name="shape" type="shape.Type" use="required"/&gt;
+        &lt;xsd:attribute name="coords" type="coords.Type" use="required"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="inside.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.LT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">LT</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.LT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The lt operator takes two sub-expressions which must both have single
+cardinality and have a numerical base-type. The result is a single boolean
+with a value of true if the first expression is numerically less than the
+second and false if it is greater than or equal to the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="lt.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.GT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">GT</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.GT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The gt operator takes two sub-expressions which must both have single
+cardinality and have a numerical base-type. The result is a single boolean
+with a value of true if the first expression is numerically greater than the
+second and false if it is less than or equal to the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="gt.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.LTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">LTE</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.LTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The lte operator takes two sub-expressions which must both have single
+cardinality and have a numerical base-type. The result is a single boolean
+with a value of true if the first expression is numerically less than or
+equal to the second and false if it is greater than the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="lte.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.GTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">GTE</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.GTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The gte operator takes two sub-expressions which must both have single
+cardinality and have a numerical base-type. The result is a single boolean
+with a value of true if the first expression is numerically less than or
+equal to the second and false if it is greater than the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="durationGTE.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.DurationLT">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">DurationLT</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.DurationLT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The durationLT operator takes two sub-expressions which must both have
+single cardinality and base-type duration. The result is a single boolean
+with a value of true if the first duration is shorter than the second and
+false if it is longer than (or equal) to the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="durationLT.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.DurationGTE">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">DurationGTE</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.DurationGTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The durationGTE operator takes two sub-expressions which must both have
+single cardinality and base-type duration. The result is a single boolean
+with a value of true if the first duration is longer (or equal, within the
+limits imposed by truncation) than the second and false if it is shorter
+than the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="durationGTE.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Sum">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Sum</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The sum operator takes 1 or more sub-expressions which all have single
+cardinality and have numerical base-types. The result is a single float or,
+if all sub-expressions are of integer type, a single integer that
+corresponds to the sum of the numerical values of the sub-expressions:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="sum.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Product">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Product</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The product operator takes 1 or more sub-expressions which all have
+single cardinality and have numerical base-types. The result is a single
+float or, if all sub-expressions are of integer type, a single integer that
+corresponds to the product of the numerical values of the sub-expressions:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="product.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Subtract">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Subtract</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Subtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The subtract operator takes 2 sub-expressions which all have single
+cardinality and numerical base-types. The result is a single float or, if
+both sub-expressions are of integer type, a single integer that corresponds
+to the first value minus the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="subtract.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Divide">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Divide</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The divide operator takes 2 sub-expressions which both have single
+cardinality and numerical base-types. The result is a single float that
+corresponds to the first expression divided by the second expression:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="divide.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Power">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Power</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The power operator takes 2 sub-expression which both have single
+cardinality and numerical base-types. The result is a single float that
+corresponds to the first expression raised to the power of the second:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="power.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.IntegerDivide">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">IntegerDivide</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.IntegerDivide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The integer divide operator takes 2 sub-expressions which both have
+single cardinality and base-type integer. The result is the single integer
+that corresponds to the first expression (x) divided by the second
+expression (y) rounded down to the greatest integer (i) such that i&lt;=(x/y):</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="integerDivide.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.IntegerModulus">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">IntegerModulus</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.IntegerModulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The integer modulus operator takes 2 sub-expressions which both have
+single cardinality and base-type integer. The result is the single integer
+that corresponds to the remainder when the first expression (x) is divided
+by the second expression (y). If z is the result of the corresponding
+integerDivide operator then the result is x-z*y:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="integerModulus.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Truncate">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Truncate</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Truncate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The truncate operator takes a single sub-expression which must have
+single cardinality and base-type float. The result is a value of base-type
+integer formed by truncating the value of the sub-expression towards zero:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="truncate.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.Round">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Round</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The round operator takes a single sub-expression which must have single
+cardinality and base-type float. The result is a value of base-type integer
+formed by rounding the value of the sub-expression. The result is the
+integer n for all input values in the range [n-0.5,n+0.5):</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="round.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.IntegerToFloat">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">IntegerToFloat</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.IntegerToFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
+<p>The integer to float conversion operator takes a single sub-expression
+which must have single cardinality and base-type integer. The result is a
+value of base type float with the same numeric value:</p>
+<div class="highlight-python"><pre>&lt;xsd:group name="integerToFloat.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.expressions.CustomOperator">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">CustomOperator</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.CustomOperator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
+<p>The custom operator provides an extension mechanism for defining
+operations not currently supported by this specification:</p>
+<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="customOperator.AttrGroup"&gt;
+        &lt;xsd:attribute name="class" type="identifier.Type" use="optional"/&gt;
+        &lt;xsd:attribute name="definition" type="uri.Type" use="optional"/&gt;
+        &lt;xsd:anyAttribute namespace="##other"/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name="customOperator.ContentGroup"&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;</pre>
+</div>
+</dd></dl>
+
 </div>
 </div>
 
@@ -280,13 +1013,13 @@ min + step * n for some integer n:</p>
         <li class="right" >
           <a href="variables.html" title="1.3.1. Item Variables"
              >previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Steve Lay.
+        &copy; Copyright ©2012, Steve Lay.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

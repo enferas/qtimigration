@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.3.3. Core Types and Utilities &mdash; Pyslet 0.3.20110627 documentation</title>
+    <title>1.3.3. Core Types and Utilities &mdash; Pyslet 0.3.20120806 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.20110627',
+        VERSION:     '0.3.20120806',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20110627 documentation" href="../index.html" />
+    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="../index.html" />
     <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
     <link rel="next" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)" href="../imsbltiv1p0.html" />
     <link rel="prev" title="1.3.2. Expressions" href="expressions.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="expressions.html" title="1.3.2. Expressions"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
@@ -100,6 +100,102 @@
 </div>
 <div class="section" id="basic-data-types">
 <h2>1.3.3.3. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h2>
+<p>Basic data types in QTI v2 are a mixture of custom types and basic types defined externally,
+for example, by XMLSchema.</p>
+<p>The external types used are:</p>
+<dl class="docutils">
+<dt>boolean</dt>
+<dd>Represented by python&#8217;s boolean values True and False.  See
+<tt class="xref py py-func docutils literal"><span class="pre">DecodeBoolean()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">EncodeBoolean()</span></tt></dd>
+<dt>coords</dt>
+<dd>Defined as part of support for HTML.  See <a class="reference internal" href="../html40_19991224.html#pyslet.html40_19991224.Coords" title="pyslet.html40_19991224.Coords"><tt class="xref py py-class docutils literal"><span class="pre">Coords</span></tt></a></dd>
+<dt>date</dt>
+<dd>Although QTI draws on the definitions in XML schema it restricts values to
+those from the nontimezoned timeline.  This restriction is effectively implemented
+in the basic <tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt> class.</dd>
+<dt>datetime:</dt>
+<dd>See <tt class="xref py py-func docutils literal"><span class="pre">DecodeDateTime()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">EncodeDateTime()</span></tt></dd>
+<dt>duration:</dt>
+<dd>Earlier versions of QTI drew on the ISO8601 representation of duration but
+QTI v2 simplifies this with a basic representation in seconds bound to XML
+Schema&#8217;s double type which we, in turn, represent with python&#8217;s float.  See
+<tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></dd>
+<dt>float:</dt>
+<dd>implemented by python&#8217;s float.  Note that this is defined as having
+&#8220;machine-level double precision&#8221; and the python specification goes on to
+warn that &#8220;You are at the mercy of the underlying machine architecture&#8221;. See
+<tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></dd>
+<dt>identifier:</dt>
+<dd><p class="first">represented by python&#8217;s (unicode) string.  The type is effectively just the
+NCName from the XML namespace specification.  See
+<tt class="xref py py-func docutils literal"><span class="pre">pyslet.xmlnames20091208.IsValidNCName()</span></tt>.</p>
+<dl class="last function">
+<dt id="pyslet.qtiv2.core.ValidateIdentifier">
+<tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">ValidateIdentifier</tt><big>(</big><em>value</em>, <em>prefix='_'</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.ValidateIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes an identifier from a string:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="identifier.Type"&gt;
+        &lt;xsd:restriction base="xsd:NCName"/&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>This function takes a string that is supposed to match the production for
+NCName in XML and forces it to comply by replacing illegal characters with
+&#8216;_&#8217;, except the &#8216;:&#8217; which is replaced with a hyphen for compatibility with
+previous versions of the QTI migraiton script.  If name starts with a valid
+name character but not a valid name start character, it is prefixed with &#8216;_&#8217;
+too, but the prefix string used can be overridden.</p>
+</dd></dl>
+
+</dd>
+<dt>integer:</dt>
+<dd>XML schema&#8217;s integer, implemented by python&#8217;s integer.  See
+<tt class="xref py py-func docutils literal"><span class="pre">DecodeInteger()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">EncodeInteger()</span></tt></dd>
+<dt>language:</dt>
+<dd>Currently implemented as a simple python string.</dd>
+<dt>length:</dt>
+<dd>Defined as part of support for HTML.  See <a class="reference internal" href="../html40_19991224.html#pyslet.html40_19991224.LengthType" title="pyslet.html40_19991224.LengthType"><tt class="xref py py-class docutils literal"><span class="pre">LengthType</span></tt></a></dd>
+<dt>mimeType:</dt>
+<dd>Currently implemented as a simple python string</dd>
+<dt>string:</dt>
+<dd>XML schema string becomes python&#8217;s unicode string</dd>
+<dt>string256:</dt>
+<dd>Length restriction not yet implemented, see string above.</dd>
+<dt>styleclass:</dt>
+<dd>Inherited from HTML, implemented with a simple (unicode) string.</dd>
+<dt>uri:</dt>
+<dd>In some instances this is implemented as a simple (unicode) string, for example, in cases
+where a URI is being used as global identifier.  In contexts where the URI will need to
+be interpreted it is implemented with instances of <a class="reference internal" href="../rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a>.</dd>
+</dl>
+<p>QTI-specific types:</p>
+<dl class="class">
+<dt id="pyslet.qtiv2.core.Orientation">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">Orientation</tt><a class="headerlink" href="#pyslet.qtiv2.core.Orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<p>Orientation attribute values provide a hint to rendering systems that an
+element has an inherent vertical or horizontal interpretation:</p>
+<div class="highlight-python"><pre>&lt;xsd:simpleType name="orientation.Type"&gt;
+        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
+                &lt;xsd:enumeration value="horizontal"/&gt;
+                &lt;xsd:enumeration value="vertical"/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;</pre>
+</div>
+<p>Defines constants for the above orientations.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">horizontal</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+</dd></dl>
+
 <dl class="class">
 <dt id="pyslet.qtiv2.core.Shape">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">Shape</tt><a class="headerlink" href="#pyslet.qtiv2.core.Shape" title="Permalink to this definition">¶</a></dt>
@@ -117,7 +213,7 @@ image which provides a context for interpreting them:</p>
 &lt;/xsd:simpleType&gt;</pre>
 </div>
 <p>Defines constants for the above types of Shape.  Usage example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Shape</span><span class="o">.</span><span class="n">Circle</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Shape</span><span class="o">.</span><span class="n">circle</span>
 </pre></div>
 </div>
 <p>Note that:</p>
@@ -160,22 +256,9 @@ lists of values.  Typical usage:</p>
 <p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.qtiv2.core.ValidateIdentifier">
-<tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">ValidateIdentifier</tt><big>(</big><em>value</em>, <em>prefix='_'</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.ValidateIdentifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes an identifier from a string:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="identifier.Type"&gt;
-        &lt;xsd:restriction base="xsd:NCName"/&gt;
-&lt;/xsd:simpleType&gt;</pre>
-</div>
-<p>This function takes a string that is supposed to match the production for
-NCName in XML and forces it to comply by replacing illegal characters with
-&#8216;_&#8217;, except the &#8216;:&#8217; which is replaced with a hyphen for compatibility with
-previous versions of the QTI migraiton script.  If name starts with a valid
-name character but not a valid name start character, it is prefixed with &#8216;_&#8217;
-too, but the prefix string used can be overridden.</p>
-</dd></dl>
-
+<p>The QTI specification lists valueType as a basic data type.  In pyslet this is
+implemented as a core part of the processing model.  See
+<a class="reference internal" href="variables.html#pyslet.qtiv2.variables.Value" title="pyslet.qtiv2.variables.Value"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.variables.Value</span></tt></a> for details.</p>
 </div>
 </div>
 
@@ -238,13 +321,13 @@ too, but the prefix string used can be overridden.</p>
         <li class="right" >
           <a href="expressions.html" title="1.3.2. Expressions"
              >previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20110627 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Steve Lay.
+        &copy; Copyright ©2012, Steve Lay.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

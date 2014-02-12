@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.3.3. Core Types and Utilities &mdash; Pyslet 0.3.20120806 documentation</title>
+    <title>1.3.10. Core Types and Utilities &mdash; Pyslet 0.4.20140212 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.20120806',
+        VERSION:     '0.4.20140212',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,10 +23,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="../index.html" />
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
     <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
-    <link rel="next" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)" href="../imsbltiv1p0.html" />
-    <link rel="prev" title="1.3.2. Expressions" href="expressions.html" /> 
+    <link rel="next" title="1.3.11. Meta-data and Usage Data" href="metadata.html" />
+    <link rel="prev" title="1.3.9. Expressions" href="expressions.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,12 +39,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../imsbltiv1p0.html" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)"
+          <a href="metadata.html" title="1.3.11. Meta-data and Usage Data"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="expressions.html" title="1.3.2. Expressions"
+          <a href="expressions.html" title="1.3.9. Expressions"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
@@ -58,10 +56,10 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.qtiv2.core">
-<span id="core-types-and-utilities"></span><h1>1.3.3. Core Types and Utilities<a class="headerlink" href="#module-pyslet.qtiv2.core" title="Permalink to this headline">¶</a></h1>
+<span id="core-types-and-utilities"></span><h1>1.3.10. Core Types and Utilities<a class="headerlink" href="#module-pyslet.qtiv2.core" title="Permalink to this headline">¶</a></h1>
 <p>This module contains a number core classes used to support the standard.</p>
 <div class="section" id="constants">
-<h2>1.3.3.1. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.10.1. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
 <dl class="data">
 <dt id="pyslet.qtiv2.core.IMSQTI_NAMESPACE">
 <tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">IMSQTI_NAMESPACE</tt><em class="property"> = 'http://www.imsglobal.org/xsd/imsqti_v2p1'</em><a class="headerlink" href="#pyslet.qtiv2.core.IMSQTI_NAMESPACE" title="Permalink to this definition">¶</a></dt>
@@ -81,8 +79,46 @@
 </dd></dl>
 
 </div>
+<div class="section" id="xml-basics">
+<h2>1.3.10.2. XML Basics<a class="headerlink" href="#xml-basics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.core.QTIElement">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">QTIElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.QTIElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSElement</span></tt></p>
+<p>Basic element to represent all QTI elements</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.core.QTIElement.AddToCPResource">
+<tt class="descname">AddToCPResource</tt><big>(</big><em>cp</em>, <em>resource</em>, <em>beenThere</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.QTIElement.AddToCPResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>We need to add any files with URL&#8217;s in the local file system to the
+content package.</p>
+<p>beenThere is a dictionary we use for mapping URLs to File objects so
+that we don&#8217;t keep adding the same linked resource multiple times.</p>
+<p>This implementation is a little more horrid, we avoid circular module
+references by playing dumb about our children.  HTML doesn&#8217;t actually
+know anything about QTI even though QTI wants to define children for
+some XHTML elements so we pass the call only to &#8220;CP-Aware&#8221; elements.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.core.QTIDocument">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">QTIDocument</tt><big>(</big><em>**args</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.QTIDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSDocument</span></tt></p>
+<p>Used to represent all documents representing information from the QTI v2
+specification.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.core.QTIDocument.AddToContentPackage">
+<tt class="descname">AddToContentPackage</tt><big>(</big><em>cp</em>, <em>metadata</em>, <em>dName=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.QTIDocument.AddToContentPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies this QTI document into a content package and returns the resource ID used.</p>
+<p>An optional directory name can be specified in which to put the resource files.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="exceptions">
-<h2>1.3.3.2. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.10.3. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.qtiv2.core.QTIError">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">QTIError</tt><a class="headerlink" href="#pyslet.qtiv2.core.QTIError" title="Permalink to this definition">¶</a></dt>
@@ -91,23 +127,37 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="pyslet.qtiv2.core.QTIDeclarationError">
-<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">QTIDeclarationError</tt><a class="headerlink" href="#pyslet.qtiv2.core.QTIDeclarationError" title="Permalink to this definition">¶</a></dt>
+<dt id="pyslet.qtiv2.core.DeclarationError">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">DeclarationError</tt><a class="headerlink" href="#pyslet.qtiv2.core.DeclarationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.core.QTIError" title="pyslet.qtiv2.core.QTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIError</span></tt></a></p>
 <p>Error raised when a variable declaration is invalid.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="pyslet.qtiv2.core.ProcessingError">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">ProcessingError</tt><a class="headerlink" href="#pyslet.qtiv2.core.ProcessingError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.core.QTIError" title="pyslet.qtiv2.core.QTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIError</span></tt></a></p>
+<p>Error raised when an invalid processing element is encountered.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.core.SelectionError">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">SelectionError</tt><a class="headerlink" href="#pyslet.qtiv2.core.SelectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.core.QTIError" title="pyslet.qtiv2.core.QTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIError</span></tt></a></p>
+<p>Error raised when there is a problem with creating test forms.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="basic-data-types">
-<h2>1.3.3.3. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.10.4. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h2>
 <p>Basic data types in QTI v2 are a mixture of custom types and basic types defined externally,
 for example, by XMLSchema.</p>
 <p>The external types used are:</p>
 <dl class="docutils">
 <dt>boolean</dt>
 <dd>Represented by python&#8217;s boolean values True and False.  See
-<tt class="xref py py-func docutils literal"><span class="pre">DecodeBoolean()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">EncodeBoolean()</span></tt></dd>
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.DecodeBoolean" title="pyslet.xsdatatypes20041028.DecodeBoolean"><tt class="xref py py-func docutils literal"><span class="pre">DecodeBoolean()</span></tt></a> and
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.EncodeBoolean" title="pyslet.xsdatatypes20041028.EncodeBoolean"><tt class="xref py py-func docutils literal"><span class="pre">EncodeBoolean()</span></tt></a></dd>
 <dt>coords</dt>
 <dd>Defined as part of support for HTML.  See <a class="reference internal" href="../html40_19991224.html#pyslet.html40_19991224.Coords" title="pyslet.html40_19991224.Coords"><tt class="xref py py-class docutils literal"><span class="pre">Coords</span></tt></a></dd>
 <dt>date</dt>
@@ -115,20 +165,20 @@ for example, by XMLSchema.</p>
 those from the nontimezoned timeline.  This restriction is effectively implemented
 in the basic <tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt> class.</dd>
 <dt>datetime:</dt>
-<dd>See <tt class="xref py py-func docutils literal"><span class="pre">DecodeDateTime()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">EncodeDateTime()</span></tt></dd>
+<dd>See <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.DecodeDateTime" title="pyslet.xsdatatypes20041028.DecodeDateTime"><tt class="xref py py-func docutils literal"><span class="pre">DecodeDateTime()</span></tt></a> and
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.EncodeDateTime" title="pyslet.xsdatatypes20041028.EncodeDateTime"><tt class="xref py py-func docutils literal"><span class="pre">EncodeDateTime()</span></tt></a></dd>
 <dt>duration:</dt>
 <dd>Earlier versions of QTI drew on the ISO8601 representation of duration but
 QTI v2 simplifies this with a basic representation in seconds bound to XML
 Schema&#8217;s double type which we, in turn, represent with python&#8217;s float.  See
-<tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></dd>
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.DecodeDouble" title="pyslet.xsdatatypes20041028.DecodeDouble"><tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt></a> and
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.EncodeDouble" title="pyslet.xsdatatypes20041028.EncodeDouble"><tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></a></dd>
 <dt>float:</dt>
 <dd>implemented by python&#8217;s float.  Note that this is defined as having
 &#8220;machine-level double precision&#8221; and the python specification goes on to
 warn that &#8220;You are at the mercy of the underlying machine architecture&#8221;. See
-<tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></dd>
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.DecodeDouble" title="pyslet.xsdatatypes20041028.DecodeDouble"><tt class="xref py py-func docutils literal"><span class="pre">DecodeDouble()</span></tt></a> and
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.EncodeDouble" title="pyslet.xsdatatypes20041028.EncodeDouble"><tt class="xref py py-func docutils literal"><span class="pre">EncodeDouble()</span></tt></a></dd>
 <dt>identifier:</dt>
 <dd><p class="first">represented by python&#8217;s (unicode) string.  The type is effectively just the
 NCName from the XML namespace specification.  See
@@ -137,9 +187,10 @@ NCName from the XML namespace specification.  See
 <dt id="pyslet.qtiv2.core.ValidateIdentifier">
 <tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">ValidateIdentifier</tt><big>(</big><em>value</em>, <em>prefix='_'</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.core.ValidateIdentifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decodes an identifier from a string:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="identifier.Type"&gt;
-        &lt;xsd:restriction base="xsd:NCName"/&gt;
-&lt;/xsd:simpleType&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;identifier.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NCName&quot;/&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>This function takes a string that is supposed to match the production for
 NCName in XML and forces it to comply by replacing illegal characters with
@@ -152,8 +203,8 @@ too, but the prefix string used can be overridden.</p>
 </dd>
 <dt>integer:</dt>
 <dd>XML schema&#8217;s integer, implemented by python&#8217;s integer.  See
-<tt class="xref py py-func docutils literal"><span class="pre">DecodeInteger()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">EncodeInteger()</span></tt></dd>
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.DecodeInteger" title="pyslet.xsdatatypes20041028.DecodeInteger"><tt class="xref py py-func docutils literal"><span class="pre">DecodeInteger()</span></tt></a> and
+<a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.EncodeInteger" title="pyslet.xsdatatypes20041028.EncodeInteger"><tt class="xref py py-func docutils literal"><span class="pre">EncodeInteger()</span></tt></a></dd>
 <dt>language:</dt>
 <dd>Currently implemented as a simple python string.</dd>
 <dt>length:</dt>
@@ -175,15 +226,16 @@ be interpreted it is implemented with instances of <a class="reference internal"
 <dl class="class">
 <dt id="pyslet.qtiv2.core.Orientation">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">Orientation</tt><a class="headerlink" href="#pyslet.qtiv2.core.Orientation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
 <p>Orientation attribute values provide a hint to rendering systems that an
 element has an inherent vertical or horizontal interpretation:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="orientation.Type"&gt;
-        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
-                &lt;xsd:enumeration value="horizontal"/&gt;
-                &lt;xsd:enumeration value="vertical"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;orientation.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;horizontal&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;vertical&quot;/&gt;
         &lt;/xsd:restriction&gt;
-&lt;/xsd:simpleType&gt;</pre>
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>Defines constants for the above orientations.  Usage example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">horizontal</span>
@@ -193,24 +245,25 @@ element has an inherent vertical or horizontal interpretation:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Orientation</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
 </pre></div>
 </div>
-<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pyslet.qtiv2.core.Shape">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">Shape</tt><a class="headerlink" href="#pyslet.qtiv2.core.Shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
 <p>A value of a shape is always accompanied by coordinates and an associated
 image which provides a context for interpreting them:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="shape.Type"&gt;
-        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
-                &lt;xsd:enumeration value="circle"/&gt;
-                &lt;xsd:enumeration value="default"/&gt;
-                &lt;xsd:enumeration value="ellipse"/&gt;
-                &lt;xsd:enumeration value="poly"/&gt;
-                &lt;xsd:enumeration value="rect"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;shape.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;circle&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;default&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;ellipse&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;poly&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;rect&quot;/&gt;
         &lt;/xsd:restriction&gt;
-&lt;/xsd:simpleType&gt;</pre>
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>Defines constants for the above types of Shape.  Usage example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Shape</span><span class="o">.</span><span class="n">circle</span>
@@ -220,24 +273,41 @@ image which provides a context for interpreting them:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">Shape</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">Shape</span><span class="o">.</span><span class="n">default</span>
 </pre></div>
 </div>
-<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.core.ShowHide">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">ShowHide</tt><a class="headerlink" href="#pyslet.qtiv2.core.ShowHide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
+<p>Used to control content visibility with variables</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;showHide.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;hide&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;show&quot;/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
+</div>
+<p>Note that ShowHide.DEFAULT == ShowHide.show</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pyslet.qtiv2.core.View">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.core.</tt><tt class="descname">View</tt><a class="headerlink" href="#pyslet.qtiv2.core.View" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
 <p>Used to represent roles when restricting view:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="view.Type"&gt;
-        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
-                &lt;xsd:enumeration value="author"/&gt;
-                &lt;xsd:enumeration value="candidate"/&gt;
-                &lt;xsd:enumeration value="proctor"/&gt;
-                &lt;xsd:enumeration value="scorer"/&gt;
-                &lt;xsd:enumeration value="testConstructor"/&gt;
-                &lt;xsd:enumeration value="tutor"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;view.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;author&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;candidate&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;proctor&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;scorer&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;testConstructor&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;tutor&quot;/&gt;
         &lt;/xsd:restriction&gt;
-&lt;/xsd:simpleType&gt;</pre>
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>Defines constants for the above views.  Usage example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">View</span><span class="o">.</span><span class="n">candidate</span>
@@ -253,7 +323,7 @@ lists of values.  Typical usage:</p>
 <span class="s">&quot;scorer tutor&quot;</span>
 </pre></div>
 </div>
-<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
 </dd></dl>
 
 <p>The QTI specification lists valueType as a basic data type.  In pyslet this is
@@ -270,20 +340,21 @@ implemented as a core part of the processing model.  See
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">1.3.3. Core Types and Utilities</a><ul>
-<li><a class="reference internal" href="#constants">1.3.3.1. Constants</a></li>
-<li><a class="reference internal" href="#exceptions">1.3.3.2. Exceptions</a></li>
-<li><a class="reference internal" href="#basic-data-types">1.3.3.3. Basic Data Types</a></li>
+<li><a class="reference internal" href="#">1.3.10. Core Types and Utilities</a><ul>
+<li><a class="reference internal" href="#constants">1.3.10.1. Constants</a></li>
+<li><a class="reference internal" href="#xml-basics">1.3.10.2. XML Basics</a></li>
+<li><a class="reference internal" href="#exceptions">1.3.10.3. Exceptions</a></li>
+<li><a class="reference internal" href="#basic-data-types">1.3.10.4. Basic Data Types</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="expressions.html"
-                        title="previous chapter">1.3.2. Expressions</a></p>
+                        title="previous chapter">1.3.9. Expressions</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../imsbltiv1p0.html"
-                        title="next chapter">1.4. IMS Basic Learning Tools Interoperability (version 1.0)</a></p>
+  <p class="topless"><a href="metadata.html"
+                        title="next chapter">1.3.11. Meta-data and Usage Data</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/qtiv2/core.txt"
@@ -316,19 +387,19 @@ implemented as a core part of the processing model.  See
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../imsbltiv1p0.html" title="1.4. IMS Basic Learning Tools Interoperability (version 1.0)"
+          <a href="metadata.html" title="1.3.11. Meta-data and Usage Data"
              >next</a> |</li>
         <li class="right" >
-          <a href="expressions.html" title="1.3.2. Expressions"
+          <a href="expressions.html" title="1.3.9. Expressions"
              >previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright ©2012, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>

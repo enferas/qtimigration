@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.1. IMS Content Packaging (version 1.2) &mdash; Pyslet 0.3.20120806 documentation</title>
+    <title>1.1. IMS Content Packaging (version 1.2) &mdash; Pyslet 0.4.20140212 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.3.20120806',
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140212',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
     <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
     <link rel="next" title="1.2. IMS Question and Test Interoperability (version 1.2)" href="imsqtiv1p2p1.html" />
     <link rel="prev" title="1. IMS Global Learning Consortium Specifications" href="ims.html" /> 
@@ -46,7 +44,7 @@
         <li class="right" >
           <a href="ims.html" title="1. IMS Global Learning Consortium Specifications"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="ims.html" accesskey="U">1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
       </ul>
     </div>  
@@ -144,11 +142,13 @@ method.  The package can then be exported to the zip file format.</p>
 <dt id="pyslet.imscpv1p2.ContentPackage">
 <em class="property">class </em><tt class="descclassname">pyslet.imscpv1p2.</tt><tt class="descname">ContentPackage</tt><big>(</big><em>dPath=None</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a content package.</p>
-<p>When constructed with no arguments a new package is created.  A temporary folder to hold the contents
-of the package is created and will not be cleaned up until the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.Close" title="pyslet.imscpv1p2.ContentPackage.Close"><tt class="xref py py-meth docutils literal"><span class="pre">Close()</span></tt></a> method is called.</p>
-<p>Alternatively, you can pass an operating system file path to a content package directory, to
-an imsmanifest.xml file or to a Package Interchange Format file.  In the latter case, the file
-is unzipped into a temporary folder to facilitate manipulation of the package contents.</p>
+<p>When constructed with no arguments a new package is created.  A temporary
+folder to hold the contents of the package is created and will not be
+cleaned up until the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.Close" title="pyslet.imscpv1p2.ContentPackage.Close"><tt class="xref py py-meth docutils literal"><span class="pre">Close()</span></tt></a> method is called.</p>
+<p>Alternatively, you can pass an operating system or virtual file path to a
+content package directory, to an imsmanifest.xml file or to a Package
+Interchange Format file.  In the latter case, the file is unzipped into a
+temporary folder to facilitate manipulation of the package contents.</p>
 <p>A new manifest file is created and written to the file system when creating
 a new package, or if it is missing from an existing package or directory.</p>
 <dl class="attribute">
@@ -161,7 +161,7 @@ a new package, or if it is missing from an existing package or directory.</p>
 <dl class="attribute">
 <dt id="pyslet.imscpv1p2.ContentPackage.dPath">
 <tt class="descname">dPath</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.dPath" title="Permalink to this definition">¶</a></dt>
-<dd><p>the operating system path to the package&#8217;s directory</p>
+<dd><p>the <tt class="xref py py-class docutils literal"><span class="pre">VirtualFilePath</span></tt> to the package&#8217;s directory</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -174,8 +174,9 @@ a new package, or if it is missing from an existing package or directory.</p>
 <dl class="attribute">
 <dt id="pyslet.imscpv1p2.ContentPackage.fileTable">
 <tt class="descname">fileTable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="Permalink to this definition">¶</a></dt>
-<dd><p>The fileTable is a dictionary that maps package relative file system paths
-to the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> objects that represent them in the manifest.</p>
+<dd><p>The fileTable is a dictionary that maps package relative file
+paths to the <a class="reference internal" href="#pyslet.imscpv1p2.File" title="pyslet.imscpv1p2.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> objects that represent them in the
+manifest.</p>
 <p>It is possible for a file to be referenced multiple times (although
 dependencies were designed to take care of most cases it is still
 possible for two resources to share a physical file, or even for a
@@ -192,6 +193,17 @@ interchange.</p>
 manifest is missing an entry is still created in the fileTable.  You
 can walk the keys of the fileTable testing if each file exists to
 determine if some expected files are missing from the package.</p>
+<p>The keys in fileTable are VirtualFilePath instances.  To convert a
+string to an appropriate instance use the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.FilePath" title="pyslet.imscpv1p2.ContentPackage.FilePath"><tt class="xref py py-meth docutils literal"><span class="pre">FilePath()</span></tt></a> method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.imscpv1p2.ContentPackage.FilePath">
+<tt class="descname">FilePath</tt><big>(</big><em>*path</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.FilePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a string into a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.vfs.VirtualFilePath</span></tt>
+instance suitable for using as a key into the <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.fileTable" title="pyslet.imscpv1p2.ContentPackage.fileTable"><tt class="xref py py-attr docutils literal"><span class="pre">fileTable</span></tt></a>.  The
+conversion is done using the file system of the content package&#8217;s
+directory, <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.dPath" title="pyslet.imscpv1p2.ContentPackage.dPath"><tt class="xref py py-attr docutils literal"><span class="pre">dPath</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -217,13 +229,14 @@ method.</p>
 <dl class="method">
 <dt id="pyslet.imscpv1p2.ContentPackage.IgnoreFile">
 <tt class="descname">IgnoreFile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compares an operating system file or directory name against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a></p>
+<dd><p>Compares a file or directory name against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a>.</p>
+<p>f is a unicode string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyslet.imscpv1p2.ContentPackage.IgnoreFilePath">
 <tt class="descname">IgnoreFilePath</tt><big>(</big><em>fPath</em><big>)</big><a class="headerlink" href="#pyslet.imscpv1p2.ContentPackage.IgnoreFilePath" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compares an operating system file path against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a></p>
+<dd><p>Compares a file path against the pattern set by <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles" title="pyslet.imscpv1p2.ContentPackage.SetIgnoreFiles"><tt class="xref py py-meth docutils literal"><span class="pre">SetIgnoreFiles()</span></tt></a></p>
 <p>The path is normalised before comparison and any segments consisting of
 the string &#8216;..&#8217; are skipped.  The method returns True if any of the
 remaining path components matches the ignore pattern.  In other words,
@@ -258,9 +271,7 @@ beyond the basic zip specification and ensures that pathnames are always
 UTF-8 encoded when added to the archive.  When creating instances of
 <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage" title="pyslet.imscpv1p2.ContentPackage"><tt class="xref py py-class docutils literal"><span class="pre">ContentPackage</span></tt></a> from an existing archive the reverse
 transformation is performed.  When exchanging PIF files between systems
-with different native file path encodings, as indicated by the built-in
-python function sys.getfilesystemencoding(), encoding erros may
-occurr.</p>
+with different native file path encodings, encoding erros may occurr.</p>
 </dd></dl>
 
 <dl class="method">
@@ -269,11 +280,14 @@ occurr.</p>
 <dd><p>Returns a unique file path suitable for creating a new file in the package.</p>
 <p>suggestedPath is used to provide a suggested path for the file.  This
 may be relative (to the root and manifest) or absolute but it must
-resolve to a file (potentially) in the package.</p>
+resolve to a file (potentially) in the package.  The suggestedPath
+should either be a VirtualFilePath (of the same type as the content
+package&#8217;s <a class="reference internal" href="#pyslet.imscpv1p2.ContentPackage.dPath" title="pyslet.imscpv1p2.ContentPackage.dPath"><tt class="xref py py-attr docutils literal"><span class="pre">dPath</span></tt></a>) or a string suitable for conversion to a
+VirtualFilePath.</p>
 <p>When suggestedPath is relative, it is forced to lower-case.  This is
-consistent with the behaviour of os.path.normcase on systems that are
-case insensitive.  The trouble with case insensitive file systems is
-that it may be impossible to unpack a content package created on a case
+consistent with the behaviour of normcase on systems that are case
+insensitive.  The trouble with case insensitive file systems is that it
+may be impossible to unpack a content package created on a case
 sensitive system and store it on a case insenstive one.  By channelling
 all file storage through this method (and constructing any URIs <em>after</em>
 the file has been stored) the resulting packages will be more portable.</p>
@@ -351,11 +365,12 @@ tempdir.mkdtemp function.  They are not automatically cleaned up when
 the process exits or when the garbage collector disposes of the object. 
 Use of try:... finally: to clean up the package is recommended.  For
 example:</p>
-<div class="highlight-python"><pre>pkg=ContentPackage("MyPackage.zip")
+<div class="highlight-python"><div class="highlight"><pre>pkg=ContentPackage(&quot;MyPackage.zip&quot;)
 try:
         # do stuff with the content package here
 finally:
-        pkg.Close()</pre>
+        pkg.Close()
+</pre></div>
 </div>
 </dd></dl>
 
@@ -770,13 +785,13 @@ before any processing, the resulting path will not contain these either.</p>
         <li class="right" >
           <a href="ims.html" title="1. IMS Global Learning Consortium Specifications"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright ©2012, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>

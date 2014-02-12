@@ -1,0 +1,689 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.4. XML Schema Datatypes &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.5. HTML" href="html40_19991224.html" />
+    <link rel="prev" title="2.3. XML: Parsing XML Documents" href="xml20081126.parser.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.5. HTML"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.parser.html" title="2.3. XML: Parsing XML Documents"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.xsdatatypes20041028">
+<span id="xml-schema-datatypes"></span><h1>2.4. XML Schema Datatypes<a class="headerlink" href="#module-pyslet.xsdatatypes20041028" title="Permalink to this headline">¶</a></h1>
+<p>This module implements some useful concepts drawn from <a class="reference external" href="http://www.w3.org/TR/xmlschema-2/">http://www.w3.org/TR/xmlschema-2/</a></p>
+<p>One of the main purposes of this module is to provide classes and functions for
+converting data between python-native representations of the value-spaces
+defined by this specification and the lexical representations defined in the
+specification.</p>
+<p>The result is typically a pair of DecodeX and EncodeX functions that are used to
+define custom attribute handling in classes that are derived from
+<tt class="xref py py-class docutils literal"><span class="pre">xml20081126.structures.XMLElement</span></tt>.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">xsdatatypes20041028</span> <span class="kn">as</span> <span class="nn">xsi</span>
+
+<span class="k">class</span> <span class="nc">MyElement</span><span class="p">(</span><span class="n">XMLElement</span><span class="p">):</span>
+        <span class="n">XMLATTR_flag</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;flag&#39;</span><span class="p">,</span><span class="n">xsi</span><span class="o">.</span><span class="n">DecodeBoolean</span><span class="p">,</span><span class="n">xsi</span><span class="o">.</span><span class="n">EncodeBoolean</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="primitive-datatypes">
+<h2>2.4.1. Primitive Datatypes<a class="headerlink" href="#primitive-datatypes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeBoolean">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeBoolean</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeBoolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a boolean value from src.</p>
+<p>Returns python constants True or False.  As a convenience, if src is None
+then None is returned.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeBoolean">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeBoolean</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeBoolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a boolean value using the canonical lexical representation.</p>
+<p>src can be anything that can be resolved to a boolean except None, which
+raises ValueError.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeDecimal">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeDecimal</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeDecimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a decimal value from a string returning a python float value.</p>
+<p>If string is not a valid lexical representation of a decimal value then
+ValueError is raised.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeDecimal">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeDecimal</tt><big>(</big><em>value</em>, <em>digits=None</em>, <em>stripZeros=True</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeDecimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a decimal value into a string.</p>
+<p>You can control the maximum number of digits after the decimal point using
+<em>digits</em> which must be greater than 0 - None indicates no maximum.  This
+function always returns the canonical representation which means that it
+will strip trailing zeros in the fractional part.  To override this
+behaviour and return exactly <em>digits</em> decimal places set <em>stripZeros</em> to
+False.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeFloat">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeFloat</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a float value from a string returning a python float.</p>
+<p>The precision of the python float varies depending on the implementation. It
+typically exceeds the precision of the XML schema <em>float</em>.  We make no
+attempt to reduce the precision to that of schema&#8217;s float except that we
+return 0.0 or -0.0 for any value that is smaller than the smallest possible
+float defined in the specification.  (Note that XML schema&#8217;s float
+canonicalizes the representation of zero to remove this subtle distinction
+but it can be useful to preserve it for numerical operations.  Likewise, if
+we are given a representation that is larger than any valid float we return
+one of the special float values INF or -INF as appropriate.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeFloat">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeFloat</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a python float value as a string.</p>
+<p>To reduce the chances of our output being rejected by external applications
+that are strictly bound to a 32-bit float representation we ensure that we
+don&#8217;t output values that exceed the bounds of float defined by XML schema.</p>
+<p>Therefore, we convert values that are too large to INF and values that are
+too small to 0.0E0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeDouble">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeDouble</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeDouble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a double value from a string returning a python float.</p>
+<p>The precision of the python float varies depending on the implementation. It
+may even exceed the precision of the XML schema <em>double</em>.  The current
+implementation ignores this distinction.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeDouble">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeDouble</tt><big>(</big><em>value</em>, <em>digits=None</em>, <em>stripZeros=True</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeDouble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a double value returning a unicode string.</p>
+<p><em>digits</em> controls the number of digits after the decimal point in the
+mantissa, None indicates no maximum and the precision of python&#8217;s float is
+used to determine the appropriate number.  You may pass the value 0 - in
+which case no digits are given after the point and the point itself is
+omitted, but such values are <em>not</em> in their canonical form.</p>
+<p><em>stripZeros</em> determines whether or not trailing zeros are removed, if False
+then exactly <em>digits</em> digits will be displayed after the point.  By default
+zeros are stripped (except there is always one zero left after the decimal
+point).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeDateTime">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeDateTime</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeDateTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeDateTime">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeDateTime</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeDateTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the canonical lexical representation of a
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="derived-datatypes">
+<h2>2.4.2. Derived Datatypes<a class="headerlink" href="#derived-datatypes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeName">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeName</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a name from a string.  Returns the same string or raised ValueError.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeName">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeName</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience function, returns src unchanged.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.DecodeInteger">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">DecodeInteger</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.DecodeInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes an integer value from a string returning an Integer or Long
+value.</p>
+<p>If string is not a valid lexical representation of an integer then
+ValueError is raised.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.EncodeInteger">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">EncodeInteger</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.EncodeInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes an integer value using the canonical lexical representation.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="constraining-facets">
+<h2>2.4.3. Constraining Facets<a class="headerlink" href="#constraining-facets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="enumeration">
+<h3>2.4.3.1. Enumeration<a class="headerlink" href="#enumeration" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.xsdatatypes20041028.Enumeration">
+<em class="property">class </em><tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">Enumeration</tt><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract class designed to make generating enumeration types easier. 
+The class is not designed to be instantiated but to act as a method of
+defining constants to represent the values of an enumeration.</p>
+<p>The basic usage of this class is to derive a class from it with a single
+class member called &#8216;decode&#8217; which is a mapping from canonical strings to
+simple integers.  You then call the function <a class="reference internal" href="#pyslet.xsdatatypes20041028.MakeEnumeration" title="pyslet.xsdatatypes20041028.MakeEnumeration"><tt class="xref py py-func docutils literal"><span class="pre">MakeEnumeration()</span></tt></a> to
+complete the declaration, after which, you can use the enumeration as if you
+had defined the constants as class members and call any of the following
+class methods to convert enumeration values to and from their string
+representations.</p>
+<dl class="attribute">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DEFAULT">
+<tt class="descname">DEFAULT</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default value of the enumeration or None if there is no default</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeValue">
+<em class="property">classmethod </em><tt class="descname">DecodeValue</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a string returning a value in this enumeration.</p>
+<p>If no legal value can be decoded then ValueError is raised.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeLowerValue">
+<em class="property">classmethod </em><tt class="descname">DecodeLowerValue</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeLowerValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a string, converting it to lower case first.</p>
+<p>Returns a value in this enumeration.  If no legal value can be decoded
+then ValueError is raised.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeUpperValue">
+<em class="property">classmethod </em><tt class="descname">DecodeUpperValue</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeUpperValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a string, converting it to upper case first.</p>
+<p>Returns a value in this enumeration.  If no legal value can be decoded
+then ValueError is raised.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeTitleValue">
+<em class="property">classmethod </em><tt class="descname">DecodeTitleValue</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeTitleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a string, converting it to title case first.</p>
+<p>Returns a value in this enumeration.  If no legal value can be decoded
+then ValueError is raised.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeValueList">
+<em class="property">classmethod </em><tt class="descname">DecodeValueList</tt><big>(</big><em>decoder</em>, <em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeValueList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a space-separated string of values using <em>decoder</em> which must
+be one of the Decode*Value methods of the enumeration.  The result is
+an ordered list of values (possibly containing duplicates).</p>
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeValueList</span><span class="p">(</span><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeLowerValue</span><span class="p">,</span><span class="s">&quot;apples oranges, pears&quot;</span><span class="p">)</span>
+<span class="c"># returns [ fruit.apples, fruit.oranges, fruit.pears ]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.DecodeValueDict">
+<em class="property">classmethod </em><tt class="descname">DecodeValueDict</tt><big>(</big><em>decoder</em>, <em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeValueDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a space-separated string of values using <em>decoder</em> which must
+be one of the Decode*Value methods of the enumeration.  The result is
+a dictionary mapping the values found as keys onto the strings used
+to represent them.  Duplicates are mapped to the first occurrence of the
+encoded value.</p>
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeValueDict</span><span class="p">(</span><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeLowerValue</span><span class="p">,</span><span class="s">&quot;Apples oranges PEARS&quot;</span><span class="p">)</span>
+<span class="c"># returns...</span>
+<span class="p">{</span> <span class="n">fruit</span><span class="o">.</span><span class="n">apples</span><span class="p">:</span><span class="s">&#39;Apples&#39;</span><span class="p">,</span> <span class="n">fruit</span><span class="o">.</span><span class="n">oranges</span><span class="p">:</span><span class="s">&#39;oranges&#39;</span><span class="p">,</span> <span class="n">fruit</span><span class="o">.</span><span class="n">pears</span><span class="p">:</span><span class="s">&#39;PEARS&#39;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.EncodeValue">
+<em class="property">classmethod </em><tt class="descname">EncodeValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.EncodeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes one of the enumeration constants returning a string.</p>
+<p>If value is None then the encoded default value is returned (if defined) or None.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.EncodeValueList">
+<em class="property">classmethod </em><tt class="descname">EncodeValueList</tt><big>(</big><em>valueList</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.EncodeValueList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a list of enumeration constants returning a space-separated string.</p>
+<p>If valueList is empty then an empty string is returned.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.xsdatatypes20041028.Enumeration.EncodeValueDict">
+<em class="property">classmethod </em><tt class="descname">EncodeValueDict</tt><big>(</big><em>valueDict</em>, <em>sortKeys=True</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.Enumeration.EncodeValueDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encodes a dictionary of enumeration constants returning a space-separated string.</p>
+<p>If valueDict is empty then an empty string is returned.  Note that the
+canonical representation of each value is used.  Extending the example
+given in <a class="reference internal" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeValueDict" title="pyslet.xsdatatypes20041028.Enumeration.DecodeValueDict"><tt class="xref py py-meth docutils literal"><span class="pre">DecodeValueDict()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fruit</span><span class="o">.</span><span class="n">EncodeValueDict</span><span class="p">(</span><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeValueDict</span><span class="p">(</span><span class="n">fruit</span><span class="o">.</span><span class="n">DecodeLowerValue</span><span class="p">,</span>
+        <span class="s">&quot;Apples oranges PEARS&quot;</span><span class="p">))</span>
+<span class="c"># returns...</span>
+<span class="s">&quot;apples oranges pears&quot;</span>
+</pre></div>
+</div>
+<p>The order of the encoded values in the string is determined by the sort
+order of the enumeration constants.  This ensures that equivalent
+dictionaries are always encoded to equivalent strings.  In the above
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fruit</span><span class="o">.</span><span class="n">apples</span> <span class="o">&lt;</span> <span class="n">fruit</span><span class="o">.</span><span class="n">oranges</span> <span class="ow">and</span> <span class="n">fruit</span><span class="o">.</span><span class="n">oranges</span> <span class="o">&lt;</span> <span class="n">fruit</span><span class="o">.</span><span class="n">pears</span>
+</pre></div>
+</div>
+<p>If you have large lists then you can skip the sorting step by passing
+False for <em>sortKeys</em> to improve performance at the expense of a
+predictable encoding.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.MakeEnumeration">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">MakeEnumeration</tt><big>(</big><em>e</em>, <em>defaultValue=None</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.MakeEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds convenience attributes to the class &#8216;e&#8217;</p>
+<p>This function assumes that e has an attribute &#8216;decode&#8217; that is a dictionary
+which maps strings onto enumeration values.  This function creates the reverse
+mapping called &#8216;encode&#8217; and also defines constant attribute values that are
+equivalent to the keys of decode and can be used in code in the form e.key.</p>
+<p>If <em>defaultValue</em> is not None then it must be on of the strings in the
+decode dictionary.  It is then used to set the <em>DEFAULT</em> value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.MakeEnumerationAliases">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">MakeEnumerationAliases</tt><big>(</big><em>e</em>, <em>aliases</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.MakeEnumerationAliases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <em>aliases</em> from a dictionary, declaring additional convenience attributes.</p>
+<p>This function assumes that <a class="reference internal" href="#pyslet.xsdatatypes20041028.MakeEnumeration" title="pyslet.xsdatatypes20041028.MakeEnumeration"><tt class="xref py py-func docutils literal"><span class="pre">MakeEnumeration()</span></tt></a> has already been used
+to complete the declaration of the enumeration.  The aliases are added to
+the decode dictionary but, for obvious reasons, not to the encode
+dictionary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.MakeLowerAliases">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">MakeLowerAliases</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.MakeLowerAliases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <em>aliases</em> by converting all keys to lower case.</p>
+<p>Assumes that <a class="reference internal" href="#pyslet.xsdatatypes20041028.MakeEnumeration" title="pyslet.xsdatatypes20041028.MakeEnumeration"><tt class="xref py py-func docutils literal"><span class="pre">MakeEnumeration()</span></tt></a> has already been used to complete
+the declaration of the enumeration.  You must call this function to complete
+the declaration before relying on calls to
+<a class="reference internal" href="#pyslet.xsdatatypes20041028.Enumeration.DecodeLowerValue" title="pyslet.xsdatatypes20041028.Enumeration.DecodeLowerValue"><tt class="xref py py-meth docutils literal"><span class="pre">Enumeration.DecodeLowerValue()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">MakeEnumeration</tt><big>(</big><em>e</em>, <em>defaultValue=None</em><big>)</big></dt>
+<dd><p>Adds convenience attributes to the class &#8216;e&#8217;</p>
+<p>This function assumes that e has an attribute &#8216;decode&#8217; that is a dictionary
+which maps strings onto enumeration values.  This function creates the reverse
+mapping called &#8216;encode&#8217; and also defines constant attribute values that are
+equivalent to the keys of decode and can be used in code in the form e.key.</p>
+<p>If <em>defaultValue</em> is not None then it must be on of the strings in the
+decode dictionary.  It is then used to set the <em>DEFAULT</em> value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">MakeEnumeration</tt><big>(</big><em>e</em>, <em>defaultValue=None</em><big>)</big></dt>
+<dd><p>Adds convenience attributes to the class &#8216;e&#8217;</p>
+<p>This function assumes that e has an attribute &#8216;decode&#8217; that is a dictionary
+which maps strings onto enumeration values.  This function creates the reverse
+mapping called &#8216;encode&#8217; and also defines constant attribute values that are
+equivalent to the keys of decode and can be used in code in the form e.key.</p>
+<p>If <em>defaultValue</em> is not None then it must be on of the strings in the
+decode dictionary.  It is then used to set the <em>DEFAULT</em> value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="whitespace">
+<h3>2.4.3.2. WhiteSpace<a class="headerlink" href="#whitespace" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.WhiteSpaceReplace">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">WhiteSpaceReplace</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.WhiteSpaceReplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces tab, line feed and carriage return with space.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.xsdatatypes20041028.WhiteSpaceCollapse">
+<tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">WhiteSpaceCollapse</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.WhiteSpaceCollapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces all runs of white space with a single space. Also removes
+leading and trailing white space.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="regular-expressions">
+<h2>2.4.4. Regular Expressions<a class="headerlink" href="#regular-expressions" title="Permalink to this headline">¶</a></h2>
+<p>Appendix F of the XML Schema datatypes specification defines a regular
+expression language.  This language differs from the native Python regular
+expression language but it is close enough to enable us to define a wrapper
+class which parses schema regular expressions and converts them to equivalent
+python regular expressions.</p>
+<dl class="class">
+<dt id="pyslet.xsdatatypes20041028.RegularExpression">
+<em class="property">class </em><tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">RegularExpression</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models a regular expression as defined by XML schema.</p>
+<p>Regular expressions are constructed from unicode source strings. Internally
+they are parsed and converted to Python regular expressions to speed up
+matching.  Warning: because the XML schema expression language contains
+concepts not supported by Python the python regular expression may not be
+very readable.</p>
+<dl class="attribute">
+<dt id="pyslet.xsdatatypes20041028.RegularExpression.p">
+<tt class="descname">p</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpression.p" title="Permalink to this definition">¶</a></dt>
+<dd><p>the compiled python regular expression</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.xsdatatypes20041028.RegularExpression.src">
+<tt class="descname">src</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpression.src" title="Permalink to this definition">¶</a></dt>
+<dd><p>the original source string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpression.Match">
+<tt class="descname">Match</tt><big>(</big><em>target</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpression.Match" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience function, returns True if the expression matches <em>target</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>For completeness we also document the parser we use to do the conversion, it
+draws heavily on the <tt class="xref py py-class docutils literal"><span class="pre">pyslet.unicode5.CharClass</span></tt> concept.</p>
+<dl class="class">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser">
+<em class="property">class </em><tt class="descclassname">pyslet.xsdatatypes20041028.</tt><tt class="descname">RegularExpressionParser</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.BasicParser</span></tt></p>
+<p>A custom parser for XML schema regular expressions.</p>
+<p>The parser is initialised from a source string, the string to be parsed.</p>
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseRegExp">
+<tt class="descname">ParseRegExp</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseRegExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a unicode string representing the regular expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseBranch">
+<tt class="descname">ParseBranch</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseBranch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a unicode string representing this piece as a python regular expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantifier">
+<tt class="descname">ParseQuantifier</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of n,m.</p>
+<p>Symbolic values are expanded to the appropriate pair.  The second
+value may be None indicating unbounded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantity">
+<tt class="descname">ParseQuantity</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of n,m even if an exact quantity is given.</p>
+<p>In other words, the exact quantity &#8216;n&#8217; returns n,n.  The second
+value may be None indicated unbounded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantExact">
+<tt class="descname">ParseQuantExact</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseQuantExact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseAtom">
+<tt class="descname">ParseAtom</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseAtom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a unicode string representing this atom as a python regular expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.IsChar">
+<tt class="descname">IsChar</tt><big>(</big><em>c=None</em><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.IsChar" title="Permalink to this definition">¶</a></dt>
+<dd><p>The definition of this function is designed to be conservative with
+respect to the specification, which is clearly in error around
+production [10] as the prose and the BNF do not match.  It appears that
+| was intended to be excluded in the prose but has been omitted, the
+reverse being true for the curly-brackets.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClass">
+<tt class="descname">ParseCharClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass instance representing this class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassExpr">
+<tt class="descname">ParseCharClassExpr</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassExpr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass instance representing this class expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharGroup">
+<tt class="descname">ParseCharGroup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing this group.  This method also
+handles the case of a class subtraction directly to reduce the need for
+look-ahead.  If you specifically want to parse a subtraction you can do
+this with <a class="reference internal" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassSub" title="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassSub"><tt class="xref py py-meth docutils literal"><span class="pre">ParseCharClassSub()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParsePosCharGroup">
+<tt class="descname">ParsePosCharGroup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParsePosCharGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing a positive range</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseNegCharGroup">
+<tt class="descname">ParseNegCharGroup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseNegCharGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing this range.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassSub">
+<tt class="descname">ParseCharClassSub</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassSub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing this range - this method is not
+normally used by the parser as in present for completeness.  See
+<a class="reference internal" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharGroup" title="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharGroup"><tt class="xref py py-meth docutils literal"><span class="pre">ParseCharGroup()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharRange">
+<tt class="descname">ParseCharRange</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing this range.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseSERange">
+<tt class="descname">ParseSERange</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseSERange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass representing this range.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharOrEsc">
+<tt class="descname">ParseCharOrEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharOrEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single unicode character.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassEsc">
+<tt class="descname">ParseCharClassEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharClassEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass instance representing one of the escape sequences.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseSingleCharEsc">
+<tt class="descname">ParseSingleCharEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseSingleCharEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single unicode character parsed from a single char escape.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCatEsc">
+<tt class="descname">ParseCatEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCatEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass, parsing a category escape.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseComplEsc">
+<tt class="descname">ParseComplEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseComplEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass, parsing the complement of a category escape.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharProp">
+<tt class="descname">ParseCharProp</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseCharProp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass, parsing an IsCategory or IsBlock.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseIsCategory">
+<tt class="descname">ParseIsCategory</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseIsCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass corresponding to one of the character categories
+or raises an error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseIsBlock">
+<tt class="descname">ParseIsBlock</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseIsBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass corresponding to one of the Unicode blocks.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseMultiCharEsc">
+<tt class="descname">ParseMultiCharEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseMultiCharEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass corresponding to one of the multichar escapes, if parsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.xsdatatypes20041028.RegularExpressionParser.ParseWildcardEsc">
+<tt class="descname">ParseWildcardEsc</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.xsdatatypes20041028.RegularExpressionParser.ParseWildcardEsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a CharClass corresponding to the wildcard &#8216;.&#8217; character if parsed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.4. XML Schema Datatypes</a><ul>
+<li><a class="reference internal" href="#primitive-datatypes">2.4.1. Primitive Datatypes</a></li>
+<li><a class="reference internal" href="#derived-datatypes">2.4.2. Derived Datatypes</a></li>
+<li><a class="reference internal" href="#constraining-facets">2.4.3. Constraining Facets</a><ul>
+<li><a class="reference internal" href="#enumeration">2.4.3.1. Enumeration</a></li>
+<li><a class="reference internal" href="#whitespace">2.4.3.2. WhiteSpace</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#regular-expressions">2.4.4. Regular Expressions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="xml20081126.parser.html"
+                        title="previous chapter">2.3. XML: Parsing XML Documents</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="html40_19991224.html"
+                        title="next chapter">2.5. HTML</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/xsdatatypes20041028.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="html40_19991224.html" title="2.5. HTML"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="xml20081126.parser.html" title="2.3. XML: Parsing XML Documents"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

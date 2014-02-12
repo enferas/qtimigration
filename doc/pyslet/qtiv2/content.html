@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.3. Content Model &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
+    <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="next" title="1.3.4. Interactions" href="interactions.html" />
+    <link rel="prev" title="1.3.2. Tests" href="tests.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interactions.html" title="1.3.4. Interactions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="1.3.2. Tests"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.content">
+<span id="content-model"></span><h1>1.3.3. Content Model<a class="headerlink" href="#module-pyslet.qtiv2.content" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.content.ItemBody">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">ItemBody</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.ItemBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.content.BodyElement" title="pyslet.qtiv2.content.BodyElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.BodyElement</span></tt></a></p>
+<p>The item body contains the text, graphics, media objects, and
+interactions that describe the item&#8217;s content and information about how it
+is structured:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;itemBody.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;bodyElement.AttrGroup&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;itemBody.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;block.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.content.ItemBody.RenderHTML">
+<tt class="descname">RenderHTML</tt><big>(</big><em>parent</em>, <em>profile</em>, <em>itemState</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.ItemBody.RenderHTML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides <a class="reference internal" href="#pyslet.qtiv2.content.BodyElement.RenderHTML" title="pyslet.qtiv2.content.BodyElement.RenderHTML"><tt class="xref py py-meth docutils literal"><span class="pre">BodyElement.RenderHTML()</span></tt></a>, the result is always a
+Div with class set to &#8220;itemBody&#8221;.  Unlike other such method <em>parent</em> may
+by None, in which case a new parentless Div is created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.content.BodyElement">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">BodyElement</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.BodyElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>The root class of all content objects in the item content model is the
+bodyElement. It defines a number of attributes that are common to all
+elements of the content model:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;bodyElement.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;id&quot; type=&quot;identifier.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;class&quot; use=&quot;optional&quot;&gt;
+                &lt;xsd:simpleType&gt;
+                        &lt;xsd:list itemType=&quot;styleclass.Type&quot;/&gt;
+                &lt;/xsd:simpleType&gt;
+        &lt;/xsd:attribute&gt;
+        &lt;xsd:attribute ref=&quot;xml:lang&quot;/&gt;
+        &lt;xsd:attribute name=&quot;label&quot; type=&quot;string256.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.content.BodyElement.RenderHTML">
+<tt class="descname">RenderHTML</tt><big>(</big><em>parent</em>, <em>profile</em>, <em>itemState</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.BodyElement.RenderHTML" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders this element in html form, adding nodes to <em>parent</em>.  This
+method effectively overrides
+<tt class="xref py py-class docutils literal"><span class="pre">html40_19991224.XHTMLElement.RenderHTML</span></tt> enabling QTI and
+XHTML elements to be mixed freely.</p>
+<p>The state of the item (e.g., the values of any controls), is taken from
+<em>itemState</em>, a <tt class="xref py py-class docutils literal"><span class="pre">variables.ItemSessionState</span></tt> instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.content.BodyElement.RenderHTMLChildren">
+<tt class="descname">RenderHTMLChildren</tt><big>(</big><em>parent</em>, <em>profile</em>, <em>itemState</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.BodyElement.RenderHTMLChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders this element&#8217;s children to an external document represented by the <em>parent</em> node</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="basic-classes">
+<h2>1.3.3.1. Basic Classes<a class="headerlink" href="#basic-classes" title="Permalink to this headline">¶</a></h2>
+<p>Many of the basic classes are drawn directly from the <tt class="xref py py-mod docutils literal"><span class="pre">html40_19991224</span></tt>
+module, as a result there are slight modifications to some of the abstract base
+class definitions. See <tt class="xref py py-class docutils literal"><span class="pre">InlineMixin</span></tt>,
+<tt class="xref py py-class docutils literal"><span class="pre">BlockMixin</span></tt> and
+<tt class="xref py py-class docutils literal"><span class="pre">FlowMixin</span></tt>; there is no class corresponding to the
+objectFlow concept (see <tt class="xref py py-class docutils literal"><span class="pre">Object</span></tt> for more
+information).  There is also no representation of the static base classes used
+to exclude interactions or any of the other basic container classes, these are
+all handled directly by their equivalent html abstractions.</p>
+<dl class="class">
+<dt id="pyslet.qtiv2.content.FlowContainerMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">FlowContainerMixin</tt><a class="headerlink" href="#pyslet.qtiv2.content.FlowContainerMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin class used for objects that can contain flows.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.content.FlowContainerMixin.PrettyPrint">
+<tt class="descname">PrettyPrint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.content.FlowContainerMixin.PrettyPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deteremins if this flow-container-like object should be pretty printed.</p>
+<p>This is similar to the algorithm we use in HTML flow containers,
+suppressing pretty printing if we have inline elements (ignoring
+non-trivial data).  This could be refactored in future.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="xhmtl-elements">
+<h2>1.3.3.2. XHMTL Elements<a class="headerlink" href="#xhmtl-elements" title="Permalink to this headline">¶</a></h2>
+<p>Again, these classes are defined in the accompanying <tt class="xref py py-mod docutils literal"><span class="pre">html40_19991224</span></tt>
+module, however we do define some profiles here to make it easier to constraint
+general HTML content to the profile defined here.</p>
+<dl class="data">
+<dt id="pyslet.qtiv2.content.TextElements">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">TextElements</tt><em class="property"> = {'em': ('id', 'class', 'label'), 'pre': ('id', 'class', 'label'), 'code': ('id', 'class', 'label'), 'h2': ('id', 'class', 'label'), 'h3': ('id', 'class', 'label'), 'h1': ('id', 'class', 'label'), 'h6': ('id', 'class', 'label'), 'kbd': ('id', 'class', 'label'), 'h5': ('id', 'class', 'label'), 'span': ('id', 'class', 'label'), 'dfn': ('id', 'class', 'label'), 'var': ('id', 'class', 'label'), 'samp': ('id', 'class', 'label'), 'cite': ('id', 'class', 'label'), 'blockquote': ('id', 'class', 'label'), 'acronym': ('id', 'class', 'label'), 'h4': ('id', 'class', 'label'), 'br': ('id', 'class', 'label'), 'address': ('id', 'class', 'label'), 'strong': ('id', 'class', 'label'), 'q': ('id', 'class', 'label'), 'p': ('id', 'class', 'label'), 'div': ('id', 'class', 'label'), 'abbr': ('id', 'class', 'label')}</em><a class="headerlink" href="#pyslet.qtiv2.content.TextElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic text formatting elements</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.ListElements">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">ListElements</tt><em class="property"> = {'dl': ('id', 'class', 'label'), 'ol': ('id', 'class', 'label'), 'dd': ('id', 'class', 'label'), 'li': ('id', 'class', 'label'), 'ul': ('id', 'class', 'label'), 'dt': ('id', 'class', 'label')}</em><a class="headerlink" href="#pyslet.qtiv2.content.ListElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Elements required for lists</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.ObjectElements">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">ObjectElements</tt><em class="property"> = {'object': ('id', 'class', 'label', 'data', 'type', 'width', 'height'), 'param': ('id', 'class', 'label', 'name', 'value', 'valuetype', 'type')}</em><a class="headerlink" href="#pyslet.qtiv2.content.ObjectElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object element</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.PresentationElements">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">PresentationElements</tt><em class="property"> = {'caption': ('id', 'class', 'label'), 'tfoot': ('id', 'class', 'label'), 'th': ('id', 'class', 'label', 'headers', 'scope', 'abbr', 'axis', 'rowspan', 'colspan'), 'colgroup': ('id', 'class', 'label', 'span'), 'table': ('id', 'class', 'label', 'summary'), 'td': ('id', 'class', 'label', 'headers', 'scope', 'abbr', 'axis', 'rowspan', 'colspan'), 'thead': ('id', 'class', 'label'), 'tr': ('id', 'class', 'label'), 'col': ('id', 'class', 'label', 'span'), 'tbody': ('id', 'class', 'label')}</em><a class="headerlink" href="#pyslet.qtiv2.content.PresentationElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tables</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.ImageElement">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">ImageElement</tt><em class="property"> = {'img': ('id', 'class', 'label', 'src', 'alt', 'longdesc', 'height', 'width')}</em><a class="headerlink" href="#pyslet.qtiv2.content.ImageElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Images</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.HypertextElement">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">HypertextElement</tt><em class="property"> = {'a': ('id', 'class', 'label', 'href', 'type')}</em><a class="headerlink" href="#pyslet.qtiv2.content.HypertextElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hyperlinks</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.qtiv2.content.HTMLProfile">
+<tt class="descclassname">pyslet.qtiv2.content.</tt><tt class="descname">HTMLProfile</tt><em class="property"> = {'em': ('id', 'class', 'label'), 'pre': ('id', 'class', 'label'), 'code': ('id', 'class', 'label'), 'h2': ('id', 'class', 'label'), 'h3': ('id', 'class', 'label'), 'h1': ('id', 'class', 'label'), 'h6': ('id', 'class', 'label'), 'kbd': ('id', 'class', 'label'), 'h5': ('id', 'class', 'label'), 'table': ('id', 'class', 'label', 'summary'), 'span': ('id', 'class', 'label'), 'img': ('id', 'class', 'label', 'src', 'alt', 'longdesc', 'height', 'width'), 'caption': ('id', 'class', 'label'), 'tr': ('id', 'class', 'label'), 'tbody': ('id', 'class', 'label'), 'param': ('id', 'class', 'label', 'name', 'value', 'valuetype', 'type'), 'li': ('id', 'class', 'label'), 'dfn': ('id', 'class', 'label'), 'tfoot': ('id', 'class', 'label'), 'th': ('id', 'class', 'label', 'headers', 'scope', 'abbr', 'axis', 'rowspan', 'colspan'), 'var': ('id', 'class', 'label'), 'td': ('id', 'class', 'label', 'headers', 'scope', 'abbr', 'axis', 'rowspan', 'colspan'), 'samp': ('id', 'class', 'label'), 'cite': ('id', 'class', 'label'), 'thead': ('id', 'class', 'label'), 'dl': ('id', 'class', 'label'), 'blockquote': ('id', 'class', 'label'), 'acronym': ('id', 'class', 'label'), 'dd': ('id', 'class', 'label'), 'object': ('id', 'class', 'label', 'data', 'type', 'width', 'height'), 'h4': ('id', 'class', 'label'), 'br': ('id', 'class', 'label'), 'address': ('id', 'class', 'label'), 'dt': ('id', 'class', 'label'), 'strong': ('id', 'class', 'label'), 'abbr': ('id', 'class', 'label'), 'a': ('id', 'class', 'label', 'href', 'type'), 'ol': ('id', 'class', 'label'), 'colgroup': ('id', 'class', 'label', 'span'), 'q': ('id', 'class', 'label'), 'p': ('id', 'class', 'label'), 'div': ('id', 'class', 'label'), 'col': ('id', 'class', 'label', 'span'), 'ul': ('id', 'class', 'label')}</em><a class="headerlink" href="#pyslet.qtiv2.content.HTMLProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>The full HTML profile defined by QTI</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.3. Content Model</a><ul>
+<li><a class="reference internal" href="#basic-classes">1.3.3.1. Basic Classes</a></li>
+<li><a class="reference internal" href="#xhmtl-elements">1.3.3.2. XHMTL Elements</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tests.html"
+                        title="previous chapter">1.3.2. Tests</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="interactions.html"
+                        title="next chapter">1.3.4. Interactions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/content.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interactions.html" title="1.3.4. Interactions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="1.3.2. Tests"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

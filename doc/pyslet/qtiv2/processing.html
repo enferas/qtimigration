@@ -1,0 +1,567 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.6. Response Processing &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
+    <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="next" title="1.3.9. Expressions" href="expressions.html" />
+    <link rel="prev" title="1.3.5. Item Variables" href="variables.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="expressions.html" title="1.3.9. Expressions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="variables.html" title="1.3.5. Item Variables"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.processing">
+<span id="response-processing"></span><h1>1.3.6. Response Processing<a class="headerlink" href="#module-pyslet.qtiv2.processing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="generalized-response-processing">
+<h2>1.3.6.1. Generalized Response Processing<a class="headerlink" href="#generalized-response-processing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseProcessing">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseProcessing</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Response processing is the process by which the Delivery Engine assigns
+outcomes based on the candidate&#8217;s responses:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;responseProcessing.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;template&quot; type=&quot;uri.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;templateLocation&quot; type=&quot;uri.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;responseProcessing.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;responseRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.ResponseProcessing.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseProcessing.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs response processing using the values in <em>state</em>.</p>
+<ul class="simple">
+<li><em>state</em> is an <a class="reference internal" href="variables.html#pyslet.qtiv2.variables.ItemSessionState" title="pyslet.qtiv2.variables.ItemSessionState"><tt class="xref py py-class docutils literal"><span class="pre">ItemSessionState</span></tt></a>
+instance.</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseRule">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseRule</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Abstract class to represent all response rules.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.ResponseRule.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseRule.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method to run this rule using the values in <em>state</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseCondition">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseCondition</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseRule" title="pyslet.qtiv2.processing.ResponseRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.ResponseRule</span></tt></a></p>
+<p>If the expression given in a responseIf or responseElseIf evaluates to
+true then the sub-rules contained within it are followed and any following
+responseElseIf or responseElse parts are ignored for this response
+condition:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;responseCondition.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;responseIf&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;responseElseIf&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;responseElse&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseIf">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseIf</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseIf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>A responseIf part consists of an expression which must have an effective
+baseType of boolean and single cardinality. If the expression is true then
+the sub-rules are processed, otherwise they are skipped (including if the
+expression is NULL):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;responseIf.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:group ref=&quot;responseRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.ResponseIf.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseIf.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run this test and, if True, any resulting rules.</p>
+<p>Returns <em>True</em> if the condition evaluated to <em>True</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseElseIf">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseElseIf</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseElseIf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseIf" title="pyslet.qtiv2.processing.ResponseIf"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.ResponseIf</span></tt></a></p>
+<p>Represents the responseElse element, see <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseIf" title="pyslet.qtiv2.processing.ResponseIf"><tt class="xref py py-class docutils literal"><span class="pre">ResponseIf</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;responseElseIf.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:group ref=&quot;responseRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ResponseElse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ResponseElse</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseElse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Represents the responseElse element, see <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseCondition" title="pyslet.qtiv2.processing.ResponseCondition"><tt class="xref py py-class docutils literal"><span class="pre">ResponseCondition</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;responseElse.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;responseRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.ResponseElse.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ResponseElse.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the sub-rules.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.SetOutcomeValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">SetOutcomeValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.SetOutcomeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseRule" title="pyslet.qtiv2.processing.ResponseRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.ResponseRule</span></tt></a></p>
+<p>The setOutcomeValue rule sets the value of an outcome variable to the
+value obtained from the associated expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;setOutcomeValue.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;setOutcomeValue.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.StopProcessing">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">StopProcessing</tt><a class="headerlink" href="#pyslet.qtiv2.processing.StopProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIError" title="pyslet.qtiv2.core.QTIError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIError</span></tt></a></p>
+<p>Raised when a rule which stops processing is encountered.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ExitResponse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ExitResponse</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ExitResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.ResponseRule" title="pyslet.qtiv2.processing.ResponseRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.ResponseRule</span></tt></a></p>
+<p>The exit response rule terminates response processing immediately (for
+this invocation).  It does this by raising <a class="reference internal" href="#pyslet.qtiv2.processing.StopProcessing" title="pyslet.qtiv2.processing.StopProcessing"><tt class="xref py py-class docutils literal"><span class="pre">StopProcessing</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:complexType name=&quot;exitResponse.Type&quot;/&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="template-processing">
+<h1>1.3.7. Template Processing<a class="headerlink" href="#template-processing" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateProcessing">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateProcessing</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Template processing consists of one or more templateRules that are
+followed by the cloning engine or delivery system in order to assign values
+to the template variables:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;templateProcessing.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;templateRule.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+
+&lt;xsd:complexType name=&quot;templateProcessing.Type&quot; mixed=&quot;false&quot;&gt;
+        &lt;xsd:group ref=&quot;templateProcessing.ContentGroup&quot;/&gt;
+&lt;/xsd:complexType&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TemplateProcessing.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateProcessing.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs template processing rules using the values in <em>state</em>.</p>
+<ul class="simple">
+<li><em>state</em> is an <a class="reference internal" href="variables.html#pyslet.qtiv2.variables.ItemSessionState" title="pyslet.qtiv2.variables.ItemSessionState"><tt class="xref py py-class docutils literal"><span class="pre">ItemSessionState</span></tt></a>
+instance.</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateRule">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateRule</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Abstract class to represent all template rules.</p>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TemplateRule.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateRule.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method to run this rule using the values in <em>state</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateCondition">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateCondition</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateRule" title="pyslet.qtiv2.processing.TemplateRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateRule</span></tt></a></p>
+<p>If the expression given in the templateIf or templateElseIf evaluates to
+true then the sub-rules contained within it are followed and any following
+templateElseIf or templateElse parts are ignored for this template
+condition:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;templateCondition.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;templateIf&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;templateElseIf&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;templateElse&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateIf">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateIf</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateIf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>A templateIf part consists of an expression which must have an effective
+baseType of boolean and single cardinality. If the expression is true then
+the sub-rules are processed, otherwise they are skipped (including if the
+expression is NULL):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;templateIf.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:group ref=&quot;templateRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TemplateIf.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateIf.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run this test and, if True, any resulting rules.</p>
+<p>Returns <em>True</em> if the condition evaluated to <em>True</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateElseIf">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateElseIf</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateElseIf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateIf" title="pyslet.qtiv2.processing.TemplateIf"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateIf</span></tt></a></p>
+<p>Represents the templateElse element, see <tt class="xref py py-class docutils literal"><span class="pre">templateIf</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;templateElseIf.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:group ref=&quot;templateRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateElse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateElse</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateElse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Represents the templateElse element, see <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateCondition" title="pyslet.qtiv2.processing.TemplateCondition"><tt class="xref py py-class docutils literal"><span class="pre">TemplateCondition</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;templateElse.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;templateRule.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TemplateElse.Run">
+<tt class="descname">Run</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateElse.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the sub-rules.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.SetTemplateValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">SetTemplateValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.SetTemplateValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateRule" title="pyslet.qtiv2.processing.TemplateRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateRule</span></tt></a></p>
+<p>The setTemplateValue rule sets the value of a template variable to the
+value obtained from the associated expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;setTemplateValue.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;setTemplateValue.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.SetCorrectResponse">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">SetCorrectResponse</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.SetCorrectResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateRule" title="pyslet.qtiv2.processing.TemplateRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateRule</span></tt></a></p>
+<p>The setCorrectResponse rule sets the correct value of a response variable to the
+value obtained from the associated expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;setCorrectResponse.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;setCorrectResponse.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.SetDefaultValue">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">SetDefaultValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.SetDefaultValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateRule" title="pyslet.qtiv2.processing.TemplateRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateRule</span></tt></a></p>
+<p>The setDefaultValue rule sets the default value of a response or outcome
+variable to the value obtained from the associated expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;setDefaultValue.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;setDefaultValue.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.ExitTemplate">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">ExitTemplate</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.ExitTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TemplateRule" title="pyslet.qtiv2.processing.TemplateRule"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TemplateRule</span></tt></a></p>
+<p>The exit template rule terminates template processing immediately.  It
+does this by raising <a class="reference internal" href="#pyslet.qtiv2.processing.StopProcessing" title="pyslet.qtiv2.processing.StopProcessing"><tt class="xref py py-class docutils literal"><span class="pre">StopProcessing</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:complexType name=&quot;exitTemplate.Type&quot;/&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="pre-conditions-and-branching">
+<h1>1.3.8. Pre-conditions and Branching<a class="headerlink" href="#pre-conditions-and-branching" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TestPartCondition">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TestPartCondition</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TestPartCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TestPartCondition.Evaluate">
+<tt class="descname">Evaluate</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TestPartCondition.Evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the condition using the values in <em>state</em>.</p>
+<ul class="simple">
+<li><em>state</em> is a <a class="reference internal" href="variables.html#pyslet.qtiv2.variables.TestSessionState" title="pyslet.qtiv2.variables.TestSessionState"><tt class="xref py py-class docutils literal"><span class="pre">TestSessionState</span></tt></a>
+instance.</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.PreCondition">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">PreCondition</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.PreCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TestPartCondition" title="pyslet.qtiv2.processing.TestPartCondition"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TestPartCondition</span></tt></a></p>
+<p>A preCondition is a simple expression attached to an assessmentSection or
+assessmentItemRef that must evaluate to true if the item is to be
+presented:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;preCondition.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.BranchRule">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">BranchRule</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.BranchRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.processing.TestPartCondition" title="pyslet.qtiv2.processing.TestPartCondition"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.processing.TestPartCondition</span></tt></a></p>
+<p>A branch-rule is a simple expression attached to an assessmentItemRef,
+assessmentSection or testPart that is evaluated after the item, section, or
+part has been presented to the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;branchRule.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;target&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;branchRule.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.processing.TemplateDefault">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.processing.</tt><tt class="descname">TemplateDefault</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateDefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Overrides the default value of a template variable based on the test
+context in which the template is instantiated:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;templateDefault.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;templateIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;templateDefault.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.processing.TemplateDefault.Run">
+<tt class="descname">Run</tt><big>(</big><em>itemState</em>, <em>testState</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.processing.TemplateDefault.Run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the value of a template variable in <em>itemState</em> based on the
+values in <em>testState</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.6. Response Processing</a><ul>
+<li><a class="reference internal" href="#generalized-response-processing">1.3.6.1. Generalized Response Processing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#template-processing">1.3.7. Template Processing</a></li>
+<li><a class="reference internal" href="#pre-conditions-and-branching">1.3.8. Pre-conditions and Branching</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="variables.html"
+                        title="previous chapter">1.3.5. Item Variables</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="expressions.html"
+                        title="next chapter">1.3.9. Expressions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/processing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="expressions.html" title="1.3.9. Expressions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="variables.html" title="1.3.5. Item Variables"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

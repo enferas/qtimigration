@@ -1,0 +1,1629 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1. Entity Data Model (EDM) &mdash; Pyslet 0.4.20140128 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.20140128',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140128 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="next" title="2.2. The Open Data Protocol (OData)" href="odatav2.html" />
+    <link rel="prev" title="2. Supporting Standards" href="general.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2.html" title="2.2. The Open Data Protocol (OData)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140128 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.odata2.csdl">
+<span id="entity-data-model-edm"></span><h1>2.1. Entity Data Model (EDM)<a class="headerlink" href="#module-pyslet.odata2.csdl" title="Permalink to this headline">¶</a></h1>
+<p>This module defines functions and classes for working with data based on
+Microsoft&#8217;s Entity Data Model (EDM) as documented by the Conceptual
+Schema Definition Language and associated file format:
+<a class="reference external" href="http://msdn.microsoft.com/en-us/library/dd541474.aspx">http://msdn.microsoft.com/en-us/library/dd541474.aspx</a></p>
+<div class="section" id="reference">
+<h2>2.1.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EDMValue">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDMValue</tt><big>(</big><em>pDef=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents a value in the EDMModel.</p>
+<p>This class is not part of the declared metadata model but is used to wrap or
+&#8216;box&#8217; instances of a value.  In particular, it can be used in a context
+where that value can have either a simple or complex type.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EDMValue.pDef">
+<tt class="descname">pDef</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue.pDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#pyslet.odata2.csdl.Property" title="pyslet.odata2.csdl.Property"><tt class="xref py py-class docutils literal"><span class="pre">Property</span></tt></a> instance defining this value&#8217;s type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EDMValue.IsNull">
+<tt class="descname">IsNull</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue.IsNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this object is Null.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.csdl.EDMValue.NewValue">
+<em class="property">classmethod </em><tt class="descname">NewValue</tt><big>(</big><em>pDef</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue.NewValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an instance of the correct child class of
+<a class="reference internal" href="#pyslet.odata2.csdl.EDMValue" title="pyslet.odata2.csdl.EDMValue"><tt class="xref py py-class docutils literal"><span class="pre">EDMValue</span></tt></a> to represent a value defined by
+:<a class="reference internal" href="#pyslet.odata2.csdl.Property" title="pyslet.odata2.csdl.Property"><tt class="xref py py-class docutils literal"><span class="pre">Property</span></tt></a>
+instance <em>pDef</em>.</p>
+<p>We support a special case for creating a type-less NULL.  If you
+pass None for pDef then a type-less
+<tt class="xref py py-class docutils literal"><span class="pre">SipmleValue</span></tt> is instantiated.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.csdl.EDMValue.NewSimpleValue">
+<em class="property">classmethod </em><tt class="descname">NewSimpleValue</tt><big>(</big><em>typeCode</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue.NewSimpleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an instance of the correct child class of
+<a class="reference internal" href="#pyslet.odata2.csdl.EDMValue" title="pyslet.odata2.csdl.EDMValue"><tt class="xref py py-class docutils literal"><span class="pre">EDMValue</span></tt></a> to represent an undeclared simple
+value of <a class="reference internal" href="#pyslet.odata2.csdl.SimpleType" title="pyslet.odata2.csdl.SimpleType"><tt class="xref py py-class docutils literal"><span class="pre">SimpleType</span></tt></a> <em>typeCode</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.SimpleValue">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">SimpleValue</tt><big>(</big><em>pDef=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMValue" title="pyslet.odata2.csdl.EDMValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMValue</span></tt></a></p>
+<p>Represents a value of a simple type in the EDMModel.</p>
+<p>This class is not designed to be instantiated directly, instead use
+the class method <tt class="xref py py-meth docutils literal"><span class="pre">NewValue()</span></tt> (with the same signature) to
+construct one of the specific child classes.</p>
+<p>The pyValue attribute is the python value or None if this value is NULL</p>
+<p>The python type used for pyValue depends on typeCode as follows:</p>
+<ul class="simple">
+<li>Edm.Boolean: one of the Python constants True or False</li>
+<li>Edm.Byte, Edm.SByte, Edm.Int16, Edm.Int32: int</li>
+<li>Edm.Int64: long</li>
+<li>Edm.Double, Edm.Single: python float</li>
+<li>Edm.Decimal: python Decimal instance (from decimal module)</li>
+<li>Edm.DateTime, Edm.DateTimeOffset: py:class:<cite>pyslet.iso8601.TimePoint</cite> instance</li>
+<li>Edm.Time:     py:class:<cite>pyslet.iso8601.Time</cite> instance (note corrected v2 specification of OData)</li>
+<li>Edm.Binary: raw string</li>
+<li>Edm.String: unicode string</li>
+<li>Edm.Guid: python UUID instance (from uuid module)</li>
+</ul>
+<p>The value of <em>pyValue</em> can be assigned directly to alter the value
+of instance but if you violate the above type rules then you are
+likely to generate unexpected exceptions elsewhere.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.SimpleValue.typeCode">
+<tt class="descname">typeCode</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.typeCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.odata2.csdl.SimpleType" title="pyslet.odata2.csdl.SimpleType"><tt class="xref py py-class docutils literal"><span class="pre">SimpleType</span></tt></a> code</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.SimpleValue.mType">
+<tt class="descname">mType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.mType" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.MediaType</span></tt> representing this value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.SimpleValue.pyValue">
+<tt class="descname">pyValue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.pyValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>the value, as represented using the closest python type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.SimpleValue.SimpleCast">
+<tt class="descname">SimpleCast</tt><big>(</big><em>typeCode</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.SimpleCast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instance created from <em>typeCode</em></p>
+<p>The value of the new instance is set us <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue.Cast" title="pyslet.odata2.csdl.SimpleValue.Cast"><tt class="xref py py-meth docutils literal"><span class="pre">Cast()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.SimpleValue.Cast">
+<tt class="descname">Cast</tt><big>(</big><em>targetValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.Cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates and returns <em>targetValue</em> a <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instance.</p>
+<p>The value of targetValue is replaced, casting this instance&#8217;s
+value accordingly.</p>
+<p>If the types are incompatible a TypeError is raised, if the
+values are incompatible then ValueError is raised.</p>
+<p>NULL values can be cast to any value type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.SimpleValue.SetFromLiteral">
+<tt class="descname">SetFromLiteral</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.SetFromLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a value from the value&#8217;s literal form.</p>
+<p>You can get the literal form of a value using the unicode function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.SimpleValue.SetFromPyValue">
+<tt class="descname">SetFromPyValue</tt><big>(</big><em>newValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.SetFromPyValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value from a python variable coercing <em>newValue</em> if
+necessary to ensure it is of the correct type for the value&#8217;s
+<a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue.typeCode" title="pyslet.odata2.csdl.SimpleValue.typeCode"><tt class="xref py py-attr docutils literal"><span class="pre">typeCode</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.SimpleValue.SetFromSimpleValue">
+<tt class="descname">SetFromSimpleValue</tt><big>(</big><em>newValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleValue.SetFromSimpleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reverse of the <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue.Cast" title="pyslet.odata2.csdl.SimpleValue.Cast"><tt class="xref py py-meth docutils literal"><span class="pre">Cast()</span></tt></a> method, sets this value to
+the value of <em>newValue</em> casting as appropriate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Complex">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Complex</tt><big>(</big><em>pDef=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Complex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMValue" title="pyslet.odata2.csdl.EDMValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMValue</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.TypeInstance</span></tt></p>
+<p>Represents a single instance of a <a class="reference internal" href="#pyslet.odata2.csdl.ComplexType" title="pyslet.odata2.csdl.ComplexType"><tt class="xref py py-class docutils literal"><span class="pre">ComplexType</span></tt></a>.</p>
+<ul class="simple">
+<li>pDef is the (optional) <a class="reference internal" href="#pyslet.odata2.csdl.Property" title="pyslet.odata2.csdl.Property"><tt class="xref py py-class docutils literal"><span class="pre">Property</span></tt></a> instance that defines the value</li>
+</ul>
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Complex.IsNull">
+<tt class="descname">IsNull</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Complex.IsNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Complex values are never Null</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Complex.SetFromComplex">
+<tt class="descname">SetFromComplex</tt><big>(</big><em>newValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Complex.SetFromComplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets this value from <em>newValue</em> which must be a
+<a class="reference internal" href="#pyslet.odata2.csdl.Complex" title="pyslet.odata2.csdl.Complex"><tt class="xref py py-class docutils literal"><span class="pre">Complex</span></tt></a> instance of the same type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Entity">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Entity</tt><big>(</big><em>entitySet</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.TypeInstance</span></tt></p>
+<p>Represents a single instance of an <a class="reference internal" href="#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a>.</p>
+<ul class="simple">
+<li>entitySet is the entity set this entity belongs to</li>
+</ul>
+<p>Entity instances behave like a dictionary mapping property names
+onto values.  The values are either <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a>,
+<a class="reference internal" href="#pyslet.odata2.csdl.Complex" title="pyslet.odata2.csdl.Complex"><tt class="xref py py-class docutils literal"><span class="pre">Complex</span></tt></a> or py:class:<cite>DeferredValue</cite>
+instances.</p>
+<p>Property values are created on construction and cannot be assigned. 
+To update a simple value use the
+<tt class="xref py py-meth docutils literal"><span class="pre">SimpleValue.SetFromPyVaue()</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromPyValue</span><span class="p">(</span><span class="s">&quot;Steve&quot;</span><span class="p">)</span>
+        <span class="c"># update simple property Name</span>
+<span class="n">e</span><span class="p">[</span><span class="s">&#39;Address&#39;</span><span class="p">][</span><span class="s">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromPyValue</span><span class="p">(</span><span class="s">&quot;Cambridge&quot;</span><span class="p">)</span>
+        <span class="c"># update City in complex property Address</span>
+</pre></div>
+</div>
+<p>Note that a simple valued property that is NULL is still a
+<a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instance, though it will behave as
+0 in tests:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromPyValue</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># set to NULL</span>
+<span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">&quot;Will not print!&quot;</span>
+</pre></div>
+</div>
+<p>Navigation properties are represented as <tt class="xref py py-class docutils literal"><span class="pre">DeferredValue</span></tt>
+instances.  A deferred value can be opened in a similar way to an
+entity set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># open the collection obtained from navigation property Friends</span>
+<span class="k">with</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;Friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">friends</span><span class="p">:</span>
+        <span class="c"># iterate through all the friends of entity e </span>
+        <span class="k">for</span> <span class="n">friend</span> <span class="ow">in</span> <span class="n">friends</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">friend</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>A convenience method is provided when the navigation property points
+to a single entity (or None) by definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mum</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Mother&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>             <span class="c"># may return None</span>
+</pre></div>
+</div>
+<p>In the EDM one or more properties are marked as forming the entity&#8217;s
+key.  The entity key is unique within the entity set.  On
+construction, an Entity instance is marked as being &#8216;non-existent&#8217;,
+<a class="reference internal" href="#pyslet.odata2.csdl.Entity.exists" title="pyslet.odata2.csdl.Entity.exists"><tt class="xref py py-attr docutils literal"><span class="pre">exists</span></tt></a> is set to False.  This is consistent with the fact
+that the data properties of an entity are initialised to their
+default values, or NULL if there is no default specified in the
+model. Entity instances returned as values in collection objects
+have exists set to True.</p>
+<p>If an entity does not exist, OpenCollection will fail if called on
+one of its navigation properties with <a class="reference internal" href="#pyslet.odata2.csdl.NonExistentEntity" title="pyslet.odata2.csdl.NonExistentEntity"><tt class="xref py py-class docutils literal"><span class="pre">NonExistentEntity</span></tt></a>.</p>
+<p>You can use <a class="reference internal" href="#pyslet.odata2.csdl.Entity.IsEntityCollection" title="pyslet.odata2.csdl.Entity.IsEntityCollection"><tt class="xref py py-meth docutils literal"><span class="pre">IsEntityCollection()</span></tt></a> to determine if a property
+will return an <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">EntityCollection</span></tt></a> without the cost of
+accessing the data source itself.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Entity.exists">
+<tt class="descname">exists</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Entity.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>whether or not the instance exists in the entity set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Entity.selected">
+<tt class="descname">selected</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Entity.selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>the set of selected property names or None if all properties are selected</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.DataKeys">
+<tt class="descname">DataKeys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.DataKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the names of this entity&#8217;s data properties only</p>
+<p>The order of the names is always the order they are defined in
+the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.DataItems">
+<tt class="descname">DataItems</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.DataItems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator that yields tuples of (key,value) for this entity&#8217;s data properties only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.NavigationKeys">
+<tt class="descname">NavigationKeys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.NavigationKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the names of this entity&#8217;s navigation properties only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.NavigationItems">
+<tt class="descname">NavigationItems</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.NavigationItems" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator that yields tuples of (key,deferred value) for this entity&#8217;s navigation properties only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.CheckNavigationConstraints">
+<tt class="descname">CheckNavigationConstraints</tt><big>(</big><em>ignoreEnd=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.CheckNavigationConstraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>For entities that do not yet exist, checks that each of the
+required navigation properties has been bound (with
+<tt class="xref py py-meth docutils literal"><span class="pre">DeferredValue.BindEntity()</span></tt>).</p>
+<p>If a required navigation property has not been bound then
+<tt class="xref py py-class docutils literal"><span class="pre">NavigationConstraintError</span></tt> is raised.</p>
+<p>If the entity already exists, <a class="reference internal" href="#pyslet.odata2.csdl.EntityExists" title="pyslet.odata2.csdl.EntityExists"><tt class="xref py py-class docutils literal"><span class="pre">EntityExists</span></tt></a> is
+raised.</p>
+<p><em>ignoreEnd</em> may be set to an associationSetEnd bound to this
+entity&#8217;s entity set.  Any violation of the related association
+is ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.IsNavigationProperty">
+<tt class="descname">IsNavigationProperty</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.IsNavigationProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true is name is the name of a navigation property</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.IsEntityCollection">
+<tt class="descname">IsEntityCollection</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.IsEntityCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if more than one entity is possible when accessing the named property.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Update">
+<tt class="descname">Update</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates this entity following modification.</p>
+<p>You can use select rules to provide a hint about which fields
+have been updated.  By the same logic, you cannot update a
+property that is not selected!</p>
+<p>The default implementation opens a collection object from the
+parent entity set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Delete">
+<tt class="descname">Delete</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes this entity from the parent entity set.</p>
+<p>The default implementation opens a collection object from the
+parent entity set and uses del.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Key">
+<tt class="descname">Key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the entity key as a single python value or a tuple of
+python values for compound keys.</p>
+<p>The order of the values is the order of the PropertyRef definitions
+in the associated EntityType&#8217;s <a class="reference internal" href="#pyslet.odata2.csdl.Key" title="pyslet.odata2.csdl.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.SetKey">
+<tt class="descname">SetKey</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.SetKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets this entity&#8217;s key from a single python value or tuple.</p>
+<p>The entity must be non-existent or ValueError is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.KeyDict">
+<tt class="descname">KeyDict</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.KeyDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the entity key as a dictionary mapping key property
+names onto <a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instances.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Expand">
+<tt class="descname">Expand</tt><big>(</big><em>expand</em>, <em>select=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands <em>entity</em> according to the given expand rules (if any).</p>
+<p><em>expand</em> is a dictionary of expand rules.  Expansions can be chained,
+represented by the dictionary entry also being a dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># expand the Customer navigation property...</span>
+<span class="p">{</span> <span class="s">&#39;Customer&#39;</span><span class="p">:</span> <span class="bp">None</span> <span class="p">}</span>
+<span class="c"># expand the Customer and Invoice navigation properties</span>
+<span class="p">{</span> <span class="s">&#39;Customer&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;Invoice&#39;</span><span class="p">:</span><span class="bp">None</span> <span class="p">}</span>
+<span class="c"># expand the Customer property and then the Orders property within Customer</span>
+<span class="p">{</span> <span class="s">&#39;Customer&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;Orders&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">}</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>The expansion rules in effect are saved in the <tt class="xref py py-attr docutils literal"><span class="pre">expand</span></tt>
+member and are tested using <a class="reference internal" href="#pyslet.odata2.csdl.Entity.Expanded" title="pyslet.odata2.csdl.Entity.Expanded"><tt class="xref py py-meth docutils literal"><span class="pre">Expanded()</span></tt></a>.</p>
+<p>The <em>select</em> option is a similar dictionary structure that can
+be used to filter the properties in the entity.  If a property
+that is being expanded is also subject to one or more selection
+rules these are passed along with any chained Expand call.</p>
+<p>The selection rules in effect are saved in the <tt class="xref py py-attr docutils literal"><span class="pre">select</span></tt>
+member and can be tested using <a class="reference internal" href="#pyslet.odata2.csdl.Entity.Selected" title="pyslet.odata2.csdl.Entity.Selected"><tt class="xref py py-meth docutils literal"><span class="pre">Selected()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Expanded">
+<tt class="descname">Expanded</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Expanded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the property <em>name</em> should be expanded by
+the expansion rules in this entity.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.Selected">
+<tt class="descname">Selected</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.Selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the property <em>name</em> is selected in this entity.</p>
+<p>The entity always has values for its properties but whether or
+not the dictionary values represent the true value of the
+property <em>may</em> depend on whether the property is selected. In
+particular, a property value that is Null may indicate that the
+named property has a Null value or simply that it hasn&#8217;t been
+selected:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">&quot;Name is not NULL&quot;</span>
+<span class="k">elif</span> <span class="n">e</span><span class="o">.</span><span class="n">Selected</span><span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Name is NULL&quot;</span>
+        <span class="c"># we know because it has been selected</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;NULL status of Name is unknown&quot;</span>
+        <span class="c"># we don&#39;t know because it hasn&#39;t been selected</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.ETag">
+<tt class="descname">ETag</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.ETag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of EDMValue instance values to use for optimistic
+concurrency control or None if the entity does not support it (or if
+all concurrency tokens are NULL).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.ETagValues">
+<tt class="descname">ETagValues</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.ETagValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of EDMValue instance values that may be used
+for optimistic concurrency control.  The difference between this
+method and <a class="reference internal" href="#pyslet.odata2.csdl.Entity.ETag" title="pyslet.odata2.csdl.Entity.ETag"><tt class="xref py py-meth docutils literal"><span class="pre">ETag()</span></tt></a> is that this method returns all
+values even if they are NULL.  If there are no concurrency
+tokens then an empty list is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.GenerateConcurrencyHash">
+<tt class="descname">GenerateConcurrencyHash</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.GenerateConcurrencyHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a hash object representing this entity&#8217;s value.</p>
+<p>The keys and any concurrency tokens are excluded from the hash</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Entity.ETagIsStrong">
+<tt class="descname">ETagIsStrong</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Entity.ETagIsStrong" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this entity&#8217;s etag is a strong entity tag as defined
+by RFC2616:</p>
+<div class="highlight-python"><pre>A "strong entity tag" MAY be shared by two entities of a
+resource only if they are equivalent by octet equality.</pre>
+</div>
+<p>The default implementation returns False.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EntityCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntityCollection</tt><big>(</big><em>entitySet</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.DictionaryLike</span></tt></p>
+<p>Represents a collection of entities from an <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a>.</p>
+<p>To use a database analogy, EntitySet&#8217;s are like tables whereas
+EntityCollections are somewhat like database cursors you use to read
+data from those tables.  An entity collection may consume physical
+resources (like a database connection) and so should be closed
+with the <tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt> method when you&#8217;re done.</p>
+<p>Entity collections support the context manager protocol in python so
+you can use them in with statements to make clean-up easier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">entitySet</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+        <span class="k">if</span> <span class="mi">42</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Found it!&quot;</span>
+</pre></div>
+</div>
+<p>The close method is called automatically when the with statement
+exits.</p>
+<p>Entity collections also behave like a python dictionary of
+<a class="reference internal" href="#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> instances keyed on a value representing the
+Entity&#8217;s key property or properties.  The keys are either single
+values (as in the above code example) or tuples in the case of
+compound keys. The order of the values in the tuple is taken from
+the order of the PropertyRef definitions in the Entity&#8217;s Key.</p>
+<p>You can obtain a canonical representation of the key from an
+<a class="reference internal" href="#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> instance or other dictionary-like object using
+the <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.GetKey" title="pyslet.odata2.csdl.EntitySet.GetKey"><tt class="xref py py-meth docutils literal"><span class="pre">EntitySet.GetKey()</span></tt></a> method.</p>
+<p>Derived classes MUST override <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a>.  The
+implementation of itervalues must return an iterable object that
+honours the value of the expand query option and any filtering
+or orderby rules.</p>
+<p>Derived classes SHOULD also override <tt class="xref py py-meth docutils literal"><span class="pre">__getitem__()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">__len__()</span></tt> as the default implementations are very
+inefficient, particularly for non-trivial entity sets.</p>
+<p>When an EntityCollection represents an entity set, the following
+rules apply:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">etColl</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">entity</span>      <span class="c"># entity.Key() MUST equal key or ValueError is raised</span>
+                                        <span class="c"># entity must be the right type for the entity set or TypeError is raised</span>
+                                        <span class="c"># WARNING: entity must already be in the entity set or KeyError is raised</span>
+                                        <span class="c"># otherwise does nothing, for consistency with python dictionary behaviour</span>
+<span class="k">del</span> <span class="n">etColl</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>         <span class="c"># deletes the entity with *key* from the entity set</span>
+</pre></div>
+</div>
+<p>The fact that you can&#8217;t add an entity to the entity set using
+assignment is, unfortunately, inconsistent with python dictionaries.
+You must use <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.InsertEntity" title="pyslet.odata2.csdl.EntityCollection.InsertEntity"><tt class="xref py py-meth docutils literal"><span class="pre">InsertEntity()</span></tt></a> instead where the reasons for
+this restriction are expanded on.</p>
+<p>When an EntityCollection represents a collection of entities such as
+those obtained by navigation then these rules are updated as
+follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">etColl</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">entity</span>      <span class="c"># adds the entity with key to this collection</span>
+<span class="k">del</span> <span class="n">etColl</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>         <span class="c"># removes the entity with *key* from this collection</span>
+</pre></div>
+</div>
+<p>If the collection obtained from a navigation property has
+multiplicity 0..1 then assignment will replace any existing value in
+the collection.</p>
+<p>Note that in the first case del removes the entity completely from
+the data service whereas in the second case the entity still exists
+in the parent entity set after being removed from the subset
+represented by the (navigation) collection.</p>
+<p>Writeable data sources must therefore override py:meth:<cite>__delitem__</cite>
+for all collections and <tt class="xref py py-meth docutils literal"><span class="pre">__setitem__()</span></tt> for collections that
+represent sub-sets of the parent entity set.  If a particular
+operation is not allowed for some data-service specific reason then
+NotImplementedError should be raised.</p>
+<p>Note that writeable entity collections SHOULD override
+<tt class="xref py py-meth docutils literal"><span class="pre">clear()</span></tt> as the default implementation is very
+:inefficient.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.entitySet">
+<tt class="descname">entitySet</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.entitySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>the entity set from which the entities are drawn</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.entitySet" title="pyslet.odata2.csdl.EntityCollection.entitySet"><tt class="xref py py-attr docutils literal"><span class="pre">entitySet</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.expand">
+<tt class="descname">expand</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>the expand query option in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.select">
+<tt class="descname">select</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>the select query option in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.filter">
+<tt class="descname">filter</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>a filter or None for no filter (see <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.CheckFilter" title="pyslet.odata2.csdl.EntityCollection.CheckFilter"><tt class="xref py py-meth docutils literal"><span class="pre">CheckFilter()</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.orderby">
+<tt class="descname">orderby</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.orderby" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of orderby rules</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.skip">
+<tt class="descname">skip</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.skip" title="Permalink to this definition">¶</a></dt>
+<dd><p>the skip query option in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.top">
+<tt class="descname">top</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.top" title="Permalink to this definition">¶</a></dt>
+<dd><p>the top query option in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.topmax">
+<tt class="descname">topmax</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.topmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>the forced maximum page size in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.skiptoken">
+<tt class="descname">skiptoken</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.skiptoken" title="Permalink to this definition">¶</a></dt>
+<dd><p>the skiptoken option in effect</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.count">
+<tt class="descname">count</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>the size of this collection, initially None</p>
+<p>As there may be a penalty for calculating the overall size of
+the collection this attribute is initialised to None and updated by __len__
+the first time it is called and then used to prevent unnecessary
+recalculation.</p>
+<p>If any options affecting the size of the collection are altered
+then count should be reset to None to force __len__ to
+recalculate the size of the collection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityCollection.inlineCount">
+<tt class="descname">inlineCount</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.inlineCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if inlineCount option is in effect</p>
+<p>The inlineCount option is used to alter the representation of
+the collection and, if set, indicates that the __len__ method
+will be called before iterating through the collection itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.GetLocation">
+<tt class="descname">GetLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.GetLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the location of this collection as a
+<tt class="xref py py-class docutils literal"><span class="pre">rfc2396.URI</span></tt> instance.</p>
+<p>By default, the location is given as the location of the
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.entitySet" title="pyslet.odata2.csdl.EntityCollection.entitySet"><tt class="xref py py-attr docutils literal"><span class="pre">entitySet</span></tt></a> from which the entities are drawn.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.GetTitle">
+<tt class="descname">GetTitle</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.GetTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a user recognisable title for the collection.</p>
+<p>By default this is the fully qualified name of the entity set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.Expand">
+<tt class="descname">Expand</tt><big>(</big><em>expand</em>, <em>select=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the expand and select query options for this collection.</p>
+<p>The expand query option causes the named navigation properties
+to be expanded and the associated entities to be loaded in to
+the entity instances returned by this collection.</p>
+<p>The select query option restricts the properties that are set in
+returned entities.</p>
+<p>For more details, see <a class="reference internal" href="#pyslet.odata2.csdl.Entity.Expand" title="pyslet.odata2.csdl.Entity.Expand"><tt class="xref py py-meth docutils literal"><span class="pre">Entity.Expand()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.SelectKeys">
+<tt class="descname">SelectKeys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SelectKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the select rule to select the key property/properties only.</p>
+<p>Any expand rule is removed.</p>
+<p>This is especially useful when navigating.  For example, for a
+SQL based store the navigation property may be represented as a
+foreign key so selecting it alone would not require a join to
+the target table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.ExpandEntities">
+<tt class="descname">ExpandEntities</tt><big>(</big><em>entityIterable</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.ExpandEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object that iterates over all entities in the
+collection, returns a generator function that returns those
+entities expanded and selected according to <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.expand" title="pyslet.odata2.csdl.EntityCollection.expand"><tt class="xref py py-attr docutils literal"><span class="pre">expand</span></tt></a>
+and <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.select" title="pyslet.odata2.csdl.EntityCollection.select"><tt class="xref py py-attr docutils literal"><span class="pre">select</span></tt></a> rules.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.Filter">
+<tt class="descname">Filter</tt><big>(</big><em>filter</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the filter object for this collection, see <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.CheckFilter" title="pyslet.odata2.csdl.EntityCollection.CheckFilter"><tt class="xref py py-meth docutils literal"><span class="pre">CheckFilter()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.FilterEntities">
+<tt class="descname">FilterEntities</tt><big>(</big><em>entityIterable</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.FilterEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object that iterates over all entities in the
+collection, returns a generator function that returns only those
+entities that pass through the current <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.filter" title="pyslet.odata2.csdl.EntityCollection.filter"><tt class="xref py py-attr docutils literal"><span class="pre">filter</span></tt></a> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.CheckFilter">
+<tt class="descname">CheckFilter</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.CheckFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks <em>entity</em> against the current filter object and returns
+True if it passes.</p>
+<p>The default implementation does not actually support any filters
+so if a filter object has been defined, NotImplementedError is
+raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.OrderBy">
+<tt class="descname">OrderBy</tt><big>(</big><em>orderby</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.OrderBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the orderby rules for this collection.</p>
+<p><em>orderby</em> is a list of tuples, each consisting of:</p>
+<div class="highlight-python"><pre>( an order object as used by :py:meth:`CalculateOrderKey` , 1 | -1 )</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.CalculateOrderKey">
+<tt class="descname">CalculateOrderKey</tt><big>(</big><em>entity</em>, <em>orderObject</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.CalculateOrderKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an entity and an order object returns the key used to sort the entity.</p>
+<p>The default implementation does not actually support any custom
+orderings so if an orderby rule is defined, NotImplementedError
+is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.OrderEntities">
+<tt class="descname">OrderEntities</tt><big>(</big><em>entityIterable</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.OrderEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an object that iterates over the entities in random
+order, returns a generator function that returns the same
+entities in sorted order (according to <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.orderby" title="pyslet.odata2.csdl.EntityCollection.orderby"><tt class="xref py py-attr docutils literal"><span class="pre">orderby</span></tt></a> object
+or the entity keys if there is no custom ordering and top or
+skip has been specified).</p>
+<p>This implementation simply creates a list and then sorts it so
+is not suitable for use with long lists of entities.  However, if
+no ordering is required then no list is created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.Skip">
+<tt class="descname">Skip</tt><big>(</big><em>skip</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Skip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the skip option for this collection.</p>
+<p>The skip query option is an integer (or None to remove the
+option) which seeks in to the entity collection.  The
+implementation of
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a> must honour the skip value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.Top">
+<tt class="descname">Top</tt><big>(</big><em>top</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Top" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the top option for this collection.</p>
+<p>The top query option is an integer (or None to remove the
+option) which limits the number of entities in the entity
+collection.  The implementation of
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a> must honour the top value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.TopMax">
+<tt class="descname">TopMax</tt><big>(</big><em>topmax</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.TopMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the maximum page size for this collection.</p>
+<p>This forces the collection to limit the size of a page to at
+most topmax entities.  When topmax is in force
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.NextSkipToken" title="pyslet.odata2.csdl.EntityCollection.NextSkipToken"><tt class="xref py py-meth docutils literal"><span class="pre">NextSkipToken()</span></tt></a> will return a suitable value for
+identifying the next page in the collection immediately after a
+complete iteration of <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.SkipToken">
+<tt class="descname">SkipToken</tt><big>(</big><em>skiptoken</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SkipToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the skip token for this collection.</p>
+<p>By default, we treat the skip token exactly the same as the skip
+value itself except that we obscure it slightly by treating it
+as a hex value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.SetInlineCount">
+<tt class="descname">SetInlineCount</tt><big>(</big><em>inlineCount</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SetInlineCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the inline count flag for this collection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.NewEntity">
+<tt class="descname">NewEntity</tt><big>(</big><em>autoKey=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.NewEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new py:class:<cite>Entity</cite> instance suitable for adding
+to this collection.</p>
+<p>The properties of the entity are set to their defaults, or to
+null if no default is defined (even if the property is marked
+as not nullable).</p>
+<p>The entity is not considered to exist until it is actually added
+to the collection.  At this point we deviate from
+dictionary-like behaviour:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e</span><span class="o">=</span><span class="n">collection</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+<span class="n">e</span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="p">]</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">e</span><span class="p">[</span><span class="s">&quot;Name&quot;</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;Fred&quot;</span>
+<span class="k">assert</span> <span class="mi">1000</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">collection</span>
+<span class="n">collection</span><span class="p">[</span><span class="mi">1000</span><span class="p">]</span><span class="o">=</span><span class="n">e</span>              <span class="c"># raises KeyError</span>
+</pre></div>
+</div>
+<p>The above code is prone to problems as the key 1000 may violate
+the collection&#8217;s key allocation policy so we raise KeyError when
+assignment is used to insert a new entity to the collection.</p>
+<p>Instead, you should call <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.InsertEntity" title="pyslet.odata2.csdl.EntityCollection.InsertEntity"><tt class="xref py py-meth docutils literal"><span class="pre">InsertEntity()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.CopyEntity">
+<tt class="descname">CopyEntity</tt><big>(</big><em>entity</em>, <em>autoKey=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.CopyEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new <em>entity</em> copying the value from <em>entity</em></p>
+<p>The key is not copied and is initially set to NULL or, if
+<em>autoKey</em> is True, set automatically by <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.NewEntity" title="pyslet.odata2.csdl.EntityCollection.NewEntity"><tt class="xref py py-meth docutils literal"><span class="pre">NewEntity()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.InsertEntity">
+<tt class="descname">InsertEntity</tt><big>(</big><em>entity</em>, <em>fromEnd=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.InsertEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts <em>entity</em> into this entity set.</p>
+<p><em>entity</em> must be updated with any auto-generated values such as
+the correct key.</p>
+<p><em>fromEnd</em> may be set to an <tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt>
+instance that is bound to <em>this</em> entity set.  It indicates that
+we are being created by a deep insert or through direct
+insertion into a <tt class="xref py py-class docutils literal"><span class="pre">NavigationEntityCollection</span></tt>
+representing the corresponding association.  This information
+can be used to suppress a constraint check (on the assumption
+that it has already been checked) by passing <em>fromEnd</em> directly
+to
+<a class="reference internal" href="#pyslet.odata2.csdl.Entity.CheckNavigationConstraints" title="pyslet.odata2.csdl.Entity.CheckNavigationConstraints"><tt class="xref py py-meth docutils literal"><span class="pre">Entity.CheckNavigationConstraints()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.UpdateEntity">
+<tt class="descname">UpdateEntity</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.UpdateEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <em>entity</em> which must already be in the entity set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.UpdateBindings">
+<tt class="descname">UpdateBindings</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.UpdateBindings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the <a class="reference internal" href="#pyslet.odata2.csdl.Entity.NavigationItems" title="pyslet.odata2.csdl.Entity.NavigationItems"><tt class="xref py py-meth docutils literal"><span class="pre">Entity.NavigationItems()</span></tt></a> and generates appropriate calls to
+create/update any pending bindings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.GetPageStart">
+<tt class="descname">GetPageStart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.GetPageStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the index of the start of the collection&#8217;s current page.</p>
+<p>Takes in to consideration both the requested skip value and any
+skiptoken that may be in force.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.iterpage">
+<tt class="descname">iterpage</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable subset of the values returned by <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a></p>
+<p>The subset is defined by the top, skip (and skiptoken) attributes.</p>
+<p>Iterpage should be overridden by derived classes for a more
+efficient implementation.  The default implementation simply
+wraps <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.NextSkipToken">
+<tt class="descname">NextSkipToken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.NextSkipToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Following a complete iteration of the generator returned by
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a> returns the skiptoken which will generate
+the next page or None if all requested entities have been
+returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.itervalues">
+<tt class="descname">itervalues</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be overridden to execute an appropriate query to return
+the collection of entities.</p>
+<p>The default implementation returns an empty list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="elements">
+<h3>2.1.1.1. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EntitySet">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntitySet</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<p>Represents an EntitySet in the CSDL model.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the declared name of the entity set</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.entityTypeName">
+<tt class="descname">entityTypeName</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.entityTypeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the entity type of this set&#8217;s elements</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.entityType">
+<tt class="descname">entityType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.entityType" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a> of this set&#8217;s elements</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.navigation">
+<tt class="descname">navigation</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.navigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>a mapping from navigation property names to AssociationSetEnd instances</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.linkEnds">
+<tt class="descname">linkEnds</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.linkEnds" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from <tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt> instances that
+reference this entity set to navigation property names (or None
+if this end of the association is not bound)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.unboundPrincipal">
+<tt class="descname">unboundPrincipal</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.unboundPrincipal" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt> that represents our end of
+an association with an unbound principal or None if all
+principals are bound.</p>
+<p>What does that mean?  It means that there is an association set
+bound to us where the other role has a multiplicity of 1
+(required) but our entity type does not have a navigation
+property bound to the association.  As a result, our entities
+can only be created by a deep insert from the principal (the
+entity set at the other end of the association).</p>
+<p>Clear as mud?  An example may help.  Suppose that each Order
+entity must have an associated Customer but (perhaps perversely)
+there is no navigation link from Order to Customer, only from
+Customer to Order.  Attempting to create an Order in the base
+collection of Orders will always fail:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">Orders</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+        <span class="n">order</span><span class="o">=</span><span class="n">collection</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+        <span class="c"># set order fields here</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">InsertEntity</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+        <span class="c"># raises NavigationConstraintError as order is not bound to a customer</span>
+</pre></div>
+</div>
+<p>Instead, you have to create new orders from a Customer entity:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">Customers</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collectionCustomers</span><span class="p">:</span>
+        <span class="c"># get the existing customer</span>
+        <span class="n">customer</span><span class="o">=</span><span class="n">collectionCustomers</span><span class="p">[</span><span class="s">&#39;ALFKI&#39;</span><span class="p">]</span>
+        <span class="k">with</span> <span class="n">customer</span><span class="p">[</span><span class="s">&#39;Orders&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collectionOrders</span><span class="p">:</span>
+                <span class="c"># create a new order</span>
+                <span class="n">order</span><span class="o">=</span><span class="n">collectionOrders</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+                <span class="c"># ... set order details here</span>
+                <span class="n">collectionOrders</span><span class="o">.</span><span class="n">InsertEntity</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also use a deep insert:</p>
+<div class="highlight-python"><pre>with Customers.OpenCollection() as collectionCustomers,
+                Orders.OpenCollection() as collectionOrders:
+        customer=collectionCustomers.NewEntity()
+        # set customer details here
+        order=collectionOrders.NewEntity()
+        # set order details here
+        customer['Orders'].BindEntity(order)
+        collectionCustomers.InsertEntity(customer)</pre>
+</div>
+<p>For the avoidance of doubt, an entity set can&#8217;t have two unbound
+principals because if it did you would never be able to create
+entities in it!</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.binding">
+<tt class="descname">binding</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.binding" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class (or callable) and a dict of named arguments to pass
+to it that returns an
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">EntityCollection</span></tt></a> instance, by default we are bound
+to the default EntityCollection class which is always empty! You
+can change the binding using the <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.Bind" title="pyslet.odata2.csdl.EntitySet.Bind"><tt class="xref py py-meth docutils literal"><span class="pre">Bind()</span></tt></a> method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.navigationBindings">
+<tt class="descname">navigationBindings</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.navigationBindings" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from navigation property names to a tuple
+comprising a class (or callable) and a dict of named arguments
+to pass to it that returns a
+<tt class="xref py py-class docutils literal"><span class="pre">NavigationEntityCollection</span></tt> instance and a list of
+extra arguments to pass to it.  By default we are bound to the
+default NavigationEntityCollection class which is always empty.
+You can change the bindings using the <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.BindNavigation" title="pyslet.odata2.csdl.EntitySet.BindNavigation"><tt class="xref py py-meth docutils literal"><span class="pre">BindNavigation()</span></tt></a>
+method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntitySet.location">
+<tt class="descname">location</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>see <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.SetLocation" title="pyslet.odata2.csdl.EntitySet.SetLocation"><tt class="xref py py-meth docutils literal"><span class="pre">SetLocation()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.GetFQName">
+<tt class="descname">GetFQName</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.GetFQName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the fully qualified name of this entity set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.GetLocation">
+<tt class="descname">GetLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.GetLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> location for this
+entity set or None if the location is unknown.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.SetLocation">
+<tt class="descname">SetLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.SetLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.location" title="pyslet.odata2.csdl.EntitySet.location"><tt class="xref py py-attr docutils literal"><span class="pre">location</span></tt></a> to a URI derived by resolving a relative path consisting
+of:</p>
+<div class="highlight-python"><pre>[ EntityContainer.name '.' ] name</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.UpdateSetRefs">
+<tt class="descname">UpdateSetRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.UpdateSetRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.entityType" title="pyslet.odata2.csdl.EntitySet.entityType"><tt class="xref py py-attr docutils literal"><span class="pre">entityType</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.UpdateNavigation">
+<tt class="descname">UpdateNavigation</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.UpdateNavigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called after UpdateTypeRefs once references have been updated for all
+association sets in this container.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.KeyKeys">
+<tt class="descname">KeyKeys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.KeyKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the names of this entity set&#8217;s key
+properties.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.GetKey">
+<tt class="descname">GetKey</tt><big>(</big><em>keylike</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.GetKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a key value suitable for using as a key in an
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">EntityCollection</span></tt></a> based on this entity set.</p>
+<p>Keys are represented as python values (as described in
+<a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a>) or as tuples of python values in the
+case of compound keys.  The order of the values in a compound
+key is the order in which the Key properties are defined in the
+corresponding EntityType definition.</p>
+<p>If <em>keylike</em> is already in the correct format for this entity
+type then it is returned unchanged.</p>
+<p>If the key is single-valued and <em>keylike</em> is a tuple containing
+a single value then the single value is returned without the
+tuple wrapper.</p>
+<p>If <em>keylike</em> is a dictionary, or an <a class="reference internal" href="#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> instance,
+which maps property names to values (or to
+<a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instances) the key is calculated from it
+by extracting the key properties.  As a special case, a value
+mapped with a dictionary key of the empty string is assumed to
+be the value of the key property for an entity type with a
+single-valued key, but only if the key property&#8217;s name is not
+itself in the dictionary.</p>
+<p>If <em>keylike</em> cannot be turned in to a valid key the KeyError is
+raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.GetKeyDict">
+<tt class="descname">GetKeyDict</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.GetKeyDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a key from this entity set, returns a key dictionary.</p>
+<p>The result is a mapping from named properties to
+<a class="reference internal" href="#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instances.  As a special case, if a
+single property defines the entity key it is represented using
+the empty string, not the property name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.Bind">
+<tt class="descname">Bind</tt><big>(</big><em>entityCollectionBinding</em>, <em>**extraArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.Bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binds this entity set to a specific class or callable used by <a class="reference internal" href="#pyslet.odata2.csdl.EntitySet.OpenCollection" title="pyslet.odata2.csdl.EntitySet.OpenCollection"><tt class="xref py py-meth docutils literal"><span class="pre">OpenCollection()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.OpenCollection">
+<tt class="descname">OpenCollection</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.OpenCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">EntityCollection</span></tt></a> instance suitable for
+accessing the entities themselves.</p>
+<p>This method must be overridden to return a concrete
+implementation of an entity collection.  The default
+implementation returns an instance of the (almost abstract)
+EntityCollection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.BindNavigation">
+<tt class="descname">BindNavigation</tt><big>(</big><em>name</em>, <em>entityCollectionBinding</em>, <em>**extraArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.BindNavigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binds the navigation property <em>name</em> to a class or callable
+used by <tt class="xref py py-meth docutils literal"><span class="pre">Navigate()</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.NavigationTarget">
+<tt class="descname">NavigationTarget</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.NavigationTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the target entity set of navigation property <em>name</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.NavigationMultiplicity">
+<tt class="descname">NavigationMultiplicity</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.NavigationMultiplicity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <tt class="xref py py-class docutils literal"><span class="pre">Multiplicity</span></tt> of both the source and
+the target of the named navigation property, as a
+tuple.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntitySet.IsEntityCollection">
+<tt class="descname">IsEntityCollection</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet.IsEntityCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if more than one entity is possible when navigating the named property.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EntityContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntityContainer</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin" title="pyslet.odata2.csdl.NameTableMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.NameTableMixin</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.EntityContainer.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.EntityContainer.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the declared name of the container</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Schema">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Schema</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin" title="pyslet.odata2.csdl.NameTableMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.NameTableMixin</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<p>Represents the Edm root element.</p>
+<p>Schema instances are based on <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin" title="pyslet.odata2.csdl.NameTableMixin"><tt class="xref py py-class docutils literal"><span class="pre">NameTableMixin</span></tt></a> allowing you to
+look up the names of declared Associations, ComplexTypes, EntityTypes,
+EntityContainers and Functions using dictionary-like methods.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Schema.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Schema.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the declared name of this schema</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EntityType">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntityType</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Type</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Key">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Key</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.PropertyRef">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">PropertyRef</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.PropertyRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.PropertyRef.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.PropertyRef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this (key) property</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.PropertyRef.property">
+<tt class="descname">property</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.PropertyRef.property" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.odata2.csdl.Property" title="pyslet.odata2.csdl.Property"><tt class="xref py py-class docutils literal"><span class="pre">Property</span></tt></a> instance of this (key) property</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.PropertyRef.UpdateTypeRefs">
+<tt class="descname">UpdateTypeRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.PropertyRef.UpdateTypeRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <a class="reference internal" href="#pyslet.odata2.csdl.PropertyRef.property" title="pyslet.odata2.csdl.PropertyRef.property"><tt class="xref py py-attr docutils literal"><span class="pre">property</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Property">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Property</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<p>Models a property of an <a class="reference internal" href="#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a> or <a class="reference internal" href="#pyslet.odata2.csdl.ComplexType" title="pyslet.odata2.csdl.ComplexType"><tt class="xref py py-class docutils literal"><span class="pre">ComplexType</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the declared name of the property</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.type">
+<tt class="descname">type</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the property&#8217;s type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.simpleTypeCode">
+<tt class="descname">simpleTypeCode</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.simpleTypeCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>one of the <a class="reference internal" href="#pyslet.odata2.csdl.SimpleType" title="pyslet.odata2.csdl.SimpleType"><tt class="xref py py-class docutils literal"><span class="pre">SimpleType</span></tt></a> constants if the property has a simple type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.complexType">
+<tt class="descname">complexType</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.complexType" title="Permalink to this definition">¶</a></dt>
+<dd><p>the associated <a class="reference internal" href="#pyslet.odata2.csdl.ComplexType" title="pyslet.odata2.csdl.ComplexType"><tt class="xref py py-class docutils literal"><span class="pre">ComplexType</span></tt></a> if the property has a complex type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.nullable">
+<tt class="descname">nullable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.nullable" title="Permalink to this definition">¶</a></dt>
+<dd><p>if the property may have a null value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.defaultValue">
+<tt class="descname">defaultValue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.defaultValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>a string containing the default value for the property or None if no default is defined</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.maxLength">
+<tt class="descname">maxLength</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.maxLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>the maximum length permitted for property values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.fixedLength">
+<tt class="descname">fixedLength</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.fixedLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>a boolean indicating that the property must be of length <a class="reference internal" href="#pyslet.odata2.csdl.Property.maxLength" title="pyslet.odata2.csdl.Property.maxLength"><tt class="xref py py-attr docutils literal"><span class="pre">maxLength</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.precision">
+<tt class="descname">precision</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>a positive integer indicating the maximum number of decimal digits (decimal values)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.scale">
+<tt class="descname">scale</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>a non-negative integer indicating the maximum number of decimal digits to the right of the point</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Property.unicode">
+<tt class="descname">unicode</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Property.unicode" title="Permalink to this definition">¶</a></dt>
+<dd><p>a boolean indicating that a string property contains unicode data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.Property.UpdateTypeRefs">
+<tt class="descname">UpdateTypeRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Property.UpdateTypeRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <a class="reference internal" href="#pyslet.odata2.csdl.Property.simpleTypeCode" title="pyslet.odata2.csdl.Property.simpleTypeCode"><tt class="xref py py-attr docutils literal"><span class="pre">simpleTypeCode</span></tt></a> and <a class="reference internal" href="#pyslet.odata2.csdl.Property.complexType" title="pyslet.odata2.csdl.Property.complexType"><tt class="xref py py-attr docutils literal"><span class="pre">complexType</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.NavigationProperty">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">NavigationProperty</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the declared name of the navigation property</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.relationship">
+<tt class="descname">relationship</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.relationship" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of the association described by this link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.association">
+<tt class="descname">association</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.association" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.odata2.csdl.Association" title="pyslet.odata2.csdl.Association"><tt class="xref py py-class docutils literal"><span class="pre">Association</span></tt></a> described by this link</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.fromRole">
+<tt class="descname">fromRole</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.fromRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this link&#8217;s source role</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.toRole">
+<tt class="descname">toRole</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.toRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this link&#8217;s target role</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.fromEnd">
+<tt class="descname">fromEnd</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.fromEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <tt class="xref py py-class docutils literal"><span class="pre">AssociationEnd</span></tt> instance representing this link&#8217;s source</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.toEnd">
+<tt class="descname">toEnd</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.toEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <tt class="xref py py-class docutils literal"><span class="pre">AssociationEnd</span></tt> instance representing this link&#8217;s target</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NavigationProperty.backLink">
+<tt class="descname">backLink</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.backLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.odata2.csdl.NavigationProperty" title="pyslet.odata2.csdl.NavigationProperty"><tt class="xref py py-class docutils literal"><span class="pre">NavigationProperty</span></tt></a> that provides the back link (or None, if this link is one-way)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.NavigationProperty.UpdateTypeRefs">
+<tt class="descname">UpdateTypeRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.NavigationProperty.UpdateTypeRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <a class="reference internal" href="#pyslet.odata2.csdl.NavigationProperty.association" title="pyslet.odata2.csdl.NavigationProperty.association"><tt class="xref py py-attr docutils literal"><span class="pre">association</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.csdl.NavigationProperty.fromEnd" title="pyslet.odata2.csdl.NavigationProperty.fromEnd"><tt class="xref py py-attr docutils literal"><span class="pre">fromEnd</span></tt></a> and <a class="reference internal" href="#pyslet.odata2.csdl.NavigationProperty.toEnd" title="pyslet.odata2.csdl.NavigationProperty.toEnd"><tt class="xref py py-attr docutils literal"><span class="pre">toEnd</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.ComplexType">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ComplexType</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.ComplexType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Type</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.Association">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">Association</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.Association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin" title="pyslet.odata2.csdl.NameTableMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.NameTableMixin</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement" title="pyslet.odata2.csdl.CSDLElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.CSDLElement</span></tt></a></p>
+<p>Models an association; behaves as dictionary of AssociationEnd keyed on role name.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.Association.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.Association.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name declared for this association</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.CSDLElement">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">CSDLElement</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.CSDLElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xmlnames20091208.XMLNSElement</span></tt></p>
+<dl class="method">
+<dt id="pyslet.odata2.csdl.CSDLElement.UpdateTypeRefs">
+<tt class="descname">UpdateTypeRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.CSDLElement.UpdateTypeRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called on a type definition, or type containing object to update all
+its inter-type references.</p>
+<ul class="simple">
+<li>scope is the <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin" title="pyslet.odata2.csdl.NameTableMixin"><tt class="xref py py-class docutils literal"><span class="pre">NameTableMixin</span></tt></a> object <em>containing</em> the
+top-level <a class="reference internal" href="#pyslet.odata2.csdl.Schema" title="pyslet.odata2.csdl.Schema"><tt class="xref py py-class docutils literal"><span class="pre">Schema</span></tt></a> object(s).</li>
+<li>stopOnErrors determines the handling of missing keys.  If
+stopOnErrors is False missing keys are ignored (internal object
+references are set to None).  If stopOnErrors is True KeyError is
+raised.</li>
+</ul>
+<p>The CSDL model makes heavy use of named references between objects. The
+purpose of this method is to use the <em>scope</em> object to look up
+inter-type references and to set or update any corresponding internal
+object references.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.CSDLElement.UpdateSetRefs">
+<tt class="descname">UpdateSetRefs</tt><big>(</big><em>scope</em>, <em>stopOnErrors=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.CSDLElement.UpdateSetRefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called on a set declaration, or set containing object to update all
+its inter-object references.</p>
+<p>This method works in a very similar way to <a class="reference internal" href="#pyslet.odata2.csdl.CSDLElement.UpdateTypeRefs" title="pyslet.odata2.csdl.CSDLElement.UpdateTypeRefs"><tt class="xref py py-meth docutils literal"><span class="pre">UpdateTypeRefs()</span></tt></a> but
+it is called afterwards.  This two-pass approach ensures that set
+declarations are linked after <em>all</em> type definitions have been updated
+in all schemas that are in scope.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="basic-data-types">
+<h3>2.1.1.2. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="pyslet.odata2.csdl.ValidateSimpleIdentifier">
+<tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ValidateSimpleIdentifier</tt><big>(</big><em>identifier</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.ValidateSimpleIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates a simple identifier, returning the identifier unchanged or
+raising ValueError.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.NameTableMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">NameTableMixin</tt><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.DictionaryLike</span></tt></p>
+<p>A mix-in class to help other objects become named scopes.</p>
+<p>Using this mix-in the class behaves like a read-only named dictionary with
+string keys and object value.  If the dictionary contains a value that is
+itself a NameTableMixin then keys can be compounded to look-up items in
+sub-scopes.</p>
+<p>For example, if the name table contains a value with key &#8220;X&#8221;
+that is itself a name table containing a value with key &#8220;Y&#8221; then both &#8220;X&#8221;
+and &#8220;X.Y&#8221; are valid keys.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NameTableMixin.name">
+<tt class="descname">name</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this name table (in the context of its parent)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.csdl.NameTableMixin.nameTable">
+<tt class="descname">nameTable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin.nameTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>a dictionary mapping names to child objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.NameTableMixin.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up <em>key</em> in <a class="reference internal" href="#pyslet.odata2.csdl.NameTableMixin.nameTable" title="pyslet.odata2.csdl.NameTableMixin.nameTable"><tt class="xref py py-attr docutils literal"><span class="pre">nameTable</span></tt></a> and, if not found, in each
+child scope with a name that is a valid scope prefix of key.  For
+example, if key is &#8220;My.Scope.Name&#8221; then a child scope with name
+&#8220;My.Scope&#8221; would be searched for &#8220;Name&#8221; or a child scope with name &#8220;My&#8221;
+would be searched for &#8220;Scope.Name&#8221;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.NameTableMixin.Declare">
+<tt class="descname">Declare</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin.Declare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares a value in this name table.</p>
+<p><em>value</em> must have a name attribute which is used to declare it in the
+name table; duplicate keys are not allowed and will raise
+<tt class="xref py py-class docutils literal"><span class="pre">DuplicateKey</span></tt>.</p>
+<p>Values are always declared in the top-level name table, even if they
+contain the compounding character &#8216;.&#8217;, however, you cannot declare &#8220;X&#8221;
+if you have already declared &#8220;X.Y&#8221; and vice versa.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.NameTableMixin.Undeclare">
+<tt class="descname">Undeclare</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.NameTableMixin.Undeclare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a value from the name table.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.SimpleType">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">SimpleType</tt><a class="headerlink" href="#pyslet.odata2.csdl.SimpleType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
+<p>SimpleType defines constants for the core data types defined by CSDL</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SimpleType</span><span class="o">.</span><span class="n">Boolean</span>      
+<span class="n">SimpleType</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <a class="reference internal" href="xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
+<p>[Aside: I&#8217;m not that happy with this definition.  In order to ensure that
+the encode function produces the &#8220;Edm.X&#8221; form of the name the deocde
+dictionary is initialised with these forms.  As a result, the class has
+attributes of the form &#8220;SimpleType.Edm.Binary&#8221; which are inaccessible to
+python unless getattr is used.  To workaround this problem (and because the
+Edm. prefix seems to be optional) we also define aliases without the Edm.
+prefix. As a result, you can use SimpleType.Binary as the symbolic (integer)
+representation of the enumeration value.]</p>
+<dl class="classmethod">
+<dt id="pyslet.odata2.csdl.SimpleType.FromPythonType">
+<em class="property">classmethod </em><tt class="descname">FromPythonType</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleType.FromPythonType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a python type (as returned by the built-in type
+function) and returns the most appropriate constant value.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.csdl.SimpleType.CoerceValue">
+<em class="property">classmethod </em><tt class="descname">CoerceValue</tt><big>(</big><em>typeCode</em>, <em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.SimpleType.CoerceValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes one of the type code constants and a python native value and returns the
+value coerced to the best python value type for this type code.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h3>2.1.1.3. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EDMError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDMError</tt><a class="headerlink" href="#pyslet.odata2.csdl.EDMError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>General exception for all CSDL model errors.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.NonExistentEntity">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">NonExistentEntity</tt><a class="headerlink" href="#pyslet.odata2.csdl.NonExistentEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMError" title="pyslet.odata2.csdl.EDMError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMError</span></tt></a></p>
+<p>Raised when attempting to perform a restricted operation on an
+entity that doesn&#8217;t exist yet.  For example, getting the value of a
+navigation property.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.EntityExists">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntityExists</tt><a class="headerlink" href="#pyslet.odata2.csdl.EntityExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMError" title="pyslet.odata2.csdl.EDMError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMError</span></tt></a></p>
+<p>Raised when attempting to perform a restricted operation on an
+entity that already exists.  For example, inserting it into the base
+collection.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.ConstraintError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ConstraintError</tt><a class="headerlink" href="#pyslet.odata2.csdl.ConstraintError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMError" title="pyslet.odata2.csdl.EDMError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMError</span></tt></a></p>
+<p>General error raised when a constraint has been violated.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.NavigationError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">NavigationError</tt><a class="headerlink" href="#pyslet.odata2.csdl.NavigationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.ConstraintError" title="pyslet.odata2.csdl.ConstraintError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.ConstraintError</span></tt></a></p>
+<p>Raised when attempting to perform an operation on an entity and a
+violation of a navigation property&#8217;s relationship is encountered. 
+For example, adding multiple links when only one is allowed or
+failing to add a link when one is required.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.ConcurrencyError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ConcurrencyError</tt><a class="headerlink" href="#pyslet.odata2.csdl.ConcurrencyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.ConstraintError" title="pyslet.odata2.csdl.ConstraintError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.ConstraintError</span></tt></a></p>
+<p>Raised when attempting to perform an update on an entity and a violation
+of a concurrency control constraint is encountered.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.ModelIncomplete">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ModelIncomplete</tt><a class="headerlink" href="#pyslet.odata2.csdl.ModelIncomplete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMError" title="pyslet.odata2.csdl.EDMError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMError</span></tt></a></p>
+<p>Raised when a model element has a missing reference.</p>
+<p>For example, an
+<a class="reference internal" href="#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a> that is bound to an undeclared
+:<a class="reference internal" href="#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.csdl.ModelConstraintError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ModelConstraintError</tt><a class="headerlink" href="#pyslet.odata2.csdl.ModelConstraintError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.csdl.EDMError" title="pyslet.odata2.csdl.EDMError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EDMError</span></tt></a></p>
+<p>Raised when an issue in the model other than completeness
+prevents an action being performed.</p>
+<p>For example, an entity type that is dependent on two unbound
+principals (so can never be inserted).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="constants">
+<h3>2.1.1.4. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="pyslet.odata2.csdl.EDM_NAMESPACE">
+<tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDM_NAMESPACE</tt><em class="property"> = 'http://schemas.microsoft.com/ado/2009/11/edm'</em><a class="headerlink" href="#pyslet.odata2.csdl.EDM_NAMESPACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Namespace to use for CSDL elements</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1. Entity Data Model (EDM)</a><ul>
+<li><a class="reference internal" href="#reference">2.1.1. Reference</a><ul>
+<li><a class="reference internal" href="#elements">2.1.1.1. Elements</a></li>
+<li><a class="reference internal" href="#basic-data-types">2.1.1.2. Basic Data Types</a></li>
+<li><a class="reference internal" href="#exceptions">2.1.1.3. Exceptions</a></li>
+<li><a class="reference internal" href="#constants">2.1.1.4. Constants</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="general.html"
+                        title="previous chapter">2. Supporting Standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="odatav2.html"
+                        title="next chapter">2.2. The Open Data Protocol (OData)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mc_csdl.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2.html" title="2.2. The Open Data Protocol (OData)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="general.html" title="2. Supporting Standards"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140128 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

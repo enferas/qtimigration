@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.2. Tests &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
+    <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="next" title="1.3.3. Content Model" href="content.html" />
+    <link rel="prev" title="1.3.1. Items" href="items.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="1.3.3. Content Model"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="items.html" title="1.3.1. Items"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.tests">
+<span id="tests"></span><h1>1.3.2. Tests<a class="headerlink" href="#module-pyslet.qtiv2.tests" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.AssessmentTest">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">AssessmentTest</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.DeclarationContainer</span></tt></p>
+<p>A test is a group of assessmentItems with an associated set of rules that
+determine which of the items the candidate sees, in what order, and in what
+way the candidate interacts with them. The rules describe the valid paths
+through the test, when responses are submitted for response processing and
+when (if at all) feedback is to be given:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;assessmentTest.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;string.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;title&quot; type=&quot;string.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;toolName&quot; type=&quot;string256.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;toolVersion&quot; type=&quot;string256.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;assessmentTest.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;outcomeDeclaration&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;timeLimits&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;testPart&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;outcomeProcessing&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;testFeedback&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="pyslet.qtiv2.tests.AssessmentTest.parts">
+<tt class="descname">parts</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentTest.parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>a dictionary of testPart, assessmentSection and assessmentItemRef keyed on identifier</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.AssessmentTest.SortDeclarations">
+<tt class="descname">SortDeclarations</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentTest.SortDeclarations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the outcome declarations so that they are in identifier order. 
+This is not essential but it does help ensure that output is
+predictable. This method is called automatically when reading items from
+XML files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.AssessmentTest.RegisterPart">
+<tt class="descname">RegisterPart</tt><big>(</big><em>part</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentTest.RegisterPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a testPart, asssessmentSection or assessmentItemRef in
+<a class="reference internal" href="#pyslet.qtiv2.tests.AssessmentTest.parts" title="pyslet.qtiv2.tests.AssessmentTest.parts"><tt class="xref py py-attr docutils literal"><span class="pre">parts</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.AssessmentTest.GetPart">
+<tt class="descname">GetPart</tt><big>(</big><em>identifier</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentTest.GetPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the testPart, assessmentSection or assessmentItemRef with the
+given identifier.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="navigation-and-submission">
+<h2>1.3.2.1. Navigation and Submission<a class="headerlink" href="#navigation-and-submission" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.NavigationMode">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">NavigationMode</tt><a class="headerlink" href="#pyslet.qtiv2.tests.NavigationMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
+<p>The navigation mode determines the general paths that the candidate may
+take. A testPart in linear mode restricts the candidate to attempt each item
+in turn. Once the candidate moves on they are not permitted to return. A
+testPart in nonlinear mode removes this restriction - the candidate is free
+to navigate to any item in the test at any time:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;navigationMode.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;linear&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;nonlinear&quot;/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
+</div>
+<p>Defines constants for the above modes.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NavigationMode</span><span class="o">.</span><span class="n">linear</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NavigationMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.SubmissionMode">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">SubmissionMode</tt><a class="headerlink" href="#pyslet.qtiv2.tests.SubmissionMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
+<p>The submission mode determines when the candidate&#8217;s responses are
+submitted for response processing. A testPart in individual mode requires
+the candidate to submit their responses on an item-by-item basis. In
+simultaneous mode the candidate&#8217;s responses are all submitted together at
+the end of the testPart:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;submissionMode.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;individual&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;simultaneous&quot;/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
+</div>
+<p>Defines constants for the above modes.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SubmissionMode</span><span class="o">.</span><span class="n">individual</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SubmissionMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.TestPart">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">TestPart</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.TestPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Each test is divided into one or more parts which may in turn be divided
+into sections, sub-sections, and so on:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;testPart.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;navigationMode&quot; type=&quot;navigationMode.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;submissionMode&quot; type=&quot;submissionMode.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;testPart.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;preCondition&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;branchRule&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;itemSessionControl&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;timeLimits&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;assessmentSection&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;testFeedback&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.TestPart.CheckPreConditions">
+<tt class="descname">CheckPreConditions</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.TestPart.CheckPreConditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this testPart&#8217;s pre-conditions are satisfied or if
+there are no pre-conditions in effect.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.TestPart.GetBranchTarget">
+<tt class="descname">GetBranchTarget</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.TestPart.GetBranchTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identifier of the testPart to branch to, or the
+pre-defined EXIT_TEST identifier.  If there is no branch rule in effect
+then None is returned.  <em>state</em> is a
+<tt class="xref py py-class docutils literal"><span class="pre">variables.TestSessionState</span></tt> instance used to evaluate the
+branch rule expressions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="test-structure">
+<h2>1.3.2.2. Test Structure<a class="headerlink" href="#test-structure" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.Selection">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">Selection</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.Selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>The selection class specifies the rules used to select the child elements
+of a section for each test session:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;selection.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;select&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;withReplacement&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:anyAttribute namespace=&quot;##other&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;selection.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+        &lt;xsd:any namespace=&quot;##any&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; processContents=&quot;skip&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.Ordering">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">Ordering</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.Ordering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>The ordering class specifies the rule used to arrange the child elements
+of a section following selection. If no ordering rule is given we assume
+that the elements are to be ordered in the order in which they are defined:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;ordering.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:anyAttribute namespace=&quot;##other&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;ordering.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+        &lt;xsd:any namespace=&quot;##any&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot; processContents=&quot;skip&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.SectionPart">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">SectionPart</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.SectionPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Sections group together individual item references and/or sub-sections. A
+number of common parameters are shared by both types of child element:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;sectionPart.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;required&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;fixed&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;sectionPart.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;preCondition&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;branchRule&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;itemSessionControl&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;timeLimits&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.SectionPart.CheckPreConditions">
+<tt class="descname">CheckPreConditions</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.SectionPart.CheckPreConditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this item or section&#8217;s pre-conditions are satisfied
+or if there are no pre-conditions in effect.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.SectionPart.GetBranchTarget">
+<tt class="descname">GetBranchTarget</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.SectionPart.GetBranchTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identifier of the next item or section to branch to, or
+one of the pre-defined EXIT_* identifiers.  If there is no branch rule
+in effect then None is returned.  <em>state</em> is a
+<tt class="xref py py-class docutils literal"><span class="pre">variables.TestSessionState</span></tt> instance used to evaluate the
+branch rule expressions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.AssessmentSection">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">AssessmentSection</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.tests.SectionPart" title="pyslet.qtiv2.tests.SectionPart"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.tests.SectionPart</span></tt></a></p>
+<p>Represents assessmentSection element</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;assessmentSection.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;sectionPart.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;title&quot; type=&quot;string.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;visible&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;keepTogether&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;assessmentSection.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;sectionPart.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;selection&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;ordering&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+                &lt;xsd:element ref=&quot;rubricBlock&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:group ref=&quot;sectionPart.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.tests.AssessmentItemRef">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.tests.</tt><tt class="descname">AssessmentItemRef</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentItemRef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.tests.SectionPart" title="pyslet.qtiv2.tests.SectionPart"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.tests.SectionPart</span></tt></a></p>
+<p>Items are incorporated into the test by reference and not by direct
+aggregation:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;assessmentItemRef.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;sectionPart.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;href&quot; type=&quot;uri.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;category&quot; use=&quot;optional&quot;&gt;
+                &lt;xsd:simpleType&gt;
+                        &lt;xsd:list itemType=&quot;identifier.Type&quot;/&gt;
+                &lt;/xsd:simpleType&gt;
+        &lt;/xsd:attribute&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;assessmentItemRef.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;sectionPart.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;variableMapping&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;weight&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:element ref=&quot;templateDefault&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pyslet.qtiv2.tests.AssessmentItemRef.GetItem">
+<tt class="descname">GetItem</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.qtiv2.tests.AssessmentItemRef.GetItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the AssessmentItem referred to by this reference.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.2. Tests</a><ul>
+<li><a class="reference internal" href="#navigation-and-submission">1.3.2.1. Navigation and Submission</a></li>
+<li><a class="reference internal" href="#test-structure">1.3.2.2. Test Structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="items.html"
+                        title="previous chapter">1.3.1. Items</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="content.html"
+                        title="next chapter">1.3.3. Content Model</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/tests.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="1.3.3. Content Model"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="items.html" title="1.3.1. Items"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

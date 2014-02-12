@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.2. IMS Question and Test Interoperability (version 1.2) &mdash; Pyslet 0.3.20120806 documentation</title>
+    <title>1.2. IMS Question and Test Interoperability (version 1.2) &mdash; Pyslet 0.4.20140212 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.3.20120806',
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140212',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
     <link rel="up" title="1. IMS Global Learning Consortium Specifications" href="ims.html" />
     <link rel="next" title="1.2.1. Core Types and Utilities" href="qtiv1/core.html" />
     <link rel="prev" title="1.1. IMS Content Packaging (version 1.2)" href="imscpv1p2.html" /> 
@@ -46,7 +44,7 @@
         <li class="right" >
           <a href="imscpv1p2.html" title="1.1. IMS Content Packaging (version 1.2)"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="ims.html" accesskey="U">1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
       </ul>
     </div>  
@@ -175,7 +173,8 @@ the resulting resource objects in the content package.</p>
 <dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
 <p>The &lt;questestinterop&gt; element is the outermost container for the QTI
 contents i.e. the container of the Assessment(s), Section(s) and Item(s):</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT questestinterop (qticomment? , (objectbank | assessment | (section | item)+))&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT questestinterop (qticomment? , (objectbank | assessment | (section | item)+))&gt;
+</pre></div>
 </div>
 <dl class="method">
 <dt id="pyslet.imsqtiv1p2p1.QuesTestInterop.MigrateV2">
@@ -201,8 +200,9 @@ identifier to derive a file name.</p>
 <p>This is the container for the Section(s) and/or Item(s) that are to be
 grouped as an object-bank. The object-bank is assigned its own unique
 identifier and can have the full set of QTI-specific meta-data:</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT objectbank (qticomment? , qtimetadata* , (section | item)+)&gt;  
-&lt;!ATTLIST objectbank  ident CDATA  #REQUIRED &gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT objectbank (qticomment? , qtimetadata* , (section | item)+)&gt;  
+&lt;!ATTLIST objectbank  ident CDATA  #REQUIRED &gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -217,7 +217,7 @@ identifier and can have the full set of QTI-specific meta-data:</p>
 data structures. It will always contain at least one Section and may contain
 meta-data, objectives, rubric control switches, assessment-level processing,
 feedback and selection and sequencing information for sections:</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT assessment (qticomment? ,
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT assessment (qticomment? ,
         duration? ,
         qtimetadata* ,
         objectives* ,
@@ -233,7 +233,8 @@ feedback and selection and sequencing information for sections:</p>
         )&gt;
 &lt;!ATTLIST assessment  ident CDATA  #REQUIRED
                                            %I_Title;
-                                           xml:lang CDATA  #IMPLIED &gt;</pre>
+                                           xml:lang CDATA  #IMPLIED &gt;
+</pre></div>
 </div>
 <dl class="method">
 <dt id="pyslet.imsqtiv1p2p1.Assessment.MigrateV2">
@@ -250,14 +251,15 @@ feedback and selection and sequencing information for sections:</p>
 <dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a></p>
 <p>The control switches that are used to enable or disable the display of
 hints, solutions and feedback within the Assessment:</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT assessmentcontrol (qticomment?)&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT assessmentcontrol (qticomment?)&gt;
 &lt;!ATTLIST assessmentcontrol
-        hintswitch  (Yes | No )  'Yes'
-        solutionswitch  (Yes | No )  'Yes'
+        hintswitch  (Yes | No )  &#39;Yes&#39;
+        solutionswitch  (Yes | No )  &#39;Yes&#39;
         view    (All | Administrator | AdminAuthority | Assessor | Author |
                         Candidate | InvigilatorProctor | Psychometrician | Scorer | 
-                        Tutor ) 'All'
-        feedbackswitch  (Yes | No )  'Yes' &gt;</pre>
+                        Tutor ) &#39;All&#39;
+        feedbackswitch  (Yes | No )  &#39;Yes&#39; &gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -267,7 +269,8 @@ hints, solutions and feedback within the Assessment:</p>
 <dd><p>Bases: <a class="reference internal" href="qtiv1/core.html#pyslet.qtiv1.core.QTIElement" title="pyslet.qtiv1.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.core.QTIElement</span></tt></a></p>
 <p>This is used to contain proprietary alternative Assessment-level
 processing functionality:</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT assessproc_extension ANY&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT assessproc_extension ANY&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -277,13 +280,14 @@ processing functionality:</p>
 <dd><p>Bases: <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.QTICommentContainer" title="pyslet.qtiv1.common.QTICommentContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.QTICommentContainer</span></tt></a>, <a class="reference internal" href="qtiv1/common.html#pyslet.qtiv1.common.ContentMixin" title="pyslet.qtiv1.common.ContentMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv1.common.ContentMixin</span></tt></a></p>
 <p>The container for the Assessment-level feedback that is to be presented
 as a result of Assessment-level processing of the user responses:</p>
-<div class="highlight-python"><pre>&lt;!ELEMENT assessfeedback (qticomment? , (material+ | flow_mat+))&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ELEMENT assessfeedback (qticomment? , (material+ | flow_mat+))&gt;
 &lt;!ATTLIST assessfeedback  
         view    (All | Administrator | AdminAuthority | Assessor | Author |
                         Candidate | InvigilatorProctor | Psychometrician | Scorer | 
-                        Tutor ) 'All'
+                        Tutor ) &#39;All&#39;
         ident CDATA  #REQUIRED
-        title CDATA  #IMPLIED &gt;</pre>
+        title CDATA  #IMPLIED &gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -349,13 +353,13 @@ as a result of Assessment-level processing of the user responses:</p>
         <li class="right" >
           <a href="imscpv1p2.html" title="1.1. IMS Content Packaging (version 1.2)"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright ©2012, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>

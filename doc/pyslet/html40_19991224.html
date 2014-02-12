@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.6. HTML &mdash; Pyslet 0.3.20120806 documentation</title>
+    <title>2.5. HTML &mdash; Pyslet 0.4.20140212 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.3.20120806',
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140212',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
-    <link rel="next" title="2.7. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" />
-    <link rel="prev" title="2.5. XML: Parsing XML Documents" href="xml20081126.parser.html" /> 
+    <link rel="next" title="2.6. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" />
+    <link rel="prev" title="2.4. XML Schema Datatypes" href="xsdatatypes20041028.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rfc2396.html" title="2.7. Uniform Resource Identifiers (RFC2396)"
+          <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
+          <a href="xsdatatypes20041028.html" title="2.4. XML Schema Datatypes"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,7 +55,7 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.html40_19991224">
-<span id="html"></span><h1>2.6. HTML<a class="headerlink" href="#module-pyslet.html40_19991224" title="Permalink to this headline">¶</a></h1>
+<span id="html"></span><h1>2.5. HTML<a class="headerlink" href="#module-pyslet.html40_19991224" title="Permalink to this headline">¶</a></h1>
 <p>This module defines functions and classes for working with HTML documents.  The
 version of the standard implemented is, loosely speaking, the HTML 4.0.1
 Specification: <a class="reference external" href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401/</a></p>
@@ -81,7 +79,7 @@ storing HTML lengths (which can be pixel or relative) is used extensively by
 </dd></dl>
 
 <div class="section" id="x-html-documents">
-<h2>2.6.1. (X)HTML Documents<a class="headerlink" href="#x-html-documents" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.1. (X)HTML Documents<a class="headerlink" href="#x-html-documents" title="Permalink to this headline">¶</a></h2>
 <p>This module contains an experimental class for working with HTML documents.  At
 the time of writing the implementation is designed to provide just enough HTML
 parsing to support the use of HTML within other standards (such as Atom and
@@ -97,7 +95,7 @@ and therefore we base our implementation on the
 variant of the basic <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xml20081126.XMLDocument</span></tt> class.</p>
 <dl class="attribute">
 <dt id="pyslet.html40_19991224.XHTMLDocument.classMap">
-<tt class="descname">classMap</tt><em class="property"> = {('http://www.w3.org/1999/xhtml', 'head'): &lt;class pyslet.html40_19991224.Head at 0x10ef59b48&gt;, ('http://www.w3.org/1999/xhtml', 'h5'): &lt;class pyslet.html40_19991224.H5 at 0x10ef57258&gt;, ('http://www.w3.org/1999/xhtml', 'link'): &lt;class pyslet.html40_19991224.Link at 0x10ef597a0&gt;, ('http://www.w3.org/1999/xhtml', 'dl'): &lt;class pyslet.html40_19991224.DL at 0x10ef57668&gt;, ('http://www.w3.org/1999/xhtml', 'dfn'): &lt;class pyslet.html40_19991224.Dfn at 0x10ef43e88&gt;, ('http://www.w3.org/1999/xhtml', 'samp'): &lt;class pyslet.html40_19991224.Samp at 0x10ef574c8&gt;, ('http://www.w3.org/1999/xhtml', 'pre'): &lt;class pyslet.html40_19991224.Pre at 0x10ef573f8&gt;, ('http://www.w3.org/1999/xhtml', 'script'): &lt;class pyslet.html40_19991224.Script at 0x10ef59d50&gt;, ('http://www.w3.org/1999/xhtml', 'colgroup'): &lt;class pyslet.html40_19991224.ColGroup at 0x10ef59598&gt;, ('http://www.w3.org/1999/xhtml', 'tr'): &lt;class pyslet.html40_19991224.TR at 0x10ef59668&gt;, ('http://www.w3.org/1999/xhtml', 'form'): &lt;class pyslet.html40_19991224.Form at 0x10ef578d8&gt;, ('http://www.w3.org/1999/xhtml', 'meta'): &lt;class pyslet.html40_19991224.Meta at 0x10ef59c18&gt;, ('http://www.w3.org/1999/xhtml', 'optgroup'): &lt;class pyslet.html40_19991224.OptGroup at 0x10ef57a78&gt;, ('http://www.w3.org/1999/xhtml', 'sub'): &lt;class pyslet.html40_19991224.Sub at 0x10ef59188&gt;, ('http://www.w3.org/1999/xhtml', 's'): &lt;class pyslet.html40_19991224.S at 0x10ef59050&gt;, ('http://www.w3.org/1999/xhtml', 'thead'): &lt;class pyslet.html40_19991224.THead at 0x10ef59460&gt;, ('http://www.w3.org/1999/xhtml', 'select'): &lt;class pyslet.html40_19991224.Select at 0x10ef57a10&gt;, ('http://www.w3.org/1999/xhtml', 'h6'): &lt;class pyslet.html40_19991224.H6 at 0x10ef572c0&gt;, ('http://www.w3.org/1999/xhtml', 'dd'): &lt;class pyslet.html40_19991224.DD at 0x10ef57738&gt;, ('http://www.w3.org/1999/xhtml', 'strike'): &lt;class pyslet.html40_19991224.Strike at 0x10ef59120&gt;, ('http://www.w3.org/1999/xhtml', 'iframe'): &lt;class pyslet.html40_19991224.IFrame at 0x10ef59a10&gt;, ('http://www.w3.org/1999/xhtml', 'blockquote'): &lt;class pyslet.html40_19991224.Blockquote at 0x10ef43c80&gt;, ('http://www.w3.org/1999/xhtml', 'h2'): &lt;class pyslet.html40_19991224.H2 at 0x10ef57120&gt;, ('http://www.w3.org/1999/xhtml', 'abbr'): &lt;class pyslet.html40_19991224.Abbr at 0x10ef43b48&gt;, ('http://www.w3.org/1999/xhtml', 'style'): &lt;class pyslet.html40_19991224.Style at 0x10ef59ce8&gt;, ('http://www.w3.org/1999/xhtml', 'q'): &lt;class pyslet.html40_19991224.Q at 0x10ef57460&gt;, ('http://www.w3.org/1999/xhtml', 'frameset'): &lt;class pyslet.html40_19991224.Frameset at 0x10ef59940&gt;, ('http://www.w3.org/1999/xhtml', 'font'): &lt;class pyslet.html40_19991224.Font at 0x10ef43ce8&gt;, ('http://www.w3.org/1999/xhtml', 'a'): &lt;class pyslet.html40_19991224.A at 0x10ef59870&gt;, ('http://www.w3.org/1999/xhtml', 'tbody'): &lt;class pyslet.html40_19991224.TBody at 0x10ef59530&gt;, ('http://www.w3.org/1999/xhtml', 'div'): &lt;class pyslet.html40_19991224.Div at 0x10ef43ef0&gt;, ('http://www.w3.org/1999/xhtml', 'em'): &lt;class pyslet.html40_19991224.Em at 0x10ef43f58&gt;, ('http://www.w3.org/1999/xhtml', 'img'): &lt;class pyslet.html40_19991224.Img at 0x10ef59808&gt;, ('http://www.w3.org/1999/xhtml', 'caption'): &lt;class pyslet.html40_19991224.Caption at 0x10ef59390&gt;, ('http://www.w3.org/1999/xhtml', 'var'): &lt;class pyslet.html40_19991224.Var at 0x10ef57600&gt;, ('http://www.w3.org/1999/xhtml', 'ins'): &lt;class pyslet.html40_19991224.Ins at 0x10ef439a8&gt;, ('http://www.w3.org/1999/xhtml', 'u'): &lt;class pyslet.html40_19991224.U at 0x10ef592c0&gt;, ('http://www.w3.org/1999/xhtml', 'object'): &lt;class pyslet.html40_19991224.Object at 0x10ef57ce8&gt;, ('http://www.w3.org/1999/xhtml', 'legend'): &lt;class pyslet.html40_19991224.Legend at 0x10ef57c18&gt;, ('http://www.w3.org/1999/xhtml', 'ul'): &lt;class pyslet.html40_19991224.UL at 0x10ef57808&gt;, ('http://www.w3.org/1999/xhtml', 'sup'): &lt;class pyslet.html40_19991224.Sup at 0x10ef591f0&gt;, ('http://www.w3.org/1999/xhtml', 'acronym'): &lt;class pyslet.html40_19991224.Acronym at 0x10ef43bb0&gt;, ('http://www.w3.org/1999/xhtml', 'h3'): &lt;class pyslet.html40_19991224.H3 at 0x10ef57188&gt;, ('http://www.w3.org/1999/xhtml', 'br'): &lt;class pyslet.html40_19991224.Br at 0x10ef43d50&gt;, ('http://www.w3.org/1999/xhtml', 'i'): &lt;class pyslet.html40_19991224.I at 0x10ef57f58&gt;, ('http://www.w3.org/1999/xhtml', 'tfoot'): &lt;class pyslet.html40_19991224.TFoot at 0x10ef594c8&gt;, ('http://www.w3.org/1999/xhtml', 'param'): &lt;class pyslet.html40_19991224.Param at 0x10ef57d50&gt;, ('http://www.w3.org/1999/xhtml', 'body'): &lt;class pyslet.html40_19991224.Body at 0x10ef59e20&gt;, ('http://www.w3.org/1999/xhtml', 'dt'): &lt;class pyslet.html40_19991224.DT at 0x10ef576d0&gt;, ('http://www.w3.org/1999/xhtml', 'title'): &lt;class pyslet.html40_19991224.Title at 0x10ef59bb0&gt;, ('http://www.w3.org/1999/xhtml', 'input'): &lt;class pyslet.html40_19991224.Input at 0x10ef579a8&gt;, ('http://www.w3.org/1999/xhtml', 'li'): &lt;class pyslet.html40_19991224.LI at 0x10ef57870&gt;, ('http://www.w3.org/1999/xhtml', 'base'): &lt;class pyslet.html40_19991224.Base at 0x10ef59c80&gt;, ('http://www.w3.org/1999/xhtml', 'fieldset'): &lt;class pyslet.html40_19991224.FieldSet at 0x10ef57bb0&gt;, ('http://www.w3.org/1999/xhtml', 'col'): &lt;class pyslet.html40_19991224.Col at 0x10ef59600&gt;, ('http://www.w3.org/1999/xhtml', 'tt'): &lt;class pyslet.html40_19991224.TT at 0x10ef59258&gt;, ('http://www.w3.org/1999/xhtml', 'cite'): &lt;class pyslet.html40_19991224.Cite at 0x10ef43db8&gt;, ('http://www.w3.org/1999/xhtml', 'frame'): &lt;class pyslet.html40_19991224.Frame at 0x10ef599a8&gt;, ('http://www.w3.org/1999/xhtml', 'address'): &lt;class pyslet.html40_19991224.Address at 0x10ef43c18&gt;, ('http://www.w3.org/1999/xhtml', 'th'): &lt;class pyslet.html40_19991224.TH at 0x10ef596d0&gt;, ('http://www.w3.org/1999/xhtml', 'code'): &lt;class pyslet.html40_19991224.Code at 0x10ef43e20&gt;, ('http://www.w3.org/1999/xhtml', 'hr'): &lt;class pyslet.html40_19991224.HR at 0x10ef57ef0&gt;, ('http://www.w3.org/1999/xhtml', 'label'): &lt;class pyslet.html40_19991224.Label at 0x10ef57940&gt;, ('http://www.w3.org/1999/xhtml', 'del'): &lt;class pyslet.html40_19991224.Del at 0x10ef43a10&gt;, ('http://www.w3.org/1999/xhtml', 'h4'): &lt;class pyslet.html40_19991224.H4 at 0x10ef571f0&gt;, ('http://www.w3.org/1999/xhtml', 'strong'): &lt;class pyslet.html40_19991224.Strong at 0x10ef57598&gt;, ('http://www.w3.org/1999/xhtml', 'noscript'): &lt;class pyslet.html40_19991224.NoScript at 0x10ef59db8&gt;, ('http://www.w3.org/1999/xhtml', 'td'): &lt;class pyslet.html40_19991224.TD at 0x10ef59738&gt;, ('http://www.w3.org/1999/xhtml', 'table'): &lt;class pyslet.html40_19991224.Table at 0x10ef59328&gt;, ('http://www.w3.org/1999/xhtml', 'textarea'): &lt;class pyslet.html40_19991224.TextArea at 0x10ef57b48&gt;, ('http://www.w3.org/1999/xhtml', 'html'): &lt;class pyslet.html40_19991224.HTML at 0x10ef59e88&gt;, ('http://www.w3.org/1999/xhtml', 'small'): &lt;class pyslet.html40_19991224.Small at 0x10ef590b8&gt;, ('http://www.w3.org/1999/xhtml', 'option'): &lt;class pyslet.html40_19991224.Option at 0x10ef57ae0&gt;, ('http://www.w3.org/1999/xhtml', 'span'): &lt;class pyslet.html40_19991224.Span at 0x10ef57530&gt;, ('http://www.w3.org/1999/xhtml', 'p'): &lt;class pyslet.html40_19991224.P at 0x10ef57390&gt;, ('http://www.w3.org/1999/xhtml', 'b'): &lt;class pyslet.html40_19991224.B at 0x10ef57e20&gt;, ('http://www.w3.org/1999/xhtml', 'h1'): &lt;class pyslet.html40_19991224.H1 at 0x10ef570b8&gt;, ('http://www.w3.org/1999/xhtml', 'button'): &lt;class pyslet.html40_19991224.Button at 0x10ef57c80&gt;, ('http://www.w3.org/1999/xhtml', 'kbd'): &lt;class pyslet.html40_19991224.Kbd at 0x10ef57328&gt;, ('http://www.w3.org/1999/xhtml', 'big'): &lt;class pyslet.html40_19991224.Big at 0x10ef57e88&gt;, ('http://www.w3.org/1999/xhtml', 'ol'): &lt;class pyslet.html40_19991224.OL at 0x10ef577a0&gt;}</em><a class="headerlink" href="#pyslet.html40_19991224.XHTMLDocument.classMap" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">classMap</tt><em class="property"> = {('http://www.w3.org/1999/xhtml', 'dl'): &lt;class 'pyslet.html40_19991224.DL'&gt;, ('http://www.w3.org/1999/xhtml', 'ins'): &lt;class 'pyslet.html40_19991224.Ins'&gt;, ('http://www.w3.org/1999/xhtml', 'optgroup'): &lt;class 'pyslet.html40_19991224.OptGroup'&gt;, ('http://www.w3.org/1999/xhtml', 'thead'): &lt;class 'pyslet.html40_19991224.THead'&gt;, ('http://www.w3.org/1999/xhtml', 'var'): &lt;class 'pyslet.html40_19991224.Var'&gt;, ('http://www.w3.org/1999/xhtml', 'h2'): &lt;class 'pyslet.html40_19991224.H2'&gt;, ('http://www.w3.org/1999/xhtml', 'frameset'): &lt;class 'pyslet.html40_19991224.Frameset'&gt;, ('http://www.w3.org/1999/xhtml', 'acronym'): &lt;class 'pyslet.html40_19991224.Acronym'&gt;, ('http://www.w3.org/1999/xhtml', 'br'): &lt;class 'pyslet.html40_19991224.Br'&gt;, ('http://www.w3.org/1999/xhtml', 'param'): &lt;class 'pyslet.html40_19991224.Param'&gt;, ('http://www.w3.org/1999/xhtml', 'input'): &lt;class 'pyslet.html40_19991224.Input'&gt;, ('http://www.w3.org/1999/xhtml', 'fieldset'): &lt;class 'pyslet.html40_19991224.FieldSet'&gt;, ('http://www.w3.org/1999/xhtml', 'basefont'): &lt;class 'pyslet.html40_19991224.BaseFont'&gt;, ('http://www.w3.org/1999/xhtml', 'u'): &lt;class 'pyslet.html40_19991224.U'&gt;, ('http://www.w3.org/1999/xhtml', 'strong'): &lt;class 'pyslet.html40_19991224.Strong'&gt;, ('http://www.w3.org/1999/xhtml', 'noscript'): &lt;class 'pyslet.html40_19991224.NoScript'&gt;, ('http://www.w3.org/1999/xhtml', 'small'): &lt;class 'pyslet.html40_19991224.Small'&gt;, ('http://www.w3.org/1999/xhtml', 'caption'): &lt;class 'pyslet.html40_19991224.Caption'&gt;, ('http://www.w3.org/1999/xhtml', 'sup'): &lt;class 'pyslet.html40_19991224.Sup'&gt;, ('http://www.w3.org/1999/xhtml', 'big'): &lt;class 'pyslet.html40_19991224.Big'&gt;, ('http://www.w3.org/1999/xhtml', 'em'): &lt;class 'pyslet.html40_19991224.Em'&gt;, ('http://www.w3.org/1999/xhtml', 'form'): &lt;class 'pyslet.html40_19991224.Form'&gt;, ('http://www.w3.org/1999/xhtml', 'meta'): &lt;class 'pyslet.html40_19991224.Meta'&gt;, ('http://www.w3.org/1999/xhtml', 'blockquote'): &lt;class 'pyslet.html40_19991224.Blockquote'&gt;, ('http://www.w3.org/1999/xhtml', 'a'): &lt;class 'pyslet.html40_19991224.A'&gt;, ('http://www.w3.org/1999/xhtml', 'strike'): &lt;class 'pyslet.html40_19991224.Strike'&gt;, ('http://www.w3.org/1999/xhtml', 'legend'): &lt;class 'pyslet.html40_19991224.Legend'&gt;, ('http://www.w3.org/1999/xhtml', 'tt'): &lt;class 'pyslet.html40_19991224.TT'&gt;, ('http://www.w3.org/1999/xhtml', 'h3'): &lt;class 'pyslet.html40_19991224.H3'&gt;, ('http://www.w3.org/1999/xhtml', 'area'): &lt;class 'pyslet.html40_19991224.Area'&gt;, ('http://www.w3.org/1999/xhtml', 'tfoot'): &lt;class 'pyslet.html40_19991224.TFoot'&gt;, ('http://www.w3.org/1999/xhtml', 'script'): &lt;class 'pyslet.html40_19991224.Script'&gt;, ('http://www.w3.org/1999/xhtml', 'center'): &lt;class 'pyslet.html40_19991224.Center'&gt;, ('http://www.w3.org/1999/xhtml', 'q'): &lt;class 'pyslet.html40_19991224.Q'&gt;, ('http://www.w3.org/1999/xhtml', 'cite'): &lt;class 'pyslet.html40_19991224.Cite'&gt;, ('http://www.w3.org/1999/xhtml', 'frame'): &lt;class 'pyslet.html40_19991224.Frame'&gt;, ('http://www.w3.org/1999/xhtml', 'address'): &lt;class 'pyslet.html40_19991224.Address'&gt;, ('http://www.w3.org/1999/xhtml', 'hr'): &lt;class 'pyslet.html40_19991224.HR'&gt;, ('http://www.w3.org/1999/xhtml', 'li'): &lt;class 'pyslet.html40_19991224.LI'&gt;, ('http://www.w3.org/1999/xhtml', 'map'): &lt;class 'pyslet.html40_19991224.Map'&gt;, ('http://www.w3.org/1999/xhtml', 'h4'): &lt;class 'pyslet.html40_19991224.H4'&gt;, ('http://www.w3.org/1999/xhtml', 'td'): &lt;class 'pyslet.html40_19991224.TD'&gt;, ('http://www.w3.org/1999/xhtml', 'table'): &lt;class 'pyslet.html40_19991224.Table'&gt;, ('http://www.w3.org/1999/xhtml', 'span'): &lt;class 'pyslet.html40_19991224.Span'&gt;, ('http://www.w3.org/1999/xhtml', 'ul'): &lt;class 'pyslet.html40_19991224.UL'&gt;, ('http://www.w3.org/1999/xhtml', 'head'): &lt;class 'pyslet.html40_19991224.Head'&gt;, ('http://www.w3.org/1999/xhtml', 'samp'): &lt;class 'pyslet.html40_19991224.Samp'&gt;, ('http://www.w3.org/1999/xhtml', 'tr'): &lt;class 'pyslet.html40_19991224.TR'&gt;, ('http://www.w3.org/1999/xhtml', 'sub'): &lt;class 'pyslet.html40_19991224.Sub'&gt;, ('http://www.w3.org/1999/xhtml', 's'): &lt;class 'pyslet.html40_19991224.S'&gt;, ('http://www.w3.org/1999/xhtml', 'select'): &lt;class 'pyslet.html40_19991224.Select'&gt;, ('http://www.w3.org/1999/xhtml', 'col'): &lt;class 'pyslet.html40_19991224.Col'&gt;, ('http://www.w3.org/1999/xhtml', 'dd'): &lt;class 'pyslet.html40_19991224.DD'&gt;, ('http://www.w3.org/1999/xhtml', 'iframe'): &lt;class 'pyslet.html40_19991224.IFrame'&gt;, ('http://www.w3.org/1999/xhtml', 'abbr'): &lt;class 'pyslet.html40_19991224.Abbr'&gt;, ('http://www.w3.org/1999/xhtml', 'font'): &lt;class 'pyslet.html40_19991224.Font'&gt;, ('http://www.w3.org/1999/xhtml', 'tbody'): &lt;class 'pyslet.html40_19991224.TBody'&gt;, ('http://www.w3.org/1999/xhtml', 'img'): &lt;class 'pyslet.html40_19991224.Img'&gt;, ('http://www.w3.org/1999/xhtml', 'object'): &lt;class 'pyslet.html40_19991224.Object'&gt;, ('http://www.w3.org/1999/xhtml', 'bdo'): &lt;class 'pyslet.html40_19991224.BDO'&gt;, ('http://www.w3.org/1999/xhtml', 'body'): &lt;class 'pyslet.html40_19991224.Body'&gt;, ('http://www.w3.org/1999/xhtml', 'dt'): &lt;class 'pyslet.html40_19991224.DT'&gt;, ('http://www.w3.org/1999/xhtml', 'base'): &lt;class 'pyslet.html40_19991224.Base'&gt;, ('http://www.w3.org/1999/xhtml', 'th'): &lt;class 'pyslet.html40_19991224.TH'&gt;, ('http://www.w3.org/1999/xhtml', 'label'): &lt;class 'pyslet.html40_19991224.Label'&gt;, ('http://www.w3.org/1999/xhtml', 'textarea'): &lt;class 'pyslet.html40_19991224.TextArea'&gt;, ('http://www.w3.org/1999/xhtml', 'dfn'): &lt;class 'pyslet.html40_19991224.Dfn'&gt;, ('http://www.w3.org/1999/xhtml', 'button'): &lt;class 'pyslet.html40_19991224.Button'&gt;, ('http://www.w3.org/1999/xhtml', 'ol'): &lt;class 'pyslet.html40_19991224.OL'&gt;, ('http://www.w3.org/1999/xhtml', 'h5'): &lt;class 'pyslet.html40_19991224.H5'&gt;, ('http://www.w3.org/1999/xhtml', 'link'): &lt;class 'pyslet.html40_19991224.Link'&gt;, ('http://www.w3.org/1999/xhtml', 'pre'): &lt;class 'pyslet.html40_19991224.Pre'&gt;, ('http://www.w3.org/1999/xhtml', 'colgroup'): &lt;class 'pyslet.html40_19991224.ColGroup'&gt;, ('http://www.w3.org/1999/xhtml', 'style'): &lt;class 'pyslet.html40_19991224.Style'&gt;, ('http://www.w3.org/1999/xhtml', 'div'): &lt;class 'pyslet.html40_19991224.Div'&gt;, ('http://www.w3.org/1999/xhtml', 'h6'): &lt;class 'pyslet.html40_19991224.H6'&gt;, ('http://www.w3.org/1999/xhtml', 'i'): &lt;class 'pyslet.html40_19991224.I'&gt;, ('http://www.w3.org/1999/xhtml', 'title'): &lt;class 'pyslet.html40_19991224.Title'&gt;, ('http://www.w3.org/1999/xhtml', 'code'): &lt;class 'pyslet.html40_19991224.Code'&gt;, ('http://www.w3.org/1999/xhtml', 'del'): &lt;class 'pyslet.html40_19991224.Del'&gt;, ('http://www.w3.org/1999/xhtml', 'kbd'): &lt;class 'pyslet.html40_19991224.Kbd'&gt;, ('http://www.w3.org/1999/xhtml', 'html'): &lt;class 'pyslet.html40_19991224.HTML'&gt;, ('http://www.w3.org/1999/xhtml', 'option'): &lt;class 'pyslet.html40_19991224.Option'&gt;, ('http://www.w3.org/1999/xhtml', 'p'): &lt;class 'pyslet.html40_19991224.P'&gt;, ('http://www.w3.org/1999/xhtml', 'h1'): &lt;class 'pyslet.html40_19991224.H1'&gt;, ('http://www.w3.org/1999/xhtml', 'b'): &lt;class 'pyslet.html40_19991224.B'&gt;}</em><a class="headerlink" href="#pyslet.html40_19991224.XHTMLDocument.classMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data member used to store a mapping from element names to the classes
 used to represent them.  This mapping is initialized when the module is
 loaded.</p>
@@ -134,9 +132,9 @@ document containing a single Div element to hold the parsed text.</p>
 
 </div>
 <div class="section" id="basic-types">
-<h2>2.6.2. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
+<h2>2.5.2. Basic Types<a class="headerlink" href="#basic-types" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="length-values">
-<h3>2.6.2.1. Length Values<a class="headerlink" href="#length-values" title="Permalink to this headline">¶</a></h3>
+<h3>2.5.2.1. Length Values<a class="headerlink" href="#length-values" title="Permalink to this headline">¶</a></h3>
 <p>Length values are used in many places in HTML, the most common being the width
 and height values on images.  There are two ways of specifying a Length, a
 simple integer number of pixels or a percentage of some base length defined by
@@ -144,14 +142,21 @@ the context (such as the width of the browser window).</p>
 <dl class="class">
 <dt id="pyslet.html40_19991224.LengthType">
 <em class="property">class </em><tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">LengthType</tt><big>(</big><em>value</em>, <em>valueType=None</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents the HTML Length:</p>
-<div class="highlight-python"><pre>&lt;!ENTITY % Length "CDATA" -- nn for pixels or nn% for percentage length --&gt;</pre>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the HTML Length:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ENTITY % Length &quot;CDATA&quot; -- nn for pixels or nn% for percentage length --&gt;
+</pre></div>
 </div>
 <ul class="simple">
-<li>value can be either an integer value or another LengthType instance.</li>
-<li>if value is an integer then valueType can be used to select Pixel or Percentage</li>
+<li>value can be either an integer value, another LengthType instance or a
+string.</li>
+<li>if value is an integer then valueType can be used to select Pixel or
+Percentage</li>
+<li>if value is a string then it is parsed for the length as per the format
+defined for length attributes in HTML.</li>
 </ul>
-<p>By default values are assumed to be Pixel lengths.</p>
+<p>By default values are assumed to be Pixel lengths but valueType can be used
+to force such a value to be a Percentage if desired.</p>
 <dl class="attribute">
 <dt id="pyslet.html40_19991224.LengthType.Pixel">
 <tt class="descname">Pixel</tt><em class="property"> = 0</em><a class="headerlink" href="#pyslet.html40_19991224.LengthType.Pixel" title="Permalink to this definition">¶</a></dt>
@@ -177,6 +182,24 @@ the context (such as the width of the browser window).</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pyslet.html40_19991224.LengthType.__nonzero__">
+<tt class="descname">__nonzero__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__nonzero__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Length values are non-zero if they have a non-zero value (pixel or percentage).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.html40_19991224.LengthType.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the length as a string of form nn for pixels or nn% for percentage.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.html40_19991224.LengthType.__unicode__">
+<tt class="descname">__unicode__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__unicode__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the length as a unicode string of form nn for pixels or nn% for percentage.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pyslet.html40_19991224.LengthType.GetValue">
 <tt class="descname">GetValue</tt><big>(</big><em>dim=None</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.GetValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the value of the Length, <em>dim</em> is the size of the dimension
@@ -194,35 +217,17 @@ integer it is assumed to be a value of pixel type - a mismatch raises
 ValueError.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pyslet.html40_19991224.LengthType.__weakref__">
+<tt class="descname">__weakref__</tt><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pyslet.html40_19991224.LengthType.__unicode__">
-<tt class="descclassname">LengthType.</tt><tt class="descname">__unicode__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__unicode__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats the length as a unicode string of form nn for pixels or nn% for percentage.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.html40_19991224.LengthType.__str__">
-<tt class="descclassname">LengthType.</tt><tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.LengthType.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats the length as a string of form nn for pixels or nn% for percentage.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.html40_19991224.DecodeLength">
-<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeLength</tt><big>(</big><em>strValue</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeLength" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a length from a string returning an instance of LengthType</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.html40_19991224.EncodeLength">
-<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">EncodeLength</tt><big>(</big><em>length</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.EncodeLength" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encodes a length value as a unicode string from an instance of LengthType.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="coordinate-values">
-<h3>2.6.2.2. Coordinate Values<a class="headerlink" href="#coordinate-values" title="Permalink to this headline">¶</a></h3>
+<h3>2.5.2.2. Coordinate Values<a class="headerlink" href="#coordinate-values" title="Permalink to this headline">¶</a></h3>
 <p>Coordinate values are simple lists of Lengths.  In most cases Pyslet doesn&#8217;t
 define special types for lists of basic types but coordinates are represented in
 attribute values using comma separation, not space-separation.  As a result they
@@ -231,12 +236,44 @@ streams.</p>
 <dl class="class">
 <dt id="pyslet.html40_19991224.Coords">
 <em class="property">class </em><tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">Coords</tt><big>(</big><em>values=None</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents HTML Coords values:</p>
-<div class="highlight-python"><pre>&lt;!ENTITY % Coords "CDATA" -- comma-separated list of lengths --&gt;</pre>
+<dd><p>Represents HTML Coords values</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ENTITY % Coords &quot;CDATA&quot; -- comma-separated list of lengths --&gt;
+</pre></div>
 </div>
-<p>Instances can be initialized from an existing list of <a class="reference internal" href="#pyslet.html40_19991224.LengthType" title="pyslet.html40_19991224.LengthType"><tt class="xref py py-class docutils literal"><span class="pre">LengthType</span></tt></a>.</p>
-<p>If <em>values</em> is a list of integers then it is converted to a list of
-<a class="reference internal" href="#pyslet.html40_19991224.LengthType" title="pyslet.html40_19991224.LengthType"><tt class="xref py py-class docutils literal"><span class="pre">LengthType</span></tt></a> instances.</p>
+<p>Instances can be initialized from an existing list of
+<a class="reference internal" href="#pyslet.html40_19991224.LengthType" title="pyslet.html40_19991224.LengthType"><tt class="xref py py-class docutils literal"><span class="pre">LengthType</span></tt></a>, or a list of any object that can be used to
+construct a LengthType.  It can also be constructed from a string formatted
+as per the HTML attribute definition.</p>
+<p>The resulting object behaves like a list of LengthType instances, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span><span class="o">=</span><span class="n">Coords</span><span class="p">(</span><span class="s">&quot;10, 50, 60%,75%&quot;</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="mi">4</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">==</span><span class="mi">10</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="o">==</span><span class="n">LengthType</span><span class="o">.</span><span class="n">Percentage</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">==</span><span class="s">&quot;75%&quot;</span>
+<span class="c"># items are also assignable...</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;40%&quot;</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="o">==</span><span class="n">LengthType</span><span class="o">.</span><span class="n">Percentage</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">==</span><span class="mi">40</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="pyslet.html40_19991224.Coords.values">
+<tt class="descname">values</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.html40_19991224.Coords.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of <a class="reference internal" href="#pyslet.html40_19991224.LengthType" title="pyslet.html40_19991224.LengthType"><tt class="xref py py-class docutils literal"><span class="pre">LengthType</span></tt></a> values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.html40_19991224.Coords.__unicode__">
+<tt class="descname">__unicode__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords.__unicode__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the Coords as comma-separated unicode string of Length values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.html40_19991224.Coords.__str__">
+<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the Coords as a comma-separated string of Length values.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyslet.html40_19991224.Coords.TestRect">
 <tt class="descname">TestRect</tt><big>(</big><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords.TestRect" title="Permalink to this definition">¶</a></dt>
@@ -273,33 +310,9 @@ polygon.</div></blockquote>
 
 </dd></dl>
 
-<dl class="method">
-<dt id="pyslet.html40_19991224.Coords.__unicode__">
-<tt class="descclassname">Coords.</tt><tt class="descname">__unicode__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords.__unicode__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats the Coords as comma-separated unicode string of Length values.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.html40_19991224.Coords.__str__">
-<tt class="descclassname">Coords.</tt><tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.Coords.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats the Coords as a comma-separated string of Length values.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.html40_19991224.DecodeCoords">
-<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeCoords</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes coords from an attribute value string into a Coords instance.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.html40_19991224.EncodeCoords">
-<tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">EncodeCoords</tt><big>(</big><em>coords</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.EncodeCoords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encodes a Coords instance as an attribute value string.</p>
-</dd></dl>
-
 </div>
 <div class="section" id="uris">
-<h3>2.6.2.3. URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h3>
+<h3>2.5.2.3. URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h3>
 <p>URIs are represented by instances of the underlying <tt class="xref py py-class docutils literal"><span class="pre">pyselt.rfc2396.URI</span></tt>
 class, these functions provide a simple wrapper around the functions defined in
 that module.</p>
@@ -307,7 +320,8 @@ that module.</p>
 <dt id="pyslet.html40_19991224.DecodeURI">
 <tt class="descclassname">pyslet.html40_19991224.</tt><tt class="descname">DecodeURI</tt><big>(</big><em>src</em><big>)</big><a class="headerlink" href="#pyslet.html40_19991224.DecodeURI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decodes a URI from src:</p>
-<div class="highlight-python"><pre>&lt;!ENTITY % URI "CDATA"  -- a Uniform Resource Identifier --&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;!ENTITY % URI &quot;CDATA&quot;  -- a Uniform Resource Identifier --&gt;
+</pre></div>
 </div>
 <p>Note that we adopt the algorithm recommended in Appendix B of the specification,
 which involves replacing non-ASCII characters with percent-encoded UTF-sequences.</p>
@@ -335,12 +349,12 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2.6. HTML</a><ul>
-<li><a class="reference internal" href="#x-html-documents">2.6.1. (X)HTML Documents</a></li>
-<li><a class="reference internal" href="#basic-types">2.6.2. Basic Types</a><ul>
-<li><a class="reference internal" href="#length-values">2.6.2.1. Length Values</a></li>
-<li><a class="reference internal" href="#coordinate-values">2.6.2.2. Coordinate Values</a></li>
-<li><a class="reference internal" href="#uris">2.6.2.3. URIs</a></li>
+<li><a class="reference internal" href="#">2.5. HTML</a><ul>
+<li><a class="reference internal" href="#x-html-documents">2.5.1. (X)HTML Documents</a></li>
+<li><a class="reference internal" href="#basic-types">2.5.2. Basic Types</a><ul>
+<li><a class="reference internal" href="#length-values">2.5.2.1. Length Values</a></li>
+<li><a class="reference internal" href="#coordinate-values">2.5.2.2. Coordinate Values</a></li>
+<li><a class="reference internal" href="#uris">2.5.2.3. URIs</a></li>
 </ul>
 </li>
 </ul>
@@ -348,11 +362,11 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="xml20081126.parser.html"
-                        title="previous chapter">2.5. XML: Parsing XML Documents</a></p>
+  <p class="topless"><a href="xsdatatypes20041028.html"
+                        title="previous chapter">2.4. XML Schema Datatypes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="rfc2396.html"
-                        title="next chapter">2.7. Uniform Resource Identifiers (RFC2396)</a></p>
+                        title="next chapter">2.6. Uniform Resource Identifiers (RFC2396)</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/html40_19991224.txt"
@@ -385,18 +399,18 @@ adhere to the principal of using the ASCII encoding only at the latest possible 
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="rfc2396.html" title="2.7. Uniform Resource Identifiers (RFC2396)"
+          <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
              >next</a> |</li>
         <li class="right" >
-          <a href="xml20081126.parser.html" title="2.5. XML: Parsing XML Documents"
+          <a href="xsdatatypes20041028.html" title="2.4. XML Schema Datatypes"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright ©2012, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>

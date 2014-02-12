@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>1.3.2. Expressions &mdash; Pyslet 0.3.20120806 documentation</title>
+    <title>1.3.9. Expressions &mdash; Pyslet 0.4.20140212 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.3.20120806',
+        VERSION:     '0.4.20140212',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,10 +23,10 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.3.20120806 documentation" href="../index.html" />
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
     <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
-    <link rel="next" title="1.3.3. Core Types and Utilities" href="core.html" />
-    <link rel="prev" title="1.3.1. Item Variables" href="variables.html" /> 
+    <link rel="next" title="1.3.10. Core Types and Utilities" href="core.html" />
+    <link rel="prev" title="1.3.6. Response Processing" href="processing.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,12 +39,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="core.html" title="1.3.3. Core Types and Utilities"
+          <a href="core.html" title="1.3.10. Core Types and Utilities"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="variables.html" title="1.3.1. Item Variables"
+          <a href="processing.html" title="1.3.6. Response Processing"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
@@ -58,11 +56,11 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.qtiv2.expressions">
-<span id="expressions"></span><h1>1.3.2. Expressions<a class="headerlink" href="#module-pyslet.qtiv2.expressions" title="Permalink to this headline">¶</a></h1>
+<span id="expressions"></span><h1>1.3.9. Expressions<a class="headerlink" href="#module-pyslet.qtiv2.expressions" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pyslet.qtiv2.expressions.Expression">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Expression</tt><big>(</big><em>parent</em>, <em>name=None</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Expression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
 <p>Abstract class for all expression elements.</p>
 <dl class="method">
 <dt id="pyslet.qtiv2.expressions.Expression.Evaluate">
@@ -128,24 +126,25 @@ treated simply as string value&#8221;</div></blockquote>
 </dd></dl>
 
 <div class="section" id="built-in-general-expressions">
-<h2>1.3.2.1. Built-in General Expressions<a class="headerlink" href="#built-in-general-expressions" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.9.1. Built-in General Expressions<a class="headerlink" href="#built-in-general-expressions" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.qtiv2.expressions.BaseValue">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">BaseValue</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.BaseValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>The simplest expression returns a single value from the set defined by
 the given baseType</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="baseValue.AttrGroup"&gt;
-        &lt;xsd:attribute name="baseType" type="baseType.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;baseValue.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;baseType&quot; type=&quot;baseType.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:complexType name="baseValue.Type"&gt;
+&lt;xsd:complexType name=&quot;baseValue.Type&quot;&gt;
         &lt;xsd:simpleContent&gt;
-                &lt;xsd:extension base="xsd:string"&gt;
-                        &lt;xsd:attributeGroup ref="baseValue.AttrGroup"/&gt;
+                &lt;xsd:extension base=&quot;xsd:string&quot;&gt;
+                        &lt;xsd:attributeGroup ref=&quot;baseValue.AttrGroup&quot;/&gt;
                 &lt;/xsd:extension&gt;
         &lt;/xsd:simpleContent&gt;
-&lt;/xsd:complexType&gt;</pre>
+&lt;/xsd:complexType&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -156,10 +155,11 @@ the given baseType</p>
 <p>This expression looks up the value of an itemVariable that has been
 declared in a corresponding variableDeclaration or is one of the built-in
 variables:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="variable.AttrGroup"&gt;
-        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
-        &lt;xsd:attribute name="weightIdentifier" type="identifier.Type" use="optional"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;variable.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;weightIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -169,9 +169,10 @@ variables:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>This expression looks up the declaration of an itemVariable and returns
 the associated defaultValue or NULL if no default value was declared:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="default.AttrGroup"&gt;
-        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;default.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -182,9 +183,10 @@ the associated defaultValue or NULL if no default value was declared:</p>
 <p>This expression looks up the declaration of a response variable and
 returns the associated correctResponse or NULL if no correct value was
 declared:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="correct.AttrGroup"&gt;
-        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;correct.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -195,9 +197,10 @@ declared:</p>
 <p>This expression looks up the value of a response variable and then
 transforms it using the associated mapping, which must have been declared.
 The result is a single float:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapResponse.AttrGroup"&gt;
-        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;mapResponse.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -207,9 +210,10 @@ The result is a single float:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>This expression looks up the value of a response variable that must be of
 base-type point, and transforms it using the associated areaMapping:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="mapResponsePoint.AttrGroup"&gt;
-        &lt;xsd:attribute name="identifier" type="identifier.Type" use="required"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;mapResponsePoint.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -219,7 +223,8 @@ base-type point, and transforms it using the associated areaMapping:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>null is a simple expression that returns the NULL value - the null value is
 treated as if it is of any desired baseType</p>
-<div class="highlight-python"><pre>&lt;xsd:complexType name="null.Type"/&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:complexType name=&quot;null.Type&quot;/&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -229,11 +234,12 @@ treated as if it is of any desired baseType</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>Selects a random integer from the specified range [min,max] satisfying
 min + step * n for some integer n:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="randomInteger.AttrGroup"&gt;
-        &lt;xsd:attribute name="min" type="integerOrTemplateRef.Type" use="required"/&gt;
-        &lt;xsd:attribute name="max" type="integerOrTemplateRef.Type" use="required"/&gt;
-        &lt;xsd:attribute name="step" type="integerOrTemplateRef.Type" use="optional"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;randomInteger.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;min&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;max&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;step&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -242,30 +248,32 @@ min + step * n for some integer n:</p>
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">RandomFloat</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.RandomFloat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.Expression" title="pyslet.qtiv2.expressions.Expression"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.Expression</span></tt></a></p>
 <p>Selects a random float from the specified range [min,max]</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="randomFloat.AttrGroup"&gt;
-        &lt;xsd:attribute name="min" type="floatOrTemplateRef.Type" use="required"/&gt;
-        &lt;xsd:attribute name="max" type="floatOrTemplateRef.Type" use="required"/&gt;
-&lt;/xsd:attributeGroup&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;randomFloat.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;min&quot; type=&quot;floatOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;max&quot; type=&quot;floatOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
 </div>
 </dd></dl>
 
 </div>
 <div class="section" id="expressions-used-only-in-outcomes-processing">
-<h2>1.3.2.2. Expressions Used only in Outcomes Processing<a class="headerlink" href="#expressions-used-only-in-outcomes-processing" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.9.2. Expressions Used only in Outcomes Processing<a class="headerlink" href="#expressions-used-only-in-outcomes-processing" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="operators">
-<h2>1.3.2.3. Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<h2>1.3.9.3. Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.qtiv2.expressions.Multiple">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">Multiple</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.expressions.Multiple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
 <p>The multiple operator takes 0 or more sub-expressions all of which must
 have either single or multiple cardinality:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="multiple.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;multiple.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -275,11 +283,12 @@ have either single or multiple cardinality:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
 <p>The multiple operator takes 0 or more sub-expressions all of which must
 have either single or multiple cardinality:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="ordered.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;ordered.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -289,11 +298,12 @@ have either single or multiple cardinality:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
 <p>The containerSize operator takes a sub-expression with any base-type and
 either multiple or ordered cardinality:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="containerSize.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;containerSize.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -303,11 +313,12 @@ either multiple or ordered cardinality:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
 <p>The isNull operator takes a sub-expression with any base-type and
 cardinality</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="isNull.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;isNull.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -317,15 +328,16 @@ cardinality</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.UnaryOperator" title="pyslet.qtiv2.expressions.UnaryOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.UnaryOperator</span></tt></a></p>
 <p>The index operator takes a sub-expression with an ordered container value
 and any base-type</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="index.AttrGroup"&gt;
-        &lt;xsd:attribute name="n" type="integer.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;index.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;n&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="index.ContentGroup"&gt;
+&lt;xsd:group name=&quot;index.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -336,15 +348,16 @@ and any base-type</p>
 <p>The field-value operator takes a sub-expression with a record container
 value. The result is the value of the field with the specified
 fieldIdentifier:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="fieldValue.AttrGroup"&gt;
-        &lt;xsd:attribute name="fieldIdentifier" type="identifier.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;fieldValue.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;fieldIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="fieldValue.ContentGroup"&gt;
+&lt;xsd:group name=&quot;fieldValue.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -355,11 +368,12 @@ fieldIdentifier:</p>
 <p>The random operator takes a sub-expression with a multiple or ordered
 container value and any base-type. The result is a single value randomly
 selected from the container:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="random.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;random.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -372,11 +386,12 @@ same base-type. The first sub-expression must have single cardinality and
 the second must be a multiple or ordered container. The result is a single
 boolean with a value of true if the value given by the first sub-expression
 is in the container defined by the second sub-expression:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="member.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;member.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -389,11 +404,12 @@ same base-type. The first sub-expression must have single cardinality and
 the second must be a multiple or ordered container. The result is a new
 container derived from the second sub-expression with all instances of the
 first sub-expression removed:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="delete.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;delete.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -406,11 +422,12 @@ same base-type and cardinality &#8211; either multiple or ordered. The result is
 a single boolean with a value of true if the container given by the first
 sub-expression contains the value given by the second sub-expression and
 false if it doesn&#8217;t:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="contains.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;contains.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -422,15 +439,16 @@ false if it doesn&#8217;t:</p>
 effective base-type of string and single cardinality. The result is a single
 boolean with a value of true if the first expression is a substring of the
 second expression and false if it isn&#8217;t:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="substring.AttrGroup"&gt;
-        &lt;xsd:attribute name="caseSensitive" type="boolean.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;substring.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;caseSensitive&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="substring.ContentGroup"&gt;
+&lt;xsd:group name=&quot;substring.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -441,11 +459,12 @@ second expression and false if it isn&#8217;t:</p>
 <p>The not operator takes a single sub-expression with a base-type of
 boolean and single cardinality. The result is a single boolean with a value
 obtained by the logical negation of the sub-expression&#8217;s value:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="not.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;not.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -456,11 +475,12 @@ obtained by the logical negation of the sub-expression&#8217;s value:</p>
 <p>The and operator takes one or more sub-expressions each with a base-type
 of boolean and single cardinality. The result is a single boolean which is
 true if all sub-expressions are true and false if any of them are false:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="and.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;and.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -472,11 +492,12 @@ true if all sub-expressions are true and false if any of them are false:</p>
 of boolean and single cardinality. The result is a single boolean which is
 true if any of the sub-expressions are true and false if all of them are
 false:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="or.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;or.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -488,16 +509,17 @@ false:</p>
 of boolean and single cardinality. The result is a single boolean which is
 true if at least min of the sub-expressions are true and at most max of the
 sub-expressions are true:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="anyN.AttrGroup"&gt;
-        &lt;xsd:attribute name="min" type="integerOrTemplateRef.Type" use="required"/&gt;
-        &lt;xsd:attribute name="max" type="integerOrTemplateRef.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;anyN.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;min&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;max&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="anyN.ContentGroup"&gt;
+&lt;xsd:group name=&quot;anyN.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -509,11 +531,12 @@ sub-expressions are true:</p>
 same base-type and cardinality. The result is a single boolean with a value
 of true if the two expressions represent the same value and false if they do
 not:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="match.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;match.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -524,16 +547,17 @@ not:</p>
 <p>The stringMatch operator takes two sub-expressions which must have single
 and a base-type of string. The result is a single boolean with a value of
 true if the two strings match:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="stringMatch.AttrGroup"&gt;
-        &lt;xsd:attribute name="caseSensitive" type="boolean.Type" use="required"/&gt;
-        &lt;xsd:attribute name="substring" type="boolean.Type" use="optional"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;stringMatch.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;caseSensitive&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;substring&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="stringMatch.ContentGroup"&gt;
+&lt;xsd:group name=&quot;stringMatch.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -545,15 +569,16 @@ true if the two strings match:</p>
 cardinality and a base-type of string. The result is a single boolean with a
 value of true if the sub-expression matches the regular expression given by
 pattern and false if it doesn&#8217;t:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="patternMatch.AttrGroup"&gt;
-        &lt;xsd:attribute name="pattern" type="stringOrTemplateRef.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;patternMatch.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;pattern&quot; type=&quot;stringOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="patternMatch.ContentGroup"&gt;
+&lt;xsd:group name=&quot;patternMatch.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -565,40 +590,42 @@ pattern and false if it doesn&#8217;t:</p>
 cardinality and have a numerical base-type. The result is a single boolean
 with a value of true if the two expressions are numerically equal and false
 if they are not:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="equal.AttrGroup"&gt;
-        &lt;xsd:attribute name="toleranceMode" type="toleranceMode.Type" use="required"/&gt;
-        &lt;xsd:attribute name="tolerance" use="optional"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;equal.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;toleranceMode&quot; type=&quot;toleranceMode.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;tolerance&quot; use=&quot;optional&quot;&gt;
                 &lt;xsd:simpleType&gt;
-                        &lt;xsd:list itemType="floatOrTemplateRef.Type"/&gt;
+                        &lt;xsd:list itemType=&quot;floatOrTemplateRef.Type&quot;/&gt;
                 &lt;/xsd:simpleType&gt;
         &lt;/xsd:attribute&gt;
-        &lt;xsd:attribute name="includeLowerBound" type="boolean.Type" use="optional"/&gt;
-        &lt;xsd:attribute name="includeUpperBound" type="boolean.Type" use="optional"/&gt;
+        &lt;xsd:attribute name=&quot;includeLowerBound&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;includeUpperBound&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="equal.ContentGroup"&gt;
+&lt;xsd:group name=&quot;equal.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
 <dl class="class">
 <dt id="pyslet.qtiv2.expressions.ToleranceMode">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">ToleranceMode</tt><a class="headerlink" href="#pyslet.qtiv2.expressions.ToleranceMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
 <p>When comparing two floating point numbers for equality it is often
 desirable to have a tolerance to ensure that spurious errors in scoring are
 not introduced by rounding errors. The tolerance mode determines whether the
 comparison is done exactly, using an absolute range or a relative range:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="toleranceMode.Type"&gt;
-        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
-                &lt;xsd:enumeration value="absolute"/&gt;
-                &lt;xsd:enumeration value="exact"/&gt;
-                &lt;xsd:enumeration value="relative"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;toleranceMode.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;absolute&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;exact&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;relative&quot;/&gt;
         &lt;/xsd:restriction&gt;
-&lt;/xsd:simpleType&gt;</pre>
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>Defines constants for the above modes.  Usage example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ToleranceMode</span><span class="o">.</span><span class="n">exact</span>
@@ -608,7 +635,7 @@ comparison is done exactly, using an absolute range or a relative range:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ToleranceMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">ToleranceMode</span><span class="o">.</span><span class="n">exact</span>
 </pre></div>
 </div>
-<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
 </dd></dl>
 
 <dl class="class">
@@ -619,30 +646,32 @@ comparison is done exactly, using an absolute range or a relative range:</p>
 single cardinality and have a numerical base-type. The result is a single
 boolean with a value of true if the two expressions are numerically equal
 after rounding and false if they are not:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="equalRounded.AttrGroup"&gt;
-        &lt;xsd:attribute name="roundingMode" type="roundingMode.Type" use="required"/&gt;
-        &lt;xsd:attribute name="figures" type="integerOrTemplateRef.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;equalRounded.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;roundingMode&quot; type=&quot;roundingMode.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;figures&quot; type=&quot;integerOrTemplateRef.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="equalRounded.ContentGroup"&gt;
+&lt;xsd:group name=&quot;equalRounded.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
 <dl class="class">
 <dt id="pyslet.qtiv2.expressions.RoundingMode">
 <em class="property">class </em><tt class="descclassname">pyslet.qtiv2.expressions.</tt><tt class="descname">RoundingMode</tt><a class="headerlink" href="#pyslet.qtiv2.expressions.RoundingMode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
 <p>Numbers are rounded to a given number of significantFigures or decimalPlaces:</p>
-<div class="highlight-python"><pre>&lt;xsd:simpleType name="roundingMode.Type"&gt;
-        &lt;xsd:restriction base="xsd:NMTOKEN"&gt;
-                &lt;xsd:enumeration value="decimalPlaces"/&gt;
-                &lt;xsd:enumeration value="significantFigures"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;roundingMode.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;decimalPlaces&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;significantFigures&quot;/&gt;
         &lt;/xsd:restriction&gt;
-&lt;/xsd:simpleType&gt;</pre>
+&lt;/xsd:simpleType&gt;
+</pre></div>
 </div>
 <p>Defines constants for the above modes.  Usage example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">RoundingMode</span><span class="o">.</span><span class="n">decimalPlaces</span>
@@ -652,7 +681,7 @@ after rounding and false if they are not:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">RoundingMode</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">RoundingMode</span><span class="o">.</span><span class="n">significantFigures</span>
 </pre></div>
 </div>
-<p>For more methods see <tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></p>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
 </dd></dl>
 
 <dl class="class">
@@ -664,16 +693,17 @@ baseType of point. The result is a single boolean with a value of true if
 the given point is inside the area defined by shape and coords. If the
 sub-expression is a container the result is true if any of the points are
 inside the area:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="inside.AttrGroup"&gt;
-        &lt;xsd:attribute name="shape" type="shape.Type" use="required"/&gt;
-        &lt;xsd:attribute name="coords" type="coords.Type" use="required"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;inside.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;shape&quot; type=&quot;shape.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;coords&quot; type=&quot;coords.Type&quot; use=&quot;required&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="inside.ContentGroup"&gt;
+&lt;xsd:group name=&quot;inside.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -685,11 +715,12 @@ inside the area:</p>
 cardinality and have a numerical base-type. The result is a single boolean
 with a value of true if the first expression is numerically less than the
 second and false if it is greater than or equal to the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="lt.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;lt.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -701,11 +732,12 @@ second and false if it is greater than or equal to the second:</p>
 cardinality and have a numerical base-type. The result is a single boolean
 with a value of true if the first expression is numerically greater than the
 second and false if it is less than or equal to the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="gt.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;gt.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -717,11 +749,12 @@ second and false if it is less than or equal to the second:</p>
 cardinality and have a numerical base-type. The result is a single boolean
 with a value of true if the first expression is numerically less than or
 equal to the second and false if it is greater than the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="lte.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;lte.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -733,11 +766,12 @@ equal to the second and false if it is greater than the second:</p>
 cardinality and have a numerical base-type. The result is a single boolean
 with a value of true if the first expression is numerically less than or
 equal to the second and false if it is greater than the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="durationGTE.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;durationGTE.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -749,11 +783,12 @@ equal to the second and false if it is greater than the second:</p>
 single cardinality and base-type duration. The result is a single boolean
 with a value of true if the first duration is shorter than the second and
 false if it is longer than (or equal) to the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="durationLT.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;durationLT.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -766,11 +801,12 @@ single cardinality and base-type duration. The result is a single boolean
 with a value of true if the first duration is longer (or equal, within the
 limits imposed by truncation) than the second and false if it is shorter
 than the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="durationGTE.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;durationGTE.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -782,11 +818,12 @@ than the second:</p>
 cardinality and have numerical base-types. The result is a single float or,
 if all sub-expressions are of integer type, a single integer that
 corresponds to the sum of the numerical values of the sub-expressions:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="sum.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;sum.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -798,11 +835,12 @@ corresponds to the sum of the numerical values of the sub-expressions:</p>
 single cardinality and have numerical base-types. The result is a single
 float or, if all sub-expressions are of integer type, a single integer that
 corresponds to the product of the numerical values of the sub-expressions:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="product.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;product.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -814,11 +852,12 @@ corresponds to the product of the numerical values of the sub-expressions:</p>
 cardinality and numerical base-types. The result is a single float or, if
 both sub-expressions are of integer type, a single integer that corresponds
 to the first value minus the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="subtract.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;subtract.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -829,11 +868,12 @@ to the first value minus the second:</p>
 <p>The divide operator takes 2 sub-expressions which both have single
 cardinality and numerical base-types. The result is a single float that
 corresponds to the first expression divided by the second expression:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="divide.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;divide.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -844,11 +884,12 @@ corresponds to the first expression divided by the second expression:</p>
 <p>The power operator takes 2 sub-expression which both have single
 cardinality and numerical base-types. The result is a single float that
 corresponds to the first expression raised to the power of the second:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="power.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;power.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -860,11 +901,12 @@ corresponds to the first expression raised to the power of the second:</p>
 single cardinality and base-type integer. The result is the single integer
 that corresponds to the first expression (x) divided by the second
 expression (y) rounded down to the greatest integer (i) such that i&lt;=(x/y):</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="integerDivide.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;integerDivide.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -877,11 +919,12 @@ single cardinality and base-type integer. The result is the single integer
 that corresponds to the remainder when the first expression (x) is divided
 by the second expression (y). If z is the result of the corresponding
 integerDivide operator then the result is x-z*y:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="integerModulus.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;integerModulus.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="2" maxOccurs="2"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -892,11 +935,12 @@ integerDivide operator then the result is x-z*y:</p>
 <p>The truncate operator takes a single sub-expression which must have
 single cardinality and base-type float. The result is a value of base-type
 integer formed by truncating the value of the sub-expression towards zero:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="truncate.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;truncate.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -908,11 +952,12 @@ integer formed by truncating the value of the sub-expression towards zero:</p>
 cardinality and base-type float. The result is a value of base-type integer
 formed by rounding the value of the sub-expression. The result is the
 integer n for all input values in the range [n-0.5,n+0.5):</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="round.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;round.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -923,11 +968,12 @@ integer n for all input values in the range [n-0.5,n+0.5):</p>
 <p>The integer to float conversion operator takes a single sub-expression
 which must have single cardinality and base-type integer. The result is a
 value of base type float with the same numeric value:</p>
-<div class="highlight-python"><pre>&lt;xsd:group name="integerToFloat.ContentGroup"&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;integerToFloat.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="1" maxOccurs="1"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -937,17 +983,18 @@ value of base type float with the same numeric value:</p>
 <dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.expressions.NOperator" title="pyslet.qtiv2.expressions.NOperator"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.expressions.NOperator</span></tt></a></p>
 <p>The custom operator provides an extension mechanism for defining
 operations not currently supported by this specification:</p>
-<div class="highlight-python"><pre>&lt;xsd:attributeGroup name="customOperator.AttrGroup"&gt;
-        &lt;xsd:attribute name="class" type="identifier.Type" use="optional"/&gt;
-        &lt;xsd:attribute name="definition" type="uri.Type" use="optional"/&gt;
-        &lt;xsd:anyAttribute namespace="##other"/&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;customOperator.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;class&quot; type=&quot;identifier.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;definition&quot; type=&quot;uri.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:anyAttribute namespace=&quot;##other&quot;/&gt;
 &lt;/xsd:attributeGroup&gt;
 
-&lt;xsd:group name="customOperator.ContentGroup"&gt;
+&lt;xsd:group name=&quot;customOperator.ContentGroup&quot;&gt;
         &lt;xsd:sequence&gt;
-                &lt;xsd:group ref="expression.ElementGroup" minOccurs="0" maxOccurs="unbounded"/&gt;
+                &lt;xsd:group ref=&quot;expression.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
         &lt;/xsd:sequence&gt;
-&lt;/xsd:group&gt;</pre>
+&lt;/xsd:group&gt;
+</pre></div>
 </div>
 </dd></dl>
 
@@ -962,20 +1009,20 @@ operations not currently supported by this specification:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">1.3.2. Expressions</a><ul>
-<li><a class="reference internal" href="#built-in-general-expressions">1.3.2.1. Built-in General Expressions</a></li>
-<li><a class="reference internal" href="#expressions-used-only-in-outcomes-processing">1.3.2.2. Expressions Used only in Outcomes Processing</a></li>
-<li><a class="reference internal" href="#operators">1.3.2.3. Operators</a></li>
+<li><a class="reference internal" href="#">1.3.9. Expressions</a><ul>
+<li><a class="reference internal" href="#built-in-general-expressions">1.3.9.1. Built-in General Expressions</a></li>
+<li><a class="reference internal" href="#expressions-used-only-in-outcomes-processing">1.3.9.2. Expressions Used only in Outcomes Processing</a></li>
+<li><a class="reference internal" href="#operators">1.3.9.3. Operators</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="variables.html"
-                        title="previous chapter">1.3.1. Item Variables</a></p>
+  <p class="topless"><a href="processing.html"
+                        title="previous chapter">1.3.6. Response Processing</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="core.html"
-                        title="next chapter">1.3.3. Core Types and Utilities</a></p>
+                        title="next chapter">1.3.10. Core Types and Utilities</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/qtiv2/expressions.txt"
@@ -1008,19 +1055,19 @@ operations not currently supported by this specification:</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="core.html" title="1.3.3. Core Types and Utilities"
+          <a href="core.html" title="1.3.10. Core Types and Utilities"
              >next</a> |</li>
         <li class="right" >
-          <a href="variables.html" title="1.3.1. Item Variables"
+          <a href="processing.html" title="1.3.6. Response Processing"
              >previous</a> |</li>
-        <li><a href="../index.html">Pyslet 0.3.20120806 documentation</a> &raquo;</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
           <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
           <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright ©2012, Steve Lay.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
     </div>
   </body>
 </html>

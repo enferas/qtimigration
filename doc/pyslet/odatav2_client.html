@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1.2. OData Client &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
+    <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
+    <link rel="next" title="2.1.3. SQL Database-based Data Services" href="odatav2_sqlds.html" />
+    <link rel="prev" title="2.1.1. Entity Data Model (EDM)" href="odatav2_csdl.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_sqlds.html" title="2.1.3. SQL Database-based Data Services"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="odatav2_csdl.html" title="2.1.1. Entity Data Model (EDM)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.odata2.client">
+<span id="odata-client"></span><h1>2.1.2. OData Client<a class="headerlink" href="#module-pyslet.odata2.client" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>2.1.2.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Warning: this client doesn&#8217;t support certificate validation when accessing
+servers through https URLs.  This feature is coming soon...</p>
+</div>
+<div class="section" id="using-the-client">
+<h2>2.1.2.2. Using the Client<a class="headerlink" href="#using-the-client" title="Permalink to this headline">¶</a></h2>
+<p>The client implementation uses Python&#8217;s logging module to provide logging, when learning
+about the client it may help to turn logging up to &#8220;INFO&#8221; as it makes it clearer what the
+client is doing.  &#8220;DEBUG&#8221; would show exactly what is passing over the wire.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create a new client simply instantiate a Client object.  You can pass
+the URL of the service root you wish to connect to directly to the
+constructor which will then call the service to download the list of
+feeds and the metadata document from which it will set the
+<a class="reference internal" href="#pyslet.odata2.client.Client.model" title="pyslet.odata2.client.Client.model"><tt class="xref py py-attr docutils literal"><span class="pre">Client.model</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyslet.odata2.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">Client</span><span class="p">(</span><span class="s">&quot;http://services.odata.org/V2/Northwind/Northwind.svc/&quot;</span><span class="p">)</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/ HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/$metadata HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="#pyslet.odata2.client.Client.feeds" title="pyslet.odata2.client.Client.feeds"><tt class="xref py py-attr docutils literal"><span class="pre">Client.feeds</span></tt></a> attribute is a dictionary mapping the
+exposed feeds (by name) onto <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a>
+instances.  This makes it easy to open the feeds as EDM collections.  In
+your code you&#8217;d typically use the with statement when opening the
+collection but for clarity we&#8217;ll continue on the python command line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;Products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span> <span class="k">print</span> <span class="n">p</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">3</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">20</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">21</span>
+<span class="go">22</span>
+<span class="go">23</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">76</span>
+<span class="go">77</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Note that products behaves like a dictionary, iterating through it
+iterates through the keys in the dictionary.  In this case these are the
+keys of the entities in the collection of products.  Notice that the
+client logs several requests to the server interspersed with the printed
+output.  Subsequent requests use $skiptoken because the server is
+limiting the maximum page size.  These calls are made as you iterate
+through the collection allowing you to iterate through very large
+collections.</p>
+<p>The keys alone are of limited interest, let&#8217;s try a similar loop but this
+time we&#8217;ll print the product names as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">1 Chai</span>
+<span class="go">2 Chang</span>
+<span class="go">3 Aniseed Syrup</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">20 Sir Rodney&#39;s Marmalade</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">21 Sir Rodney&#39;s Scones</span>
+<span class="go">22 Gustaf&#39;s Knäckebröd</span>
+<span class="go">23 Tunnbröd</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">76 Lakkalikööri</span>
+<span class="go">77 Original Frankfurter grüne Soße</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Sir Rodney&#8217;s Scones sound interesting, we can grab an individual record
+in the usual way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">scones</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">ProductID 21</span>
+<span class="go">ProductName Sir Rodney&#39;s Scones</span>
+<span class="go">SupplierID 8</span>
+<span class="go">CategoryID 3</span>
+<span class="go">QuantityPerUnit 24 pkgs. x 4 pieces</span>
+<span class="go">UnitPrice 10.0000</span>
+<span class="go">UnitsInStock 3</span>
+<span class="go">UnitsOnOrder 40</span>
+<span class="go">ReorderLevel 5</span>
+<span class="go">Discontinued False</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Well, I&#8217;ve simply got to have some of these, let&#8217;s use one of the navigation
+properties to load information about the supplier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)/Supplier HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">supplier</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">SupplierID 8</span>
+<span class="go">CompanyName Specialty Biscuits, Ltd.</span>
+<span class="go">ContactName Peter Wilson</span>
+<span class="go">ContactTitle Sales Representative</span>
+<span class="go">Address 29 King&#39;s Way</span>
+<span class="go">City Manchester</span>
+<span class="go">Region None</span>
+<span class="go">PostalCode M14 GSD</span>
+<span class="go">Country UK</span>
+<span class="go">Phone (161) 555-4448</span>
+<span class="go">Fax None</span>
+<span class="go">HomePage None</span>
+</pre></div>
+</div>
+<p>Attempting to load a non existent entity results in a KeyError of
+course:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">211</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(211) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 404</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;/Library/Python/2.7/site-packages/pyslet/odata2/client.py&quot;</span>, line <span class="m">165</span>, in <span class="n">__getitem__</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gr">KeyError</span>: <span class="n">211</span>
+</pre></div>
+</div>
+<p>Finally, when we&#8217;re done, it is a good idea to close the open
+collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>2.1.2.3. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.odata2.client.Client">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.client.</tt><tt class="descname">Client</tt><big>(</big><em>serviceRoot=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.Client</span></tt></p>
+<p>An OData client.</p>
+<p>Can be constructed with an optional URL specifying the service root of an
+OData service.  The URL is passed directly to <a class="reference internal" href="#pyslet.odata2.client.Client.LoadService" title="pyslet.odata2.client.Client.LoadService"><tt class="xref py py-meth docutils literal"><span class="pre">LoadService()</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.client.Client.service">
+<tt class="descname">service</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.client.Client.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="rfc5023.html#pyslet.rfc5023.Service" title="pyslet.rfc5023.Service"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc5023.Service</span></tt></a> instance describing this service</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.client.Client.serviceRoot">
+<tt class="descname">serviceRoot</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.client.Client.serviceRoot" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance pointing to the service root</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.client.Client.feeds">
+<tt class="descname">feeds</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.client.Client.feeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>a dictionary of feed titles, mapped to <tt class="xref py py-class docutils literal"><span class="pre">csdl.EntitySet</span></tt> instances</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.client.Client.model">
+<tt class="descname">model</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.client.Client.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <tt class="xref py py-class docutils literal"><span class="pre">metadata.Edmx</span></tt> instance containing the model for the service</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.client.Client.LoadService">
+<tt class="descname">LoadService</tt><big>(</big><em>serviceRoot</em><big>)</big><a class="headerlink" href="#pyslet.odata2.client.Client.LoadService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures this client to use the service at <em>serviceRoot</em></p>
+<p><em>serviceRoot</em> is a string or <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>2.1.2.4. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.odata2.client.ClientException">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.client.</tt><tt class="descname">ClientException</tt><a class="headerlink" href="#pyslet.odata2.client.ClientException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base class for all client-specific exceptions.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.client.AuthorizationRequired">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.client.</tt><tt class="descname">AuthorizationRequired</tt><a class="headerlink" href="#pyslet.odata2.client.AuthorizationRequired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.client.ClientException" title="pyslet.odata2.client.ClientException"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.client.ClientException</span></tt></a></p>
+<p>The server returned a response code of 401 to the request.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.client.UnexpectedHTTPResponse">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.client.</tt><tt class="descname">UnexpectedHTTPResponse</tt><a class="headerlink" href="#pyslet.odata2.client.UnexpectedHTTPResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.client.ClientException" title="pyslet.odata2.client.ClientException"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.client.ClientException</span></tt></a></p>
+<p>The server returned an unexpected response code, typically a 500
+internal server error.  The error message contains details of the
+error response returned.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1.2. OData Client</a><ul>
+<li><a class="reference internal" href="#overview">2.1.2.1. Overview</a></li>
+<li><a class="reference internal" href="#using-the-client">2.1.2.2. Using the Client</a></li>
+<li><a class="reference internal" href="#reference">2.1.2.3. Reference</a></li>
+<li><a class="reference internal" href="#exceptions">2.1.2.4. Exceptions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="odatav2_csdl.html"
+                        title="previous chapter">2.1.1. Entity Data Model (EDM)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="odatav2_sqlds.html"
+                        title="next chapter">2.1.3. SQL Database-based Data Services</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/odatav2_client.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_sqlds.html" title="2.1.3. SQL Database-based Data Services"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="odatav2_csdl.html" title="2.1.1. Entity Data Model (EDM)"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

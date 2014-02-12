@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3.4. Interactions &mdash; Pyslet 0.4.20140212 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.4.20140212',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="../index.html" />
+    <link rel="up" title="1.3. IMS Question and Test Interoperability (version 2.1)" href="../imsqtiv2p1.html" />
+    <link rel="next" title="1.3.5. Item Variables" href="variables.html" />
+    <link rel="prev" title="1.3.3. Content Model" href="content.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="variables.html" title="1.3.5. Item Variables"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="1.3.3. Content Model"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" accesskey="U">1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.qtiv2.interactions">
+<span id="interactions"></span><h1>1.3.4. Interactions<a class="headerlink" href="#module-pyslet.qtiv2.interactions" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.Interaction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">Interaction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.Interaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="content.html#pyslet.qtiv2.content.BodyElement" title="pyslet.qtiv2.content.BodyElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.BodyElement</span></tt></a></p>
+<p>Interactions allow the candidate to interact with the item. Through an
+interaction, the candidate selects or constructs a response:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;interaction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;bodyElement.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;responseIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.InlineInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">InlineInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.InlineInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.InlineMixin</span></tt>, <a class="reference internal" href="#pyslet.qtiv2.interactions.Interaction" title="pyslet.qtiv2.interactions.Interaction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Interaction</span></tt></a></p>
+<p>Abstract class for interactions that appear inline.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.BlockInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">BlockInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.BlockInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.BlockMixin</span></tt>, <a class="reference internal" href="#pyslet.qtiv2.interactions.Interaction" title="pyslet.qtiv2.interactions.Interaction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Interaction</span></tt></a></p>
+<p>An interaction that behaves like a block in the content model. Most
+interactions are of this type:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;blockInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;prompt&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.Prompt">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">Prompt</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.Prompt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="content.html#pyslet.qtiv2.content.BodyElement" title="pyslet.qtiv2.content.BodyElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.BodyElement</span></tt></a></p>
+<p>The prompt used in block interactions</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;prompt.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;inlineStatic.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.Choice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">Choice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.Choice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="content.html#pyslet.qtiv2.content.BodyElement" title="pyslet.qtiv2.content.BodyElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.BodyElement</span></tt></a></p>
+<p>Many of the interactions involve choosing one or more predefined choices</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;choice.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;bodyElement.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;identifier&quot; type=&quot;identifier.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;fixed&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;templateIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;showHide&quot; type=&quot;showHide.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.AssociableChoice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">AssociableChoice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.AssociableChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.Choice" title="pyslet.qtiv2.interactions.Choice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Choice</span></tt></a></p>
+<p>Other interactions involve associating pairs of predefined choices</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;associableChoice.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;choice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;matchGroup&quot; use=&quot;optional&quot;&gt;
+                &lt;xsd:simpleType&gt;
+                        &lt;xsd:list itemType=&quot;identifier.Type&quot;/&gt;
+                &lt;/xsd:simpleType&gt;
+        &lt;/xsd:attribute&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="simple-interactions">
+<h2>1.3.4.1. Simple Interactions<a class="headerlink" href="#simple-interactions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.ChoiceInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">ChoiceInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.ChoiceInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>The choice interaction presents a set of choices to the candidate. The
+candidate&#8217;s task is to select one or more of the choices, up to a maximum of
+maxChoices:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;choiceInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxChoices&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minChoices&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;choiceInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;simpleChoice&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.OrderInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">OrderInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.OrderInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>In an order interaction the candidate&#8217;s task is to reorder the choices,
+the order in which the choices are displayed initially is significant:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;orderInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minChoices&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxChoices&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;orientation&quot; type=&quot;orientation.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;orderInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;simpleChoice&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.SimpleChoice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">SimpleChoice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.SimpleChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="content.html#pyslet.qtiv2.content.FlowContainerMixin" title="pyslet.qtiv2.content.FlowContainerMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.FlowContainerMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv2.interactions.Choice" title="pyslet.qtiv2.interactions.Choice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Choice</span></tt></a></p>
+<p>A SimpleChoice is a choice that contains flow objects; it must not
+contain any nested interactions:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;simpleChoice.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;flowStatic.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.AssociateInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">AssociateInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.AssociateInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>An associate interaction is a blockInteraction that presents candidates
+with a number of choices and allows them to create associations between
+them:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;associateInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxAssociations&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minAssociations&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;associateInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;simpleAssociableChoice&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.MatchInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">MatchInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.MatchInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>A match interaction is a blockInteraction that presents candidates with
+two sets of choices and allows them to create associates between pairs of
+choices in the two sets, but not between pairs of choices in the same set:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;matchInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxAssociations&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minAssociations&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;matchInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:element ref=&quot;simpleMatchSet&quot; minOccurs=&quot;2&quot; maxOccurs=&quot;2&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.SimpleAssociableChoice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">SimpleAssociableChoice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.SimpleAssociableChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="content.html#pyslet.qtiv2.content.FlowContainerMixin" title="pyslet.qtiv2.content.FlowContainerMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.content.FlowContainerMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv2.interactions.AssociableChoice" title="pyslet.qtiv2.interactions.AssociableChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.AssociableChoice</span></tt></a></p>
+<p>associableChoice is a choice that contains flowStatic objects, it must
+not contain nested interactions:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;simpleAssociableChoice.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;associableChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;matchMax&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;matchMin&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;simpleAssociableChoice.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;flowStatic.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.SimpleMatchSet">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">SimpleMatchSet</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.SimpleMatchSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="core.html#pyslet.qtiv2.core.QTIElement" title="pyslet.qtiv2.core.QTIElement"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.core.QTIElement</span></tt></a></p>
+<p>Contains an ordered set of choices for the set</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;simpleMatchSet.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;simpleAssociableChoice&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.GapMatchInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapMatchInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.GapMatchInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>A gap match interaction is a blockInteraction that contains a number gaps
+that the candidate can fill from an associated set of choices:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapMatchInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;gapMatchInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:group ref=&quot;gapChoice.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                &lt;xsd:group ref=&quot;blockStatic.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.Gap">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">Gap</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.Gap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.InlineMixin</span></tt>, <a class="reference internal" href="#pyslet.qtiv2.interactions.AssociableChoice" title="pyslet.qtiv2.interactions.AssociableChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.AssociableChoice</span></tt></a></p>
+<p>A gap is an inline element that must only appear within a gapMatchInteraction</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gap.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;associableChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;required&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.GapChoice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapChoice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.GapChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.AssociableChoice" title="pyslet.qtiv2.interactions.AssociableChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.AssociableChoice</span></tt></a></p>
+<p>The choices that are used to fill the gaps in a gapMatchInteraction are
+either simple runs of text or single image objects, both derived from
+gapChoice:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapChoice.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;associableChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;matchMax&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;matchMin&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.GapText">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapText</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.GapText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.GapChoice" title="pyslet.qtiv2.interactions.GapChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.GapChoice</span></tt></a></p>
+<p>A simple run of text to be inserted into a gap by the user, may be
+subject to variable value substitution with printedVariable:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;gapText.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;printedVariable&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.GapImg">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapImg</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.GapImg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.GapChoice" title="pyslet.qtiv2.interactions.GapChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.GapChoice</span></tt></a></p>
+<p>A gap image contains a single image object to be inserted into a gap by
+the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapImg.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;gapChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;objectLabel&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;gapImg.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;object&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="text-based-interactions">
+<h2>1.3.4.2. Text-based Interactions<a class="headerlink" href="#text-based-interactions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.InlineChoiceInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">InlineChoiceInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.InlineChoiceInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.InlineInteraction" title="pyslet.qtiv2.interactions.InlineInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.InlineInteraction</span></tt></a></p>
+<p>An inline choice is an inlineInteraction that presents the user with a
+set of choices, each of which is a simple piece of text:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;inlineChoiceInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;inlineInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;shuffle&quot; type=&quot;boolean.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;required&quot; type=&quot;boolean.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;inlineChoiceInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;inlineChoice&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.InlineChoice">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">InlineChoice</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.InlineChoice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.Choice" title="pyslet.qtiv2.interactions.Choice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Choice</span></tt></a></p>
+<p>A simple run of text to be displayed to the user, may be subject to
+variable value substitution with printedVariable:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;inlineChoice.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;printedVariable&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.StringInteractionMixin">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">StringInteractionMixin</tt><a class="headerlink" href="#pyslet.qtiv2.interactions.StringInteractionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract mix-in class for interactions based on free-text input.  String
+interactions can be bound to numeric response variables, instead of strings,
+if desired:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;stringInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attribute name=&quot;base&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;stringIdentifier&quot; type=&quot;identifier.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;expectedLength&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;patternMask&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;placeholderText&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.TextEntryInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">TextEntryInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.TextEntryInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.StringInteractionMixin" title="pyslet.qtiv2.interactions.StringInteractionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.StringInteractionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv2.interactions.InlineInteraction" title="pyslet.qtiv2.interactions.InlineInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.InlineInteraction</span></tt></a></p>
+<p>A textEntry interaction is an inlineInteraction that obtains a simple
+piece of text from the candidate.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.TextFormat">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">TextFormat</tt><a class="headerlink" href="#pyslet.qtiv2.interactions.TextFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.xsdatatypes20041028.Enumeration</span></tt></a></p>
+<p>Used to control the format of the text entered by the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;textFormat.Type&quot;&gt;
+        &lt;xsd:restriction base=&quot;xsd:NMTOKEN&quot;&gt;
+                &lt;xsd:enumeration value=&quot;plain&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;preFormatted&quot;/&gt;
+                &lt;xsd:enumeration value=&quot;xhtml&quot;/&gt;
+        &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
+</div>
+<p>Defines constants for the above formats.  Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TextFormat</span><span class="o">.</span><span class="n">plain</span>
+</pre></div>
+</div>
+<p>Note that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TextFormat</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">==</span> <span class="n">TextFormat</span><span class="o">.</span><span class="n">plain</span>
+</pre></div>
+</div>
+<p>For more methods see <a class="reference internal" href="../xsdatatypes20041028.html#pyslet.xsdatatypes20041028.Enumeration" title="pyslet.xsdatatypes20041028.Enumeration"><tt class="xref py py-class docutils literal"><span class="pre">Enumeration</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.ExtendedTextInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">ExtendedTextInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.ExtendedTextInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.StringInteractionMixin" title="pyslet.qtiv2.interactions.StringInteractionMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.StringInteractionMixin</span></tt></a>, <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>An extended text interaction is a blockInteraction that allows the
+candidate to enter an extended amount of text:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;extendedTextInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attributeGroup ref=&quot;stringInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxStrings&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minStrings&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;expectedLines&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+        &lt;xsd:attribute name=&quot;format&quot; type=&quot;textFormat.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.HottextInteraction">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">HottextInteraction</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.HottextInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.BlockInteraction" title="pyslet.qtiv2.interactions.BlockInteraction"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.BlockInteraction</span></tt></a></p>
+<p>The hottext interaction presents a set of choices to the candidate
+represented as selectable runs of text embedded within a surrounding
+context, such as a simple passage of text:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;hottextInteraction.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;blockInteraction.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;maxChoices&quot; type=&quot;integer.Type&quot; use=&quot;required&quot;/&gt;
+        &lt;xsd:attribute name=&quot;minChoices&quot; type=&quot;integer.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;hottextInteraction.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;blockInteraction.ContentGroup&quot;/&gt;
+                &lt;xsd:group ref=&quot;blockStatic.ElementGroup&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.qtiv2.interactions.Hottext">
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">Hottext</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.qtiv2.interactions.Hottext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.html40_19991224.FlowMixin</span></tt>, <a class="reference internal" href="#pyslet.qtiv2.interactions.Choice" title="pyslet.qtiv2.interactions.Choice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.Choice</span></tt></a></p>
+<p>A hottext area is used within the content of an hottextInteraction to
+provide the individual choices:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:group name=&quot;hottext.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:group ref=&quot;inlineStatic.ElementGroup&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="graphical-interactions">
+<h2>1.3.4.3. Graphical Interactions<a class="headerlink" href="#graphical-interactions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapImg</tt><big>(</big><em>parent</em><big>)</big></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.GapChoice" title="pyslet.qtiv2.interactions.GapChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.GapChoice</span></tt></a></p>
+<p>A gap image contains a single image object to be inserted into a gap by
+the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapImg.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;gapChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;objectLabel&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;gapImg.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;object&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapImg</tt><big>(</big><em>parent</em><big>)</big></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.GapChoice" title="pyslet.qtiv2.interactions.GapChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.GapChoice</span></tt></a></p>
+<p>A gap image contains a single image object to be inserted into a gap by
+the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapImg.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;gapChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;objectLabel&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;gapImg.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;object&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descclassname">pyslet.qtiv2.interactions.</tt><tt class="descname">GapImg</tt><big>(</big><em>parent</em><big>)</big></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.qtiv2.interactions.GapChoice" title="pyslet.qtiv2.interactions.GapChoice"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.qtiv2.interactions.GapChoice</span></tt></a></p>
+<p>A gap image contains a single image object to be inserted into a gap by
+the candidate:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:attributeGroup name=&quot;gapImg.AttrGroup&quot;&gt;
+        &lt;xsd:attributeGroup ref=&quot;gapChoice.AttrGroup&quot;/&gt;
+        &lt;xsd:attribute name=&quot;objectLabel&quot; type=&quot;string.Type&quot; use=&quot;optional&quot;/&gt;
+&lt;/xsd:attributeGroup&gt;
+
+&lt;xsd:group name=&quot;gapImg.ContentGroup&quot;&gt;
+        &lt;xsd:sequence&gt;
+                &lt;xsd:element ref=&quot;object&quot; minOccurs=&quot;1&quot; maxOccurs=&quot;1&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+&lt;/xsd:group&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3.4. Interactions</a><ul>
+<li><a class="reference internal" href="#simple-interactions">1.3.4.1. Simple Interactions</a></li>
+<li><a class="reference internal" href="#text-based-interactions">1.3.4.2. Text-based Interactions</a></li>
+<li><a class="reference internal" href="#graphical-interactions">1.3.4.3. Graphical Interactions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="content.html"
+                        title="previous chapter">1.3.3. Content Model</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="variables.html"
+                        title="next chapter">1.3.5. Item Variables</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/qtiv2/interactions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="variables.html" title="1.3.5. Item Variables"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="content.html" title="1.3.3. Content Model"
+             >previous</a> |</li>
+        <li><a href="../index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+          <li><a href="../ims.html" >1. IMS Global Learning Consortium Specifications</a> &raquo;</li>
+          <li><a href="../imsqtiv2p1.html" >1.3. IMS Question and Test Interoperability (version 2.1)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

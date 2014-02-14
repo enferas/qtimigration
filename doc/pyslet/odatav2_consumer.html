@@ -1,0 +1,609 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140214 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140214',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140214 documentation" href="index.html" />
+    <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
+    <link rel="next" title="2.1.2. OData Providers" href="odatav2_provider.html" />
+    <link rel="prev" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_provider.html" title="2.1.2. OData Providers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="data-consumers">
+<h1>2.1.1. Data Consumers<a class="headerlink" href="#data-consumers" title="Permalink to this headline">¶</a></h1>
+<p>Warning: the OData client doesn&#8217;t support certificate validation when
+accessing servers through https URLs.  This feature is coming soon...</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2>2.1.1.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start with a simple illustration of how to consume data using the
+DAL API by walking through the use of the OData client.</p>
+<p>The client implementation uses Python&#8217;s logging module to provide
+logging, when learning about the client it may help to turn logging up
+to &#8220;INFO&#8221; as it makes it clearer what the client is doing.  &#8220;DEBUG&#8221;
+would show exactly what is passing over the wire.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create a new client simply instantiate a Client object.  You can pass
+the URL of the service root you wish to connect to directly to the
+constructor which will then call the service to download the list of
+feeds and the metadata document from which it will set the
+<tt class="xref py py-attr docutils literal"><span class="pre">Client.model</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyslet.odata2.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">Client</span><span class="p">(</span><span class="s">&quot;http://services.odata.org/V2/Northwind/Northwind.svc/&quot;</span><span class="p">)</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/ HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/$metadata HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>The <tt class="xref py py-attr docutils literal"><span class="pre">Client.feeds</span></tt> attribute is a dictionary mapping the
+exposed feeds (by name) onto <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a>
+instances.  This makes it easy to open the feeds as EDM collections.  In
+your code you&#8217;d typically use the with statement when opening the
+collection but for clarity we&#8217;ll continue on the python command line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;Products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span> <span class="k">print</span> <span class="n">p</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">1</span>
+<span class="go">2</span>
+<span class="go">3</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">20</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">21</span>
+<span class="go">22</span>
+<span class="go">23</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">76</span>
+<span class="go">77</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Note that products behaves like a dictionary, iterating through it
+iterates through the keys in the dictionary.  In this case these are the
+keys of the entities in the collection of products.  Notice that the
+client logs several requests to the server interspersed with the printed
+output.  Subsequent requests use $skiptoken because the server is
+limiting the maximum page size.  These calls are made as you iterate
+through the collection allowing you to iterate through very large
+collections.</p>
+<p>The keys alone are of limited interest, let&#8217;s try a similar loop but this
+time we&#8217;ll print the product names as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">1 Chai</span>
+<span class="go">2 Chang</span>
+<span class="go">3 Aniseed Syrup</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">20 Sir Rodney&#39;s Marmalade</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">21 Sir Rodney&#39;s Scones</span>
+<span class="go">22 Gustaf&#39;s Knäckebröd</span>
+<span class="go">23 Tunnbröd</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">76 Lakkalikööri</span>
+<span class="go">77 Original Frankfurter grüne Soße</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Sir Rodney&#8217;s Scones sound interesting, we can grab an individual record
+in the usual way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">scones</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">ProductID 21</span>
+<span class="go">ProductName Sir Rodney&#39;s Scones</span>
+<span class="go">SupplierID 8</span>
+<span class="go">CategoryID 3</span>
+<span class="go">QuantityPerUnit 24 pkgs. x 4 pieces</span>
+<span class="go">UnitPrice 10.0000</span>
+<span class="go">UnitsInStock 3</span>
+<span class="go">UnitsOnOrder 40</span>
+<span class="go">ReorderLevel 5</span>
+<span class="go">Discontinued False</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Well, I&#8217;ve simply got to have some of these, let&#8217;s use one of the navigation
+properties to load information about the supplier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)/Supplier HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">supplier</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">SupplierID 8</span>
+<span class="go">CompanyName Specialty Biscuits, Ltd.</span>
+<span class="go">ContactName Peter Wilson</span>
+<span class="go">ContactTitle Sales Representative</span>
+<span class="go">Address 29 King&#39;s Way</span>
+<span class="go">City Manchester</span>
+<span class="go">Region None</span>
+<span class="go">PostalCode M14 GSD</span>
+<span class="go">Country UK</span>
+<span class="go">Phone (161) 555-4448</span>
+<span class="go">Fax None</span>
+<span class="go">HomePage None</span>
+</pre></div>
+</div>
+<p>Attempting to load a non existent entity results in a KeyError of
+course:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">211</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(211) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 404</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;/Library/Python/2.7/site-packages/pyslet/odata2/client.py&quot;</span>, line <span class="m">165</span>, in <span class="n">__getitem__</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gr">KeyError</span>: <span class="n">211</span>
+</pre></div>
+</div>
+<p>Finally, when we&#8217;re done, it is a good idea to close the open
+collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-data-access-layer-in-depth">
+<h2>2.1.1.2. The Data Access Layer in Depth<a class="headerlink" href="#the-data-access-layer-in-depth" title="Permalink to this headline">¶</a></h2>
+<p>In the introduction we created an OData Client object using a URL, but
+in general the way you connect to a data service will vary depending on
+the implementation.  The Client class itself isn&#8217;t actually part of the
+DAL API itself.</p>
+<p>The API starts with a model of the <em>data service</em>.  The model is
+typically parsed from an XML file. For the OData client the XML file is
+obtained from the service&#8217;s $metadata URL.  Here&#8217;s an extract from the
+Northwind $metadata file showing the definition of the data service,
+I&#8217;ve removed the XML namespace definitions for brevity:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+&lt;edmx:Edmx Version=&quot;1.0&quot;&gt;
+        &lt;edmx:DataServices m:DataServiceVersion=&quot;1.0&quot;&gt;
+        &lt;Schema Namespace=&quot;NorthwindModel&quot;&gt;
+                &lt;EntityType Name=&quot;Category&quot;&gt;
+                        &lt;!-- rest of the definitions go here... --&gt;
+</pre></div>
+</div>
+<p>Each element is represented by an object in Pyslet, the starting point
+for the API is the <tt class="xref py py-class docutils literal"><span class="pre">DataServices</span></tt> object.
+A DataServices object can contain multiple
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Schema" title="pyslet.odata2.csdl.Schema"><tt class="xref py py-class docutils literal"><span class="pre">Schema</span></tt></a> elements, which in turn can
+contain multiple <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityContainer" title="pyslet.odata2.csdl.EntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">EntityContainer</span></tt></a>
+elements which in turn can contain multiple
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a> elements.  The following
+diagram illustrates these relationships and compares them with
+approximate equivalent concepts in a typical SQL-scenario.</p>
+<img alt="_images/dataservices.png" src="_images/dataservices.png" />
+<p>In the OData client example we used a short-cut to get to the EntitySet
+objects we were interested in by using the feeds property of the client
+itself.  However, we could have used the model directly as follows,
+continuing with the same session:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span>
+<span class="go">&lt;pyslet.odata2.metadata.Edmx object at 0x10140a9d0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span>
+<span class="go">&lt;pyslet.odata2.metadata.DataServices object at 0x107fdb990&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="o">.</span><span class="n">Schema</span><span class="p">:</span> <span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">...</span>
+<span class="go">NorthwindModel</span>
+<span class="go">ODataWeb.Northwind.Model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;ODataWeb.Northwind.Model&#39;</span><span class="p">]</span>
+<span class="go">&lt;pyslet.odata2.csdl.Schema object at 0x10800cd90&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;ODataWeb.Northwind.Model&#39;</span><span class="p">][</span><span class="s">&#39;NorthwindEntities&#39;</span><span class="p">]</span>
+<span class="go">&lt;pyslet.odata2.metadata.EntityContainer object at 0x10800cdd0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;ODataWeb.Northwind.Model&#39;</span><span class="p">][</span><span class="s">&#39;NorthwindEntities&#39;</span><span class="p">][</span><span class="s">&#39;Products&#39;</span><span class="p">]</span>
+<span class="go">&lt;pyslet.odata2.metadata.EntitySet object at 0x10800f150&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;Products&#39;</span><span class="p">]</span>
+<span class="go">&lt;pyslet.odata2.metadata.EntitySet object at 0x10800f150&gt;</span>
+</pre></div>
+</div>
+<p>As you can see, the same EntitySet object can be obtained by looking it
+up in the parent container which behaves like a dictionary, this in turn
+can be looked up in the parent Schema which in turn can be looked up in
+the DataServices enclosing object.  Elements of the model also support
+deep references using dot-concatenation of names which makes the code
+easier to read:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;ODataWeb.Northwind.Model&#39;</span><span class="p">][</span><span class="s">&#39;NorthwindEntities&#39;</span><span class="p">][</span><span class="s">&#39;Products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetFQName</span><span class="p">()</span>
+<span class="go">ODataWeb.Northwind.Model.NorthwindEntities.Products</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;ODataWeb.Northwind.Model.NorthwindEntities.Products&#39;</span><span class="p">]</span>
+<span class="go">&lt;pyslet.odata2.metadata.EntitySet object at 0x10800f150&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="entity-sets">
+<h3>2.1.1.2.1. Entity Sets<a class="headerlink" href="#entity-sets" title="Permalink to this headline">¶</a></h3>
+<p>The following attributes are useful for consumers of the API (and should
+be treated as read only)</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.name" title="pyslet.odata2.csdl.EntitySet.name"><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></a></dt>
+<dd>The name of the entity set</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.entityTypeName" title="pyslet.odata2.csdl.EntitySet.entityTypeName"><tt class="xref py py-attr docutils literal"><span class="pre">entityTypeName</span></tt></a></dt>
+<dd>The name of the entity set&#8217;s EntityType</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.entityType" title="pyslet.odata2.csdl.EntitySet.entityType"><tt class="xref py py-attr docutils literal"><span class="pre">entityType</span></tt></a></dt>
+<dd>The :py:class:~pyslet.odata2.csdl.EntityType` object that defines
+the properties for entities in this set.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.keys" title="pyslet.odata2.csdl.EntitySet.keys"><tt class="xref py py-attr docutils literal"><span class="pre">keys</span></tt></a></dt>
+<dd><p class="first">A list of the names of the keys for this EntitySet.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">products</span><span class="o">.</span><span class="n">keys</span>
+<span class="go">[u&#39;ProductID&#39;]</span>
+</pre></div>
+</div>
+<p class="last">For entity types with compound keys this list will contain multiple
+items of course.</p>
+</dd>
+</dl>
+<p>The following methods are useful for consumers of the API.</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.GetFQName" title="pyslet.odata2.csdl.EntitySet.GetFQName"><tt class="xref py py-meth docutils literal"><span class="pre">GetFQName()</span></tt></a></dt>
+<dd>Returns the fully qualified name of the entity set, suitable for
+looking up the entity set in the enclosing DataServices object.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.GetLocation" title="pyslet.odata2.csdl.EntitySet.GetLocation"><tt class="xref py py-meth docutils literal"><span class="pre">GetLocation()</span></tt></a></dt>
+<dd><p class="first">Returns a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> object that represents
+this entity set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">products</span><span class="o">.</span><span class="n">GetLocation</span><span class="p">()</span>
+<span class="go">http://services.odata.org/V2/Northwind/Northwind.svc/Products</span>
+</pre></div>
+</div>
+<p class="last">(If there is no base URL available this will be a relative URI.)</p>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.OpenCollection" title="pyslet.odata2.csdl.EntitySet.OpenCollection"><tt class="xref py py-meth docutils literal"><span class="pre">OpenCollection()</span></tt></a></dt>
+<dd>Returns a <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EntityCollection</span></tt></a> object
+that can be used to access the entities in the set.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.NavigationTarget" title="pyslet.odata2.csdl.EntitySet.NavigationTarget"><tt class="xref py py-meth docutils literal"><span class="pre">NavigationTarget()</span></tt></a></dt>
+<dd>Returns the target entity set of a named navigation property.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.NavigationMultiplicity" title="pyslet.odata2.csdl.EntitySet.NavigationMultiplicity"><tt class="xref py py-meth docutils literal"><span class="pre">NavigationMultiplicity()</span></tt></a></dt>
+<dd><p class="first">Returns a tuple of multiplicity constants for the named navigation
+property.  Constants for these values are defined in
+<tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Multiplicity</span></tt>, for example:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyslet.odata2.csdl</span> <span class="kn">import</span> <span class="n">Multiplicity</span><span class="p">,</span> <span class="n">EncodeMultiplicity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">ZeroToOne</span><span class="p">,</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">One</span><span class="p">,</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">Many</span>
+<span class="go">0 1 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">NavigationMultiplicity</span><span class="p">(</span><span class="s">&#39;Supplier&#39;</span><span class="p">)</span>
+<span class="go">(2, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">EncodeMultiplicity</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">products</span><span class="o">.</span><span class="n">NavigationMultiplicity</span><span class="p">(</span><span class="s">&#39;Supplier&#39;</span><span class="p">))</span>
+<span class="go">[&#39;*&#39;, &#39;0..1&#39;]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.IsEntityCollection" title="pyslet.odata2.csdl.EntitySet.IsEntityCollection"><tt class="xref py py-meth docutils literal"><span class="pre">IsEntityCollection()</span></tt></a></dt>
+<dd>Returns True if the named navigation property points to a collection
+of entities or a single entity.  In Pyslet, you can treat all
+navigation properties as collections.  In the above example the
+collection of Supplier entities obtained by following the &#8216;Supplier&#8217;
+navigation property of a Product entity will have at most 1 member.</dd>
+</dl>
+</div>
+<div class="section" id="entity-collections">
+<h3>2.1.1.2.2. Entity Collections<a class="headerlink" href="#entity-collections" title="Permalink to this headline">¶</a></h3>
+<p>To continue with database analogy above, if EntitySets are like SQL
+Tables EntityCollections are somewhat like the database cursors that you
+use to actually read data - the difference is that EntityCollections can
+only read entities from a single EntitySet.</p>
+<p>An <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">EntityCollection</span></tt></a> may consume physical
+resources (like a database connection) and so must be closed with its
+<tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt> method when you&#8217;re done.
+They support the context manager protocol to make this easier so you can
+use them in with statements to make clean-up easier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;Products&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">products</span><span class="p">:</span>
+        <span class="k">if</span> <span class="mi">42</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;Found it!&quot;</span>
+</pre></div>
+</div>
+<p>The close method is called automatically when the with statement
+exits.</p>
+<p>Entity collections also behave like a python dictionary of
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> instances keyed on a value
+representing the Entity&#8217;s key property or properties.  The keys are
+either single values (as in the above code example) or tuples in the
+case of compound keys. The order of the values in the tuple is taken
+from the order of the PropertyRef definitions in the model.</p>
+<p>There are two ways to obtain an EntityCollection object.  You can open
+an entity set directly or you can open a collection by navigating from a
+specific entity through a named navigation property.  Although dictionary-like
+there are some differences with true dictionaries.</p>
+<p>When you have opened a collection from the base entity set the following
+rules apply:</p>
+<dl class="docutils">
+<dt>collection[key]</dt>
+<dd>Returns a new <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> instance by
+looking up the <em>key</em> in the collection.  As a result, subsequent
+calls will return a different object, but with the same key!</dd>
+<dt>collection[key]=newEntity</dt>
+<dd>For an existing entity this is essentially a no-operation.  This
+form of assignment cannot be used to create a new entity in the
+collection because the act of inserting the entity may alter its key
+(for example, when the entity set represents a database table with
+an auto-generated primary key).  See below for information on how
+to create and update entities.</dd>
+<dt>del collection[key]</dt>
+<dd>In contrast, del will remove an entity from the collection completely.</dd>
+</dl>
+<p>When an EntityCollection represents a collection of entities obtained by
+navigation then these rules are updated as follows:</p>
+<dl class="docutils">
+<dt>collection[key]</dt>
+<dd>Normally returns a new <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a>
+instance by looking up the <em>key</em> in the collection but when the
+navigation property has been expanded it will return a cached Entity
+(so subsequent calls will return the same object without looking
+up the key in the data source again).</dd>
+<dt>collection[key]=existingEntity</dt>
+<dd>Provided that <em>key</em> is the key of <em>existingEntity</em> this will add an
+existing entity to this collection, effectively creating a link from
+the entity you were navigating from to an existing entity.</dd>
+<dt>del collection[key]</dt>
+<dd>Removes the entity with <em>key</em> from this collection.  The entity is
+not deleted from its EntitySet, is merely unlinked from the entity
+you were navigating from.</dd>
+</dl>
+<p>The following attribute is useful for consumers of the API (and should
+be treated as read only)</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.entitySet" title="pyslet.odata2.csdl.EntityCollection.entitySet"><tt class="xref py py-attr docutils literal"><span class="pre">entitySet</span></tt></a></dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a> of this collection. In
+the case of a collection opened through navigation this is the base
+entity set.</dd>
+</dl>
+<p>In addition to all the usual dictionary methods like <em>len</em>, <em>itervalues</em>
+and so on, the following methods are useful for consumers of the API:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.GetLocation" title="pyslet.odata2.csdl.EntityCollection.GetLocation"><tt class="xref py py-meth docutils literal"><span class="pre">GetLocation()</span></tt></a></dt>
+<dd>Returns a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> object that represents
+this entity collection.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.GetTitle" title="pyslet.odata2.csdl.EntityCollection.GetTitle"><tt class="xref py py-meth docutils literal"><span class="pre">GetTitle()</span></tt></a></dt>
+<dd>Returns a user-friendly title to represent this entity collection.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.NewEntity" title="pyslet.odata2.csdl.EntityCollection.NewEntity"><tt class="xref py py-meth docutils literal"><span class="pre">NewEntity()</span></tt></a></dt>
+<dd>Creates a new entity suitable for inserting into this collection.
+The entity does not exist until it is inserted with InsertEntity.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.CopyEntity" title="pyslet.odata2.csdl.EntityCollection.CopyEntity"><tt class="xref py py-meth docutils literal"><span class="pre">CopyEntity()</span></tt></a></dt>
+<dd>Creates a new entity by copying all non-key properties from another
+entity. The entity does not exist until it is inserted with
+InsertEntity.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.InsertEntity" title="pyslet.odata2.csdl.EntityCollection.InsertEntity"><tt class="xref py py-meth docutils literal"><span class="pre">InsertEntity()</span></tt></a></dt>
+<dd><p class="first">Inserts an entity previously created by NewEntity or CopyEntity.
+When inserting an entity any active filter is ignored.</p>
+<p>Warning: an active filter may result in a paradoxical KeyError:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.odata2.core</span> <span class="kn">as</span> <span class="nn">core</span>
+<span class="k">with</span> <span class="n">people</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="s">&quot;startswith(Name,&#39;D&#39;)&quot;</span><span class="p">))</span>
+        <span class="n">newEntity</span><span class="o">=</span><span class="n">collection</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+        <span class="n">newEntity</span><span class="p">[</span><span class="s">&#39;Key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">newEntity</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="s">u&quot;Steve&quot;</span><span class="p">)</span>
+        <span class="n">collection</span><span class="o">.</span><span class="n">InsertEntity</span><span class="p">(</span><span class="n">newEntity</span><span class="p">)</span>
+        <span class="c"># newEntity now exists in the base collection but...</span>
+        <span class="n">e1</span><span class="o">=</span><span class="n">collection</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c"># ...raises KeyError as newEntity did not match the filter!</span>
+</pre></div>
+</div>
+<p class="last">It is recommended that collections used to insert entities are not
+filtered.</p>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.UpdateEntity" title="pyslet.odata2.csdl.EntityCollection.UpdateEntity"><tt class="xref py py-meth docutils literal"><span class="pre">UpdateEntity()</span></tt></a></dt>
+<dd>Updates an existing entity following changes to the Entity&#8217;s values.
+You can&#8217;t update the values of key properties.  To change the key
+you will need to create a new entity with CopyEntity, insert the new
+entity and then remove the old one.  Like InsertEntity, the current
+filter is ignored.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Top" title="pyslet.odata2.csdl.EntityCollection.Top"><tt class="xref py py-meth docutils literal"><span class="pre">Top()</span></tt></a></dt>
+<dd>Sets the top value for this collection, equivalent to the $top
+option in OData. This value only affect iterpage.  See <a class="reference internal" href="#paging">Paging</a> for
+more information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Skip" title="pyslet.odata2.csdl.EntityCollection.Skip"><tt class="xref py py-meth docutils literal"><span class="pre">Skip()</span></tt></a></dt>
+<dd>Sets the skip value for this collection, equivalent to the $skip
+option in OData. This value only affect iterpage.  See <a class="reference internal" href="#paging">Paging</a> for
+more information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a></dt>
+<dd>Iterates through a subset of the entities returned by itervalues
+defined by the top and skip values.  See <a class="reference internal" href="#paging">Paging</a> for more
+information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Filter" title="pyslet.odata2.csdl.EntityCollection.Filter"><tt class="xref py py-meth docutils literal"><span class="pre">Filter()</span></tt></a></dt>
+<dd>Sets the filter for this collection, equivalent to the $filter
+option in OData. Once set this value effects all future entities
+returned from the collection (with the exception of NewEntity).  See
+<a class="reference internal" href="#filtering-collections">Filtering Collections</a> for more information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.OrderBy" title="pyslet.odata2.csdl.EntityCollection.OrderBy"><tt class="xref py py-meth docutils literal"><span class="pre">OrderBy()</span></tt></a></dt>
+<dd>Sets the filter for this collection, equivalent to the $orderby
+option in OData. Once set this value effects all future iterations
+through the collection.  See <a href="#id1"><span class="problematic" id="id2">`Sorting Collections`_</span></a> for more
+information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Expand" title="pyslet.odata2.csdl.EntityCollection.Expand"><tt class="xref py py-meth docutils literal"><span class="pre">Expand()</span></tt></a></dt>
+<dd>Sets expand and select options for this collection, equivalent to
+the $expand and $select system query options in OData.  Once set
+these values effect all future entities returned from the collection
+(with the exception of NewEntity).  See <a class="reference internal" href="#expand-and-select">Expand and Select</a> for
+more information.</dd>
+</dl>
+<div class="section" id="paging">
+<h4>2.1.1.2.2.1. Paging<a class="headerlink" href="#paging" title="Permalink to this headline">¶</a></h4>
+<p>The $top/$skip options in OData are a useful way to restrict the amount of
+data that an OData server returns but, in most cases, the server will impose
+a reasonable maximum on each request using server-enforced paging.  As a result,
+you won&#8217;t need to use the paging controls in a collection very often.</p>
+<p>The collection dictionary alway behaves as if it contains all entities
+so the value returned by <em>len</em> doesn&#8217;t change if you set top and skip
+values and nor does the set of entities returned by itervalues and
+similar methods.</p>
+<p>To iterate through the entities in the selected page you must use the
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a> method.</p>
+</div>
+<div class="section" id="filtering-collections">
+<h4>2.1.1.2.2.2. Filtering Collections<a class="headerlink" href="#filtering-collections" title="Permalink to this headline">¶</a></h4>
+<p>Documentation coming soon...</p>
+</div>
+<div class="section" id="ordering-collections">
+<h4>2.1.1.2.2.3. Ordering Collections<a class="headerlink" href="#ordering-collections" title="Permalink to this headline">¶</a></h4>
+<p>Documentation coming soon...</p>
+</div>
+<div class="section" id="expand-and-select">
+<h4>2.1.1.2.2.4. Expand and Select<a class="headerlink" href="#expand-and-select" title="Permalink to this headline">¶</a></h4>
+<p>Documentation coming soon...</p>
+</div>
+</div>
+<div class="section" id="entity-objects">
+<h3>2.1.1.2.3. Entity Objects<a class="headerlink" href="#entity-objects" title="Permalink to this headline">¶</a></h3>
+<p>Documentation coming soon...</p>
+<div class="section" id="working-with-dates">
+<h4>2.1.1.2.3.1. Working with Dates<a class="headerlink" href="#working-with-dates" title="Permalink to this headline">¶</a></h4>
+<p>Documentation coming soon...</p>
+</div>
+<div class="section" id="navigation-deferredvalues">
+<h4>2.1.1.2.3.2. Navigation: DeferredValues<a class="headerlink" href="#navigation-deferredvalues" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1.1. Data Consumers</a><ul>
+<li><a class="reference internal" href="#introduction">2.1.1.1. Introduction</a></li>
+<li><a class="reference internal" href="#the-data-access-layer-in-depth">2.1.1.2. The Data Access Layer in Depth</a><ul>
+<li><a class="reference internal" href="#entity-sets">2.1.1.2.1. Entity Sets</a></li>
+<li><a class="reference internal" href="#entity-collections">2.1.1.2.2. Entity Collections</a><ul>
+<li><a class="reference internal" href="#paging">2.1.1.2.2.1. Paging</a></li>
+<li><a class="reference internal" href="#filtering-collections">2.1.1.2.2.2. Filtering Collections</a></li>
+<li><a class="reference internal" href="#ordering-collections">2.1.1.2.2.3. Ordering Collections</a></li>
+<li><a class="reference internal" href="#expand-and-select">2.1.1.2.2.4. Expand and Select</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#entity-objects">2.1.1.2.3. Entity Objects</a><ul>
+<li><a class="reference internal" href="#working-with-dates">2.1.1.2.3.1. Working with Dates</a></li>
+<li><a class="reference internal" href="#navigation-deferredvalues">2.1.1.2.3.2. Navigation: DeferredValues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="odatav2.html"
+                        title="previous chapter">2.1. The Open Data Protocol (OData)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="odatav2_provider.html"
+                        title="next chapter">2.1.2. OData Providers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/odatav2_consumer.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_provider.html" title="2.1.2. OData Providers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

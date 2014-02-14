@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1. The Open Data Protocol (OData) &mdash; Pyslet 0.4.20140212 documentation</title>
+    <title>2.1. The Open Data Protocol (OData) &mdash; Pyslet 0.4.20140214 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140212',
+        VERSION:     '0.4.20140214',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140214 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
-    <link rel="next" title="2.1.1. Entity Data Model (EDM)" href="odatav2_csdl.html" />
+    <link rel="next" title="2.1.1. Data Consumers" href="odatav2_consumer.html" />
     <link rel="prev" title="2. Supporting Standards" href="general.html" /> 
   </head>
   <body>
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_csdl.html" title="2.1.1. Entity Data Model (EDM)"
+          <a href="odatav2_consumer.html" title="2.1.1. Data Consumers"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="general.html" title="2. Supporting Standards"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -58,102 +58,48 @@
 <h1>2.1. The Open Data Protocol (OData)<a class="headerlink" href="#the-open-data-protocol-odata" title="Permalink to this headline">¶</a></h1>
 <p>This sub-package defines functions and classes for working with OData, a
 data access protocol based on Atom and Atom Pub: <a class="reference external" href="http://www.odata.org/">http://www.odata.org/</a></p>
-<p>This sub-package only deals with version 2 of the protocol.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="odatav2_csdl.html">2.1.1. Entity Data Model (EDM)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_csdl.html#reference">2.1.1.1. Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="odatav2_client.html">2.1.2. OData Client</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_client.html#overview">2.1.2.1. Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_client.html#using-the-client">2.1.2.2. Using the Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_client.html#reference">2.1.2.3. Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_client.html#exceptions">2.1.2.4. Exceptions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="odatav2_sqlds.html">2.1.3. SQL Database-based Data Services</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="odatav2_sqlds.html#reference">2.1.3.1. Reference</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="background">
-<h2>2.1.4. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>This sub-package only deals with version 2 of the protocol <em>at the moment</em>.</p>
 <p>OData is not an essential part of supporting the Standards for Learning,
 Education and Training (SLET) that gives pyslet its name, though I have
 actively promoted its use in these communities.  As technical standards
 move towards using REST-ful web services it makes sense to converge
-around some common patterns for common use cases.  For example, resource
-discovery might well benefit from an approach based on the ideas of the
-semantic web and there has already been some activity and investigation
-in this direction.  However, many of the protocols now being worked on
-are much more like basic data-access layers spread over the web between
-two co-operating systems.  HTTP on its own is often good enough for
-these applications but when the data lends itself to tabular
-representations I think the OData standard is the best protocol
+around some common patterns for common use cases.  Many of the protocols
+now being worked on are much more like basic data-access layers spread
+over the web between two co-operating systems.  HTTP on its own is often
+good enough for these applications but when the data lends itself to
+tabular representations I think the OData standard is the best protocol
 available.</p>
 <p>The purpose of this group of modules is to make is easy to use the
-conventions of the OData protocol as a data-access layer (DAL) for
-python.  The basic API for the DAL is defined by the Entity Data Model
-(EDM) defined in <tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odatav2.csdl</span></tt>, which is extended by
-some core OData-specific features defined in
-<tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odatav2.core</span></tt>.  With these two modules it is possible to
-create derived classes that implement the API in a variety of different
-storage scenarios.  There are three implementations included in this
-package:</p>
-<ol class="arabic simple">
-<li>OData Client - an implementation of the DAL that makes calls over
-the web to an OData server.  Defined in the module
-<tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odatav2.client</span></tt>.</li>
-<li>In-memory data service - an implementation of the DAL that stores
-all entities and associations in python dictionaries.  Defined in
-the module <tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odatav2.memds</span></tt></li>
-<li>SQL data service - an implementation of the DAL that maps on to
-python&#8217;s database API.  Defined in the module
-<tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odatav2.sqlds</span></tt>.  In practice, the classes defined
-by this module will normally need to be sub-classed to deal with
-database-specific issues.  This can&#8217;t be helped, the DB API does a
-good job at dealing with most issues, such as variation in
-parameterization conventions and expected data types, but SQL
-connection parameters and the occasional different in the SQL syntax
-mean there is likely to be a small amount of work to do.  Don&#8217;t be
-put off, a full implementation for SQLite is provided and a quick
-look at the source code for that should give you courage to tackle
-any modifications necessary for your favourite database.  Using this
-DAL API is much easier than having to do these tweaks when they are
-distributed throughout your code in embedded SQL-statements.</li>
-</ol>
-<p>The idea behind the DAL is that these implementations can be used
-interchangeably, you can test your application using an in-memory or
-SQLite storage implementation to check it is working before pointing it
-at your OData server using the client implementation.  Of course, the
-reason I wrote the DAL this way was because I like OData as an
-interoperability protocol but I also needed a more flexible DAL for the
-QTI migration tool. This way of framing the API allowed me to &#8216;kill two
-birds with one stone&#8217;.</p>
-<p>The package also contains an OData server implementation which allows
-you to expose your DAL over the web directly (see
-<tt class="xref py py-mod docutils literal"><span class="pre">pyslet.odata2.server</span></tt>.  The server is compatible with any of
-the implementations so if you want to create an OData proxy by exposing
-an OData client you can.  Why would you want to do this?</p>
-<p>One of the big challenges for the OData protocol is web-security in the
-end user&#8217;s browser.   By supporting JSON over the wire OData sends out a
-clear signal that using it directly from a Javascript on a web page
-should be possible.  But in practice, this only works well for
-unauthenticated (and hence read-only) OData services.  If you want to
-write more exciting applications you leave yourself open to all manner
-of browser-based attacks that could expose your data to unauthorised bad
-guys.  To mitigate these risks browsers are increasingly locking down
-the browser to make it harder for cross-site exploits to happen, which
-is a good thing. The downside is that it makes it harder for your
-web-application to talk to an OData server unless they are both hosted
-on the same domain.  An OData proxy can be co-located with your
-application to overcome this problem.  A dumb proxy is probably best
-implemented by the web-server, rather than a full-blown web application
-but the classes defined in this package are a good starting point for
-writing a more intelligent proxy such as one that checks for a valid
-session with your application before proxying the request.</p>
+conventions of the OData protocol as a general purpose data-access layer
+(DAL) for Python applications.  To get started, look at the
+<a class="reference internal" href="odatav2_consumer.html"><em>Data Consumers</em></a> section which gives a high-level overview of the
+API with examples that use Microsoft&#8217;s Northwind data-service.</p>
+<p>If you are interested in writing an OData provider, or you simply want
+to use these classes to implement a data access layer for your own
+application then look in <a class="reference internal" href="odatav2_provider.html"><em>OData Providers</em></a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="odatav2_consumer.html">2.1.1. Data Consumers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_consumer.html#introduction">2.1.1.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_consumer.html#the-data-access-layer-in-depth">2.1.1.2. The Data Access Layer in Depth</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="odatav2_provider.html">2.1.2. OData Providers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_provider.html#writing-the-dal">2.1.2.1. Writing the DAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_provider.html#writing-the-server">2.1.2.2. Writing the Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_provider.html#advanced-topics">2.1.2.3. Advanced Topics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="odatav2_reference.html">2.1.3. OData Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_csdl.html">2.1.3.1. Entity Data Model (EDM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_core.html">2.1.3.2. OData Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_client.html">2.1.3.3. OData Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_memds.html">2.1.3.4. An In-Memory Data Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_sqlds.html">2.1.3.5. SQL Database-based Data Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_server.html">2.1.3.6. OData Server Reference</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
@@ -163,20 +109,12 @@ session with your application before proxying the request.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">2.1. The Open Data Protocol (OData)</a><ul>
-<li><a class="reference internal" href="#background">2.1.4. Background</a></li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
   <p class="topless"><a href="general.html"
                         title="previous chapter">2. Supporting Standards</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="odatav2_csdl.html"
-                        title="next chapter">2.1.1. Entity Data Model (EDM)</a></p>
+  <p class="topless"><a href="odatav2_consumer.html"
+                        title="next chapter">2.1.1. Data Consumers</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/odatav2.txt"
@@ -209,12 +147,12 @@ session with your application before proxying the request.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_csdl.html" title="2.1.1. Entity Data Model (EDM)"
+          <a href="odatav2_consumer.html" title="2.1.1. Data Consumers"
              >next</a> |</li>
         <li class="right" >
           <a href="general.html" title="2. Supporting Standards"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>

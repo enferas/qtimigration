@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.1. Entity Data Model (EDM) &mdash; Pyslet 0.4.20140212 documentation</title>
+    <title>2.1.3.1. Entity Data Model (EDM) &mdash; Pyslet 0.4.20140214 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140212',
+        VERSION:     '0.4.20140214',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140212 documentation" href="index.html" />
-    <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
-    <link rel="next" title="2.1.2. OData Client" href="odatav2_client.html" />
-    <link rel="prev" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" /> 
+    <link rel="top" title="Pyslet 0.4.20140214 documentation" href="index.html" />
+    <link rel="up" title="2.1.3. OData Reference" href="odatav2_reference.html" />
+    <link rel="next" title="2.1.3.2. OData Core Classes" href="odatav2_core.html" />
+    <link rel="prev" title="2.1.3. OData Reference" href="odatav2_reference.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,14 +39,15 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_client.html" title="2.1.2. OData Client"
+          <a href="odatav2_core.html" title="2.1.3.2. OData Core Classes"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
+          <a href="odatav2_reference.html" title="2.1.3. OData Reference"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
-          <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
+          <li><a href="odatav2_reference.html" accesskey="U">2.1.3. OData Reference</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -56,13 +57,13 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.odata2.csdl">
-<span id="entity-data-model-edm"></span><h1>2.1.1. Entity Data Model (EDM)<a class="headerlink" href="#module-pyslet.odata2.csdl" title="Permalink to this headline">¶</a></h1>
+<span id="entity-data-model-edm"></span><h1>2.1.3.1. Entity Data Model (EDM)<a class="headerlink" href="#module-pyslet.odata2.csdl" title="Permalink to this headline">¶</a></h1>
 <p>This module defines functions and classes for working with data based on
 Microsoft&#8217;s Entity Data Model (EDM) as documented by the Conceptual
 Schema Definition Language and associated file format:
 <a class="reference external" href="http://msdn.microsoft.com/en-us/library/dd541474.aspx">http://msdn.microsoft.com/en-us/library/dd541474.aspx</a></p>
 <div class="section" id="reference">
-<h2>2.1.1.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.3.1.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyslet.odata2.csdl.EDMValue">
 <em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDMValue</tt><big>(</big><em>pDef=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EDMValue" title="Permalink to this definition">¶</a></dt>
@@ -883,7 +884,7 @@ the collection of entities.</p>
 </dd></dl>
 
 <div class="section" id="elements">
-<h3>2.1.1.1.1. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.3.1.1.1. Elements<a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyslet.odata2.csdl.EntitySet">
 <em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EntitySet</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntitySet" title="Permalink to this definition">¶</a></dt>
@@ -1386,7 +1387,7 @@ in all schemas that are in scope.</p>
 
 </div>
 <div class="section" id="basic-data-types">
-<h3>2.1.1.1.2. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.3.1.1.2. Basic Data Types<a class="headerlink" href="#basic-data-types" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="pyslet.odata2.csdl.ValidateSimpleIdentifier">
 <tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">ValidateSimpleIdentifier</tt><big>(</big><em>identifier</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.ValidateSimpleIdentifier" title="Permalink to this definition">¶</a></dt>
@@ -1484,7 +1485,7 @@ value coerced to the best python value type for this type code.</p>
 
 </div>
 <div class="section" id="exceptions">
-<h3>2.1.1.1.3. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.3.1.1.3. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyslet.odata2.csdl.EDMError">
 <em class="property">class </em><tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDMError</tt><a class="headerlink" href="#pyslet.odata2.csdl.EDMError" title="Permalink to this definition">¶</a></dt>
@@ -1557,7 +1558,7 @@ principals (so can never be inserted).</p>
 
 </div>
 <div class="section" id="constants">
-<h3>2.1.1.1.4. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.3.1.1.4. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h3>
 <dl class="data">
 <dt id="pyslet.odata2.csdl.EDM_NAMESPACE">
 <tt class="descclassname">pyslet.odata2.csdl.</tt><tt class="descname">EDM_NAMESPACE</tt><em class="property"> = 'http://schemas.microsoft.com/ado/2009/11/edm'</em><a class="headerlink" href="#pyslet.odata2.csdl.EDM_NAMESPACE" title="Permalink to this definition">¶</a></dt>
@@ -1576,12 +1577,12 @@ principals (so can never be inserted).</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2.1.1. Entity Data Model (EDM)</a><ul>
-<li><a class="reference internal" href="#reference">2.1.1.1. Reference</a><ul>
-<li><a class="reference internal" href="#elements">2.1.1.1.1. Elements</a></li>
-<li><a class="reference internal" href="#basic-data-types">2.1.1.1.2. Basic Data Types</a></li>
-<li><a class="reference internal" href="#exceptions">2.1.1.1.3. Exceptions</a></li>
-<li><a class="reference internal" href="#constants">2.1.1.1.4. Constants</a></li>
+<li><a class="reference internal" href="#">2.1.3.1. Entity Data Model (EDM)</a><ul>
+<li><a class="reference internal" href="#reference">2.1.3.1.1. Reference</a><ul>
+<li><a class="reference internal" href="#elements">2.1.3.1.1.1. Elements</a></li>
+<li><a class="reference internal" href="#basic-data-types">2.1.3.1.1.2. Basic Data Types</a></li>
+<li><a class="reference internal" href="#exceptions">2.1.3.1.1.3. Exceptions</a></li>
+<li><a class="reference internal" href="#constants">2.1.3.1.1.4. Constants</a></li>
 </ul>
 </li>
 </ul>
@@ -1589,11 +1590,11 @@ principals (so can never be inserted).</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="odatav2.html"
-                        title="previous chapter">2.1. The Open Data Protocol (OData)</a></p>
+  <p class="topless"><a href="odatav2_reference.html"
+                        title="previous chapter">2.1.3. OData Reference</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="odatav2_client.html"
-                        title="next chapter">2.1.2. OData Client</a></p>
+  <p class="topless"><a href="odatav2_core.html"
+                        title="next chapter">2.1.3.2. OData Core Classes</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/odatav2_csdl.txt"
@@ -1626,14 +1627,15 @@ principals (so can never be inserted).</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_client.html" title="2.1.2. OData Client"
+          <a href="odatav2_core.html" title="2.1.3.2. OData Core Classes"
              >next</a> |</li>
         <li class="right" >
-          <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
+          <a href="odatav2_reference.html" title="2.1.3. OData Reference"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140212 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
-          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
+          <li><a href="odatav2_reference.html" >2.1.3. OData Reference</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

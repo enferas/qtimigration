@@ -1,0 +1,517 @@
+Data Consumers
+==============
+
+Warning: the OData client doesn't support certificate validation when
+accessing servers through https URLs.  This feature is coming soon...
+
+.. toctree::
+   :maxdepth: 2
+
+Introduction
+------------
+
+Let's start with a simple illustration of how to consume data using the
+DAL API by walking through the use of the OData client.
+
+The client implementation uses Python's logging module to provide
+logging, when learning about the client it may help to turn logging up
+to "INFO" as it makes it clearer what the client is doing.  "DEBUG"
+would show exactly what is passing over the wire.::
+
+	>>> import logging
+	>>> logging.basicConfig(level=logging.INFO)
+
+To create a new client simply instantiate a Client object.  You can pass
+the URL of the service root you wish to connect to directly to the
+constructor which will then call the service to download the list of
+feeds and the metadata document from which it will set the
+:py:attr:`Client.model`.
+
+	>>> from pyslet.odata2.client import Client
+	>>> c=Client("http://services.odata.org/V2/Northwind/Northwind.svc/")
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/ HTTP/1.1
+	INFO:root:Finished Response, status 200
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/$metadata HTTP/1.1
+	INFO:root:Finished Response, status 200
+	>>>
+
+The :py:attr:`Client.feeds` attribute is a dictionary mapping the
+exposed feeds (by name) onto :py:class:`~pyslet.odata2.csdl.EntitySet`
+instances.  This makes it easy to open the feeds as EDM collections.  In
+your code you'd typically use the with statement when opening the
+collection but for clarity we'll continue on the python command line::
+
+	>>> products=c.feeds['Products'].OpenCollection()
+	>>> for p in products: print p
+	... 
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1
+	INFO:root:Finished Response, status 200
+	1
+	2
+	3
+	... [and so on]
+	...
+	20
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1
+	INFO:root:Finished Response, status 200
+	21
+	22
+	23
+	... [and so on]
+	...
+	76
+	77
+	>>>
+
+Note that products behaves like a dictionary, iterating through it
+iterates through the keys in the dictionary.  In this case these are the
+keys of the entities in the collection of products.  Notice that the
+client logs several requests to the server interspersed with the printed
+output.  Subsequent requests use $skiptoken because the server is
+limiting the maximum page size.  These calls are made as you iterate
+through the collection allowing you to iterate through very large
+collections.
+
+The keys alone are of limited interest, let's try a similar loop but this
+time we'll print the product names as well::
+
+	>>> for k,p in products.iteritems(): print k,p['ProductName'].value
+	... 
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products HTTP/1.1
+	INFO:root:Finished Response, status 200
+	1 Chai
+	2 Chang
+	3 Aniseed Syrup
+	...
+	...
+	20 Sir Rodney's Marmalade
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skiptoken=20 HTTP/1.1
+	INFO:root:Finished Response, status 200
+	21 Sir Rodney's Scones
+	22 Gustaf's Knäckebröd
+	23 Tunnbröd
+	...
+	...
+	76 Lakkalikööri
+	77 Original Frankfurter grüne Soße
+	>>>
+	
+Sir Rodney's Scones sound interesting, we can grab an individual record
+in the usual way::
+
+	>>> scones=products[21]
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products(21) HTTP/1.1
+	INFO:root:Finished Response, status 200
+	>>> for k,v in scones.DataItems(): print k,v.value
+	... 
+	ProductID 21
+	ProductName Sir Rodney's Scones
+	SupplierID 8
+	CategoryID 3
+	QuantityPerUnit 24 pkgs. x 4 pieces
+	UnitPrice 10.0000
+	UnitsInStock 3
+	UnitsOnOrder 40
+	ReorderLevel 5
+	Discontinued False
+	>>>
+
+Well, I've simply got to have some of these, let's use one of the navigation
+properties to load information about the supplier::
+
+	>>> supplier=scones['Supplier'].GetEntity()
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)/Supplier HTTP/1.1
+	INFO:root:Finished Response, status 200
+	>>> for k,v in supplier.DataItems(): print k,v.value
+	... 
+	SupplierID 8
+	CompanyName Specialty Biscuits, Ltd.
+	ContactName Peter Wilson
+	ContactTitle Sales Representative
+	Address 29 King's Way
+	City Manchester
+	Region None
+	PostalCode M14 GSD
+	Country UK
+	Phone (161) 555-4448
+	Fax None
+	HomePage None
+
+Attempting to load a non existent entity results in a KeyError of
+course::
+
+	>>> p=products[211]
+	INFO:root:Sending request to services.odata.org
+	INFO:root:GET /V2/Northwind/Northwind.svc/Products(211) HTTP/1.1
+	INFO:root:Finished Response, status 404
+	Traceback (most recent call last):
+	  File "<stdin>", line 1, in <module>
+	  File "/Library/Python/2.7/site-packages/pyslet/odata2/client.py", line 165, in __getitem__
+		raise KeyError(key)
+	KeyError: 211
+
+Finally, when we're done, it is a good idea to close the open
+collection::
+
+	>>> products.close()
+
+The Data Access Layer in Depth
+------------------------------
+
+In the introduction we created an OData Client object using a URL, but
+in general the way you connect to a data service will vary depending on
+the implementation.  The Client class itself isn't actually part of the
+DAL API itself.
+
+The API starts with a model of the *data service*.  The model is
+typically parsed from an XML file. For the OData client the XML file is
+obtained from the service's $metadata URL.  Here's an extract from the
+Northwind $metadata file showing the definition of the data service,
+I've removed the XML namespace definitions for brevity::
+
+	<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+	<edmx:Edmx Version="1.0">
+  		<edmx:DataServices m:DataServiceVersion="1.0">
+    		<Schema Namespace="NorthwindModel">
+      			<EntityType Name="Category">
+      				<!-- rest of the definitions go here... -->
+
+Each element is represented by an object in Pyslet, the starting point
+for the API is the :py:class:`~pyslet.odata2.edmx.DataServices` object.
+A DataServices object can contain multiple
+:py:class:`~pyslet.odata2.csdl.Schema` elements, which in turn can
+contain multiple :py:class:`~pyslet.odata2.csdl.EntityContainer`
+elements which in turn can contain multiple
+:py:class:`~pyslet.odata2.csdl.EntitySet` elements.  The following
+diagram illustrates these relationships and compares them with
+approximate equivalent concepts in a typical SQL-scenario.
+
+.. image:: /images/dataservices.png
+
+In the OData client example we used a short-cut to get to the EntitySet
+objects we were interested in by using the feeds property of the client
+itself.  However, we could have used the model directly as follows,
+continuing with the same session::
+
+	>>> c.model
+	<pyslet.odata2.metadata.Edmx object at 0x10140a9d0>
+	>>> c.model.DataServices
+	<pyslet.odata2.metadata.DataServices object at 0x107fdb990>
+	>>> for s in c.model.DataServices.Schema: print s.name
+	... 
+	NorthwindModel
+	ODataWeb.Northwind.Model
+	>>> c.model.DataServices['ODataWeb.Northwind.Model']
+	<pyslet.odata2.csdl.Schema object at 0x10800cd90>
+	>>> c.model.DataServices['ODataWeb.Northwind.Model']['NorthwindEntities']
+	<pyslet.odata2.metadata.EntityContainer object at 0x10800cdd0>
+	>>> c.model.DataServices['ODataWeb.Northwind.Model']['NorthwindEntities']['Products']
+	<pyslet.odata2.metadata.EntitySet object at 0x10800f150>
+	>>> c.feeds['Products']
+	<pyslet.odata2.metadata.EntitySet object at 0x10800f150>
+
+As you can see, the same EntitySet object can be obtained by looking it
+up in the parent container which behaves like a dictionary, this in turn
+can be looked up in the parent Schema which in turn can be looked up in
+the DataServices enclosing object.  Elements of the model also support
+deep references using dot-concatenation of names which makes the code
+easier to read::
+
+	>>> print c.model.DataServices['ODataWeb.Northwind.Model']['NorthwindEntities']['Products'].GetFQName()
+	ODataWeb.Northwind.Model.NorthwindEntities.Products
+	>>> c.model.DataServices['ODataWeb.Northwind.Model.NorthwindEntities.Products']
+	<pyslet.odata2.metadata.EntitySet object at 0x10800f150>
+
+
+Entity Sets
+~~~~~~~~~~~
+
+The following attributes are useful for consumers of the API (and should
+be treated as read only)
+
+:py:attr:`~pyslet.odata2.csdl.EntitySet.name`
+	The name of the entity set
+
+:py:attr:`~pyslet.odata2.csdl.EntitySet.entityTypeName`
+	The name of the entity set's EntityType
+
+:py:attr:`~pyslet.odata2.csdl.EntitySet.entityType`
+	The :py:class:~pyslet.odata2.csdl.EntityType` object that defines
+	the properties for entities in this set.
+
+:py:attr:`~pyslet.odata2.csdl.EntitySet.keys`
+	A list of the names of the keys for this EntitySet.  For example::
+
+		>>> print products.keys
+		[u'ProductID']
+
+	For entity types with compound keys this list will contain multiple
+	items of course.
+  
+The following methods are useful for consumers of the API.
+
+:py:meth:`~pyslet.odata2.csdl.EntitySet.GetFQName`
+	Returns the fully qualified name of the entity set, suitable for
+	looking up the entity set in the enclosing DataServices object.
+
+:py:meth:`~pyslet.odata2.csdl.EntitySet.GetLocation`
+	Returns a :py:class:`pyslet.rfc2396.URI` object that represents
+	this entity set::
+	
+		>>> print products.GetLocation()
+		http://services.odata.org/V2/Northwind/Northwind.svc/Products
+
+	(If there is no base URL available this will be a relative URI.)
+
+:py:meth:`~pyslet.odata2.csdl.EntitySet.OpenCollection`
+	Returns a :py:class:`pyslet.odata2.csdl.EntityCollection` object
+	that can be used to access the entities in the set.
+	
+:py:meth:`~pyslet.odata2.csdl.EntitySet.NavigationTarget`
+	Returns the target entity set of a named navigation property.
+	
+:py:meth:`~pyslet.odata2.csdl.EntitySet.NavigationMultiplicity`
+	Returns a tuple of multiplicity constants for the named navigation
+	property.  Constants for these values are defined in
+	:py:class:`pyslet.odata2.csdl.Multiplicity`, for example::
+	
+		>>> from pyslet.odata2.csdl import Multiplicity, EncodeMultiplicity
+		>>> print Multiplicity.ZeroToOne, Multiplicity.One, Multiplicity.Many
+		0 1 2
+		>>> products.NavigationMultiplicity('Supplier')
+		(2, 0)
+		>>> map(lambda x:EncodeMultiplicity(x),products.NavigationMultiplicity('Supplier'))
+		['*', '0..1']
+
+:py:meth:`~pyslet.odata2.csdl.EntitySet.IsEntityCollection`
+	Returns True if the named navigation property points to a collection
+	of entities or a single entity.  In Pyslet, you can treat all
+	navigation properties as collections.  In the above example the
+	collection of Supplier entities obtained by following the 'Supplier'
+	navigation property of a Product entity will have at most 1 member. 
+		
+
+Entity Collections
+~~~~~~~~~~~~~~~~~~
+
+To continue with database analogy above, if EntitySets are like SQL
+Tables EntityCollections are somewhat like the database cursors that you
+use to actually read data - the difference is that EntityCollections can
+only read entities from a single EntitySet.
+
+An :py:class:`~pyslet.odata2.csdl.EntityCollection` may consume physical
+resources (like a database connection) and so must be closed with its
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.close` method when you're done.
+They support the context manager protocol to make this easier so you can
+use them in with statements to make clean-up easier::
+
+	with c.feeds['Products'].OpenCollection() as products:
+		if 42 in products:
+			print "Found it!"
+
+The close method is called automatically when the with statement
+exits.
+
+Entity collections also behave like a python dictionary of
+:py:class:`~pyslet.odata2.csdl.Entity` instances keyed on a value
+representing the Entity's key property or properties.  The keys are
+either single values (as in the above code example) or tuples in the
+case of compound keys. The order of the values in the tuple is taken
+from the order of the PropertyRef definitions in the model.
+
+There are two ways to obtain an EntityCollection object.  You can open
+an entity set directly or you can open a collection by navigating from a
+specific entity through a named navigation property.  Although dictionary-like
+there are some differences with true dictionaries.
+
+When you have opened a collection from the base entity set the following
+rules apply:
+
+collection[key]
+	Returns a new :py:class:`~pyslet.odata2.csdl.Entity` instance by
+	looking up the *key* in the collection.  As a result, subsequent
+	calls will return a different object, but with the same key!
+	
+collection[key]=newEntity
+	For an existing entity this is essentially a no-operation.  This
+	form of assignment cannot be used to create a new entity in the
+	collection because the act of inserting the entity may alter its key
+	(for example, when the entity set represents a database table with
+	an auto-generated primary key).  See below for information on how
+	to create and update entities.
+
+del collection[key]
+	In contrast, del will remove an entity from the collection completely.
+	
+When an EntityCollection represents a collection of entities obtained by
+navigation then these rules are updated as follows:: 		
+
+collection[key]
+	Normally returns a new :py:class:`~pyslet.odata2.csdl.Entity`
+	instance by looking up the *key* in the collection but when the
+	navigation property has been expanded it will return a cached Entity
+	(so subsequent calls will return the same object without looking
+	up the key in the data source again).
+	
+collection[key]=existingEntity
+	Provided that *key* is the key of *existingEntity* this will add an
+	existing entity to this collection, effectively creating a link from
+	the entity you were navigating from to an existing entity.  
+
+del collection[key]
+	Removes the entity with *key* from this collection.  The entity is
+	not deleted from its EntitySet, is merely unlinked from the entity
+	you were navigating from.
+	
+The following attribute is useful for consumers of the API (and should
+be treated as read only)
+
+:py:attr:`~pyslet.odata2.csdl.EntityCollection.entitySet`
+	The :py:class:`~pyslet.odata2.csdl.EntitySet` of this collection. In
+	the case of a collection opened through navigation this is the base
+	entity set. 
+
+In addition to all the usual dictionary methods like *len*, *itervalues*
+and so on, the following methods are useful for consumers of the API:
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.GetLocation`
+	Returns a :py:class:`pyslet.rfc2396.URI` object that represents
+	this entity collection.
+	
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.GetTitle`
+	Returns a user-friendly title to represent this entity collection.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.NewEntity`
+	Creates a new entity suitable for inserting into this collection.
+	The entity does not exist until it is inserted with InsertEntity.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.CopyEntity`
+	Creates a new entity by copying all non-key properties from another
+	entity. The entity does not exist until it is inserted with
+	InsertEntity.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.InsertEntity`
+	Inserts an entity previously created by NewEntity or CopyEntity.
+	When inserting an entity any active filter is ignored.
+	
+	Warning: an active filter may result in a paradoxical KeyError::
+	
+		import pyslet.odata2.core as core
+		with people.OpenCollection() as collection:
+			collection.Filter(core.CommonExpression.FromString("startswith(Name,'D')"))
+			newEntity=collection.NewEntity()
+			newEntity['Key'].SetFromValue(1)
+			newEntity['Name'].SetFromValue(u"Steve")
+			collection.InsertEntity(newEntity)
+			# newEntity now exists in the base collection but... 
+			e1=collection[1]
+			# ...raises KeyError as newEntity did not match the filter!
+	
+	It is recommended that collections used to insert entities are not
+	filtered.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.UpdateEntity`
+	Updates an existing entity following changes to the Entity's values.
+	You can't update the values of key properties.  To change the key
+	you will need to create a new entity with CopyEntity, insert the new
+	entity and then remove the old one.  Like InsertEntity, the current
+	filter is ignored.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.Top`
+	Sets the top value for this collection, equivalent to the $top
+	option in OData. This value only affect iterpage.  See `Paging`_ for
+	more information.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.Skip`
+	Sets the skip value for this collection, equivalent to the $skip
+	option in OData. This value only affect iterpage.  See `Paging`_ for
+	more information.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.iterpage`
+	Iterates through a subset of the entities returned by itervalues
+	defined by the top and skip values.  See `Paging`_ for more
+	information.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.Filter`
+	Sets the filter for this collection, equivalent to the $filter
+	option in OData. Once set this value effects all future entities
+	returned from the collection (with the exception of NewEntity).  See
+	`Filtering Collections`_ for more information.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.OrderBy`
+	Sets the filter for this collection, equivalent to the $orderby
+	option in OData. Once set this value effects all future iterations
+	through the collection.  See `Sorting Collections`_ for more
+	information.
+
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.Expand`
+	Sets expand and select options for this collection, equivalent to
+	the $expand and $select system query options in OData.  Once set
+	these values effect all future entities returned from the collection
+	(with the exception of NewEntity).  See `Expand and Select`_ for
+	more information.
+
+Paging
+++++++
+
+The $top/$skip options in OData are a useful way to restrict the amount of
+data that an OData server returns but, in most cases, the server will impose
+a reasonable maximum on each request using server-enforced paging.  As a result,
+you won't need to use the paging controls in a collection very often.
+
+The collection dictionary alway behaves as if it contains all entities
+so the value returned by *len* doesn't change if you set top and skip
+values and nor does the set of entities returned by itervalues and
+similar methods.
+
+To iterate through the entities in the selected page you must use the
+:py:meth:`~pyslet.odata2.csdl.EntityCollection.iterpage` method.
+
+
+Filtering Collections
++++++++++++++++++++++
+
+Documentation coming soon...
+
+
+Ordering Collections
+++++++++++++++++++++
+
+Documentation coming soon...
+
+
+Expand and Select
++++++++++++++++++
+
+Documentation coming soon...
+
+
+Entity Objects
+~~~~~~~~~~~~~~
+
+Documentation coming soon...
+
+
+Working with Dates
+++++++++++++++++++
+
+Documentation coming soon...
+
+
+Navigation: DeferredValues
+++++++++++++++++++++++++++
+
+
+..	import logging
+	logging.basicConfig(level=logging.INFO)
+	from pyslet.odata2.client import Client
+	c=Client("http://services.odata.org/V2/Northwind/Northwind.svc/")
+

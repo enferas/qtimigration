@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140214 documentation</title>
+    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140215 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140214',
+        VERSION:     '0.4.20140215',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140214 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140215 documentation" href="index.html" />
     <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
     <link rel="next" title="2.1.2. OData Providers" href="odatav2_provider.html" />
     <link rel="prev" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>
@@ -290,7 +290,7 @@ be treated as read only)</p>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.entityTypeName" title="pyslet.odata2.csdl.EntitySet.entityTypeName"><tt class="xref py py-attr docutils literal"><span class="pre">entityTypeName</span></tt></a></dt>
 <dd>The name of the entity set&#8217;s EntityType</dd>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.entityType" title="pyslet.odata2.csdl.EntitySet.entityType"><tt class="xref py py-attr docutils literal"><span class="pre">entityType</span></tt></a></dt>
-<dd>The :py:class:~pyslet.odata2.csdl.EntityType` object that defines
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a> object that defines
 the properties for entities in this set.</dd>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.keys" title="pyslet.odata2.csdl.EntitySet.keys"><tt class="xref py py-attr docutils literal"><span class="pre">keys</span></tt></a></dt>
 <dd><p class="first">A list of the names of the keys for this EntitySet.  For example:</p>
@@ -454,14 +454,10 @@ You can&#8217;t update the values of key properties.  To change the key
 you will need to create a new entity with CopyEntity, insert the new
 entity and then remove the old one.  Like InsertEntity, the current
 filter is ignored.</dd>
-<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Top" title="pyslet.odata2.csdl.EntityCollection.Top"><tt class="xref py py-meth docutils literal"><span class="pre">Top()</span></tt></a></dt>
-<dd>Sets the top value for this collection, equivalent to the $top
-option in OData. This value only affect iterpage.  See <a class="reference internal" href="#paging">Paging</a> for
-more information.</dd>
-<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Skip" title="pyslet.odata2.csdl.EntityCollection.Skip"><tt class="xref py py-meth docutils literal"><span class="pre">Skip()</span></tt></a></dt>
-<dd>Sets the skip value for this collection, equivalent to the $skip
-option in OData. This value only affect iterpage.  See <a class="reference internal" href="#paging">Paging</a> for
-more information.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.SetPage" title="pyslet.odata2.csdl.EntityCollection.SetPage"><tt class="xref py py-meth docutils literal"><span class="pre">SetPage()</span></tt></a></dt>
+<dd>Sets the top and skip values for this collection, equivalent to the
+$top and $skip options in OData. This value only affects calls to
+iterpage.  See <a class="reference internal" href="#paging">Paging</a> for more information.</dd>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a></dt>
 <dd>Iterates through a subset of the entities returned by itervalues
 defined by the top and skip values.  See <a class="reference internal" href="#paging">Paging</a> for more
@@ -474,7 +470,7 @@ returned from the collection (with the exception of NewEntity).  See
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.OrderBy" title="pyslet.odata2.csdl.EntityCollection.OrderBy"><tt class="xref py py-meth docutils literal"><span class="pre">OrderBy()</span></tt></a></dt>
 <dd>Sets the filter for this collection, equivalent to the $orderby
 option in OData. Once set this value effects all future iterations
-through the collection.  See <a href="#id1"><span class="problematic" id="id2">`Sorting Collections`_</span></a> for more
+through the collection.  See <a class="reference internal" href="#ordering-collections">Ordering Collections</a> for more
 information.</dd>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Expand" title="pyslet.odata2.csdl.EntityCollection.Expand"><tt class="xref py py-meth docutils literal"><span class="pre">Expand()</span></tt></a></dt>
 <dd>Sets expand and select options for this collection, equivalent to
@@ -485,28 +481,266 @@ more information.</dd>
 </dl>
 <div class="section" id="paging">
 <h4>2.1.1.2.2.1. Paging<a class="headerlink" href="#paging" title="Permalink to this headline">¶</a></h4>
-<p>The $top/$skip options in OData are a useful way to restrict the amount of
-data that an OData server returns but, in most cases, the server will impose
-a reasonable maximum on each request using server-enforced paging.  As a result,
-you won&#8217;t need to use the paging controls in a collection very often.</p>
-<p>The collection dictionary alway behaves as if it contains all entities
-so the value returned by <em>len</em> doesn&#8217;t change if you set top and skip
-values and nor does the set of entities returned by itervalues and
-similar methods.</p>
-<p>To iterate through the entities in the selected page you must use the
-<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a> method.</p>
+<p><em>Supported from build 0.4.20140215 onwards</em></p>
+<p>The $top/$skip options in OData are a useful way to restrict the amount
+of data that an OData server returns.  The collection dictionary always
+behaves as if it contains all entities so the value returned by <em>len</em>
+doesn&#8217;t change if you set top and skip values and nor does the set of
+entities returned by itervalues and similar methods.</p>
+<p>In most cases, the server will impose a reasonable maximum on each
+request using server-enforced paging.  However, you may wish to set a
+smaller <em>top</em> value or simply have more control over the automatic
+paging implemented by the default iterators.</p>
+<p>To iterate through a single page of entities you&#8217;ll start by using the
+the <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.SetPage" title="pyslet.odata2.csdl.EntityCollection.SetPage"><tt class="xref py py-meth docutils literal"><span class="pre">SetPage()</span></tt></a> method to
+specify values for top and, optinally, skip.  You must then use the
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a> method to
+iterate through the entities in just that page.  The <em>setNextPage</em>
+boolean parameter indicates whether or not the next call to iterpage
+iterates over the same page or the next page of the collection.</p>
+<p>To continue the example above, in which <em>products</em> is an open collection
+from the Northwind data service:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">SetPage</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iterpage</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skip=50&amp;$top=5 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">51 Manjimup Dried Apples</span>
+<span class="go">52 Filo Mix</span>
+<span class="go">53 Perth Pasties</span>
+<span class="go">54 Tourtière</span>
+<span class="go">55 Pâté chinois</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iterpage</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skip=55&amp;$top=5 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">56 Gnocchi di nonna Alice</span>
+<span class="go">57 Ravioli Angelo</span>
+<span class="go">58 Escargots de Bourgogne</span>
+<span class="go">59 Raclette Courdavault</span>
+<span class="go">60 Camembert Pierrot</span>
+</pre></div>
+</div>
+<p>In some cases, the server will restrict the page size and fewer entities
+will be returned than expected, in these cases the skiptoken is used
+automatically when the next page is requested:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">SetPage</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iterpage</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$skip=50&amp;$top=30 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">51 Manjimup Dried Apples</span>
+<span class="go">52 Filo Mix</span>
+<span class="go">53 Perth Pasties</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">69 Gudbrandsdalsost</span>
+<span class="go">70 Outback Lager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">iterpage</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$top=30&amp;$skiptoken=70 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">71 Flotemysost</span>
+<span class="go">72 Mozzarella di Giovanni</span>
+<span class="go">73 Röd Kaviar</span>
+<span class="go">74 Longlife Tofu</span>
+<span class="go">75 Rhönbräu Klosterbier</span>
+<span class="go">76 Lakkalikööri</span>
+<span class="go">77 Original Frankfurter grüne Soße</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="filtering-collections">
 <h4>2.1.1.2.2.2. Filtering Collections<a class="headerlink" href="#filtering-collections" title="Permalink to this headline">¶</a></h4>
-<p>Documentation coming soon...</p>
+<p>By default, an entity collection contains all items in the entity set
+or, if the collection was obtained by navigation, all items linked to
+the entity by the property being navigated.  Filtering a collection
+(potentially) selects a sub-set of the these entities based on a filter
+expression.</p>
+<p>Filter expressions are set using the
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.Filter" title="pyslet.odata2.csdl.EntityCollection.Filter"><tt class="xref py py-meth docutils literal"><span class="pre">Filter()</span></tt></a> method of the
+collection.  Once a filter is set, the dictionary methods, and iterpage,
+will only return entities that match the filter.</p>
+<p>The easiest way to set a filter is to compile one directly from a string
+representation using OData&#8217;s query language.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyslet.odata2.core</span> <span class="kn">as</span> <span class="nn">core</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="s">&quot;substringof(&#39;one&#39;,ProductName)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$filter=substringof(&#39;one&#39;%2CProductName) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">21 Sir Rodney&#39;s Scones</span>
+<span class="go">32 Mascarpone Fabioli</span>
+</pre></div>
+</div>
+<p>To remove a filter, set the filter expression to None:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="ordering-collections">
 <h4>2.1.1.2.2.3. Ordering Collections<a class="headerlink" href="#ordering-collections" title="Permalink to this headline">¶</a></h4>
-<p>Documentation coming soon...</p>
+<p>Like OData and python dictionaries, this API does not specify a default
+order in which entities will be returned by the iterators.  However,
+unlike python dictionaries you can control this order using an orderby
+option.</p>
+<p>OrderBy expressions are set using the
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection.OrderBy" title="pyslet.odata2.csdl.EntityCollection.OrderBy"><tt class="xref py py-meth docutils literal"><span class="pre">OrderBy()</span></tt></a> method of the
+collection.  Once an order by expression is set, the dictionary methods,
+and iterpage, will return entities in the order specified.</p>
+<p>The easiest way to define an ordering is to compile one directly from a
+string representation using OData&#8217;s query language.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ordering</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">OrderByFromString</span><span class="p">(</span><span class="s">&quot;ProductName desc&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">products</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span> <span class="k">print</span> <span class="n">p</span><span class="o">.</span><span class="n">Key</span><span class="p">(),</span> <span class="n">p</span><span class="p">[</span><span class="s">&#39;ProductName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$orderby=ProductName%20desc HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">47 Zaanse koeken</span>
+<span class="go">64 Wimmers gute Semmelknödel</span>
+<span class="go">63 Vegie-spread</span>
+<span class="go">50 Valkoinen suklaa</span>
+<span class="go">7 Uncle Bob&#39;s Organic Dried Pears</span>
+<span class="go">23 Tunnbröd</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">56 Gnocchi di nonna Alice</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products?$orderby=ProductName%20desc&amp;$skiptoken=&#39;Gnocchi%20di%20nonna%20Alice&#39;,56 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">15 Genen Shouyu</span>
+<span class="go">33 Geitost</span>
+<span class="go">71 Flotemysost</span>
+<span class="gp">... </span><span class="p">[</span><span class="ow">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">40 Boston Crab Meat</span>
+<span class="go">3 Aniseed Syrup</span>
+<span class="go">17 Alice Mutton</span>
+</pre></div>
+</div>
+<p>To remove an ordering, set the orderby expression to None:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Orderby</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="expand-and-select">
 <h4>2.1.1.2.2.4. Expand and Select<a class="headerlink" href="#expand-and-select" title="Permalink to this headline">¶</a></h4>
-<p>Documentation coming soon...</p>
+<p>Expansion and selection are two interrelated concepts in the API.
+Expansion allows you to follow specified navigation properties
+retrieving the entities they link to in the same way that simple and
+complex property values are retrieved.</p>
+<p>Expand options are represented by nested dictionaries of strings.  For
+example, to expand the Supplier navigation property of Products you
+would use a dictionary like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">expansion</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Supplier&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The value in the dictionary is either None, indicating no further
+expansion, or another dictionary specifying the expansion to apply to
+any linked Suppliers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Expand</span><span class="p">({</span><span class="s">&#39;Supplier&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">},</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)?$expand=Supplier HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">supplier</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">SupplierID 8</span>
+<span class="go">CompanyName Specialty Biscuits, Ltd.</span>
+<span class="go">ContactName Peter Wilson</span>
+<span class="go">ContactTitle Sales Representative</span>
+<span class="go">Address 29 King&#39;s Way</span>
+<span class="go">City Manchester</span>
+<span class="go">Region None</span>
+<span class="go">PostalCode M14 GSD</span>
+<span class="go">Country UK</span>
+<span class="go">Phone (161) 555-4448</span>
+<span class="go">Fax None</span>
+<span class="go">HomePage None</span>
+</pre></div>
+</div>
+<p>A critical point to note is that applying an expansion to a collection
+means that linked entities are retrieved at the same time as the entity
+they are linked to and cached.  In the example above, the GetEntity call
+does not generate a call to the server.  Compare this with the same code
+executed without the expansion:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21) HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)/Supplier HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+</pre></div>
+</div>
+<p>The select option complements expansion, narrowing down the simple and
+complex properties that are retrieved from the data source.  You specify
+a select option in a similar way, using nested dictionaries.  Simple and
+complex properties must always map to None, for a more complex example
+with navigation properties see below.  Suppose we are only interested in
+the product name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Expand</span><span class="p">(</span><span class="bp">None</span><span class="p">,{</span><span class="s">&#39;ProductName&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)?$select=ProductID%2CProductName HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">scones</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">ProductID 21</span>
+<span class="go">ProductName Sir Rodney&#39;s Scones</span>
+<span class="go">SupplierID None</span>
+<span class="go">CategoryID None</span>
+<span class="go">QuantityPerUnit None</span>
+<span class="go">UnitPrice None</span>
+<span class="go">UnitsInStock None</span>
+<span class="go">UnitsOnOrder None</span>
+<span class="go">ReorderLevel None</span>
+<span class="go">Discontinued None</span>
+</pre></div>
+</div>
+<p>In Pyslet, the values of the key properties are <em>always</em> retrieved, even
+if they are not selected.  This is required to maintain the
+dictionary-like behaviour of the collection.  An entity retrieved this
+way has NULL values for any properties that weren&#8217;t retrieved.  The
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.Selected" title="pyslet.odata2.csdl.Entity.Selected"><tt class="xref py py-meth docutils literal"><span class="pre">Selected()</span></tt></a> method allows you to
+determine if a value is NULL in the data source or NULL because it is
+not selected:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">scones</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span>
+<span class="gp">... </span> <span class="k">if</span> <span class="n">scones</span><span class="o">.</span><span class="n">Selected</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">ProductID 21</span>
+<span class="go">ProductName Sir Rodney&#39;s Scones</span>
+</pre></div>
+</div>
+<p>The expand and select options can be combined in complex ways:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">products</span><span class="o">.</span><span class="n">Expand</span><span class="p">({</span><span class="s">&#39;Supplier&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">},{</span><span class="s">&#39;ProductName&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">,</span><span class="s">&#39;Supplier&#39;</span><span class="p">:{</span><span class="s">&#39;Phone&#39;</span><span class="p">:</span><span class="bp">None</span><span class="p">}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scones</span><span class="o">=</span><span class="n">products</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)?$expand=Supplier&amp;$select=ProductID%2CProductName%2CSupplier%2FPhone%2CSupplier%2FSupplierID HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">supplier</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">scones</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span>
+<span class="gp">... </span> <span class="k">if</span> <span class="n">scones</span><span class="o">.</span><span class="n">Selected</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">ProductID 21</span>
+<span class="go">ProductName Sir Rodney&#39;s Scones</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">supplier</span><span class="o">.</span><span class="n">DataItems</span><span class="p">():</span>
+<span class="gp">... </span> <span class="k">if</span> <span class="n">supplier</span><span class="o">.</span><span class="n">Selected</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="k">print</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">SupplierID 8</span>
+<span class="go">Phone (161) 555-4448</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="entity-objects">
@@ -518,6 +752,8 @@ similar methods.</p>
 </div>
 <div class="section" id="navigation-deferredvalues">
 <h4>2.1.1.2.3.2. Navigation: DeferredValues<a class="headerlink" href="#navigation-deferredvalues" title="Permalink to this headline">¶</a></h4>
+<p>ordering=core.CommonExpression.OrderByFromString(&#8220;ProductName desc&#8221;)
+products.OrderBy(ordering)</p>
 </div>
 </div>
 </div>
@@ -596,7 +832,7 @@ similar methods.</p>
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>

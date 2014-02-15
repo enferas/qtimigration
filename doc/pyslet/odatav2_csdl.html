@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.3.1. Entity Data Model (EDM) &mdash; Pyslet 0.4.20140214 documentation</title>
+    <title>2.1.3.1. Entity Data Model (EDM) &mdash; Pyslet 0.4.20140215 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140214',
+        VERSION:     '0.4.20140215',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140214 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140215 documentation" href="index.html" />
     <link rel="up" title="2.1.3. OData Reference" href="odatav2_reference.html" />
     <link rel="next" title="2.1.3.2. OData Core Classes" href="odatav2_core.html" />
     <link rel="prev" title="2.1.3. OData Reference" href="odatav2_reference.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2_reference.html" title="2.1.3. OData Reference"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_reference.html" accesskey="U">2.1.3. OData Reference</a> &raquo;</li> 
@@ -739,46 +739,6 @@ no ordering is required then no list is created.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyslet.odata2.csdl.EntityCollection.Skip">
-<tt class="descname">Skip</tt><big>(</big><em>skip</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Skip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the skip option for this collection.</p>
-<p>The skip query option is an integer (or None to remove the
-option) which seeks in to the entity collection.  The
-implementation of
-<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a> must honour the skip value.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.odata2.csdl.EntityCollection.Top">
-<tt class="descname">Top</tt><big>(</big><em>top</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.Top" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the top option for this collection.</p>
-<p>The top query option is an integer (or None to remove the
-option) which limits the number of entities in the entity
-collection.  The implementation of
-<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a> must honour the top value.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.odata2.csdl.EntityCollection.TopMax">
-<tt class="descname">TopMax</tt><big>(</big><em>topmax</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.TopMax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the maximum page size for this collection.</p>
-<p>This forces the collection to limit the size of a page to at
-most topmax entities.  When topmax is in force
-<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.NextSkipToken" title="pyslet.odata2.csdl.EntityCollection.NextSkipToken"><tt class="xref py py-meth docutils literal"><span class="pre">NextSkipToken()</span></tt></a> will return a suitable value for
-identifying the next page in the collection immediately after a
-complete iteration of <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.odata2.csdl.EntityCollection.SkipToken">
-<tt class="descname">SkipToken</tt><big>(</big><em>skiptoken</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SkipToken" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the skip token for this collection.</p>
-<p>By default, we treat the skip token exactly the same as the skip
-value itself except that we obscure it slightly by treating it
-as a hex value.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pyslet.odata2.csdl.EntityCollection.SetInlineCount">
 <tt class="descname">SetInlineCount</tt><big>(</big><em>inlineCount</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SetInlineCount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the inline count flag for this collection.</p>
@@ -847,18 +807,46 @@ create/update any pending bindings.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.SetPage">
+<tt class="descname">SetPage</tt><big>(</big><em>top</em>, <em>skip=0</em>, <em>skiptoken=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.SetPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the page parameters.</p>
+<p>The skip and top query options are integers which determine the
+number of entities returned (top) and the number of entities
+skipped (skip and skiptoken) by iterpage.</p>
+<p>The default implementation treats the skip token exactly the
+same as the skip value itself except that we obscure it slightly
+by treating it as a hex value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.csdl.EntityCollection.TopMax">
+<tt class="descname">TopMax</tt><big>(</big><em>topmax</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.TopMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the maximum page size for this collection.</p>
+<p>This forces the collection to limit the size of a page to at
+most topmax entities.  When topmax is in force and is less than
+the top value set in <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.SetPage" title="pyslet.odata2.csdl.EntityCollection.SetPage"><tt class="xref py py-meth docutils literal"><span class="pre">SetPage()</span></tt></a>,
+<a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.NextSkipToken" title="pyslet.odata2.csdl.EntityCollection.NextSkipToken"><tt class="xref py py-meth docutils literal"><span class="pre">NextSkipToken()</span></tt></a> will return a suitable value for
+identifying the next page in the collection immediately after a
+complete iteration of <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="pyslet.odata2.csdl.EntityCollection.iterpage"><tt class="xref py py-meth docutils literal"><span class="pre">iterpage()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pyslet.odata2.csdl.EntityCollection.GetPageStart">
 <tt class="descname">GetPageStart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.GetPageStart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the index of the start of the collection&#8217;s current page.</p>
-<p>Takes in to consideration both the requested skip value and any
-skiptoken that may be in force.</p>
+<p>Used by the default implementation of iterpage.  Takes in to
+consideration both the requested skip value and any skiptoken
+that may be in force.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyslet.odata2.csdl.EntityCollection.iterpage">
-<tt class="descname">iterpage</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iterpage</tt><big>(</big><em>setNextPage=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.csdl.EntityCollection.iterpage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterable subset of the values returned by <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a></p>
-<p>The subset is defined by the top, skip (and skiptoken) attributes.</p>
+<p>The subset is defined by the top, skip and skiptoken attributes
+set by <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.SetPage" title="pyslet.odata2.csdl.EntityCollection.SetPage"><tt class="xref py py-meth docutils literal"><span class="pre">SetPage()</span></tt></a></p>
+<p>If <em>setNextPage</em> is True then the page is automatically advanced
+so that the next call to iterpage iterates over the next page.</p>
 <p>Iterpage should be overridden by derived classes for a more
 efficient implementation.  The default implementation simply
 wraps <a class="reference internal" href="#pyslet.odata2.csdl.EntityCollection.itervalues" title="pyslet.odata2.csdl.EntityCollection.itervalues"><tt class="xref py py-meth docutils literal"><span class="pre">itervalues()</span></tt></a>.</p>
@@ -1632,7 +1620,7 @@ principals (so can never be inserted).</p>
         <li class="right" >
           <a href="odatav2_reference.html" title="2.1.3. OData Reference"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140214 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_reference.html" >2.1.3. OData Reference</a> &raquo;</li> 

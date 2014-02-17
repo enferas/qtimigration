@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140215 documentation</title>
+    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140217 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140215',
+        VERSION:     '0.4.20140217',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140215 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
     <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
     <link rel="next" title="2.1.2. OData Providers" href="odatav2_provider.html" />
     <link rel="prev" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>
@@ -280,6 +280,11 @@ easier to read:</p>
 <span class="go">&lt;pyslet.odata2.metadata.EntitySet object at 0x10800f150&gt;</span>
 </pre></div>
 </div>
+<p>When writing an application that would normally use a single database
+you should pass an EntityCollection object to it as a data source rather
+than the DataServices ancestor.  It is best not to pass an
+implementation-specific class like the OData Client as that will make
+the application dependent on a particular type of data source.</p>
 <div class="section" id="entity-sets">
 <h3>2.1.1.2.1. Entity Sets<a class="headerlink" href="#entity-sets" title="Permalink to this headline">¶</a></h3>
 <p>The following attributes are useful for consumers of the API (and should
@@ -745,15 +750,288 @@ not selected:</p>
 </div>
 <div class="section" id="entity-objects">
 <h3>2.1.1.2.3. Entity Objects<a class="headerlink" href="#entity-objects" title="Permalink to this headline">¶</a></h3>
-<p>Documentation coming soon...</p>
-<div class="section" id="working-with-dates">
-<h4>2.1.1.2.3.1. Working with Dates<a class="headerlink" href="#working-with-dates" title="Permalink to this headline">¶</a></h4>
-<p>Documentation coming soon...</p>
+<p>Continuing further with the database analogy and
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> is like a single record.</p>
+<p>Entity instances behave like a read-only dictionary mapping property
+names onto their values.  The values are either <a class="reference internal" href="#simplevalue">SimpleValue</a>, <a class="reference internal" href="#complex">Complex</a>
+or <a class="reference internal" href="#deferredvalue">DeferredValue</a> instances.  All property values are created on
+construction and cannot be assigned.  To update a SimpleValue, whether
+it is a direct child or part of a Complex value, use its
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetFromValue" title="pyslet.odata2.csdl.SimpleValue.SetFromValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetFromValue()</span></tt></a> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">entity</span><span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="s">&quot;Steve&quot;</span><span class="p">)</span>
+<span class="n">entity</span><span class="p">[</span><span class="s">&#39;Address&#39;</span><span class="p">][</span><span class="s">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="s">&quot;Cambridge&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="navigation-deferredvalues">
-<h4>2.1.1.2.3.2. Navigation: DeferredValues<a class="headerlink" href="#navigation-deferredvalues" title="Permalink to this headline">¶</a></h4>
-<p>ordering=core.CommonExpression.OrderByFromString(&#8220;ProductName desc&#8221;)
-products.OrderBy(ordering)</p>
+<p>The following attributes are useful for consumers of the API (and should
+be treated as read only):</p>
+<dl class="docutils">
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">entitySet</span></tt></dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a> to which this entity
+belongs.</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">typeDef</span></tt></dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityType" title="pyslet.odata2.csdl.EntityType"><tt class="xref py py-class docutils literal"><span class="pre">EntityType</span></tt></a> which defines this
+entity&#8217;s type.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.exists" title="pyslet.odata2.csdl.Entity.exists"><tt class="xref py py-attr docutils literal"><span class="pre">exists</span></tt></a></dt>
+<dd>True if this entity exists in the collection, i.e., it was returned
+by one of the dictionary methods of an entity collection such as
+<em>itervalues</em> or [key] look-up.</dd>
+</dl>
+<p>The following methods are useful for consumers of the API:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.Key" title="pyslet.odata2.csdl.Entity.Key"><tt class="xref py py-meth docutils literal"><span class="pre">Key()</span></tt></a></dt>
+<dd>Returns the entity&#8217;s key, as a single python value or tuple in the
+case of compound keys</dd>
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">GetLocation()</span></tt></dt>
+<dd><p class="first">Returns a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> object that represents this
+entity:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">scones</span><span class="o">.</span><span class="n">GetLocation</span><span class="p">()</span>
+<span class="go">http://services.odata.org/V2/Northwind/Northwind.svc/Products(21)</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.DataKeys" title="pyslet.odata2.csdl.Entity.DataKeys"><tt class="xref py py-meth docutils literal"><span class="pre">DataKeys()</span></tt></a></dt>
+<dd><p class="first">Iterates over the simple and complex property names:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">scones</span><span class="o">.</span><span class="n">DataKeys</span><span class="p">())</span>
+<span class="go">[u&#39;ProductID&#39;, u&#39;ProductName&#39;, u&#39;SupplierID&#39;, u&#39;CategoryID&#39;, u&#39;QuantityPerUnit&#39;, u&#39;UnitPrice&#39;, u&#39;UnitsInStock&#39;, u&#39;UnitsOnOrder&#39;, u&#39;ReorderLevel&#39;, u&#39;Discontinued&#39;]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.DataItems" title="pyslet.odata2.csdl.Entity.DataItems"><tt class="xref py py-meth docutils literal"><span class="pre">DataItems()</span></tt></a></dt>
+<dd>Iterates over tuples of simple and complex property (name,value)
+pairs. See above for examples of usage.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.Selected" title="pyslet.odata2.csdl.Entity.Selected"><tt class="xref py py-meth docutils literal"><span class="pre">Selected()</span></tt></a></dt>
+<dd>Tests if the given data property is selected.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.NavigationKeys" title="pyslet.odata2.csdl.Entity.NavigationKeys"><tt class="xref py py-meth docutils literal"><span class="pre">NavigationKeys()</span></tt></a></dt>
+<dd><p class="first">Iterates over the navigation property names:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">scones</span><span class="o">.</span><span class="n">NavigationKeys</span><span class="p">())</span>
+<span class="go">[u&#39;Category&#39;, u&#39;Order_Details&#39;, u&#39;Supplier&#39;]</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.NavigationItems" title="pyslet.odata2.csdl.Entity.NavigationItems"><tt class="xref py py-meth docutils literal"><span class="pre">NavigationItems()</span></tt></a></dt>
+<dd>Iterates over tuples of navigation property (name,DeferredValue)
+pairs.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.IsNavigationProperty" title="pyslet.odata2.csdl.Entity.IsNavigationProperty"><tt class="xref py py-meth docutils literal"><span class="pre">IsNavigationProperty()</span></tt></a></dt>
+<dd>Tests if a navigation property with the given name exists</dd>
+</dl>
+<p>The following methods can be used only on entities that exists, i.e.,
+entities that have been returned from one of the collection&#8217;s dictionary
+methods:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.Update" title="pyslet.odata2.csdl.Entity.Update"><tt class="xref py py-meth docutils literal"><span class="pre">Update()</span></tt></a></dt>
+<dd>Normally you&#8217;ll use the the Update method of an open
+EntityCollection but in cases where the originating collection is no
+longer open this method can be used as a convenience method for
+opening the base collection, updating the entity and then closing
+the collection collection again.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.Delete" title="pyslet.odata2.csdl.Entity.Delete"><tt class="xref py py-meth docutils literal"><span class="pre">Delete()</span></tt></a></dt>
+<dd>Deletes this entity from the base entity set.  If you already have
+the base entity set open it is more efficient to use the <em>del</em>
+operator but if the collection is no longer open or the entity was
+obtained from a collection opened through navigation then this
+method can be used to delete the entity.</dd>
+</dl>
+<p>The following method can only be used on entities that don&#8217;t exist,
+i.e., entities returned from the collection&#8217;s NewEntity or CopyEntity
+methods that have not been inserted.</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity.SetKey" title="pyslet.odata2.csdl.Entity.SetKey"><tt class="xref py py-meth docutils literal"><span class="pre">SetKey()</span></tt></a></dt>
+<dd>Sets the entity&#8217;s key</dd>
+</dl>
+<div class="section" id="simplevalue">
+<h4>2.1.1.2.3.1. SimpleValue<a class="headerlink" href="#simplevalue" title="Permalink to this headline">¶</a></h4>
+<p>Simple property values are represented by (sub-classes of)
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a>, they share a number of
+common methods:</p>
+<dl class="docutils">
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">IsNull()</span></tt></dt>
+<dd><p class="first">Returns True if this value is NULL.  This method is also used
+by Python&#8217;s non-zero test so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">entity</span><span class="p">[</span><span class="s">&#39;Property&#39;</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="n">entity</span><span class="p">[</span><span class="s">&#39;Property&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="c"># prints even if value is 0</span>
+</pre></div>
+</div>
+<p>will print the Property value of entity if it is non-NULL.  In
+particular, it will print empty strings or other representations of
+zero.  If you want to exclude these from the test you should test
+the value attribute directly:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">entity</span><span class="p">[</span><span class="s">&#39;Property&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">entity</span><span class="p">[</span><span class="s">&#39;Property&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="c"># will not print if value is 0</span>
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetFromValue" title="pyslet.odata2.csdl.SimpleValue.SetFromValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetFromValue()</span></tt></a></dt>
+<dd>Updates the value, coercing the argument to the correct type and
+range checking its value.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetFromSimpleValue" title="pyslet.odata2.csdl.SimpleValue.SetFromSimpleValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetFromSimpleValue()</span></tt></a></dt>
+<dd>Updates the value from another SimpleValue, if the types match then
+the value is simply copied, otherwise the value is coerced using
+SetFromValue.</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetFromLiteral" title="pyslet.odata2.csdl.SimpleValue.SetFromLiteral"><tt class="xref py py-meth docutils literal"><span class="pre">SetFromLiteral()</span></tt></a></dt>
+<dd>Updates the value by parsing it from a (unicode) string.  This is
+the opposite to the unicode function.  The literal form is the form
+used when serializing the value to XML (but does not include XML
+character escaping).</dd>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetNull" title="pyslet.odata2.csdl.SimpleValue.SetNull"><tt class="xref py py-meth docutils literal"><span class="pre">SetNull()</span></tt></a></dt>
+<dd>Updates the value to NULL</dd>
+</dl>
+<p>The value attribute is always an immutable value in python and so can be
+used as a key in your own dictionaries.  The following list describes
+the mapping from the EDM-defined simple types to their corresponding
+native Python types.</p>
+<dl class="docutils">
+<dt>Edm.Boolean:</dt>
+<dd>one of the Python constants True or False</dd>
+<dt>Edm.Byte, Edm.SByte, Edm.Int16, Edm.Int32:</dt>
+<dd>int</dd>
+<dt>Edm.Int64:</dt>
+<dd>long</dd>
+<dt>Edm.Double, Edm.Single:</dt>
+<dd>python float</dd>
+<dt>Edm.Decimal:</dt>
+<dd>python Decimal instance (from the built-in decimal module)</dd>
+<dt>Edm.DateTime, Edm.DateTimeOffset:</dt>
+<dd><p class="first">py:class:<cite>pyslet.iso8601.TimePoint</cite> instance</p>
+<p class="last">This is a custom object in Pyslet, see <a class="reference internal" href="#working-with-dates">Working with Dates</a> for
+more information.</p>
+</dd>
+<dt>Edm.Time:</dt>
+<dd><p class="first">py:class:<cite>pyslet.iso8601.Time</cite> instance</p>
+<p>Early versions of the OData specification incorrectly mapped this
+type to the XML Schema duration.  The use of a Time object to
+represent it, rather than a duration, reflects this correction.</p>
+<p class="last">See <a class="reference internal" href="#working-with-dates">Working with Dates</a> for more information.</p>
+</dd>
+<dt>Edm.Binary:</dt>
+<dd>raw string</dd>
+<dt>Edm.String:</dt>
+<dd>unicode string</dd>
+<dt>Edm.Guid:</dt>
+<dd>Python UUID instance (from the built-in uuid module)</dd>
+</dl>
+</div>
+<div class="section" id="complex">
+<h4>2.1.1.2.3.2. Complex<a class="headerlink" href="#complex" title="Permalink to this headline">¶</a></h4>
+<p>Complex values behave like dictionaries of data properties.  They do not
+have keys or navigation properties.  They are never NULL, IsNull and the
+Python non-zero test will always return True.</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetNull" title="pyslet.odata2.csdl.SimpleValue.SetNull"><tt class="xref py py-meth docutils literal"><span class="pre">SetNull()</span></tt></a></dt>
+<dd>Although a Complex value can never be NULL, this method will set all
+of its data properties (recursively if necessary) to NULL</dd>
+</dl>
+</div>
+<div class="section" id="deferredvalue">
+<h4>2.1.1.2.3.3. DeferredValue<a class="headerlink" href="#deferredvalue" title="Permalink to this headline">¶</a></h4>
+<p>Navigation properties are represented as <tt class="xref py py-class docutils literal"><span class="pre">DeferredValue</span></tt>
+instances.  All deferred values can be treated as an entity collection
+and opened in a similar way to an entity set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sconeSuppliers</span><span class="o">=</span><span class="n">scones</span><span class="p">[</span><span class="s">&#39;Supplier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sconeSuppliers</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span> <span class="k">print</span> <span class="n">s</span><span class="p">[</span><span class="s">&#39;CompanyName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">...</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Products(21)/Supplier HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="go">Specialty Biscuits, Ltd.</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>For reading, a collection opened from a deferred value behaves in
+exactly the same way as a collection opened from a base entity set.
+However, for writing there are some difference described above in
+<a class="reference internal" href="#entity-collections">Entity Collections</a>.</p>
+<p>If you use the dictionary methods to update the collection the changes
+are made straight away by accessing the data source directly.  If you
+want to make a number of changes simultaneously, or you want to link
+entities to entities that don&#8217;t yet exist, then you should use the
+BindEntity method described below instead.  This method defers the
+changes until the parent entity is updated (or inserted, in the case of
+non-existent entities.)</p>
+<p>Read-only attributes useful to data consumers:</p>
+<dl class="docutils">
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></dt>
+<dd>The name of the navigation property</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">fromEntity</span></tt></dt>
+<dd>The parent entity of this navigation property</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">pDef</span></tt></dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.NavigationProperty" title="pyslet.odata2.csdl.NavigationProperty"><tt class="xref py py-class docutils literal"><span class="pre">NavigationProperty</span></tt></a> that defines
+this navigation property in the model.</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">isRequired</span></tt></dt>
+<dd>True if the target of this property has multiplicity 1, i.e., it is
+required.</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">isCollection</span></tt></dt>
+<dd>True if the target of this property has multiplicity *</dd>
+<dt><tt class="xref py py-attr docutils literal"><span class="pre">isExpanded</span></tt></dt>
+<dd>True if this navigation property has been expanded.  Expanded
+navigation keep a cached version of the target collection.  Although
+you can open it and use it in the same way any other collection the
+values returned are returned from the cache and not by accessing the
+data source.</dd>
+</dl>
+<p>Methods useful to data consumers:</p>
+<dl class="docutils">
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">OpenCollection()</span></tt></dt>
+<dd>Returns an <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EntityCollection</span></tt></a> object
+that can be used to access the target entities.</dd>
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">GetEntity()</span></tt></dt>
+<dd>Convenience method that returns the entity that is the target of the
+link when the target has multiplicity 1 or 0..1.  If no entity is
+linked by the association then None is returned.</dd>
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">BindEntity()</span></tt></dt>
+<dd>Marks the target entity for addition to this navigation collection
+on next update or insert.  If this navigation property is not a
+collection then the target entity will replace any existing target
+of the link.</dd>
+<dt><tt class="xref py py-meth docutils literal"><span class="pre">Target()</span></tt></dt>
+<dd>The target entity set of this navigation property.</dd>
+</dl>
+</div>
+<div class="section" id="working-with-dates">
+<h4>2.1.1.2.3.4. Working with Dates<a class="headerlink" href="#working-with-dates" title="Permalink to this headline">¶</a></h4>
+<p>In the EDM there are two types of date, DateTime and DateTimeOffset.
+The first represents a time-point in an implicit zone and the second
+represents a time-point with the zone offset explicitly set.</p>
+<p>Both types are represented by the custom :py:class:pyslet.iso8601.TimePoint`
+class in Pyslet.</p>
+<p><em>time module from build 0.4.20140217 onwards</em></p>
+<p>Interacting with Python&#8217;s time module is done using the struct_time type,
+or lists that have values corresponding to those in struct_time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;Orders&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="o">.</span><span class="n">SetPage</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">top</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">orders</span><span class="o">.</span><span class="n">iterpage</span><span class="p">())</span>
+<span class="go">INFO:root:Sending request to services.odata.org</span>
+<span class="go">INFO:root:GET /V2/Northwind/Northwind.svc/Orders?$skip=0&amp;$top=5 HTTP/1.1</span>
+<span class="go">INFO:root:Finished Response, status 200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="go">1996-07-04T00:00:00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">UpdateStructTime</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span>
+<span class="go">[1996, 7, 4, 0, 0, 0, 3, 186, -1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%a, </span><span class="si">%d</span><span class="s"> %b %Y %H:%M:%S&quot;</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+<span class="go">&#39;Thu, 04 Jul 1996 00:00:00&#39;</span>
+</pre></div>
+</div>
+<p>You can set values obtained from the time module in a similar way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyslet.iso8601</span> <span class="kn">as</span> <span class="nn">iso</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="o">.</span><span class="n">FromStructTime</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="go">2014-02-17T21:51:41</span>
+</pre></div>
+</div>
+<p>But if you just want a timestamp use one of the built-in factory
+methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="o">.</span><span class="n">FromNowUTC</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;OrderDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="go">2014-02-17T21:56:23</span>
+</pre></div>
+</div>
+<p>In future versions, look out for better support for datetime and
+calendar module conversion methods.</p>
 </div>
 </div>
 </div>
@@ -779,8 +1057,10 @@ products.OrderBy(ordering)</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#entity-objects">2.1.1.2.3. Entity Objects</a><ul>
-<li><a class="reference internal" href="#working-with-dates">2.1.1.2.3.1. Working with Dates</a></li>
-<li><a class="reference internal" href="#navigation-deferredvalues">2.1.1.2.3.2. Navigation: DeferredValues</a></li>
+<li><a class="reference internal" href="#simplevalue">2.1.1.2.3.1. SimpleValue</a></li>
+<li><a class="reference internal" href="#complex">2.1.1.2.3.2. Complex</a></li>
+<li><a class="reference internal" href="#deferredvalue">2.1.1.2.3.3. DeferredValue</a></li>
+<li><a class="reference internal" href="#working-with-dates">2.1.1.2.3.4. Working with Dates</a></li>
 </ul>
 </li>
 </ul>
@@ -832,7 +1112,7 @@ products.OrderBy(ordering)</p>
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140215 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>

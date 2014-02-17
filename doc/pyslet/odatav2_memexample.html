@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1.2.1. Sample Project: InMemory Data Service &mdash; Pyslet 0.4.20140217 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140217',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="up" title="2.1.2. OData Providers" href="odatav2_provider.html" />
+    <link rel="next" title="2.1.2.2. Sample Project: SQL Data Service" href="odatav2_sqlexample.html" />
+    <link rel="prev" title="2.1.2. OData Providers" href="odatav2_provider.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_sqlexample.html" title="2.1.2.2. Sample Project: SQL Data Service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="odatav2_provider.html" title="2.1.2. OData Providers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
+          <li><a href="odatav2_provider.html" accesskey="U">2.1.2. OData Providers</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sample-project-inmemory-data-service">
+<h1>2.1.2.1. Sample Project: InMemory Data Service<a class="headerlink" href="#sample-project-inmemory-data-service" title="Permalink to this headline">¶</a></h1>
+<p>The sample code for this service is in the samples directory in the
+Pyslet distribution.</p>
+<p>This project demonstrates how to construct a simple OData service based
+on the <tt class="xref py py-class docutils literal"><span class="pre">InMemoryEntityContainer</span></tt> class.
+We don&#8217;t need any customisations, this class does everything we need
+&#8216;out of the box&#8217;.</p>
+<div class="section" id="step-1-creating-the-metadata-model">
+<h2>2.1.2.1.1. Step 1: Creating the Metadata Model<a class="headerlink" href="#step-1-creating-the-metadata-model" title="Permalink to this headline">¶</a></h2>
+<p>Unlike other frameworks for implementing OData services Pyslet starts
+with the metadata model, it is not automatically generated: you must
+write it yourself!</p>
+<p>Fortunately, there are plenty of examples you can use as a template.  In
+this sample project we&#8217;ll write a very simple memory cache capable of
+storing a key-value pair.  Here&#8217;s our data model:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;edmx:Edmx Version=&quot;1.0&quot; xmlns:edmx=&quot;http://schemas.microsoft.com/ado/2007/06/edmx&quot;
+        xmlns:m=&quot;http://schemas.microsoft.com/ado/2007/08/dataservices/metadata&quot;&gt;
+        &lt;edmx:DataServices m:DataServiceVersion=&quot;2.0&quot;&gt;
+                &lt;Schema Namespace=&quot;MemCacheSchema&quot; xmlns=&quot;http://schemas.microsoft.com/ado/2006/04/edm&quot;&gt;
+                        &lt;EntityContainer Name=&quot;MemCache&quot; m:IsDefaultEntityContainer=&quot;true&quot;&gt;
+                                &lt;EntitySet Name=&quot;KeyValuePairs&quot; EntityType=&quot;MemCacheSchema.KeyValuePair&quot;/&gt;
+                        &lt;/EntityContainer&gt;
+                        &lt;EntityType Name=&quot;KeyValuePair&quot;&gt;
+                                &lt;Key&gt;
+                                        &lt;PropertyRef Name=&quot;Key&quot;/&gt;
+                                &lt;/Key&gt;
+                                &lt;Property Name=&quot;Key&quot; Type=&quot;Edm.String&quot; Nullable=&quot;false&quot; MaxLength=&quot;256&quot;
+                                        Unicode=&quot;true&quot; FixedLength=&quot;false&quot;/&gt;
+                                &lt;Property Name=&quot;Value&quot; Type=&quot;Edm.String&quot; Nullable=&quot;false&quot; MaxLength=&quot;8192&quot;
+                                        Unicode=&quot;true&quot; FixedLength=&quot;false&quot;/&gt;
+                                &lt;Property Name=&quot;Expires&quot; Type=&quot;Edm.DateTime&quot; Nullable=&quot;false&quot;
+                                        Precision=&quot;3&quot;/&gt;
+                        &lt;/EntityType&gt;
+                &lt;/Schema&gt;
+        &lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;
+</pre></div>
+</div>
+<p>Our model has one defined EntityType called <em>KeyValuePair</em> and one
+EntitySet called <em>KeyValuePairs</em> in a container called <em>MemCache</em>.  The
+idea behind the model is that each key-value pair is inserted with an
+expires time, after which it is safe to clean it up.</p>
+<p>For simplicity, we&#8217;ll save this model to a file and load it from the
+file when our script starts up.  Here&#8217;s the source code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyslet.odata2.metadata</span> <span class="kn">as</span> <span class="nn">edmx</span>
+
+<span class="k">def</span> <span class="nf">LoadMetadata</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Loads the metadata file from the current directory.&quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">edmx</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;MemCacheSchema.xml&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">doc</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc</span>
+</pre></div>
+</div>
+<p>The metadata module contains a Document object and the definitions of
+the elements in the edmx namespace that enable us to read the XML file.</p>
+</div>
+<div class="section" id="step-2-test-the-model">
+<h2>2.1.2.1.2. Step 2: Test the Model<a class="headerlink" href="#step-2-test-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s write a simple test function to test our model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">TestData</span><span class="p">(</span><span class="n">memCache</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">memCache</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">26</span><span class="p">):</span>
+                        <span class="n">e</span><span class="o">=</span><span class="n">collection</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+                        <span class="n">e</span><span class="o">.</span><span class="n">SetKey</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                        <span class="n">e</span><span class="p">[</span><span class="s">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0x41</span><span class="o">+</span><span class="n">i</span><span class="p">))</span>
+                        <span class="n">e</span><span class="p">[</span><span class="s">&#39;Expires&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="o">.</span><span class="n">FromUnixTime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">+</span><span class="mi">10</span><span class="o">*</span><span class="n">i</span><span class="p">))</span>
+                        <span class="n">collection</span><span class="o">.</span><span class="n">InsertEntity</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">TestModel</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Read and write some key value pairs&quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">LoadMetadata</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">InMemoryEntityContainer</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;MemCacheSchema.MemCache&#39;</span><span class="p">])</span>
+        <span class="n">memCache</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;MemCacheSchema.MemCache.KeyValuePairs&#39;</span><span class="p">]</span>
+        <span class="n">TestData</span><span class="p">(</span><span class="n">memCache</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">memCache</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">collection</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+                        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> (expires </span><span class="si">%s</span><span class="s">)&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Key&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Expires&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Our function comes in two parts (for reasons that will become clear
+later).  The first function takes an EntitySet object and creates 26
+key-value pairs with increasing expiry times.</p>
+<p>The main function loads the metadata model, creates the
+InMemoryEntityContainer object, calls the first function to create the
+test data and then opens the <em>KeyValuePairs</em> collection itself to check
+that everything is in order.  Here&#8217;s the output from a sample run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">memcache</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memcache</span><span class="o">.</span><span class="n">TestModel</span><span class="p">()</span>
+<span class="go">24: Y (expires 2014-02-17T22:26:21)</span>
+<span class="go">25: Z (expires 2014-02-17T22:26:31)</span>
+<span class="go">20: U (expires 2014-02-17T22:25:41)</span>
+<span class="go">21: V (expires 2014-02-17T22:25:51)</span>
+<span class="go">22: W (expires 2014-02-17T22:26:01)</span>
+<span class="go">23: X (expires 2014-02-17T22:26:11)</span>
+<span class="go">1: B (expires 2014-02-17T22:22:31)</span>
+<span class="go">0: A (expires 2014-02-17T22:22:21)</span>
+<span class="go">3: D (expires 2014-02-17T22:22:51)</span>
+<span class="go">2: C (expires 2014-02-17T22:22:41)</span>
+<span class="go">5: F (expires 2014-02-17T22:23:11)</span>
+<span class="go">4: E (expires 2014-02-17T22:23:01)</span>
+<span class="go">7: H (expires 2014-02-17T22:23:31)</span>
+<span class="go">6: G (expires 2014-02-17T22:23:21)</span>
+<span class="go">9: J (expires 2014-02-17T22:23:51)</span>
+<span class="go">8: I (expires 2014-02-17T22:23:41)</span>
+<span class="go">11: L (expires 2014-02-17T22:24:11)</span>
+<span class="go">10: K (expires 2014-02-17T22:24:01)</span>
+<span class="go">13: N (expires 2014-02-17T22:24:31)</span>
+<span class="go">12: M (expires 2014-02-17T22:24:21)</span>
+<span class="go">15: P (expires 2014-02-17T22:24:51)</span>
+<span class="go">14: O (expires 2014-02-17T22:24:41)</span>
+<span class="go">17: R (expires 2014-02-17T22:25:11)</span>
+<span class="go">16: Q (expires 2014-02-17T22:25:01)</span>
+<span class="go">19: T (expires 2014-02-17T22:25:31)</span>
+<span class="go">18: S (expires 2014-02-17T22:25:21)</span>
+</pre></div>
+</div>
+<p>It is worth pausing briefly here to look at the InMemoryEntityContainer
+object. When we construct this object we pass in the EntityContainer and
+it creates all the necessary storage for the EntitySets (and
+AssociationSets, if required) that it contains.  It also binds internal
+implementations of the EntityCollection object to the model so that, in
+future, the EntitySet can be opened using the same API described
+previously in
+<a class="reference internal" href="odatav2_consumer.html"><em>Data Consumers</em></a>.  From this point on we don&#8217;t need to refer to
+the container again as we can just open the EntitySet directly from the
+model.  That object is the heart of our application, blink and you&#8217;ve
+missed it.</p>
+</div>
+<div class="section" id="step-4-link-the-data-source-to-the-odata-server">
+<h2>2.1.2.1.3. Step 4: Link the Data Source to the OData Server<a class="headerlink" href="#step-4-link-the-data-source-to-the-odata-server" title="Permalink to this headline">¶</a></h2>
+<p>OData runs over HTTP so we need to assign a service root URL for the
+server to run on.  We define a couple of constants to help with this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SERVICE_PORT</span><span class="o">=</span><span class="mi">8080</span>
+<span class="n">SERVICE_ROOT</span><span class="o">=</span><span class="s">&quot;http://localhost:</span><span class="si">%i</span><span class="s">/&quot;</span><span class="o">%</span><span class="n">SERVICE_PORT</span>
+</pre></div>
+</div>
+<p>We&#8217;re also going to use a separate thread to run the server, a global
+variable helps here.  We&#8217;re using Pythons wsgi interface for the server
+which requires a callable object to handle requests.  The
+<tt class="xref py py-class docutils literal"><span class="pre">Server</span></tt> object implements callable
+behaviour to enable this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span><span class="o">,</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">wsgiref.simple_server</span> <span class="kn">import</span> <span class="n">make_server</span>
+
+<span class="n">cacheApp</span><span class="o">=</span><span class="bp">None</span>           <span class="c">#: our Server instance</span>
+
+<span class="k">def</span> <span class="nf">runCacheServer</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Starts the web server running&quot;&quot;&quot;</span>
+        <span class="n">server</span><span class="o">=</span><span class="n">make_server</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">SERVICE_PORT</span><span class="p">,</span><span class="n">cacheApp</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Starting HTTP server on port </span><span class="si">%i</span><span class="s">...&quot;</span><span class="o">%</span><span class="n">SERVICE_PORT</span><span class="p">)</span>
+        <span class="c"># Respond to requests until process is killed</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The final part of server implementation involves loading the model,
+creating the server object and then spawning the server thread:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Executed when we are launched&quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">LoadMetadata</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">InMemoryEntityContainer</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;MemCacheSchema.MemCache&#39;</span><span class="p">])</span>
+        <span class="n">server</span><span class="o">=</span><span class="n">Server</span><span class="p">(</span><span class="n">serviceRoot</span><span class="o">=</span><span class="n">SERVICE_ROOT</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">SetModel</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="c"># The server is now ready to serve forever</span>
+        <span class="k">global</span> <span class="n">cacheApp</span>
+        <span class="n">cacheApp</span><span class="o">=</span><span class="n">server</span>
+        <span class="n">t</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">runCacheServer</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;MemCache starting HTTP server on </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">SERVICE_ROOT</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Server object just takes the serviceRoot as a parameter on
+construction and has a <tt class="xref py py-meth docutils literal"><span class="pre">SetModel()</span></tt>
+method which is used to assign the metadata document to it.  That&#8217;s all
+you need to do to create it, it uses the same API described in
+<a class="reference internal" href="odatav2_consumer.html"><em>Data Consumers</em></a> to consume the data source and expose it via the
+OData protocol.</p>
+<p>At this stage we can test it via the terminal and a browser:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">memcache</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memcache</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>At this point the server is running in a separate thread, listening on
+port 8080. A quick check from the browser shows this to be the case,
+when I hit <a class="reference external" href="http://localhost:8080/KeyValuePairs">http://localhost:8080/KeyValuePairs</a> Firefox recognises that
+the document is an Atom feed and displays the feed title.  The page
+source shows:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;feed xmlns=&quot;http://www.w3.org/2005/Atom&quot; xmlns:d=&quot;http://schemas.microsoft.com/ado/2007/08/dataservices&quot; xmlns:m=&quot;http://schemas.microsoft.com/ado/2007/08/dataservices/metadata&quot; xml:base=&quot;http://localhost:8080/&quot;&gt;
+        &lt;id&gt;http://localhost:8080/KeyValuePairs&lt;/id&gt;
+        &lt;title type=&quot;text&quot;&gt;MemCacheSchema.MemCache.KeyValuePairs&lt;/title&gt;
+        &lt;updated&gt;2014-02-17T22:41:51Z&lt;/updated&gt;
+        &lt;link href=&quot;http://localhost:8080/KeyValuePairs&quot; rel=&quot;self&quot;/&gt;
+&lt;/feed&gt;
+</pre></div>
+</div>
+<p>Looks like it is working!</p>
+</div>
+<div class="section" id="step-5-customise-the-server">
+<h2>2.1.2.1.4. Step 5: Customise the Server<a class="headerlink" href="#step-5-customise-the-server" title="Permalink to this headline">¶</a></h2>
+<p>We don&#8217;t need to do much to customise our server, we&#8217;ll assume that it
+is only ever going to be exposed to clients we trust and so
+authentication is not required or will be handled by some intermediate
+proxy.</p>
+<p>However, we do want to clean up expired entries automatically.  Let&#8217;s
+add one last function to our code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">CLEANUP_SLEEP</span><span class="o">=</span><span class="mi">10</span>
+
+<span class="k">def</span> <span class="nf">CleanupForever</span><span class="p">(</span><span class="n">memCache</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Runs a loop continuously cleaning up expired items&quot;&quot;&quot;</span>
+        <span class="n">expires</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">PropertyExpression</span><span class="p">(</span><span class="s">u&quot;Expires&quot;</span><span class="p">)</span>
+        <span class="n">now</span><span class="o">=</span><span class="n">edm</span><span class="o">.</span><span class="n">DateTimeValue</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">LiteralExpression</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+        <span class="nb">filter</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">BinaryExpression</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">lt</span><span class="p">)</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">operands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">now</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="o">.</span><span class="n">FromNowUTC</span><span class="p">())</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Cleanup thread running at </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">with</span> <span class="n">memCache</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">cacheEntries</span><span class="p">:</span>
+                        <span class="n">cacheEntries</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+                        <span class="n">expiredList</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">cacheEntries</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">expiredList</span><span class="p">:</span>
+                                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Cleaning </span><span class="si">%i</span><span class="s"> cache entries&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">expiredList</span><span class="p">))</span>
+                                <span class="k">for</span> <span class="n">expired</span> <span class="ow">in</span> <span class="n">expiredList</span><span class="p">:</span>
+                                        <span class="k">del</span> <span class="n">cacheEntries</span><span class="p">[</span><span class="n">expired</span><span class="p">]</span>
+                        <span class="n">cacheEntries</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+                        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Cleanup complete, </span><span class="si">%i</span><span class="s"> cache entries remain&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">cacheEntries</span><span class="p">))</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">CLEANUP_SLEEP</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function starts by building a filter expression manually.  Filter
+expressions are just simple trees of expression objects.  We start with
+a PropertyExpression that references a property named <em>Expires</em> and a
+literal expression with a date-time value.  DateTimeValue is just a
+sub-class of SimpleValue which was introduced in
+<a class="reference internal" href="odatav2_consumer.html"><em>Data Consumers</em></a>.  Previously we&#8217;ve only seen simple values that
+are part of an entity but in this case we create a standalone value to
+use in the expression.  Finally, the filter expression is created as a
+BinaryExpression using the less than operator and the operands appended.
+The resulting expression tree looks like this:</p>
+<img alt="_images/cachefilter.png" src="_images/cachefilter.png" />
+<p>Each time around the loop we can just update the value of the literal
+expression with the current time.</p>
+<p>This function takes an <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet" title="pyslet.odata2.csdl.EntitySet"><tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt></a> as a
+parameter so we can open it to get the collection and then apply the
+filter.  Once filtered, all matching cache entries are loaded into a
+list before being deleted from the collection, one by one.</p>
+<p>Finally, we remove the filter and report the number of remaining entries
+before sleeping ready for the next run.</p>
+<p>We&#8217;ll call this function right after main, so we&#8217;ve got one thread
+running the server and the main thread running the cleanup loop.</p>
+<p>Now we can test, we start by firing up our server application:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ ./memcache.py
+INFO:root:MemCache starting HTTP server on http://localhost:8080/
+INFO:root:Cleanup thread running at 2014-02-17T23:03:34
+INFO:root:Cleanup complete, 0 cache entries remain
+INFO:root:Starting HTTP server on port 8080...
+INFO:root:Cleanup thread running at 2014-02-17T23:03:44
+INFO:root:Cleanup complete, 0 cache entries remain
+</pre></div>
+</div>
+<p>Unfortunately, we need more than a simple browser to test the
+application properly.  We want to know that the key value pairs are
+being created properly and for that we need a client capable of writing
+to the service. Fortunately, Pyslet has an OData consumer, so we open
+the interpreter in a new terminal and start interacting with our server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyslet.odata2.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">=</span><span class="n">Client</span><span class="p">(</span><span class="s">&quot;http://localhost:8080/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As soon as we start the client our server registers hits:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:Cleanup thread running at 2014-02-17T23:06:34
+INFO:root:Cleanup complete, 0 cache entries remain
+127.0.0.1 - - [17/Feb/2014 23:06:34] &quot;GET / HTTP/1.1&quot; 200 360
+127.0.0.1 - - [17/Feb/2014 23:06:34] &quot;GET /$metadata HTTP/1.1&quot; 200 1040
+INFO:root:Cleanup thread running at 2014-02-17T23:06:44
+INFO:root:Cleanup complete, 0 cache entries remain
+</pre></div>
+</div>
+<p>Entering the data manually would be tedious but we already wrote a
+suitable function for adding test data.  Because both the data source
+and the OData client adhere to the same API we can simply pass the
+EntitySet to our TestData function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">memcache</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memcache</span><span class="o">.</span><span class="n">TestData</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">feeds</span><span class="p">[</span><span class="s">&#39;KeyValuePairs&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>As we do this, the server window goes crazy as each of the POST requests
+comes through:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:Cleanup thread running at 2014-02-17T23:08:14
+INFO:root:Cleanup complete, 0 cache entries remain
+127.0.0.1 - - [17/Feb/2014 23:08:23] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 717
+... [and so on]
+...
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+INFO:root:Cleanup thread running at 2014-02-17T23:08:24
+INFO:root:Cleaning 1 cache entries
+INFO:root:Cleanup complete, 19 cache entries remain
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+127.0.0.1 - - [17/Feb/2014 23:08:24] &quot;POST /KeyValuePairs HTTP/1.1&quot; 201 720
+INFO:root:Cleanup thread running at 2014-02-17T23:08:34
+INFO:root:Cleaning 1 cache entries
+INFO:root:Cleanup complete, 24 cache entries remain
+</pre></div>
+</div>
+<p>We can then watch the data gradually decay as each entry times out in
+turn.  We can easily repopulate the cache, this time let&#8217;s catch it in a
+browser by navigating to:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/KeyValuePairs(&#39;25&#39;)?$format=json
+</pre></div>
+</div>
+<p>The result is:</p>
+<div class="highlight-python"><div class="highlight"><pre>{&quot;d&quot;:{&quot;__metadata&quot;:{&quot;uri&quot;:&quot;http://localhost:8080/KeyValuePairs(&#39;25&#39;)
+&quot;,&quot;type&quot;:&quot;MemCacheSchema.KeyValuePair&quot;},&quot;Key&quot;:&quot;25&quot;,&quot;Value&quot;:&quot;Z&quot;,&quot;
+Expires&quot;:&quot;/Date(1392679105162)/&quot;}}
+</pre></div>
+</div>
+<p>We can pick the value our directly with a URL like:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/KeyValuePairs(&#39;25&#39;)/Value/$value
+</pre></div>
+</div>
+<p>This returns the simple string &#8216;Z&#8217;.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>2.1.2.1.5. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>It is easy to write an OData server using Pyslet!</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1.2.1. Sample Project: InMemory Data Service</a><ul>
+<li><a class="reference internal" href="#step-1-creating-the-metadata-model">2.1.2.1.1. Step 1: Creating the Metadata Model</a></li>
+<li><a class="reference internal" href="#step-2-test-the-model">2.1.2.1.2. Step 2: Test the Model</a></li>
+<li><a class="reference internal" href="#step-4-link-the-data-source-to-the-odata-server">2.1.2.1.3. Step 4: Link the Data Source to the OData Server</a></li>
+<li><a class="reference internal" href="#step-5-customise-the-server">2.1.2.1.4. Step 5: Customise the Server</a></li>
+<li><a class="reference internal" href="#conclusion">2.1.2.1.5. Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="odatav2_provider.html"
+                        title="previous chapter">2.1.2. OData Providers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="odatav2_sqlexample.html"
+                        title="next chapter">2.1.2.2. Sample Project: SQL Data Service</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/odatav2_memexample.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="odatav2_sqlexample.html" title="2.1.2.2. Sample Project: SQL Data Service"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="odatav2_provider.html" title="2.1.2. OData Providers"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
+          <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
+          <li><a href="odatav2_provider.html" >2.1.2. OData Providers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

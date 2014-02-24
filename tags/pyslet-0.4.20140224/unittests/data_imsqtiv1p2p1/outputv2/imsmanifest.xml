@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"
+	xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd"
+	xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_v2p1" identifier="outputv2">
+	<metadata>
+		<schema>IMS Content</schema>
+		<schemaversion>1.2</schemaversion>
+	</metadata>
+	<organizations/>
+	<resources>
+		<resource identifier="emptyitem" type="imsqti_item_xmlv2p1" href="empty/emptyitem.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>emptyitem</imsmd:identifier>
+						<imsmd:description>
+							<imsmd:langstring>Empty Item</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="empty/emptyitem.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBI_IR_01" type="imsqti_item_xmlv2p1"
+			href="fibi_ir_01/pyslet_fibi_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBI_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Numeric slider</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Numeric slider question</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibi_ir_01/pyslet_fibi_ir_01.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBI_IR_02" type="imsqti_item_xmlv2p1"
+			href="fibi_ir_02/pyslet_fibi_ir_02.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBI_IR_02</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard FIB Numeric Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Numeric fill-in-the-blank example.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibi_ir_02/pyslet_fibi_ir_02.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBN_IR_01" type="imsqti_item_xmlv2p1"
+			href="fibn_ir_01/pyslet_fibn_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBN_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard FIB Decimal Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Numeric (decimal) fill-in-the-blank
+								example.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibn_ir_01/pyslet_fibn_ir_01.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBS_IR_01" type="imsqti_item_xmlv2p1"
+			href="fibs_ir_01/pyslet_fibs_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBS_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard FIB Text Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Fill-in-the-blank text example.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibs_ir_01/pyslet_fibs_ir_01.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBS_IR_02" type="imsqti_item_xmlv2p1"
+			href="fibs_ir_02/pyslet_fibs_ir_02.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBS_IR_02</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Multiple FIB Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Multiple fill-in-the-blank text
+								example.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibs_ir_02/pyslet_fibs_ir_02.xml"/>
+		</resource>
+		<resource identifier="PYSLET_FIBS_IR_03" type="imsqti_item_xmlv2p1"
+			href="fibs_ir_03/pyslet_fibs_ir_03.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_FIBS_IR_03</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Extended Answer Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Extended answer example with instructions to
+								grader.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="fibs_ir_03/pyslet_fibs_ir_03.xml"/>
+		</resource>
+		<resource identifier="fullitem" type="imsqti_item_xmlv2p1" href="full/fullitem.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>fullitem</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="en-GB">Title: Full Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Full Item</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:lifecycle>
+						<imsmd:status>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="x-none">QTIv1</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="x-none">experimental</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:status>
+					</imsmd:lifecycle>
+					<imsmd:educational>
+						<imsmd:context>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="x-none">training</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:context>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en-GB">Migration; Objectives for fullitem as
+								metadata</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:educational>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: maxattempts can not be controlled at item
+								level, ignored: maxattempts='1'; Warning: duration is currently
+								outside the scope of version 2: ignored 1H; Warning: qmd_itemtype
+								now replaced by qtiMetadata.interactionType in manifest, ignoring
+								MCQ; Warning: itemcontrol is currently outside the scope of version
+								2; Warning: changing view Administrator to proctor; Warning: rubric
+								with view="All" replaced by &lt;div&gt; with class="rubric";
+								Warning: discarding absolute positioning information on
+								presentation; Warning: view restriction on outcome interpretation no
+								longer supported (Candidate); Warning: view restriction on outcome
+								interpretation no longer supported (Tutor); Warning:
+								case-insensitive comparison of identifiers not supported in version
+								2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata>
+					<imsqti:toolVendor>Steve Lay</imsqti:toolVendor>
+				</imsqti:qtiMetadata>
+			</metadata>
+			<file href="full/fullitem.xml"/>
+		</resource>
+		<resource identifier="PYSLET_IHSP_IR_01" type="imsqti_item_xmlv2p1"
+			href="ihsp_ir_01/pyslet_ihsp_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_IHSP_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard Hotspot Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Image with hidden hotspot</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: ignoring response_label in
+								selectPointInteraction (A)</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="ihsp_ir_01/pyslet_ihsp_ir_01.xml"/>
+			<file href="ihsp_ir_01/absorbed.gif"/>
+		</resource>
+		<resource identifier="PYSLET_MCHC_IR_01" type="imsqti_item_xmlv2p1"
+			href="mchc_ir_01/pyslet_mchc_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MCHC_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard Multiple Choice Item</imsmd:langstring>
+						</imsmd:title>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: case-insensitive comparison of identifiers
+								not supported in version 2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mchc_ir_01/pyslet_mchc_ir_01.xml"/>
+		</resource>
+		<resource identifier="PYSLET_MCHC_IR_02" type="imsqti_item_xmlv2p1"
+			href="mchc_ir_02/pyslet_mchc_ir_02.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MCHC_IR_02</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard Multiple Choice Item with
+								Images</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Test of image content.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: case-insensitive comparison of identifiers
+								not supported in version 2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mchc_ir_02/pyslet_mchc_ir_02.xml"/>
+			<file href="mchc_ir_02/mchc_ir_02-1.gif"/>
+			<file href="mchc_ir_02/mchc_ir_02-2.gif"/>
+			<file href="mchc_ir_02/mchc_ir_02-3.gif"/>
+			<file href="mchc_ir_02/mchc_ir_02-4.gif"/>
+		</resource>
+		<resource identifier="PYSLET_MCHC_IR_03" type="imsqti_item_xmlv2p1"
+			href="mchc_ir_03/pyslet_mchc_ir_03.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MCHC_IR_03</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Standard Multiple Choice with Audio
+								Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>MCQ with audio content.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: case-insensitive comparison of identifiers
+								not supported in version 2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mchc_ir_03/pyslet_mchc_ir_03.xml"/>
+			<file href="mchc_ir_03/mchc_ir_03.jpg"/>
+			<file href="mchc_ir_03/sound1.wav"/>
+			<file href="mchc_ir_03/sound2.wav"/>
+			<file href="mchc_ir_03/sound3.wav"/>
+			<file href="mchc_ir_03/sound4.wav"/>
+		</resource>
+		<resource identifier="PYSLET_MCHC_IR_04" type="imsqti_item_xmlv2p1"
+			href="mchc_ir_04/pyslet_mchc_ir_04.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MCHC_IR_04</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>MCQ with Image Hotspot Rendering
+								Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>MCQ with image hot spot.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: case-insensitive comparison of identifiers
+								not supported in version 2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mchc_ir_04/pyslet_mchc_ir_04.xml"/>
+			<file href="mchc_ir_04/ukair.gif"/>
+		</resource>
+		<resource identifier="PYSLET_MCHC_IR_05" type="imsqti_item_xmlv2p1"
+			href="mchc_ir_05/pyslet_mchc_ir_05.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MCHC_IR_05</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>MCQ with Slider Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>This is an MCQ-slider question.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: choice-slider replaced with
+								choiceInteraction.slider; Warning: case-insensitive comparison of
+								identifiers not supported in version 2; Warning: discarding view on feedback
+								(Tutor)</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mchc_ir_05/pyslet_mchc_ir_05.xml"/>
+		</resource>
+		<resource identifier="metadataNewStyle" type="imsqti_item_xmlv2p1"
+			href="metadata_new_style/metadatanewstyle.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>metadataNewStyle</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="en-GB">Metadata New-Style</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en-GB">General Description
+								Extension</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:lifecycle>
+						<imsmd:status>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="x-none">QTIv1</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="x-none">experimental</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:status>
+						<imsmd:contribute>
+							<imsmd:role>
+								<imsmd:source>
+									<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+								</imsmd:source>
+								<imsmd:value>
+									<imsmd:langstring xml:lang="x-none">author</imsmd:langstring>
+								</imsmd:value>
+							</imsmd:role>
+							<imsmd:centity>
+								<imsmd:vcard>BEGIN:VCARD&#xD;
+VERSION:3.0&#xD;
+FN:Steve Author&#xD;
+N:Steve Author;;;;&#xD;
+END:VCARD&#xD;
+</imsmd:vcard>
+							</imsmd:centity>
+						</imsmd:contribute>
+						<imsmd:contribute>
+							<imsmd:role>
+								<imsmd:source>
+									<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+								</imsmd:source>
+								<imsmd:value>
+									<imsmd:langstring xml:lang="x-none">initiator</imsmd:langstring>
+								</imsmd:value>
+							</imsmd:role>
+							<imsmd:centity>
+								<imsmd:vcard>BEGIN:VCARD&#xD;
+VERSION:3.0&#xD;
+FN:Steve Creator&#xD;
+N:Steve Creator;;;;&#xD;
+END:VCARD&#xD;
+</imsmd:vcard>
+							</imsmd:centity>
+						</imsmd:contribute>
+						<imsmd:contribute>
+							<imsmd:role>
+								<imsmd:source>
+									<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+								</imsmd:source>
+								<imsmd:value>
+									<imsmd:langstring xml:lang="x-none">publisher</imsmd:langstring>
+								</imsmd:value>
+							</imsmd:role>
+							<imsmd:centity>
+								<imsmd:vcard>BEGIN:VCARD&#xD;
+VERSION:3.0&#xD;
+FN:Steve Owner&#xD;
+N:Steve Owner;;;;&#xD;
+END:VCARD&#xD;
+</imsmd:vcard>
+							</imsmd:centity>
+						</imsmd:contribute>
+					</imsmd:lifecycle>
+					<imsmd:educational>
+						<imsmd:context>
+							<imsmd:source>
+								<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+							</imsmd:source>
+							<imsmd:value>
+								<imsmd:langstring xml:lang="x-none">training</imsmd:langstring>
+							</imsmd:value>
+						</imsmd:context>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en-GB">Migration</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:educational>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: qmd_itemtype now replaced by
+								qtiMetadata.interactionType in manifest, ignoring
+								MCQ</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata>
+					<imsqti:toolVendor>Steve Lay</imsqti:toolVendor>
+				</imsqti:qtiMetadata>
+			</metadata>
+			<file href="metadata_new_style/metadatanewstyle.xml"/>
+		</resource>
+		<resource identifier="PYSLET_MRSP_IR_01" type="imsqti_item_xmlv2p1"
+			href="mrsp_ir_01/pyslet_mrsp_ir_01.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MRSP_IR_01</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Simple Multiple Response Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>Simple MRQ Example</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: case-insensitive comparison of identifiers
+								not supported in version 2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mrsp_ir_01/pyslet_mrsp_ir_01.xml"/>
+		</resource>
+		<resource identifier="PYSLET_MRSP_IR_02" type="imsqti_item_xmlv2p1"
+			href="mrsp_ir_02/pyslet_mrsp_ir_02.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>PYSLET_MRSP_IR_02</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring>Multiple Response Hotspot Item</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring>MRQ hotspot question with hard to find
+								images.</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:general>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: multi-image hotspot maps to multiple
+								interactions, maxChoices can no longer be enforced; Warning:
+								case-insensitive comparison of identifiers not supported in version
+								2</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="mrsp_ir_02/pyslet_mrsp_ir_02.xml"/>
+			<file href="mrsp_ir_02/solar.gif"/>
+			<file href="mrsp_ir_02/absorbed.gif"/>
+			<file href="mrsp_ir_02/solar1.gif"/>
+			<file href="mrsp_ir_02/absorbed1.gif"/>
+		</resource>
+		<resource identifier="bank1" type="imsqti_item_xmlv2p1" href="objectbank/bank1.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>bank1</imsmd:identifier>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="objectbank/bank1.xml"/>
+		</resource>
+		<resource identifier="bank2" type="imsqti_item_xmlv2p1" href="objectbank/bank2.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>bank2</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="en-US">Bank Item 2</imsmd:langstring>
+						</imsmd:title>
+					</imsmd:general>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="objectbank/bank2.xml"/>
+		</resource>
+		<resource identifier="qmdextensions" type="imsqti_item_xmlv2p1"
+			href="qmdextensions/qmdextensions.xml">
+			<metadata>
+				<imsmd:lom>
+					<imsmd:general>
+						<imsmd:identifier>qmdextensions</imsmd:identifier>
+						<imsmd:title>
+							<imsmd:langstring xml:lang="en-GB">QMD Title
+								Extension</imsmd:langstring>
+						</imsmd:title>
+						<imsmd:description>
+							<imsmd:langstring xml:lang="en-GB">General Description
+								Extension</imsmd:langstring>
+						</imsmd:description>
+						<imsmd:keyword>
+							<imsmd:langstring xml:lang="en-GB">Extension Domain</imsmd:langstring>
+						</imsmd:keyword>
+						<imsmd:keyword>
+							<imsmd:langstring xml:lang="en-GB">QMD</imsmd:langstring>
+						</imsmd:keyword>
+						<imsmd:keyword>
+							<imsmd:langstring xml:lang="en-GB">Extension</imsmd:langstring>
+						</imsmd:keyword>
+					</imsmd:general>
+					<imsmd:lifecycle>
+						<imsmd:contribute>
+							<imsmd:role>
+								<imsmd:source>
+									<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+								</imsmd:source>
+								<imsmd:value>
+									<imsmd:langstring xml:lang="x-none">author</imsmd:langstring>
+								</imsmd:value>
+							</imsmd:role>
+							<imsmd:centity>
+								<imsmd:vcard>BEGIN:VCARD&#xD;
+VERSION:3.0&#xD;
+FN:Steve Lay&#xD;
+N:Steve Lay;;;;&#xD;
+END:VCARD&#xD;
+</imsmd:vcard>
+							</imsmd:centity>
+						</imsmd:contribute>
+						<imsmd:contribute>
+							<imsmd:role>
+								<imsmd:source>
+									<imsmd:langstring xml:lang="x-none">LOMv1.0</imsmd:langstring>
+								</imsmd:source>
+								<imsmd:value>
+									<imsmd:langstring xml:lang="x-none">unknown</imsmd:langstring>
+								</imsmd:value>
+							</imsmd:role>
+							<imsmd:centity>
+								<imsmd:vcard>BEGIN:VCARD&#xD;
+VERSION:3.0&#xD;
+FN:Example Inc&#xD;
+N:Example Inc;;;;&#xD;
+ORG:Example Inc&#xD;
+END:VCARD&#xD;
+</imsmd:vcard>
+							</imsmd:centity>
+						</imsmd:contribute>
+					</imsmd:lifecycle>
+					<imsmd:annotation>
+						<imsmd:description>
+							<imsmd:langstring>Warning: qmd_domain extension field will be added as
+								LOM keyword</imsmd:langstring>
+						</imsmd:description>
+					</imsmd:annotation>
+				</imsmd:lom>
+				<imsqti:qtiMetadata/>
+			</metadata>
+			<file href="qmdextensions/qmdextensions.xml"/>
+		</resource>
+	</resources>
+</manifest>

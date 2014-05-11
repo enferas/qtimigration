@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1"
+	xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2" 
+	xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_v2p1"
+	identifier="MANIFEST-3">
+	<organizations/>
+	<resources>
+		<resource identifier="test1" type="webcontent" href="file_1.xml">
+			<file href="file_a.xml"/>
+			<file href="file_1.xml"/>
+			<file href="file_2.xml"/>
+		</resource>
+		<resource identifier="test2" type="webcontent" href="file_1.xml">
+			<file href="file_b.xml"/>
+			<file href="file_1.xml"/>
+			<file href="file_3.xml"/>
+		</resource>
+	</resources>
+</manifest>

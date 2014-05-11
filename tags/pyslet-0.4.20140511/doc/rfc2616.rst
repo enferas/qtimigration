@@ -1,0 +1,237 @@
+Hypertext Transfer Protocol (RFC2616)
+=====================================
+
+.. py:module:: pyslet.rfc2616
+
+This module defines functions and classes for working with HTTP as defined by
+RFC2616: http://www.ietf.org/rfc/rfc2616.txt
+
+The purpose of this module is to expose some of the basic constructs
+(including the synax of protocol components) to allow them to be used
+normatively in other contexts.  The module also contains a functional
+HTTP client designed to support non-blocking and persistent HTTP client
+operations.
+
+HTTP Messages
+-------------
+
+..	autoclass:: HTTPMessage
+	:members:
+	:show-inheritance:
+
+
+Sending Requests
+----------------
+
+..	autoclass:: HTTPRequestManager
+	:members:
+	:show-inheritance:
+
+..	autoclass:: Connection
+	:members:
+	:show-inheritance:
+
+..	autoclass:: SecureConnection
+	:members:
+	:show-inheritance:
+
+
+HTTP Headers
+------------
+
+This section defines objects that represent the values of HTTP headers
+and a special-purpose parser for parsing them from strings of octets.
+
+..	autoclass:: AcceptList
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptItem
+	:members:
+	:show-inheritance:
+
+..	autoclass:: MediaRange
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptCharsetItem
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptCharsetList
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptEncodingItem
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptEncodingList
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptLanguageItem
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptLanguageList
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptToken
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptTokenList
+	:members:
+	:show-inheritance:
+
+..	autoclass:: AcceptRanges
+	:members:
+	:show-inheritance:
+
+..	autoclass:: Allow
+	:members:
+	:show-inheritance:
+
+..	autoclass:: CacheControl
+	:members:
+	:show-inheritance:
+
+..	autoclass:: ContentRange
+	:members:
+	:show-inheritance:
+
+..	autoclass:: HeaderParser
+	:members:
+	:show-inheritance:
+
+
+Protocol Parameters
+-------------------
+
+This section defines objects that are reused in a variety of contexts
+and a special-purpose parser for parsing them from strings of octets.
+
+..	autoclass:: HTTPVersion
+	:members:
+	:show-inheritance:
+
+..	autoclass:: HTTPURL
+	:members:
+	:show-inheritance:
+
+..	autoclass:: HTTPSURL
+	:members:
+	:show-inheritance:
+
+..	autoclass:: FullDate
+	:members:
+	:show-inheritance:
+
+..	autoclass:: TransferEncoding
+	:members:
+	:show-inheritance:
+
+..	autoclass:: MediaType
+	:members:
+	:show-inheritance:
+
+..	autoclass:: ProductToken
+	:members:
+	:show-inheritance:
+
+..	autoclass:: LanguageTag
+	:members:
+	:show-inheritance:
+
+..	autoclass:: EntityTag
+	:members:
+	:show-inheritance:
+
+..	autoclass:: ParameterParser
+	:members:
+	:show-inheritance:
+
+
+Generic Grammar
+---------------
+
+This section defines functions for handling basic elements of the HTTP grammar.
+
+..	autofunction:: IsOCTET
+
+..	autofunction:: IsCHAR
+
+..	autofunction:: IsUPALPHA
+
+..	autofunction:: IsLOALPHA
+
+..	autofunction:: IsALPHA
+
+..	autofunction:: IsDIGIT
+
+..	autofunction:: IsDIGITS
+
+..	autofunction:: IsCTL
+
+..	autodata::CR
+
+..	autodata::LF
+
+..	autodata::SP
+
+..	autodata::HT
+
+..	autodata::DQUOTE
+
+..	autodata::CRLF
+
+..	autofunction:: IsHEX
+
+..	autofunction:: IsHEXDIGITS
+
+..	autodata::SEPARATORS
+
+..	autofunction:: IsSEPARATOR
+
+..	autoclass:: HTTPParser
+	:members:
+	:show-inheritance:
+
+..	autofunction:: CheckToken
+
+..	autofunction:: QuoteString
+
+..	autofunction:: DecodeQuotedString
+
+..	autoclass:: WordParser
+	:members:
+	:show-inheritance:
+	
+
+Exceptions
+----------
+
+..	autoclass:: SyntaxError
+	:show-inheritance:
+
+..	autoclass:: HTTPException
+	:show-inheritance:
+
+
+Misc Definitions
+----------------
+
+..	autodata:: HTTP_PORT
+
+..	autodata:: HTTPS_PORT
+
+..	autodata:: HTTP_VERSION
+
+..	autodata:: USER_AGENT
+
+..	autodata:: SOCKET_CHUNK
+
+
+

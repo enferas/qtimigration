@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE questestinterop SYSTEM "x-ims_qtiasiv1p2p1.dtd">
+<questestinterop>
+    <item ident="qmdextensions" xml:lang="en-GB">
+        <itemmetadata>
+        	<qmd_title>QMD Title Extension</qmd_title>
+        	<qmd_author>Steve Lay</qmd_author>
+            <qmd_description>General Description Extension</qmd_description>           
+            <qmd_domain>Extension Domain</qmd_domain>
+            <qmd_keywords>QMD, Extension</qmd_keywords>
+            <qmd_organization>Example Inc</qmd_organization>
+        </itemmetadata>
+    </item>
+</questestinterop>

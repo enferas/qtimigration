@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.2. XML: Basic Constructs &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.2. XML: Basic Constructs &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
     <link rel="next" title="2.3. XML: Parsing XML Documents" href="xml20081126.parser.html" />
-    <link rel="prev" title="2.1.3.6. OData Server Reference" href="odatav2_server.html" /> 
+    <link rel="prev" title="2.1.3.7. OData Server Reference" href="odatav2_server.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,9 +42,9 @@
           <a href="xml20081126.parser.html" title="2.3. XML: Parsing XML Documents"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="odatav2_server.html" title="2.1.3.6. OData Server Reference"
+          <a href="odatav2_server.html" title="2.1.3.7. OData Server Reference"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -390,7 +390,7 @@ character&#8221;</p>
 
 <dl class="function">
 <dt id="pyslet.xml20081126.structures.CollapseSpace">
-<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x1076cdb18&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">pyslet.xml20081126.structures.</tt><tt class="descname">CollapseSpace</tt><big>(</big><em>data</em>, <em>sMode=True</em>, <em>sTest=&lt;function IsS at 0x1037e3578&gt;</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.CollapseSpace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns data with all spaces collapsed to a single space.</p>
 <p>sMode determines the fate of any leading space, by default it is True and
 leading spaces are ignored provided the string has some non-space
@@ -1193,7 +1193,7 @@ and white space <em>is</em> pretty printed.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.WriteXMLAttributes">
-<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x1076ca398&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">WriteXMLAttributes</tt><big>(</big><em>attributes</em>, <em>escapeFunction=&lt;function EscapeCharData at 0x1037c7c80&gt;</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.WriteXMLAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds strings representing the element&#8217;s attributes</p>
 <p>attributes is a list of unicode strings.  Attributes should be appended
 as strings of the form &#8216;name=&#8221;value&#8221;&#8217; with values escaped appropriately
@@ -1202,7 +1202,7 @@ for XML output.</p>
 
 <dl class="method">
 <dt id="pyslet.xml20081126.structures.Element.GenerateXML">
-<tt class="descname">GenerateXML</tt><big>(</big><em>escapeFunction=&lt;function EscapeCharData at 0x1076ca398&gt;</em>, <em>indent=''</em>, <em>tab='t'</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GenerateXML" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">GenerateXML</tt><big>(</big><em>escapeFunction=&lt;function EscapeCharData at 0x1037c7c80&gt;</em>, <em>indent=''</em>, <em>tab='t'</em>, <em>root=False</em><big>)</big><a class="headerlink" href="#pyslet.xml20081126.structures.Element.GenerateXML" title="Permalink to this definition">¶</a></dt>
 <dd><p>A generator function that returns strings representing the
 serialised version of this element:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># the element&#39;s serialised output can be obtained as a single string</span>
@@ -1711,7 +1711,7 @@ the data and defaults to UTF-8.  For http(s) resources this parameter is
 only used if the charset cannot be read successfully from the HTTP
 headers.</p>
 <p>The optional <em>reqManager</em> allows you to pass an existing instance of
-<tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.HTTPRequestManager</span></tt> for handling URI with
+<a class="reference internal" href="rfc2616.html#pyslet.rfc2616.HTTPRequestManager" title="pyslet.rfc2616.HTTPRequestManager"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.HTTPRequestManager</span></tt></a> for handling URI with
 http or https schemes.</p>
 </dd></dl>
 
@@ -1978,7 +1978,7 @@ used.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="odatav2_server.html"
-                        title="previous chapter">2.1.3.6. OData Server Reference</a></p>
+                        title="previous chapter">2.1.3.7. OData Server Reference</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="xml20081126.parser.html"
                         title="next chapter">2.3. XML: Parsing XML Documents</a></p>
@@ -2017,9 +2017,9 @@ used.</p>
           <a href="xml20081126.parser.html" title="2.3. XML: Parsing XML Documents"
              >next</a> |</li>
         <li class="right" >
-          <a href="odatav2_server.html" title="2.1.3.6. OData Server Reference"
+          <a href="odatav2_server.html" title="2.1.3.7. OData Server Reference"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>

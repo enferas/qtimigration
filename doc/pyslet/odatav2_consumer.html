@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.1.1. Data Consumers &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
     <link rel="next" title="2.1.2. OData Providers" href="odatav2_provider.html" />
     <link rel="prev" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>
@@ -329,7 +329,7 @@ that can be used to access the entities in the set.</dd>
 <dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntitySet.NavigationMultiplicity" title="pyslet.odata2.csdl.EntitySet.NavigationMultiplicity"><tt class="xref py py-meth docutils literal"><span class="pre">NavigationMultiplicity()</span></tt></a></dt>
 <dd><p class="first">Returns a tuple of multiplicity constants for the named navigation
 property.  Constants for these values are defined in
-<tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Multiplicity</span></tt>, for example:</p>
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Multiplicity" title="pyslet.odata2.csdl.Multiplicity"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Multiplicity</span></tt></a>, for example:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyslet.odata2.csdl</span> <span class="kn">import</span> <span class="n">Multiplicity</span><span class="p">,</span> <span class="n">EncodeMultiplicity</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">ZeroToOne</span><span class="p">,</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">One</span><span class="p">,</span> <span class="n">Multiplicity</span><span class="o">.</span><span class="n">Many</span>
 <span class="go">0 1 2</span>
@@ -951,19 +951,19 @@ changes until the parent entity is updated (or inserted, in the case of
 non-existent entities.)</p>
 <p>Read-only attributes useful to data consumers:</p>
 <dl class="docutils">
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.name" title="pyslet.odata2.csdl.DeferredValue.name"><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></a></dt>
 <dd>The name of the navigation property</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">fromEntity</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.fromEntity" title="pyslet.odata2.csdl.DeferredValue.fromEntity"><tt class="xref py py-attr docutils literal"><span class="pre">fromEntity</span></tt></a></dt>
 <dd>The parent entity of this navigation property</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">pDef</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.pDef" title="pyslet.odata2.csdl.DeferredValue.pDef"><tt class="xref py py-attr docutils literal"><span class="pre">pDef</span></tt></a></dt>
 <dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.NavigationProperty" title="pyslet.odata2.csdl.NavigationProperty"><tt class="xref py py-class docutils literal"><span class="pre">NavigationProperty</span></tt></a> that defines
 this navigation property in the model.</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">isRequired</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.isRequired" title="pyslet.odata2.csdl.DeferredValue.isRequired"><tt class="xref py py-attr docutils literal"><span class="pre">isRequired</span></tt></a></dt>
 <dd>True if the target of this property has multiplicity 1, i.e., it is
 required.</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">isCollection</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.isCollection" title="pyslet.odata2.csdl.DeferredValue.isCollection"><tt class="xref py py-attr docutils literal"><span class="pre">isCollection</span></tt></a></dt>
 <dd>True if the target of this property has multiplicity *</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">isExpanded</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.isExpanded" title="pyslet.odata2.csdl.DeferredValue.isExpanded"><tt class="xref py py-attr docutils literal"><span class="pre">isExpanded</span></tt></a></dt>
 <dd>True if this navigation property has been expanded.  Expanded
 navigation keep a cached version of the target collection.  Although
 you can open it and use it in the same way any other collection the
@@ -972,19 +972,19 @@ data source.</dd>
 </dl>
 <p>Methods useful to data consumers:</p>
 <dl class="docutils">
-<dt><tt class="xref py py-meth docutils literal"><span class="pre">OpenCollection()</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.OpenCollection" title="pyslet.odata2.csdl.DeferredValue.OpenCollection"><tt class="xref py py-meth docutils literal"><span class="pre">OpenCollection()</span></tt></a></dt>
 <dd>Returns an <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EntityCollection</span></tt></a> object
 that can be used to access the target entities.</dd>
-<dt><tt class="xref py py-meth docutils literal"><span class="pre">GetEntity()</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.GetEntity" title="pyslet.odata2.csdl.DeferredValue.GetEntity"><tt class="xref py py-meth docutils literal"><span class="pre">GetEntity()</span></tt></a></dt>
 <dd>Convenience method that returns the entity that is the target of the
 link when the target has multiplicity 1 or 0..1.  If no entity is
 linked by the association then None is returned.</dd>
-<dt><tt class="xref py py-meth docutils literal"><span class="pre">BindEntity()</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.BindEntity" title="pyslet.odata2.csdl.DeferredValue.BindEntity"><tt class="xref py py-meth docutils literal"><span class="pre">BindEntity()</span></tt></a></dt>
 <dd>Marks the target entity for addition to this navigation collection
 on next update or insert.  If this navigation property is not a
 collection then the target entity will replace any existing target
 of the link.</dd>
-<dt><tt class="xref py py-meth docutils literal"><span class="pre">Target()</span></tt></dt>
+<dt><a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.Target" title="pyslet.odata2.csdl.DeferredValue.Target"><tt class="xref py py-meth docutils literal"><span class="pre">Target()</span></tt></a></dt>
 <dd>The target entity set of this navigation property.</dd>
 </dl>
 </div>
@@ -1112,7 +1112,7 @@ calendar module conversion methods.</p>
         <li class="right" >
           <a href="odatav2.html" title="2.1. The Open Data Protocol (OData)"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>

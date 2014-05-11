@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.3.5. SQL Database-based Data Services &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.1.3.6. SQL Database-based Data Services &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2.1.3. OData Reference" href="odatav2_reference.html" />
-    <link rel="next" title="2.1.3.6. OData Server Reference" href="odatav2_server.html" />
-    <link rel="prev" title="2.1.3.4. An In-Memory Data Service" href="odatav2_memds.html" /> 
+    <link rel="next" title="2.1.3.7. OData Server Reference" href="odatav2_server.html" />
+    <link rel="prev" title="2.1.3.5. An In-Memory Data Service" href="odatav2_memds.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_server.html" title="2.1.3.6. OData Server Reference"
+          <a href="odatav2_server.html" title="2.1.3.7. OData Server Reference"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="odatav2_memds.html" title="2.1.3.4. An In-Memory Data Service"
+          <a href="odatav2_memds.html" title="2.1.3.5. An In-Memory Data Service"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_reference.html" accesskey="U">2.1.3. OData Reference</a> &raquo;</li> 
@@ -57,16 +57,2051 @@
           <div class="body">
             
   <div class="section" id="module-pyslet.odata2.sqlds">
-<span id="sql-database-based-data-services"></span><h1>2.1.3.5. SQL Database-based Data Services<a class="headerlink" href="#module-pyslet.odata2.sqlds" title="Permalink to this headline">¶</a></h1>
+<span id="sql-database-based-data-services"></span><h1>2.1.3.6. SQL Database-based Data Services<a class="headerlink" href="#module-pyslet.odata2.sqlds" title="Permalink to this headline">¶</a></h1>
 <p>This module defines a general (but abstract) implementation of the
 EDM-based data-access-layer (DAL) using Python&#8217;s DB API:
 <a class="reference external" href="http://www.python.org/dev/peps/pep-0249/">http://www.python.org/dev/peps/pep-0249/</a></p>
 <p>It also contains a concrete implementation derived from the above
 that uses the standard SQLite module for storage.  For more information
 about SQLite see: <a class="reference external" href="http://www.sqlite.org/">http://www.sqlite.org/</a></p>
-<div class="section" id="reference">
-<h2>2.1.3.5.1. Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<p>Coming soon...</p>
+<div class="section" id="data-access-layer-api">
+<h2>2.1.3.6.1. Data Access Layer API<a class="headerlink" href="#data-access-layer-api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="entity-containers">
+<h3>2.1.3.6.1.1. Entity Containers<a class="headerlink" href="#entity-containers" title="Permalink to this headline">¶</a></h3>
+<p>There are primarily two use cases here:</p>
+<ol class="arabic simple">
+<li>Create a derived class of <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> to provide
+platform specific modifications to the way SQL queries are constructed
+and database connections are created and managed.</li>
+<li>Create a derived class of <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> to provide
+modified name mappings for a specific database and metadata model.</li>
+</ol>
+<p>These two use cases can be supported through multiple (diamond)
+inheritance. This makes it easier for you to separate the code required.
+In practice, implementations for different database platforms are likely
+to be shared (perhaps as part of future releases of Pyslet itself)
+whereas modifications to the name mangler to map this API to an existing
+database will be project specific.</p>
+<p>For example, to achieve platform specific modifications you&#8217;ll override
+SQLEntityContainer and provide new implementations for methods such as
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.GetCollectionClass" title="pyslet.odata2.sqlds.SQLEntityContainer.GetCollectionClass"><tt class="xref py py-meth docutils literal"><span class="pre">SQLEntityContainer.GetCollectionClass()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyDBContainer</span><span class="p">(</span><span class="n">SQLEntityContainer</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">GetCollectionClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">MyDBEntityCollection</span>
+</pre></div>
+</div>
+<p>To achieve modified property name mappings you&#8217;ll override
+SQLEntityContainer and provide new implementations for methods such as
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.MangleName" title="pyslet.odata2.sqlds.SQLEntityContainer.MangleName"><tt class="xref py py-meth docutils literal"><span class="pre">SQLEntityContainer.MangleName()</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SouthwindDBContainer(SQLEntityContainer):
+
+        def MangleName(self,sourcePath):
+                # do some custom name mangling here....
+</pre></div>
+</div>
+<p>Normally, you&#8217;ll want to achieve both use cases, so to actually
+instantiate your database you&#8217;ll select the container class that
+represents the database platform and then combine it with the class that
+contains your data-specific modifications:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">MyDB</span><span class="o">,</span> <span class="nn">Southwind</span>
+
+<span class="c"># easy to configure constants at the top of your script</span>
+<span class="n">DBCONTAINER_CLASS</span><span class="o">=</span><span class="n">MyDB</span><span class="o">.</span><span class="n">MyDBContainer</span>
+<span class="n">DBCONTAINER_ARGS</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">&#39;username&#39;</span><span class="p">:</span><span class="s">&quot;southwind&quot;</span><span class="p">,</span>
+        <span class="s">&#39;password&#39;</span><span class="p">:</span><span class="s">&quot;password&quot;</span>
+        <span class="p">}</span>
+
+<span class="n">MAX_CONNECTIONS</span><span class="o">=</span><span class="mi">100</span>
+
+<span class="k">class</span> <span class="nc">SouthwindDB</span><span class="p">(</span><span class="n">Southwind</span><span class="o">.</span><span class="n">SouthwindDBContainer</span><span class="p">,</span><span class="n">DBCONTAINER_CLASS</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="c"># .... load the metadata from disk and then do something like this</span>
+<span class="n">db</span><span class="o">=</span><span class="n">SouthwindDB</span><span class="p">(</span><span class="n">containerDef</span><span class="o">=</span><span class="n">SouthwindMetadata</span><span class="p">,</span><span class="n">maxConnections</span><span class="o">=</span><span class="n">MAX_CONNECTIONS</span><span class="p">,</span><span class="o">**</span><span class="n">DBCONTAINER_ARGS</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLEntityContainer</tt><big>(</big><em>containerDef</em>, <em>dbapi</em>, <em>maxConnections=10</em>, <em>fieldNameJoiner=u'_'</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Object used to represent an Entity Container (aka Database).</p>
+<p>Keyword arguments on construction:</p>
+<dl class="docutils">
+<dt>containerDef</dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityContainer" title="pyslet.odata2.csdl.EntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">EntityContainer</span></tt></a> that defines
+this database.</dd>
+<dt>dbapi</dt>
+<dd><p class="first">The DB API v2 compatible module to use to connect to the database.</p>
+<p class="last">This implementation is compatible with modules regardless of their
+thread-safety level (provided they declare it correctly!).</p>
+</dd>
+<dt>maxConnections (optional)</dt>
+<dd><p class="first">The maximum number of connections to open to the database.  If your
+program attempts to open more than this number (defaults to 10) then
+it will block until a connection becomes free.  Connections are always
+shared within the same thread so this argument should be set to the
+expected maximum number of threads that will access the database.</p>
+<p class="last">If using a module with thread-safety level 0 maxConnections is
+ignored and is effectively 1, so use of the API is then best
+confined to single-threaded programs. Multi-threaded programs
+can still use the API but it will block when there is contention
+for access to the module and context switches will force the
+database connection to be closed and reopened.</p>
+</dd>
+<dt>fieldNameJoiner (optional)</dt>
+<dd>The character used by the name mangler to join compound names,
+for example, to obtain the column name of a complex property
+like &#8220;Address/City&#8221;.  The default is &#8220;_&#8221;, resulting in names
+like &#8220;Address_City&#8221; but it can be changed here.  Note: all names
+are quoted using <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier" title="pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier"><tt class="xref py py-meth docutils literal"><span class="pre">QuoteIdentifier()</span></tt></a> before appearing in
+SQL statements.</dd>
+</dl>
+<p>This class is designed to work with diamond inheritance and super.
+All derived classes must call __init__ through super and pass all
+unused keyword arguments.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyDBContainer</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">myDBConfig</span><span class="p">,</span><span class="o">**</span><span class="n">kwArgs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">MyDBContainer</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwArgs</span><span class="p">)</span>
+                <span class="c"># do something with myDBConfig....</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.dbapi">
+<tt class="descname">dbapi</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.dbapi" title="Permalink to this definition">¶</a></dt>
+<dd><p>the DB API compatible module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.fkTable">
+<tt class="descname">fkTable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.fkTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from an entity set name to a foreign key mapping of
+the form:</p>
+<div class="highlight-python"><div class="highlight"><pre>{&lt;association set end&gt;: (&lt;nullable flag&gt;, &lt;unique keys flag&gt;),...}
+</pre></div>
+</div>
+<p>The outer mapping has one entry for each entity set (even if the
+corresponding foreign key mapping is empty).</p>
+<p>Each foreign key mapping has one entry for each foreign key
+reference that must appear in that entity set&#8217;s table.  The key
+is an <tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt> that is bound to the entity
+set (the other end will be bound to the target entity set).
+This allows us to distinguish between the two ends of a
+recursive association.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.auxTable">
+<tt class="descname">auxTable</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.auxTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from the names of symmetric association sets to a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre>( &lt;entity set A&gt;, &lt;name prefix A&gt;, &lt;entity set B&gt;, &lt;name prefix B&gt;, &lt;unique keys&gt; )
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.mangledNames">
+<tt class="descname">mangledNames</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.mangledNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping from source path tuples to mangled and quoted names
+to use in SQL queries.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>(u&#39;Customer&#39;):u&#39;&quot;Customer&quot;&#39;
+(u&#39;Customer&#39;, u&#39;Address&#39;, u&#39;City&#39;) : u&quot;Address_City&quot;
+(u&#39;Customer&#39;, u&#39;Orders&#39;) : u&quot;Customer_Orders&quot;
+</pre></div>
+</div>
+<p>Note that the first element of the tuple is the entity set name
+but the default implementation does not use this in the mangled
+name for primitive fields as they are qualified in contexts
+where a name clash is possible.  However, mangled navigation
+property names do include the table name prefix as they used as
+pseudo-table names.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.fieldNameJoiner">
+<tt class="descname">fieldNameJoiner</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.fieldNameJoiner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default string used to join complex field names in SQL
+queries, e.g. Address_City</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.MangleName">
+<tt class="descname">MangleName</tt><big>(</big><em>sourcePath</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.MangleName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mangles a source path into a quoted SQL name</p>
+<p>This is a key extension point to use when you are wrapping an existing
+database with the API.  It allows you to control the names used for
+entity sets (tables) and properties (columns) in SQL queries.</p>
+<dl class="docutils">
+<dt>sourcePath</dt>
+<dd><p class="first">A tuple or list of strings describing the path to a property in
+the metadata model.</p>
+<p>For entity sets, this is a tuple with a single entry in it, the
+entity set name.</p>
+<p>For data properties this is a tuple containing the path, including
+the entity set name
+e.g., (&#8220;Customers&#8221;,&#8221;Address&#8221;,&#8221;City&#8221;) for the City property
+in a complex property &#8216;Address&#8217; in entity set &#8220;Customers&#8221;.</p>
+<p>For navigation properties the tuple is the navigation
+property name prefixed with the entity set name, e.g.,
+(&#8220;Customers&#8221;,&#8221;Orders&#8221;). This name is only used as a SQL
+alias for the target table, to remove ambiguity from certain
+queries that include a join across the navigation property.
+The mangled name must be distinct from the entity set name
+itself. from other such aliases and from other column names
+in this table.</p>
+<p class="last">Foreign key properties contain paths starting with both the
+entity set and the association set names (see
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection" title="pyslet.odata2.sqlds.SQLForeignKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLForeignKeyCollection</span></tt></a> for details) unless the
+association is symmetric, in which case they also contain
+the navigation property name (see
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLAssociationCollection" title="pyslet.odata2.sqlds.SQLAssociationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLAssociationCollection</span></tt></a> for details of these
+more complex cases).</p>
+</dd>
+</dl>
+<p>The default implementation strips the entity set name away and uses
+the default joining character to create a compound name before calling
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier" title="pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier"><tt class="xref py py-meth docutils literal"><span class="pre">QuoteIdentifier()</span></tt></a> to obtain the SQL string.</p>
+<p>All names are mangled once, on construction, and from then on
+looked up in the dictionary of mangled names.</p>
+<p>If you need to override this method to modify the names used in
+your database you should ensure all other names (including any
+unrecognized by your program) are passed to the default
+implementation for mangling.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.SourcePathGenerator">
+<tt class="descname">SourcePathGenerator</tt><big>(</big><em>entitySet</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.SourcePathGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility generator for source path <em>tuples</em> for <em>entitySet</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.FieldNameGenerator">
+<tt class="descname">FieldNameGenerator</tt><big>(</big><em>entitySet</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.FieldNameGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility generator for source path <em>tuples</em> of the fields in <em>entitySet</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.GetCollectionClass">
+<tt class="descname">GetCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.GetCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the collection class used to represent a generic entity set.</p>
+<p>Override this method to provide a class derived from
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityCollection" title="pyslet.odata2.sqlds.SQLEntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityCollection</span></tt></a> when you are customising this
+implementation for a specific database engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.GetSymmetricNavigationCollectionClass">
+<tt class="descname">GetSymmetricNavigationCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.GetSymmetricNavigationCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the collection class used to represent a symmetric relation.</p>
+<p>Override this method to provide a class derived from
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLAssociationCollection" title="pyslet.odata2.sqlds.SQLAssociationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLAssociationCollection</span></tt></a> when you are customising this
+implementation for a specific database engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.GetForeignKeyCollectionClass">
+<tt class="descname">GetForeignKeyCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.GetForeignKeyCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the collection class used when the foreign key is in the source table.</p>
+<p>Override this method to provide a class derived from
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection" title="pyslet.odata2.sqlds.SQLForeignKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLForeignKeyCollection</span></tt></a> when you are customising this
+implementation for a specific database engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.GetReverseKeyCollectionClass">
+<tt class="descname">GetReverseKeyCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.GetReverseKeyCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the collection class used when the foreign key is in the target table.</p>
+<p>Override this method to provide a class derived from
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection" title="pyslet.odata2.sqlds.SQLReverseKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLReverseKeyCollection</span></tt></a> when you are customising this
+implementation for a specific database engine.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.CreateAllTables">
+<tt class="descname">CreateAllTables</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.CreateAllTables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates all tables in this container.</p>
+<p>Tables are created in a sensible order to ensure that foreign
+key constraints do not fail but this method is not compatible
+with databases that contain circular references though, e.g.,
+Table A -&gt; Table B with a foreign key and Table B -&gt; Table A
+with a foreign key.  Such databases will have to be created by
+hand. You can use the CreateTableQuery methods to act as a
+starting point for your script.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.OpenConnection">
+<tt class="descname">OpenConnection</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.OpenConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a new connection object.</p>
+<p>Must be overridden by database specific implementations because
+the underlying DB ABI does not provide a standard method of
+connecting.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.BreakConnection">
+<tt class="descname">BreakConnection</tt><big>(</big><em>connection</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.BreakConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when closing or cleaning up locked connections.</p>
+<p>This method is called when the connection is locked (by a
+different thread) and the caller wants to force that thread to
+relinquish control.</p>
+<p>The assumption is that the database is stuck in some lengthy
+transaction and that BreakConnection can be used to terminate
+the transaction and force an exception in the thread that
+initiated it - resulting in a subsequent call to
+<tt class="xref py py-meth docutils literal"><span class="pre">ReleaseConnection()</span></tt> and a state which enables this
+thread to acquire the connection&#8217;s lock so that it can close it.</p>
+<p>The default implementation does nothing, which might cause the
+close method to stall until the other thread relinquishes
+control normally.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.close">
+<tt class="descname">close</tt><big>(</big><em>timeout=5</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes this database.</p>
+<p>This method goes through each open connection and attempts to
+acquire it and then close it.  The object is put into a mode
+that disables <tt class="xref py py-meth docutils literal"><span class="pre">AcquireConnection()</span></tt> (it returns None
+from now on).</p>
+<dl class="docutils">
+<dt>timeout</dt>
+<dd><p class="first">Defaults to 5 seconds.  If connections are locked by other
+<em>running</em> threads we wait for those threads to release them,
+calling <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.BreakConnection" title="pyslet.odata2.sqlds.SQLEntityContainer.BreakConnection"><tt class="xref py py-meth docutils literal"><span class="pre">BreakConnection()</span></tt></a> to speed up termination
+if possible.</p>
+<p class="last">If None (not recommended!) this method will block indefinitely
+until all threads properly call <tt class="xref py py-meth docutils literal"><span class="pre">ReleaseConnection()</span></tt>.</p>
+</dd>
+</dl>
+<p>Any locks we fail to acquire in the timeout are ignored and
+the connections are left open for the python garbage
+collector to dispose of.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier">
+<tt class="descname">QuoteIdentifier</tt><big>(</big><em>identifier</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.QuoteIdentifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an <em>identifier</em> returns a safely quoted form of it.</p>
+<p>By default we strip double quote and then use them to enclose
+it.  E.g., if the string u&#8217;Employee_Name&#8217; is passed then the
+string u&#8216;&#8220;Employee_Name&#8221;&#8217; is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLType">
+<tt class="descname">PrepareSQLType</tt><big>(</big><em>simpleValue</em>, <em>params</em>, <em>nullable=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a simple value, returns a SQL-formatted name of its type.</p>
+<p>Used to construct CREATE TABLE queries.</p>
+<dl class="docutils">
+<dt>simpleValue</dt>
+<dd>A <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.SimpleValue</span></tt></a> instance which
+must have been created from a suitable
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Property" title="pyslet.odata2.csdl.Property"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.Property</span></tt></a> definition.</dd>
+<dt>params</dt>
+<dd>A <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object.  If simpleValue is non-NULL, a
+DEFAULT value is added as part of the type definition.</dd>
+<dt>nullable</dt>
+<dd>Optional Boolean that can be used to override the nullable status
+of the associated property definition.</dd>
+</dl>
+<p>For example, if the value was created from an Int32 non-nullable
+property and has value 0 then this might return the string
+u&#8217;INTEGER NOT NULL DEFAULT ?&#8217; with 0 being added to <em>params</em></p>
+<p>You should override this implementation if your database
+platform requires special handling of certain datatypes.  The
+default mappings are given below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>EDM Type</td>
+<td>SQL Equivalent</td>
+</tr>
+<tr class="row-even"><td>Edm.Binary</td>
+<td>BINARY(MaxLength) if FixedLength specified</td>
+</tr>
+<tr class="row-odd"><td>Edm.Binary</td>
+<td>VARBINARY(MaxLength) if no FixedLength</td>
+</tr>
+<tr class="row-even"><td>Edm.Boolean</td>
+<td>BOOLEAN</td>
+</tr>
+<tr class="row-odd"><td>Edm.Byte</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-even"><td>Edm.DateTime</td>
+<td>TIMESTAMP</td>
+</tr>
+<tr class="row-odd"><td>Edm.DateTimeOffset</td>
+<td>CHARACTER(20), ISO 8601 string representation is used</td>
+</tr>
+<tr class="row-even"><td>Edm.Decimal</td>
+<td>DECIMAL(Precision,Scale), defaults 10,0</td>
+</tr>
+<tr class="row-odd"><td>Edm.Double</td>
+<td>FLOAT</td>
+</tr>
+<tr class="row-even"><td>Edm.Guid</td>
+<td>BINARY(16)</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int16</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-even"><td>Edm.Int32</td>
+<td>INTEGER</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int64</td>
+<td>BIGINT</td>
+</tr>
+<tr class="row-even"><td>Edm.SByte</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-odd"><td>Edm.Single</td>
+<td>REAL</td>
+</tr>
+<tr class="row-even"><td>Edm.String</td>
+<td>CHAR(MaxLength) or VARCHAR(MaxLength)</td>
+</tr>
+<tr class="row-odd"><td>Edm.String</td>
+<td>NCHAR(MaxLength) or NVARCHAR(MaxLength) if Unicode=&#8221;true&#8221;</td>
+</tr>
+<tr class="row-even"><td>Edm.Time</td>
+<td>TIME</td>
+</tr>
+</tbody>
+</table>
+<p>Parameterized CREATE TABLE queries are unreliable in my
+experience so the current implementation of the native
+CreateTable methods ignore default values when calling this
+method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLValue">
+<tt class="descname">PrepareSQLValue</tt><big>(</big><em>simpleValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a simple value, returns a value suitable for passing as a parameter</p>
+<dl class="docutils">
+<dt>simpleValue</dt>
+<dd>A <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.SimpleValue</span></tt></a> instance.</dd>
+</dl>
+<p>You should override this method if your database requires
+special handling of parameter values.  The default
+implementation performs the following conversions</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>EDM Type</td>
+<td>Python value added as parameter</td>
+</tr>
+<tr class="row-even"><td>NULL</td>
+<td>None</td>
+</tr>
+<tr class="row-odd"><td>Edm.Binary</td>
+<td>(byte) string</td>
+</tr>
+<tr class="row-even"><td>Edm.Boolean</td>
+<td>True or False</td>
+</tr>
+<tr class="row-odd"><td>Edm.Byte</td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td>Edm.DateTime</td>
+<td>Timestamp instance from DB API module</td>
+</tr>
+<tr class="row-odd"><td>Edm.DateTimeOffset</td>
+<td>string (ISO 8601 basic format)</td>
+</tr>
+<tr class="row-even"><td>Edm.Decimal</td>
+<td>Decimal instance</td>
+</tr>
+<tr class="row-odd"><td>Edm.Double</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td>Edm.Guid</td>
+<td>(byte) string</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int16</td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td>Edm.Int32</td>
+<td>int</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int64</td>
+<td>long</td>
+</tr>
+<tr class="row-even"><td>Edm.SByte</td>
+<td>int</td>
+</tr>
+<tr class="row-odd"><td>Edm.Single</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td>Edm.String</td>
+<td>(unicode) string</td>
+</tr>
+<tr class="row-odd"><td>Edm.Time</td>
+<td>Time instance from DB API module</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.ReadSQLValue">
+<tt class="descname">ReadSQLValue</tt><big>(</big><em>simpleValue</em>, <em>newValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.ReadSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <em>simpleValue</em> from <em>newValue</em>.</p>
+<dl class="docutils">
+<dt>simpleValue</dt>
+<dd>A <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.SimpleValue</span></tt></a> instance.</dd>
+<dt>newValue</dt>
+<dd>A value returned by the underlying DB API, e.g., from a cursor
+fetch  operation</dd>
+</dl>
+<p>This method performs the reverse transformation to
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLValue" title="pyslet.odata2.sqlds.SQLEntityContainer.PrepareSQLValue"><tt class="xref py py-meth docutils literal"><span class="pre">PrepareSQLValue()</span></tt></a> and may need to be overridden to
+convert <em>newValue</em> into a form suitable for passing to the
+underlying
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue.SetFromValue" title="pyslet.odata2.csdl.SimpleValue.SetFromValue"><tt class="xref py py-meth docutils literal"><span class="pre">SetFromValue()</span></tt></a>
+method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityContainer.NewFromSQLValue">
+<tt class="descname">NewFromSQLValue</tt><big>(</big><em>sqlValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityContainer.NewFromSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.SimpleValue</span></tt></a> instance with value <em>sqlValue</em></p>
+<dl class="docutils">
+<dt>sqlValue</dt>
+<dd>A value returned by the underlying DB API, e.g., from a cursor
+fetch  operation</dd>
+</dl>
+<p>This method creates a new instance, selecting the most
+appropriate type to represent sqlValue.  By default
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EDMValue.NewSimpleValueFromValue" title="pyslet.odata2.csdl.EDMValue.NewSimpleValueFromValue"><tt class="xref py py-meth docutils literal"><span class="pre">pyslet.odata2.csdl.EDMValue.NewSimpleValueFromValue()</span></tt></a>
+is used.</p>
+<p>You may need to override this method to identify the appropriate
+value type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>For an example of how to create a platform-specific implementation see
+<a class="reference internal" href="#sqlite">SQLite</a> below.</p>
+</div>
+<div class="section" id="entity-collections">
+<h3>2.1.3.6.1.2. Entity Collections<a class="headerlink" href="#entity-collections" title="Permalink to this headline">¶</a></h3>
+<p>These classes are documented primarily to facilitate the creation of
+alternative implementations designed to run over other DB API based data
+layers.  The documentation goes a bit further than is necessary to help
+promote an understanding of the way the API is implemented.</p>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLEntityCollection</tt><big>(</big><em>container</em>, <em>qualifyNames=False</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase" title="pyslet.odata2.sqlds.SQLCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLCollectionBase</span></tt></a></p>
+<p>Represents a collection of entities from an <tt class="xref py py-class docutils literal"><span class="pre">EntitySet</span></tt>.</p>
+<p>This class is the heart of the SQL implementation of the API,
+constructing and executing queries to implement the core methods
+from <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.EntityCollection" title="pyslet.odata2.csdl.EntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.EntityCollection</span></tt></a>.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.InsertEntity">
+<tt class="descname">InsertEntity</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.InsertEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts <em>entity</em> into the collection.</p>
+<p>We override this method, rerouting it to a SQL-specific
+implementation that takes additional arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.InsertEntitySQL">
+<tt class="descname">InsertEntitySQL</tt><big>(</big><em>entity</em>, <em>fromEnd=None</em>, <em>fkValues=None</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.InsertEntitySQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts <em>entity</em> into the collection.</p>
+<p>This method is not designed to be overridden by other
+implementations but it does extend the default functionality for
+a more efficient implementation and to enable better
+transactional processing. The additional parameters are
+documented here.</p>
+<dl class="docutils">
+<dt>fromEnd</dt>
+<dd><p class="first">An optional <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.AssociationSetEnd</span></tt></a>
+bound to this entity set.  If present, indicates that this
+entity is being inserted as part of a single transaction
+involving an insert or update to the other end of the
+association.</p>
+<p class="last">This suppresses any check for a required link via this
+association (as it is assumed that the link is present, or
+will be, in the same transaction).</p>
+</dd>
+<dt>fkValues</dt>
+<dd>If the association referred to by <em>fromEnd</em> is represented
+by a set of foreign keys stored in this entity set&#8217;s table
+(see <a class="reference internal" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection" title="pyslet.odata2.sqlds.SQLReverseKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLReverseKeyCollection</span></tt></a>) then fkValues is
+the list of (mangled column name, value) tuples that must be
+inserted in order to create the link.</dd>
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+<p>The method functions in three phases.</p>
+<ol class="arabic">
+<li><p class="first">Process all bindings for which we hold the foreign key. 
+This includes inserting new entities where deep inserts are
+being used or calculating foreign key values where links to
+existing entities have been specified on creation.</p>
+<p>In addition, all required links are checked and raise errors
+if no binding is present.</p>
+</li>
+<li><p class="first">A simple SQL INSERT statement is executed to add the record
+to the database along with any foreign keys generated in (1)
+or passed in <em>fkValues</em>.</p>
+</li>
+<li><p class="first">Process all remaining bindings.  Although we could do this
+using the
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.DeferredValue.UpdateBindings" title="pyslet.odata2.csdl.DeferredValue.UpdateBindings"><tt class="xref py py-meth docutils literal"><span class="pre">UpdateBindings()</span></tt></a>
+method of DeferredValue we handle this directly to retain
+transactional integrity (where supported).</p>
+<p>Links to existing entities are created using the InsertLink
+method available on the SQL-specific
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="pyslet.odata2.sqlds.SQLNavigationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLNavigationCollection</span></tt></a>.</p>
+<p>Deep inserts are handled by a recursive call to this method.
+After step 1, the only bindings that remain are (a) those
+that are stored at the other end of the link and so can be
+created by passing values for <em>fromEnd</em> and <em>fkValues</em> in a
+recursive call or (b) those that are stored in a separate
+table which are created by combining a recursive call and a
+call to InsertLink.</p>
+</li>
+</ol>
+<p>Required links are always created in step 1 because the
+overarching mapping to SQL forces such links to be represented
+as foreign keys in the source table (i.e., this table) unless
+the relationship is 1-1, in which case the link is created in
+step 3 and our database is briefly in violation of the model. If
+the underlying database API does not support transactions then
+it is possible for this state to persist resulting in an orphan
+entity or entities, i.e., entities with missing required links. 
+A failed <tt class="xref py py-meth docutils literal"><span class="pre">Rollback()</span></tt> call will log this condition along
+with the error that caused it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.UpdateEntity">
+<tt class="descname">UpdateEntity</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.UpdateEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <em>entity</em></p>
+<p>This method follows a very similar pattern to <tt class="xref py py-meth docutils literal"><span class="pre">InsertMethod()</span></tt>,
+using a three-phase process.</p>
+<ol class="arabic">
+<li><p class="first">Process all bindings for which we hold the foreign key. 
+This includes inserting new entities where deep inserts are
+being used or calculating foreign key values where links to
+existing entities have been specified on update.</p>
+</li>
+<li><p class="first">A simple SQL UPDATE statement is executed to update the
+record in the database along with any updated foreign keys
+generated in (1).</p>
+</li>
+<li><p class="first">Process all remaining bindings while retaining transactional
+integrity (where supported).</p>
+<p>Links to existing entities are created using the InsertLink
+or Replace methods available on the SQL-specific
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="pyslet.odata2.sqlds.SQLNavigationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLNavigationCollection</span></tt></a>.  The Replace method is
+used when a navigation property that links to a single
+entity has been bound.  Deep inserts are handled by calling
+InsertEntitySQL before the link is created.</p>
+</li>
+</ol>
+<p>The same transactional behaviour as <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityCollection.InsertEntitySQL" title="pyslet.odata2.sqlds.SQLEntityCollection.InsertEntitySQL"><tt class="xref py py-meth docutils literal"><span class="pre">InsertEntitySQL()</span></tt></a> is
+exhibited.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.UpdateLink">
+<tt class="descname">UpdateLink</tt><big>(</big><em>entity</em>, <em>linkEnd</em>, <em>targetEntity</em>, <em>noReplace=False</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.UpdateLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a link when this table contains the foreign key</p>
+<dl class="docutils">
+<dt>entity</dt>
+<dd>The entity being linked from (must already exist)</dd>
+<dt>linkEnd</dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt></a> bound
+to this entity set that represents this entity set&#8217;s end of
+the assocation being modified.</dd>
+<dt>targetEntity</dt>
+<dd>The entity to link to or None if the link is to be removed.</dd>
+<dt>noReplace</dt>
+<dd>If True, existing links will not be replaced.  The affect is
+to force the underlying SQL query to include a constraint
+that the foreign key is currently NULL.  By default this
+argument is False and any existing link will be replaced.</dd>
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.DeleteEntity">
+<tt class="descname">DeleteEntity</tt><big>(</big><em>entity</em>, <em>fromEnd=None</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.DeleteEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes an entity</p>
+<p>Called by the dictionary-like del operator, provided as a
+separate method to enable it to be called recursively when
+doing cascade deletes and to support transactions.</p>
+<dl class="docutils">
+<dt>fromEnd</dt>
+<dd><p class="first">An optional
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt></a> bound to
+this entity set that represents the link from which we are
+being deleted during a cascade delete.</p>
+<p class="last">The purpose of this parameter is prevent cascade deletes
+from doubling back on themselves and causing an infinite
+loop.</p>
+</dd>
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.DeleteLink">
+<tt class="descname">DeleteLink</tt><big>(</big><em>entity</em>, <em>linkEnd</em>, <em>targetEntity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.DeleteLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the link between <em>entity</em> and <em>targetEntity</em></p>
+<p>The foreign key for this link must be held in this entity set&#8217;s
+table.</p>
+<dl class="docutils">
+<dt>entity</dt>
+<dd>The entity in this entity set that the link is from.</dd>
+<dt>linkEnd</dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt></a> bound
+to this entity set that represents this entity set&#8217;s end of
+the assocation being modified.</dd>
+<dt>targetEntity</dt>
+<dd>The target entity that defines the link to be removed.</dd>
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.ClearLinks">
+<tt class="descname">ClearLinks</tt><big>(</big><em>linkEnd</em>, <em>targetEntity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.ClearLinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all links to <em>targetEntity</em></p>
+<p>The foreign key for this link must be held in this entity set&#8217;s
+table.</p>
+<dl class="docutils">
+<dt>linkEnd</dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt></a> bound
+to this entity set that represents this entity set&#8217;s end of
+the assocation being modified.</dd>
+<dt>targetEntity</dt>
+<dd>The target entity that defines the link(s) to be removed.</dd>
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.CreateTableQuery">
+<tt class="descname">CreateTableQuery</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.CreateTableQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a SQL statement and params object suitable for creating the table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLEntityCollection.CreateTable">
+<tt class="descname">CreateTable</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLEntityCollection.CreateTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL statement returned by <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityCollection.CreateTableQuery" title="pyslet.odata2.sqlds.SQLEntityCollection.CreateTableQuery"><tt class="xref py py-meth docutils literal"><span class="pre">CreateTableQuery()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLCollectionBase</tt><big>(</big><em>container</em>, <em>qualifyNames=False</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.core.EntityCollection</span></tt></p>
+<p>A base class to provide core SQL functionality.</p>
+<p>Additional keyword arguments:</p>
+<dl class="docutils">
+<dt>container</dt>
+<dd>A <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> instance.</dd>
+<dt>qualifyNames</dt>
+<dd>An optional boolean (defaults to False) indicating whether or not
+the column names must be qualified in all queries.</dd>
+</dl>
+<p>On construction a data connection is acquired from <em>container</em>, this
+may prevent other threads from using the database until the lock is
+released by the <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase.close" title="pyslet.odata2.sqlds.SQLCollectionBase.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.container">
+<tt class="descname">container</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.container" title="Permalink to this definition">¶</a></dt>
+<dd><p>the parent container (database) for this collection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.tableName">
+<tt class="descname">tableName</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.tableName" title="Permalink to this definition">¶</a></dt>
+<dd><p>the quoted table name containing this collection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.qualifyNames">
+<tt class="descname">qualifyNames</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.qualifyNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>if True, field names in expressions are qualified with <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase.tableName" title="pyslet.odata2.sqlds.SQLCollectionBase.tableName"><tt class="xref py py-attr docutils literal"><span class="pre">tableName</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.dbc">
+<tt class="descname">dbc</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.dbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>a connection to the database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the cursor and database connection if they are open.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SetPage">
+<tt class="descname">SetPage</tt><big>(</big><em>top</em>, <em>skip=0</em>, <em>skiptoken=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SetPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the values for paging.</p>
+<p>Our implementation uses a special format for <em>skiptoken</em>.  It is
+a comma-separated list of simple literal values corresponding to
+the values required by the ordering augmented with the key
+values to ensure uniqueness.</p>
+<p>For example, if $orderby=A,B on an entity set with key K then
+the skiptoken will typically have three values comprising the
+last values returned for A,B and K in that order.  In cases
+where the resulting skiptoken would be unreasonably large an
+additional integer (representing a further skip) may be appended
+and the whole token expressed relative to an earlier skip
+point.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.JoinClause">
+<tt class="descname">JoinClause</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.JoinClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method to return the JOIN clause.</p>
+<p>Defaults to an empty expression.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.WhereClause">
+<tt class="descname">WhereClause</tt><big>(</big><em>entity</em>, <em>params</em>, <em>useFilter=True</em>, <em>useSkip=False</em>, <em>nullCols=()</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.WhereClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method that generates the WHERE clause for a query</p>
+<dl class="docutils">
+<dt>entity</dt>
+<dd>An optional entity within this collection that is the focus
+of this query.  If not None the resulting WHERE clause will
+restrict the query to this entity only.</dd>
+<dt>params</dt>
+<dd>The <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object to add parameters to.</dd>
+<dt>useFilter</dt>
+<dd>Defaults to True, indicates if this collection&#8217;s filter should
+be added to the WHERE clause.</dd>
+<dt>useSkip</dt>
+<dd>Defaults to False, indicates if the skiptoken should be used
+in the where clause.  If True then the query is limited to
+entities appearing after the skiptoken&#8217;s value (see below).</dd>
+<dt>nullColls</dt>
+<dd>An iterable of mangled column names that must be NULL (defaults
+to an empty tuple).  This argument is used during updates to
+prevent the replacement of non-NULL foreign keys.</dd>
+</dl>
+<p>The operation of the skiptoken deserves some explanation.  When in
+play the skiptoken contains the last value of the order expression
+returned.  The order expression always uses the keys to ensure
+unambiguous ordering.  The clause added is best served with an
+example.  If an entity has key K and an order expression such
+as &#8220;tolower(Name) desc&#8221; then the query will contain
+something like:</p>
+<div class="highlight-python"><div class="highlight"><pre>SELECT K, Nname, DOB, LOWER(Name) AS o_1, K ....
+        WHERE (o_1 &lt; ? OR (o_1 = ? AND K &gt; ?))
+</pre></div>
+</div>
+<p>The values from the skiptoken will be passed as parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.WhereEntityClause">
+<tt class="descname">WhereEntityClause</tt><big>(</big><em>where</em>, <em>entity</em>, <em>params</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.WhereEntityClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the entity constraint expression to a list of SQL expressions.</p>
+<dl class="docutils">
+<dt>where</dt>
+<dd>The list to append the entity expression to.</dd>
+<dt>entity</dt>
+<dd>An expression is added to restrict the query to this entity</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.WhereSkiptokenClause">
+<tt class="descname">WhereSkiptokenClause</tt><big>(</big><em>where</em>, <em>params</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.WhereSkiptokenClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the entity constraint expression to a list of SQL expressions.</p>
+<dl class="docutils">
+<dt>where</dt>
+<dd>The list to append the skiptoken expression to.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.OrderBy">
+<tt class="descname">OrderBy</tt><big>(</big><em>orderby</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.OrderBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the orderby rules for this collection.</p>
+<p>We override the default implementation to calculate a list
+of field name aliases to use in ordered queries.  For example,
+if the orderby expression is &#8220;tolower(Name) desc&#8221; then each SELECT
+query will be generated with an additional expression, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre>SELECT ID, Name, DOB, LOWER(Name) AS o_1 ... ORDER BY o_1 DESC, ID ASC
+</pre></div>
+</div>
+<p>The name &#8220;o_1&#8221; is obtained from the name mangler using the tuple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">entitySet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="s">&#39;o_1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Subsequent order expressions have names &#8216;o_2&#8217;, &#8216;o_3&#8217;, etc.</p>
+<p>Notice that regardless of the ordering expression supplied the
+keys are always added to ensure that, when an ordering is
+required, a defined order results even at the expense of some
+redundancy.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.OrderByClause">
+<tt class="descname">OrderByClause</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.OrderByClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method to return the orderby clause.</p>
+<dl class="docutils">
+<dt>params</dt>
+<dd>The <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object to add parameters to.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.OrderByCols">
+<tt class="descname">OrderByCols</tt><big>(</big><em>columnNames</em>, <em>params</em>, <em>forceOrder=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.OrderByCols" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility to add the column names and aliases for the ordering.</p>
+<dl class="docutils">
+<dt>columnNames</dt>
+<dd>A list of SQL column name/alias expressions</dd>
+<dt>params</dt>
+<dd>The <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object to add parameters to.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.FieldGenerator">
+<tt class="descname">FieldGenerator</tt><big>(</big><em>entity</em>, <em>forUpdate=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.FieldGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility generator method for mangled property names and values.</p>
+<dl class="docutils">
+<dt>entity</dt>
+<dd>Any instance of <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.Entity" title="pyslet.odata2.csdl.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a></dd>
+<dt>forUpdate</dt>
+<dd>True if the result should exclude the entity&#8217;s keys</dd>
+</dl>
+<p>The yielded values are tuples of (mangled field name,
+<a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">SimpleValue</span></tt></a> instance).          
+Only selected fields are yielded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpression">
+<tt class="descname">SQLExpression</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context='AND'</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an expression into a SQL expression string.</p>
+<dl class="docutils">
+<dt>expression</dt>
+<dd>A <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.core.CommonExpression</span></tt> instance.</dd>
+<dt>params</dt>
+<dd>A <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object of the appropriate type for
+this database connection.</dd>
+<dt>context</dt>
+<dd>A string containing the SQL operator that provides the
+context in which the expression is being converted, defaults
+to &#8216;AND&#8217;. This is used to determine if the resulting
+expression must be bracketed or not.  See
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLBracket" title="pyslet.odata2.sqlds.SQLCollectionBase.SQLBracket"><tt class="xref py py-meth docutils literal"><span class="pre">SQLBracket()</span></tt></a> for a useful utility function to
+illustrate this.</dd>
+</dl>
+<p>This method is basically a grand dispatcher that sends calls to
+other node-specific methods with similar signatures.  The effect
+is to traverse the entire tree rooted at <em>expression</em>.</p>
+<p>The result is a string containing the parameterized expression
+with appropriate values added to the <em>params</em> object <em>in the same
+sequence</em> that they appear in the returned SQL expression.</p>
+<p>When creating derived classes to implement database-specific
+behaviour you should override the individual evaluation methods
+rather than this method.  All related methods have the same
+signature.</p>
+<p>Where methods are documented as having no default implementation,
+NotImplementedError is raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLBracket">
+<tt class="descname">SQLBracket</tt><big>(</big><em>query</em>, <em>context</em>, <em>operator</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLBracket" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method for bracketing a SQL query.</p>
+<dl class="docutils">
+<dt>query</dt>
+<dd>The query string</dd>
+<dt>context</dt>
+<dd>A string representing the SQL operator that defines the
+context in which the query is to placed.  E.g., &#8216;AND&#8217;</dd>
+<dt>operator</dt>
+<dd>The dominant operator in the query.</dd>
+</dl>
+<p>This method is used by operator-specific conversion methods. 
+The query is not parsed, it is merely passed in as a string to be
+bracketed (or not) depending on the values of <em>context</em> and
+<em>operator</em>.</p>
+<p>The implementation is very simple, it checks the precedence of
+<em>operator</em> in <em>context</em> and returns <em>query</em> bracketed if
+necessary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">collection</span><span class="o">.</span><span class="n">SQLBracket</span><span class="p">(</span><span class="s">&quot;Age+3&quot;</span><span class="p">,</span><span class="s">&quot;*&quot;</span><span class="p">,</span><span class="s">&quot;+&quot;</span><span class="p">)</span><span class="o">==</span><span class="s">&quot;(Age+3)&quot;</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">SQLBracket</span><span class="p">(</span><span class="s">&quot;Age*3&quot;</span><span class="p">,</span><span class="s">&quot;+&quot;</span><span class="p">,</span><span class="s">&quot;*&quot;</span><span class="p">)</span><span class="o">==</span><span class="s">&quot;Age*3&quot;</span> 
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMember">
+<tt class="descname">SQLExpressionMember</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMember" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a member expression, e.g., Address/City</p>
+<p>This implementation does not support the use of navigation
+properties but does support references to complex properties.</p>
+<p>It outputs the mangled name of the property, qualified by the
+table name if <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase.qualifyNames" title="pyslet.odata2.sqlds.SQLCollectionBase.qualifyNames"><tt class="xref py py-attr docutils literal"><span class="pre">qualifyNames</span></tt></a> is True.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionCast">
+<tt class="descname">SQLExpressionCast</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionCast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the cast expression: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGenericBinary">
+<tt class="descname">SQLExpressionGenericBinary</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em>, <em>operator</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGenericBinary" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method for implementing binary operator conversion.</p>
+<p>The signature of the basic <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpression" title="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpression"><tt class="xref py py-meth docutils literal"><span class="pre">SQLExpression()</span></tt></a> is extended
+to include an <em>operator</em> argument, a string representing the
+(binary) SQL operator corresponding to the expression object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMul">
+<tt class="descname">SQLExpressionMul</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the mul expression: maps to SQL &#8220;*&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionDiv">
+<tt class="descname">SQLExpressionDiv</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionDiv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the div expression: maps to SQL &#8220;/&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMod">
+<tt class="descname">SQLExpressionMod</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the mod expression: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionAdd">
+<tt class="descname">SQLExpressionAdd</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionAdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the add expression: maps to SQL &#8220;+&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSub">
+<tt class="descname">SQLExpressionSub</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the sub expression: maps to SQL &#8220;-&#8220;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLt">
+<tt class="descname">SQLExpressionLt</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the lt expression: maps to SQL &#8220;&lt;&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGt">
+<tt class="descname">SQLExpressionGt</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the gt expression: maps to SQL &#8220;&gt;&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLe">
+<tt class="descname">SQLExpressionLe</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the le expression: maps to SQL &#8220;&lt;=&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGe">
+<tt class="descname">SQLExpressionGe</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionGe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the ge expression: maps to SQL &#8220;&gt;=&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionIsOf">
+<tt class="descname">SQLExpressionIsOf</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionIsOf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the isof expression: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionEq">
+<tt class="descname">SQLExpressionEq</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionEq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the eq expression: maps to SQL &#8220;=&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionNe">
+<tt class="descname">SQLExpressionNe</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionNe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the ne expression: maps to SQL &#8220;&lt;&gt;&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionAnd">
+<tt class="descname">SQLExpressionAnd</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionAnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the and expression: maps to SQL &#8220;AND&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionOr">
+<tt class="descname">SQLExpressionOr</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionOr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the or expression: maps to SQL &#8220;OR&#8221;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionEndswith">
+<tt class="descname">SQLExpressionEndswith</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionEndswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the endswith function: maps to &#8220;op[0] LIKE &#8216;%&#8217;+op[1]&#8221;</p>
+<p>This is implemented using the concatenation operator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionIndexof">
+<tt class="descname">SQLExpressionIndexof</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionIndexof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the indexof method: maps to POSITION( op[0] IN op[1] )</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionReplace">
+<tt class="descname">SQLExpressionReplace</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionReplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the replace method: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionStartswith">
+<tt class="descname">SQLExpressionStartswith</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionStartswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the startswith function: maps to &#8220;op[0] LIKE op[1]+&#8217;%&#8217;&#8221;</p>
+<p>This is implemented using the concatenation operator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionTolower">
+<tt class="descname">SQLExpressionTolower</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionTolower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the tolower method: maps to LOWER function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionToupper">
+<tt class="descname">SQLExpressionToupper</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionToupper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the toupper method: maps to UCASE function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionTrim">
+<tt class="descname">SQLExpressionTrim</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionTrim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the trim method: maps to TRIM function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSubstring">
+<tt class="descname">SQLExpressionSubstring</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSubstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the substring method: maps to SUBSTRING( op[0] FROM op[1] [ FOR op[2] ]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSubstringof">
+<tt class="descname">SQLExpressionSubstringof</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSubstringof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the substringof function: maps to &#8220;op[1] LIKE &#8216;%&#8217;+op[0]+&#8217;%&#8217;&#8221;</p>
+<p>To do this we need to invoke the concatenation operator.</p>
+<p>This method has been poorly defined in OData with the parameters
+being switched between versions 2 and 3.  It is being withdrawn
+as a result and replaced with contains in OData version 4.  We
+follow the version 3 convention here of &#8220;first parameter in the
+second parameter&#8221; which fits better with the examples and with
+the intuitive meaning:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">substringof</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span> <span class="o">==</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">B</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionConcat">
+<tt class="descname">SQLExpressionConcat</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionConcat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the concat method: maps to ||</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLength">
+<tt class="descname">SQLExpressionLength</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the length method: maps to CHAR_LENGTH( op[0] )</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionYear">
+<tt class="descname">SQLExpressionYear</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionYear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the year method: maps to EXTRACT(YEAR FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMonth">
+<tt class="descname">SQLExpressionMonth</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMonth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the month method: maps to EXTRACT(MONTH FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionDay">
+<tt class="descname">SQLExpressionDay</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the day method: maps to EXTRACT(DAY FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionHour">
+<tt class="descname">SQLExpressionHour</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionHour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the hour method: maps to EXTRACT(HOUR FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMinute">
+<tt class="descname">SQLExpressionMinute</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionMinute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the minute method: maps to EXTRACT(MINUTE FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSecond">
+<tt class="descname">SQLExpressionSecond</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionSecond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the second method: maps to EXTRACT(SECOND FROM op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionRound">
+<tt class="descname">SQLExpressionRound</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionRound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the round method: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionFloor">
+<tt class="descname">SQLExpressionFloor</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionFloor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the floor method: no default implementation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionCeiling">
+<tt class="descname">SQLExpressionCeiling</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLCollectionBase.SQLExpressionCeiling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the ceiling method: no default implementation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLNavigationCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLNavigationCollection</tt><big>(</big><em>associationSetName</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase" title="pyslet.odata2.sqlds.SQLCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLCollectionBase</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.core.NavigationCollection</span></tt></p>
+<p>Abstract class representing all navigation collections.</p>
+<p>Additional keyword arguments:</p>
+<dl class="docutils">
+<dt>associationSetName</dt>
+<dd>The name of the association set that defines this relationship.
+This additional parameter is used by the name mangler to obtain
+the field name (or table name) used for the foreign keys.</dd>
+</dl>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLNavigationCollection.InsertLink">
+<tt class="descname">InsertLink</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLNavigationCollection.InsertLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method that inserts a link to <em>entity</em> into this collection.</p>
+<dl class="docutils">
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLNavigationCollection.ReplaceLink">
+<tt class="descname">ReplaceLink</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLNavigationCollection.ReplaceLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method that replaces all links in the collection with a single linke to <em>entity</em>.</p>
+<dl class="docutils">
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLNavigationCollection.DeleteLink">
+<tt class="descname">DeleteLink</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLNavigationCollection.DeleteLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility method that deletes the link to <em>entity</em> in this collection.</p>
+<p>This method is called during cascaded deletes to force-remove a
+link prior to the deletion of the entity itself.</p>
+<dl class="docutils">
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLForeignKeyCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLForeignKeyCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="pyslet.odata2.sqlds.SQLNavigationCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLNavigationCollection</span></tt></a></p>
+<p>The collection of entities obtained by navigation via a foreign key</p>
+<p>This object is used when the foreign key is stored in the same table
+as <em>fromEntity</em>.  This occurs when the relationship is one of:</p>
+<div class="highlight-python"><div class="highlight"><pre>0..1 to 1
+Many to 1
+Many to 0..1
+</pre></div>
+</div>
+<p>The name mangler looks for the foreign key in the field obtained by
+mangling:</p>
+<div class="highlight-python"><div class="highlight"><pre>(entity set name, association set name, key name)
+</pre></div>
+</div>
+<p>For example, suppose that a link exists from entity set Orders[*] to
+entity set Customers[0..1] and that the key field of Customer is
+&#8220;CustomerID&#8221;.  If the association set that binds Orders to Customers
+with this link is called OrdersToCustomers then the foreign key would
+be obtained by looking up:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;Orders&#39;</span><span class="p">,</span><span class="s">&#39;OrdersToCustomers&#39;</span><span class="p">,</span><span class="s">&#39;CustomerID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default this would result in the field name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;OrdersToCustomers_CustomerID&#39;</span>
+</pre></div>
+</div>
+<p>This field would be looked up in the &#8216;Orders&#8217; table.  The operation
+of the name mangler can be customised by overriding the
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.MangleName" title="pyslet.odata2.sqlds.SQLEntityContainer.MangleName"><tt class="xref py py-meth docutils literal"><span class="pre">SQLEntityContainer.MangleName()</span></tt></a> method in the container.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLForeignKeyCollection.JoinClause">
+<tt class="descname">JoinClause</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection.JoinClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to provide a join to the entity set containing the <em>fromEntity</em>.</p>
+<p>The join clause introduces an additional name that is looked up
+by the name mangler.  To avoid name clashes when the
+relationship is recursive the join clause introduces an alias
+for the table containing <em>fromEntity</em>.  To continue the example
+above, if the link from Orders to Customers is bound to a
+navigation property in the reverse direction called, say,
+&#8216;AllOrders&#8217; <em>in the target entity set</em> then this alias is
+looked up using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;Customers&#39;</span><span class="p">,</span><span class="s">&#39;AllOrders&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default this would just be the string &#8216;AllOrders&#8217; (the
+name of the navigation property). The resulting join looks
+something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>SELECT ... FROM Customers
+INNER JOIN Orders AS AllOrders ON Customers.CustomerID=AllOrders.OrdersToCustomers_CustomerID
+...
+WHERE AllOrders.OrderID = ?;
+</pre></div>
+</div>
+<p>The value of the OrderID key property in fromEntity is passed as
+a parameter when executing the expression.</p>
+<p>There is an awkward case when the reverse navigation property
+has not been bound, in this case the link&#8217;s role name is used
+instead, this provides a best guess as to what the navigation
+property name would have been had it been bound; it must be
+unique within the context of <em>target</em> entitySet&#8217;s type - a
+benign constraint on the model&#8217;s metadata description.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLForeignKeyCollection.WhereClause">
+<tt class="descname">WhereClause</tt><big>(</big><em>entity</em>, <em>params</em>, <em>useFilter=True</em>, <em>useSkip=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection.WhereClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to add the constraint for entities linked from <em>fromEntity</em> only.</p>
+<p>We continue to use the alias set in the <a class="reference internal" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection.JoinClause" title="pyslet.odata2.sqlds.SQLForeignKeyCollection.JoinClause"><tt class="xref py py-meth docutils literal"><span class="pre">JoinClause()</span></tt></a>
+where an example WHERE clause is illustrated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLReverseKeyCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLReverseKeyCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="pyslet.odata2.sqlds.SQLNavigationCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLNavigationCollection</span></tt></a></p>
+<p>The collection of entities obtained by navigation to a foreign key</p>
+<p>This object is used when the foreign key is stored in the target
+table.  This occurs in the reverse of the cases where
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection" title="pyslet.odata2.sqlds.SQLReverseKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLReverseKeyCollection</span></tt></a> is used, i.e:</p>
+<blockquote>
+<div>1 to 0..1
+1 to Many
+0..1 to Many</div></blockquote>
+<p>The implementation is actually simpler in this direction as no JOIN
+clause is required.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLReverseKeyCollection.WhereClause">
+<tt class="descname">WhereClause</tt><big>(</big><em>entity</em>, <em>params</em>, <em>useFilter=True</em>, <em>useSkip=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection.WhereClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to add the constraint to entities linked from <em>fromEntity</em> only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLReverseKeyCollection.DeleteLink">
+<tt class="descname">DeleteLink</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection.DeleteLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called during cascaded deletes.</p>
+<p>This is actually a no-operation as the foreign key for this
+association is in the entity&#8217;s record itself and will be removed
+automatically when entity is deleted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLReverseKeyCollection.ClearLinks">
+<tt class="descname">ClearLinks</tt><big>(</big><em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection.ClearLinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all links from this collection&#8217;s <em>fromEntity</em></p>
+<dl class="docutils">
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLAssociationCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLNavigationCollection" title="pyslet.odata2.sqlds.SQLNavigationCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLNavigationCollection</span></tt></a></p>
+<p>The collection of entities obtained by navigation using an auxiliary table</p>
+<p>This object is used when the relationship is described by two sets
+of foreign keys stored in an auxiliary table.  This occurs mainly
+when the link is Many to Many but it is also used for 1 to 1
+relationships.  This last use may seem odd but it is used to
+represent the symmetry of the relationship. In practice, a single
+set of foreign keys is likely to exist in one table or the other and
+so the relationship is best modelled by a 0..1 to 1 relationship
+even if the intention is that the records will always exist in pairs.</p>
+<p>The name of the auxiliary table is obtained from the name mangler using
+the association set&#8217;s name.  The keys use a more complex mangled form
+to cover cases where there is a recursive Many to Many relation (such
+as a social network of friends between User entities).  The names of
+the keys are obtained by mangling:</p>
+<div class="highlight-python"><div class="highlight"><pre>( association set name, target entity set name, navigation property name, key name )
+</pre></div>
+</div>
+<p>An example should help.  Suppose we have entities representing
+sports Teams(TeamID) and sports Players(PlayerID) and that you can
+navigate from Player to Team using the &#8220;PlayedFor&#8221; navigation
+property and from Team to Player using the &#8220;Players&#8221; navigation
+property.  Both navigation properties are collections so the
+relationship is Many to Many.  If the association set that binds the
+two entity sets is called PlayersAndTeams then the the auxiliary
+table name will be mangled from:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;PlayersAndTeams&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and the fields will be mangled from:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="s">&#39;PlayersAndTeams&#39;</span><span class="p">,</span><span class="s">&#39;Teams&#39;</span><span class="p">,</span><span class="s">&#39;PlayedFor&#39;</span><span class="p">,</span><span class="s">&#39;TeamID&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s">&#39;PlayersAndTeams&#39;</span><span class="p">,</span><span class="s">&#39;Players&#39;</span><span class="p">,</span><span class="s">&#39;Players&#39;</span><span class="p">,</span><span class="s">&#39;PlayerID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default this results in column names &#8216;Teams_PlayedFor_TeamID&#8217; and
+&#8216;Players_Players_PlayerID&#8217;.  If you are modelling an existing
+database then &#8216;TeamID&#8217; and &#8216;PlayerID&#8217; on their own are more likely
+choices. You would need to override the
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer.MangleName" title="pyslet.odata2.sqlds.SQLEntityContainer.MangleName"><tt class="xref py py-meth docutils literal"><span class="pre">SQLEntityContainer.MangleName()</span></tt></a> method in the container to
+catch these cases and return the shorter column names.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.JoinClause">
+<tt class="descname">JoinClause</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.JoinClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to provide the JOIN to the auxiliary table.</p>
+<p>Unlike the foreign key JOIN clause there is no need to use an
+alias in this case as the auxiliary table is assumed to be
+distinct from the the table it is being joined to.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.WhereClause">
+<tt class="descname">WhereClause</tt><big>(</big><em>entity</em>, <em>params</em>, <em>useFilter=True</em>, <em>useSkip=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.WhereClause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to provide the <em>fromEntity</em> constraint in the auxiliary table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.InsertEntity">
+<tt class="descname">InsertEntity</tt><big>(</big><em>entity</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.InsertEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rerouted to a SQL-specific implementation with additional arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.InsertEntitySQL">
+<tt class="descname">InsertEntitySQL</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.InsertEntitySQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts <em>entity</em> into the base collection and creates the link.</p>
+<p>This is always done in two steps, bound together in a single
+transaction (where supported).  If this object represents a 1 to
+1 relationship then, briefly, we&#8217;ll be in violation of the
+model. This will only be an issue in non-transactional
+systems.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.DeleteLink">
+<tt class="descname">DeleteLink</tt><big>(</big><em>entity</em>, <em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.DeleteLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called during cascaded deletes to force-remove a link prior
+to the deletion of the entity itself.</p>
+<p>This method is also re-used for simple deletion of the link in
+this case as the link is in the auxiliary table itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinks">
+<tt class="descname">ClearLinks</tt><big>(</big><em>transaction=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all links from this collection&#8217;s <em>fromEntity</em></p>
+<dl class="docutils">
+<dt>transaction</dt>
+<dd>An optional transaction.  If present, the connection is left
+uncommitted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinksUnbound">
+<em class="property">classmethod </em><tt class="descname">ClearLinksUnbound</tt><big>(</big><em>container</em>, <em>fromEnd</em>, <em>fromEntity</em>, <em>transaction</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinksUnbound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special class method for deleting all the links from <em>fromEntity</em></p>
+<p>This is a class method because it has to work even if there is
+no navigation property bound to this end of the association.</p>
+<dl class="docutils">
+<dt>container</dt>
+<dd>The <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> containing this association
+set.</dd>
+<dt>fromEnd</dt>
+<dd>The <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.AssociationSetEnd" title="pyslet.odata2.csdl.AssociationSetEnd"><tt class="xref py py-class docutils literal"><span class="pre">AssociationSetEnd</span></tt></a> that represents
+the end of the association that <em>fromEntity</em> is bound to.</dd>
+<dt>fromEntity</dt>
+<dd>The entity to delete links from</dd>
+<dt>transaction</dt>
+<dd>The current transaction (required)</dd>
+</dl>
+<p>This is a class method because it has to work even if there is
+no navigation property bound to this end of the association.  If
+there was a navigation property then an instance could be
+created and the simpler <a class="reference internal" href="#pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinks" title="pyslet.odata2.sqlds.SQLAssociationCollection.ClearLinks"><tt class="xref py py-meth docutils literal"><span class="pre">ClearLinks()</span></tt></a> method used.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.CreateTableQuery">
+<em class="property">classmethod </em><tt class="descname">CreateTableQuery</tt><big>(</big><em>container</em>, <em>associationSetName</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.CreateTableQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a SQL statement and params object suitable for creating the auxiliary table.</p>
+<p>This is a class method to enable the table to be created before
+any entities are created.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.odata2.sqlds.SQLAssociationCollection.CreateTable">
+<em class="property">classmethod </em><tt class="descname">CreateTable</tt><big>(</big><em>container</em>, <em>associationSetName</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLAssociationCollection.CreateTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the SQL statement returned by <a class="reference internal" href="#pyslet.odata2.sqlds.SQLAssociationCollection.CreateTableQuery" title="pyslet.odata2.sqlds.SQLAssociationCollection.CreateTableQuery"><tt class="xref py py-meth docutils literal"><span class="pre">CreateTableQuery()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="sqlite">
+<h2>2.1.3.6.2. SQLite<a class="headerlink" href="#sqlite" title="Permalink to this headline">¶</a></h2>
+<p>This module also contains a fully functional implementation of the API
+based on the sqlite3 module.  The first job with any SQL implementation
+is to create a base collection class that implements any custom
+expression handling.</p>
+<p>In the case of SQLite we override a handful of the standard SQL
+functions only.  Notice that this class is derived from
+<a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase" title="pyslet.odata2.sqlds.SQLCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">SQLCollectionBase</span></tt></a>, an abstract class.  If your SQL
+platform adheres to the SQL standard very closely, or you are happy for
+SQL-level errors to be generated when unsupported SQL syntax is
+generated by some filter or orderby expressions then you can skip the
+process of creating customer collection classes completely.</p>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteEntityCollectionBase</tt><big>(</big><em>container</em>, <em>qualifyNames=False</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLCollectionBase" title="pyslet.odata2.sqlds.SQLCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLCollectionBase</span></tt></a></p>
+<p>Base class for SQLite SQL custom mappings.</p>
+<p>This class provides some SQLite specific mappings for certain
+functions to improve compatibility with the OData expression
+language.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionLength">
+<tt class="descname">SQLExpressionLength</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the length method: maps to length( op[0] )</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionYear">
+<tt class="descname">SQLExpressionYear</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionYear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the year method: maps to CAST(strftime(&#8216;%Y&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionMonth">
+<tt class="descname">SQLExpressionMonth</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionMonth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the month method: maps to  CAST(strftime(&#8216;%m&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionDay">
+<tt class="descname">SQLExpressionDay</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the day method: maps to  CAST(strftime(&#8216;%d&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionHour">
+<tt class="descname">SQLExpressionHour</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionHour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the hour method: maps to  CAST(strftime(&#8216;%H&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionMinute">
+<tt class="descname">SQLExpressionMinute</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionMinute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the minute method: maps to  CAST(strftime(&#8216;%M&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionSecond">
+<tt class="descname">SQLExpressionSecond</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionSecond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the second method: maps to  CAST(strftime(&#8216;%S&#8217;,op[0]) AS INTEGER)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionTolower">
+<tt class="descname">SQLExpressionTolower</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionTolower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the tolower method: maps to lower(op[0])</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionToupper">
+<tt class="descname">SQLExpressionToupper</tt><big>(</big><em>expression</em>, <em>params</em>, <em>context</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase.SQLExpressionToupper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the toupper method: maps to upper(op[0])</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>To ensure that our custom implementations are integrated in to all the
+collection classes we have to create specific classes for all collection
+types.  These classes have no implementation!</p>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteEntityCollection</tt><big>(</big><em>container</em>, <em>qualifyNames=False</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase" title="pyslet.odata2.sqlds.SQLiteEntityCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLiteEntityCollectionBase</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityCollection" title="pyslet.odata2.sqlds.SQLEntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLEntityCollection</span></tt></a></p>
+<p>SQLite-specific collection for entity sets</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteForeignKeyCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteForeignKeyCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteForeignKeyCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase" title="pyslet.odata2.sqlds.SQLiteEntityCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLiteEntityCollectionBase</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.sqlds.SQLForeignKeyCollection" title="pyslet.odata2.sqlds.SQLForeignKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLForeignKeyCollection</span></tt></a></p>
+<p>SQLite-specific collection for navigation from a foreign key</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteReverseKeyCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteReverseKeyCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteReverseKeyCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase" title="pyslet.odata2.sqlds.SQLiteEntityCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLiteEntityCollectionBase</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.sqlds.SQLReverseKeyCollection" title="pyslet.odata2.sqlds.SQLReverseKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLReverseKeyCollection</span></tt></a></p>
+<p>SQLite-specific collection for navigation to a foreign key</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteAssociationCollection">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteAssociationCollection</tt><big>(</big><em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteAssociationCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityCollectionBase" title="pyslet.odata2.sqlds.SQLiteEntityCollectionBase"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLiteEntityCollectionBase</span></tt></a>, <a class="reference internal" href="#pyslet.odata2.sqlds.SQLAssociationCollection" title="pyslet.odata2.sqlds.SQLAssociationCollection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLAssociationCollection</span></tt></a></p>
+<p>SQLite-specific collection for symmetric association sets</p>
+</dd></dl>
+
+<p>Finally, we can override the main container class to provide a complete
+implementation of our API using the sqlite3 module.</p>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLiteEntityContainer</tt><big>(</big><em>filePath</em>, <em>sqlite_options={}</em>, <em>**kwArgs</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLEntityContainer</span></tt></a></p>
+<p>Creates a <a class="reference internal" href="#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> that represents a SQLite database.</p>
+<p>Additional keyword arguments:</p>
+<dl class="docutils">
+<dt>filePath</dt>
+<dd>The path to the SQLite database file.</dd>
+<dt>sqlite_options</dt>
+<dd><p class="first">A dictionary of additional options to pass as named arguments to
+the connect method.  It defaults to an empty dictionary, you
+won&#8217;t normally need to pass additional options and you shouldn&#8217;t
+change the isolation_level as the collection classes have been
+designed to work in the default mode.</p>
+<p class="last">For more information see <a class="reference external" href="https://docs.python.org/2/library/sqlite3.html">sqlite3</a></p>
+</dd>
+</dl>
+<p>All other keyword arguments required to initialise the base class
+must be passed on construction except <em>dbapi</em> which is automatically
+set to the Python sqlite3 module.</p>
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.GetCollectionClass">
+<tt class="descname">GetCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.GetCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to return <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityCollection" title="pyslet.odata2.sqlds.SQLiteEntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteEntityCollection</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.GetSymmetricNavigationCollectionClass">
+<tt class="descname">GetSymmetricNavigationCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.GetSymmetricNavigationCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to return <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteAssociationCollection" title="pyslet.odata2.sqlds.SQLiteAssociationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteAssociationCollection</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.GetForeignKeyCollectionClass">
+<tt class="descname">GetForeignKeyCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.GetForeignKeyCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to return <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteForeignKeyCollection" title="pyslet.odata2.sqlds.SQLiteForeignKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteForeignKeyCollection</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.GetReverseKeyCollectionClass">
+<tt class="descname">GetReverseKeyCollectionClass</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.GetReverseKeyCollectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to return <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteReverseKeyCollection" title="pyslet.odata2.sqlds.SQLiteReverseKeyCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteReverseKeyCollection</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.OpenConnection">
+<tt class="descname">OpenConnection</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.OpenConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the underlying connect method.</p>
+<p>Passes the filePath used to construct the container as the only
+parameter.  You can pass the string &#8216;:memory:&#8217; to create an
+in-memory database.</p>
+<p>Other connection arguments are not currently supported, you can
+derive a more complex implementation by overriding this method
+and (optionally) the __init__ method to pass in values for .</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.BreakConnection">
+<tt class="descname">BreakConnection</tt><big>(</big><em>connection</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.BreakConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the underlying interrupt method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLType">
+<tt class="descname">PrepareSQLType</tt><big>(</big><em>simpleValue</em>, <em>params</em>, <em>nullable=None</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs SQLite custom mappings</p>
+<p>We inherit most of the type mappings but the following three
+types use custom mappings:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>EDM Type</td>
+<td>SQLite Equivalent</td>
+</tr>
+<tr class="row-even"><td>Edm.Decimal</td>
+<td>TEXT</td>
+</tr>
+<tr class="row-odd"><td>Edm.Guid</td>
+<td>BLOB</td>
+</tr>
+<tr class="row-even"><td>Edm.Time</td>
+<td>REAL</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLValue">
+<tt class="descname">PrepareSQLValue</tt><big>(</big><em>simpleValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a simple value, returns a value suitable for passing as a parameter.</p>
+<p>We inherit most of the value mappings but the following types
+have custom mappings.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>EDM Type</td>
+<td>Python value added as parameter</td>
+</tr>
+<tr class="row-even"><td>Edm.Binary</td>
+<td>buffer object</td>
+</tr>
+<tr class="row-odd"><td>Edm.Decimal</td>
+<td>string representation obtained with str()</td>
+</tr>
+<tr class="row-even"><td>Edm.Guid</td>
+<td>buffer object containing bytes representation</td>
+</tr>
+<tr class="row-odd"><td>Edm.Time</td>
+<td>value of <a class="reference internal" href="iso8601.html#pyslet.iso8601.Time.GetTotalSeconds" title="pyslet.iso8601.Time.GetTotalSeconds"><tt class="xref py py-meth docutils literal"><span class="pre">pyslet.iso8601.Time.GetTotalSeconds()</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<p>Our use of buffer type is not ideal as it generates warning when
+Python is run with the -3 flag (to check for Python 3
+compatibility) but it seems unavoidable at the current time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.ReadSQLValue">
+<tt class="descname">ReadSQLValue</tt><big>(</big><em>simpleValue</em>, <em>newValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.ReadSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverses the transformation performed by <a class="reference internal" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLValue" title="pyslet.odata2.sqlds.SQLiteEntityContainer.PrepareSQLValue"><tt class="xref py py-meth docutils literal"><span class="pre">PrepareSQLValue()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLiteEntityContainer.NewFromSQLValue">
+<tt class="descname">NewFromSQLValue</tt><big>(</big><em>sqlValue</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLiteEntityContainer.NewFromSQLValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <a class="reference internal" href="odatav2_csdl.html#pyslet.odata2.csdl.SimpleValue" title="pyslet.odata2.csdl.SimpleValue"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.csdl.SimpleValue</span></tt></a> instance with value <em>sqlValue</em></p>
+<p>Overridden to ensure that buffer objects returned by the
+underlying DB API are converted to strings.  Otherwise
+<em>sqlValue</em> is passed directly to the parent.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utility-classes">
+<h2>2.1.3.6.3. Utility Classes<a class="headerlink" href="#utility-classes" title="Permalink to this headline">¶</a></h2>
+<p>Some miscellaneous classes documented mainly to make the implementation
+of the collection classes easier to understand.</p>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLTransaction">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLTransaction</tt><big>(</big><em>api</em>, <em>dbc</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class used to model a transaction.</p>
+<p>Python&#8217;s DB API uses transactions by default, hiding the details from
+the caller.  Essentially, the first execute call on a connection issues
+a BEGIN statement and the transaction ends with either a commit or a
+rollback.  It is generally considered a bad idea to issue a SQL command
+and then leave the connection with an open transaction.</p>
+<p>The purpose of this class is to help us write methods that can
+operate either as a single transaction or as part of sequence of
+methods that form a single transaction.  It also manages cursor
+creation and closing and logging.</p>
+<p>Essentially, the class is used as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span><span class="o">=</span><span class="n">SQLTransaction</span><span class="p">(</span><span class="n">db_module</span><span class="p">,</span><span class="n">db_connection</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">Begin</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="s">&quot;UPDATE SOME_TABLE SET SOME_COL=&#39;2&#39;&quot;</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">Commit</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">Rollback</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The transaction object can be passed to a sub-method between the
+Begin and Commit calls provided that method follows the same pattern
+as the above for the try, except and finally blocks.  The object
+keeps track of these &#8216;nested&#8217; transactions and delays the commit or
+rollback until the outermost method invokes them.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.api">
+<tt class="descname">api</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.api" title="Permalink to this definition">¶</a></dt>
+<dd><p>the database module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.dbc">
+<tt class="descname">dbc</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.dbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>the database connection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.cursor">
+<tt class="descname">cursor</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.cursor" title="Permalink to this definition">¶</a></dt>
+<dd><p>the database cursor to use for executing commands</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.noCommit">
+<tt class="descname">noCommit</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.noCommit" title="Permalink to this definition">¶</a></dt>
+<dd><p>used to manage nested transactions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.queryCount">
+<tt class="descname">queryCount</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.queryCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>records the number of successful commands</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.Begin">
+<tt class="descname">Begin</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.Begin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begins a transaction</p>
+<p>If a transaction is already in progress a nested transaction is
+started which has no affect on the database connection itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.Execute">
+<tt class="descname">Execute</tt><big>(</big><em>sqlCmd</em>, <em>params</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.Execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes <em>sqlCmd</em> as part of this transaction.</p>
+<dl class="docutils">
+<dt>sqlCmd</dt>
+<dd>A string containing the query</dd>
+<dt>params</dt>
+<dd>A <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">SQLParams</span></tt></a> object containing any
+parameterized values.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.Commit">
+<tt class="descname">Commit</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.Commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ends this transaction with a commit</p>
+<p>Nested transactions do nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.Rollback">
+<tt class="descname">Rollback</tt><big>(</big><em>err=None</em>, <em>swallowErr=False</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.Rollback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the underlying database connection rollback method.</p>
+<p>Nested transactions do not rollback the connection, they do
+nothing except re-raise <em>err</em> (if required).</p>
+<p>If rollback is not supported the resulting error is absorbed.</p>
+<dl class="docutils">
+<dt>err</dt>
+<dd><p class="first">The exception that triggered the rollback.  If not None then
+this is logged at INFO level when the rollback succeeds.</p>
+<p class="last">If the transaction contains at least one successfully
+executed query and the rollback fails then <em>err</em> is logged
+at ERROR rather than INFO level indicating that the data may
+now be in violation of the model.</p>
+</dd>
+<dt>swallowErr</dt>
+<dd>A flag (defaults to False) indicating that <em>err</em> should be
+swallowed, rather than re-raised.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLTransaction.Close">
+<tt class="descname">Close</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLTransaction.Close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes this transaction after a rollback or commit.</p>
+<p>Each call to <a class="reference internal" href="#pyslet.odata2.sqlds.SQLTransaction.Begin" title="pyslet.odata2.sqlds.SQLTransaction.Begin"><tt class="xref py py-meth docutils literal"><span class="pre">Begin()</span></tt></a> MUST be balanced with one call to
+Close.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLParams">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLParams</tt><a class="headerlink" href="#pyslet.odata2.sqlds.SQLParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>An abstract class used to build parameterized queries.</p>
+<p>Python&#8217;s DB API support three different conventions for specifying
+parameters and each module indicates the convention in use.  The SQL
+construction methods in this module abstract away this variability
+for maximum portability using different implementations of the basic
+SQLParams class.</p>
+<dl class="attribute">
+<dt id="pyslet.odata2.sqlds.SQLParams.params">
+<tt class="descname">params</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLParams.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>an object suitable for passing to DB API&#8217;s execute method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.odata2.sqlds.SQLParams.AddParam">
+<tt class="descname">AddParam</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.SQLParams.AddParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a value to this set of parameters returning the string to include in the query</p>
+<dl class="docutils">
+<dt>value:</dt>
+<dd>The native representation of the value in a format suitable
+for passing to the underlying DB API.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.QMarkParams">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">QMarkParams</tt><a class="headerlink" href="#pyslet.odata2.sqlds.QMarkParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLParams</span></tt></a></p>
+<p>A class for building parameter lists using &#8216;?&#8217; syntax.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.NumericParams">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">NumericParams</tt><a class="headerlink" href="#pyslet.odata2.sqlds.NumericParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLParams</span></tt></a></p>
+<p>A class for building parameter lists using &#8216;:1&#8217;, &#8216;:2&#8217;,... syntax</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.NamedParams">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">NamedParams</tt><a class="headerlink" href="#pyslet.odata2.sqlds.NamedParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLParams" title="pyslet.odata2.sqlds.SQLParams"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLParams</span></tt></a></p>
+<p>A class for building parameter lists using &#8216;:A&#8217;, &#8216;:B&#8221;,... syntax</p>
+<p>Although there is more freedom with named parameters, in order to
+support the ordered lists of the other formats we just invent
+parameter names using &#8216;:p1&#8217;, &#8216;:p2&#8217;, etc.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="misc-definitions">
+<h2>2.1.3.6.4. Misc Definitions<a class="headerlink" href="#misc-definitions" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pyslet.odata2.sqlds.SQL_TIMEOUT">
+<tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQL_TIMEOUT</tt><em class="property"> = 90</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQL_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>the standard timeout while waiting for a database connection, in seconds</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.UnparameterizedLiteral">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">UnparameterizedLiteral</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#pyslet.odata2.sqlds.UnparameterizedLiteral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.core.LiteralExpression</span></tt></p>
+<p>Class used as a flag that this literal is safe and does not need
+to be parameterized.</p>
+<p>This is used in the query converter to prevent things like this
+happening when the converter itself constructs a LIKE expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;name&quot; LIKE ?+?+? ; params=[u&#39;%&#39;,u&quot;Smith&quot;,u&#39;%&#39;]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.odata2.sqlds.SQLOperatorPrecedence">
+<tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLOperatorPrecedence</tt><em class="property"> = {'&gt;=': 4, '&lt;&gt;': 4, '&lt;=': 4, 'AND': 2, 'LIKE': 4, '+': 5, '*': 6, '-': 5, ',': 0, '/': 6, 'OR': 1, 'NOT': 3, '=': 4, '&lt;': 4, '&gt;': 4}</em><a class="headerlink" href="#pyslet.odata2.sqlds.SQLOperatorPrecedence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look-up table for SQL operator precedence calculations.</p>
+<p>The keys are strings representing the operator, the values are
+integers that allow comparisons for operator precedence. For
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SQLOperatorPrecedence</span><span class="p">[</span><span class="s">&#39;+&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">SQLOperatorPrecedence</span><span class="p">[</span><span class="s">&#39;*&#39;</span><span class="p">]</span>
+<span class="n">SQLOperatorPrecedence</span><span class="p">[</span><span class="s">&#39;&lt;&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">SQLOperatorPrecedence</span><span class="p">[</span><span class="s">&#39;&gt;&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.DummyLock">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">DummyLock</tt><a class="headerlink" href="#pyslet.odata2.sqlds.DummyLock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>An object to use in place of a real Lock, can always be acquired</p>
+</dd></dl>
+
+</div>
+<div class="section" id="exceptions">
+<h2>2.1.3.6.5. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.DatabaseBusy">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">DatabaseBusy</tt><a class="headerlink" href="#pyslet.odata2.sqlds.DatabaseBusy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.odata2.sqlds.SQLError" title="pyslet.odata2.sqlds.SQLError"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.odata2.sqlds.SQLError</span></tt></a></p>
+<p>Raised when a database connection times out.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.odata2.sqlds.SQLError">
+<em class="property">class </em><tt class="descclassname">pyslet.odata2.sqlds.</tt><tt class="descname">SQLError</tt><a class="headerlink" href="#pyslet.odata2.sqlds.SQLError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base class for all module exceptions.</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -78,18 +2113,26 @@ about SQLite see: <a class="reference external" href="http://www.sqlite.org/">ht
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">2.1.3.5. SQL Database-based Data Services</a><ul>
-<li><a class="reference internal" href="#reference">2.1.3.5.1. Reference</a></li>
+<li><a class="reference internal" href="#">2.1.3.6. SQL Database-based Data Services</a><ul>
+<li><a class="reference internal" href="#data-access-layer-api">2.1.3.6.1. Data Access Layer API</a><ul>
+<li><a class="reference internal" href="#entity-containers">2.1.3.6.1.1. Entity Containers</a></li>
+<li><a class="reference internal" href="#entity-collections">2.1.3.6.1.2. Entity Collections</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sqlite">2.1.3.6.2. SQLite</a></li>
+<li><a class="reference internal" href="#utility-classes">2.1.3.6.3. Utility Classes</a></li>
+<li><a class="reference internal" href="#misc-definitions">2.1.3.6.4. Misc Definitions</a></li>
+<li><a class="reference internal" href="#exceptions">2.1.3.6.5. Exceptions</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="odatav2_memds.html"
-                        title="previous chapter">2.1.3.4. An In-Memory Data Service</a></p>
+                        title="previous chapter">2.1.3.5. An In-Memory Data Service</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="odatav2_server.html"
-                        title="next chapter">2.1.3.6. OData Server Reference</a></p>
+                        title="next chapter">2.1.3.7. OData Server Reference</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/odatav2_sqlds.txt"
@@ -122,12 +2165,12 @@ about SQLite see: <a class="reference external" href="http://www.sqlite.org/">ht
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="odatav2_server.html" title="2.1.3.6. OData Server Reference"
+          <a href="odatav2_server.html" title="2.1.3.7. OData Server Reference"
              >next</a> |</li>
         <li class="right" >
-          <a href="odatav2_memds.html" title="2.1.3.4. An In-Memory Data Service"
+          <a href="odatav2_memds.html" title="2.1.3.5. An In-Memory Data Service"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_reference.html" >2.1.3. OData Reference</a> &raquo;</li> 

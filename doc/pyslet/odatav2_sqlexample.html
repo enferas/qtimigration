@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.2.2. Sample Project: SQL Data Service &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.1.2.2. A SQL-Backed Data Service &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2.1.2. OData Providers" href="odatav2_provider.html" />
     <link rel="next" title="2.1.2.3. Sample Project: Custom Data Service" href="odatav2_customexample.html" />
     <link rel="prev" title="2.1.2.1. Sample Project: InMemory Data Service" href="odatav2_memexample.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2_memexample.html" title="2.1.2.1. Sample Project: InMemory Data Service"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_provider.html" accesskey="U">2.1.2. OData Providers</a> &raquo;</li> 
@@ -56,8 +56,513 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="sample-project-sql-data-service">
-<h1>2.1.2.2. Sample Project: SQL Data Service<a class="headerlink" href="#sample-project-sql-data-service" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="a-sql-backed-data-service">
+<h1>2.1.2.2. A SQL-Backed Data Service<a class="headerlink" href="#a-sql-backed-data-service" title="Permalink to this headline">¶</a></h1>
+<p>The sample code for this service is in the samples directory in the
+Pyslet distribution.</p>
+<p>This project demonstrates how to construct a simple OData service based
+on the <a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLiteEntityContainer" title="pyslet.odata2.sqlds.SQLiteEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteEntityContainer</span></tt></a> class.</p>
+<p>We don&#8217;t need any customisations, this class does everything we need
+&#8216;out of the box&#8217;.  If you want to use a database other than SQLite you
+will need to create a new implementation of the generic
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a>.  See the reference
+documentation for <a class="reference internal" href="odatav2_sqlds.html#module-pyslet.odata2.sqlds" title="pyslet.odata2.sqlds"><tt class="xref py py-mod docutils literal"><span class="pre">sqlds</span></tt></a> for details on what is
+involved.  You shouldn&#8217;t have to change much!</p>
+<div class="section" id="step-1-creating-the-metadata-model">
+<h2>2.1.2.2.1. Step 1: Creating the Metadata Model<a class="headerlink" href="#step-1-creating-the-metadata-model" title="Permalink to this headline">¶</a></h2>
+<p>If you haven&#8217;t read the <a class="reference internal" href="odatav2_memexample.html"><em>Sample Project: InMemory Data Service</em></a> yet it is a good idea
+to do that to get a primer on how providers work.  The actual
+differences between writing a SQL-backed service and one backed by the
+in-memory implementation are minimal.  I haven&#8217;t repeated code here if
+it is essentially the same as the code shown in the previous example,
+but remember that the full working source is available in the samples
+directory.</p>
+<p>For this project, I&#8217;ve chosen to write an OData service that exposes
+weather data for my home town of Cambridge, England.  The choice of data
+set is purely because I have access to over 325,000 data points
+stretching back to 1995 thanks to the excellent Weather Station website
+run by the University of Cambridge&#8217;s Digital Technology Group:
+<a class="reference external" href="http://www.cl.cam.ac.uk/research/dtg/weather/">http://www.cl.cam.ac.uk/research/dtg/weather/</a></p>
+<p>We start with our metadata model, which we write by hand.  There are two
+entity sets.  The first contains the actual data readings from the
+weather station and the second contains notes relating to known
+inaccuracies in the data.  I&#8217;ve included a navigation property so that
+it is easy to see which note, if any, applies to a data point.</p>
+<p>Here&#8217;s the model:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;
+&lt;edmx:Edmx Version=&quot;1.0&quot; xmlns:edmx=&quot;http://schemas.microsoft.com/ado/2007/06/edmx&quot;
+        xmlns:m=&quot;http://schemas.microsoft.com/ado/2007/08/dataservices/metadata&quot;&gt;
+        &lt;edmx:DataServices m:DataServiceVersion=&quot;2.0&quot;&gt;
+                &lt;Schema Namespace=&quot;WeatherSchema&quot; xmlns=&quot;http://schemas.microsoft.com/ado/2006/04/edm&quot;&gt;
+                        &lt;EntityContainer Name=&quot;CambridgeWeather&quot; m:IsDefaultEntityContainer=&quot;true&quot;&gt;
+                                &lt;EntitySet Name=&quot;DataPoints&quot; EntityType=&quot;WeatherSchema.DataPoint&quot;/&gt;
+                                &lt;EntitySet Name=&quot;Notes&quot; EntityType=&quot;WeatherSchema.Note&quot;/&gt;
+                                &lt;AssociationSet Name=&quot;DataPointNotes&quot; Association=&quot;WeatherSchema.DataPointNote&quot;&gt;
+                                        &lt;End Role=&quot;DataPoint&quot; EntitySet=&quot;DataPoints&quot;/&gt;
+                                        &lt;End Role=&quot;Note&quot; EntitySet=&quot;Notes&quot;/&gt;
+                                &lt;/AssociationSet&gt;
+                        &lt;/EntityContainer&gt;
+                        &lt;EntityType Name=&quot;DataPoint&quot;&gt;
+                                &lt;Key&gt;
+                                        &lt;PropertyRef Name=&quot;TimePoint&quot;/&gt;
+                                &lt;/Key&gt;
+                                &lt;Property Name=&quot;TimePoint&quot; Type=&quot;Edm.DateTime&quot; Nullable=&quot;false&quot; Precision=&quot;0&quot; m:FC_TargetPath=&quot;SyndicationUpdated&quot; m:FC_KeepInContent=&quot;true&quot;/&gt;
+                                &lt;Property Name=&quot;Temperature&quot; Type=&quot;Edm.Single&quot; m:FC_TargetPath=&quot;SyndicationTitle&quot; m:FC_KeepInContent=&quot;true&quot;/&gt;
+                                &lt;Property Name=&quot;Humidity&quot; Type=&quot;Edm.Byte&quot;/&gt;
+                                &lt;Property Name=&quot;DewPoint&quot; Type=&quot;Edm.Single&quot;/&gt;
+                                &lt;Property Name=&quot;Pressure&quot; Type=&quot;Edm.Int16&quot;/&gt;
+                                &lt;Property Name=&quot;WindSpeed&quot; Type=&quot;Edm.Single&quot;/&gt;
+                                &lt;Property Name=&quot;WindDirection&quot; Type=&quot;Edm.String&quot; MaxLength=&quot;3&quot; Unicode=&quot;false&quot;/&gt;
+                                &lt;Property Name=&quot;WindSpeedMax&quot; Type=&quot;Edm.Single&quot;/&gt;
+                                &lt;Property Name=&quot;SunRainStart&quot; Type=&quot;Edm.Time&quot; Precision=&quot;0&quot;&gt;&lt;/Property&gt;
+                                &lt;Property Name=&quot;Sun&quot; Type=&quot;Edm.Single&quot;/&gt;
+                                &lt;Property Name=&quot;Rain&quot; Type=&quot;Edm.Single&quot;/&gt;
+                                &lt;NavigationProperty Name=&quot;Note&quot; Relationship=&quot;WeatherSchema.DataPointNote&quot;
+                                        FromRole=&quot;DataPoint&quot; ToRole=&quot;Note&quot;/&gt;
+                        &lt;/EntityType&gt;
+                        &lt;EntityType Name=&quot;Note&quot;&gt;
+                                &lt;Key&gt;&lt;PropertyRef Name=&quot;ID&quot;&gt;&lt;/PropertyRef&gt;&lt;/Key&gt;
+                                &lt;Property Name=&quot;ID&quot; Type=&quot;Edm.Int32&quot; Nullable=&quot;false&quot;/&gt;
+                                &lt;Property Name=&quot;StartDate&quot; Type=&quot;DateTime&quot; Nullable=&quot;false&quot; Precision=&quot;0&quot;/&gt;
+                                &lt;Property Name=&quot;EndDate&quot; Type=&quot;DateTime&quot; Nullable=&quot;false&quot; Precision=&quot;0&quot;/&gt;
+                                &lt;Property Name=&quot;Details&quot; Type=&quot;Edm.String&quot; MaxLength=&quot;1024&quot; Nullable=&quot;false&quot; FixedLength=&quot;false&quot;/&gt;
+                                &lt;NavigationProperty Name=&quot;DataPoints&quot; Relationship=&quot;WeatherSchema.DataPointNote&quot;
+                                        FromRole=&quot;Note&quot; ToRole=&quot;DataPoint&quot;/&gt;
+                        &lt;/EntityType&gt;
+                        &lt;Association Name=&quot;DataPointNote&quot;&gt;
+                                &lt;End Role=&quot;DataPoint&quot; Type=&quot;WeatherSchema.DataPoint&quot; Multiplicity=&quot;*&quot;/&gt;
+                                &lt;End Role=&quot;Note&quot; Type=&quot;WeatherSchema.Note&quot; Multiplicity=&quot;0..1&quot;/&gt;
+                        &lt;/Association&gt;
+                &lt;/Schema&gt;
+        &lt;/edmx:DataServices&gt;
+&lt;/edmx:Edmx&gt;
+</pre></div>
+</div>
+<p>I&#8217;ve added two feed customisations to this model.  The TimePoint field
+of the data point will be echoed in the Atom &#8216;updated&#8217; field and the
+Temperature field will become the Atom title.  This will make my OData
+service more interesting to look at in a standard browser.</p>
+<p>As before, we&#8217;ll save the model to a file and load it when our script
+starts up.</p>
+<p>To link the model to a SQLite database back-end we need to create an
+instance of
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLiteEntityContainer" title="pyslet.odata2.sqlds.SQLiteEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteEntityContainer</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SAMPLE_DB</span><span class="o">=</span><span class="s">&#39;weather.db&#39;</span>
+
+<span class="k">def</span> <span class="nf">MakeContainer</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span><span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">drop</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">SAMPLE_DB</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">SAMPLE_DB</span><span class="p">)</span>
+        <span class="n">create</span><span class="o">=</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">SAMPLE_DB</span><span class="p">)</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">SQLiteEntityContainer</span><span class="p">(</span><span class="n">filePath</span><span class="o">=</span><span class="n">SAMPLE_DB</span><span class="p">,</span><span class="n">containerDef</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+                <span class="n">container</span><span class="o">.</span><span class="n">CreateAllTables</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This function handles the only SQL-specific part of our project.  When
+we create a SQLite container we have to pass <em>two</em> keyword arguments:
+rather than just the container definition as we did for the in-memory
+implementation.  We don&#8217;t need to return a value because the SQL
+implementation is bound to the model that was passed in <em>doc</em>.</p>
+<p>The code above automatically creates the tables if the database doesn&#8217;t
+exist yet.  This is fine if you are starting from scratch but if you
+want to expose an existing database you&#8217;ll need to work backwards from
+your existing schema when creating the model.  Anyway, letting Pyslet
+create your SQL tables for you neglects your DBA who will almost
+certainly want to create indexes to optimise performance and tweak the
+model to get the best out of your platform.  The automatically generated
+SQL script is supposed to be a starting point, not the complete solution.</p>
+<p>For example, the data set I used for this project has over 300,000
+records in it.  At the end of this exercise I had an OData server
+capable of serving this information from a SQLite database but example
+URLs were taking 10s or more on my laptop to load.  I created an index
+on the Temperature column using the SQLite command line and the page
+load times were instantaneous:</p>
+<div class="highlight-python"><div class="highlight"><pre>sqlite&gt; create index TIndex ON DataPoints(Temperature);
+</pre></div>
+</div>
+<div class="section" id="modelling-an-existing-database">
+<h3>2.1.2.2.1.1. Modelling an Existing Database<a class="headerlink" href="#modelling-an-existing-database" title="Permalink to this headline">¶</a></h3>
+<p>For simple data properties it should be fairly easy to map to the EDM.
+Here is the way Pyslet maps simple types in the EDM to SQL types:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>EDM Type</td>
+<td>SQL Equivalent</td>
+</tr>
+<tr class="row-even"><td>Edm.Binary</td>
+<td>BINARY(MaxLength) if FixedLength specified</td>
+</tr>
+<tr class="row-odd"><td>Edm.Binary</td>
+<td>VARBINARY(MaxLength) if no FixedLength</td>
+</tr>
+<tr class="row-even"><td>Edm.Boolean</td>
+<td>BOOLEAN</td>
+</tr>
+<tr class="row-odd"><td>Edm.Byte</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-even"><td>Edm.DateTime</td>
+<td>TIMESTAMP</td>
+</tr>
+<tr class="row-odd"><td>Edm.DateTimeOffset</td>
+<td>CHARACTER(20), ISO 8601 string representation is used</td>
+</tr>
+<tr class="row-even"><td>Edm.Decimal</td>
+<td>DECIMAL(Precision,Scale), defaults 10,0</td>
+</tr>
+<tr class="row-odd"><td>Edm.Double</td>
+<td>FLOAT</td>
+</tr>
+<tr class="row-even"><td>Edm.Guid</td>
+<td>BINARY(16)</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int16</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-even"><td>Edm.Int32</td>
+<td>INTEGER</td>
+</tr>
+<tr class="row-odd"><td>Edm.Int64</td>
+<td>BIGINT</td>
+</tr>
+<tr class="row-even"><td>Edm.SByte</td>
+<td>SMALLINT</td>
+</tr>
+<tr class="row-odd"><td>Edm.Single</td>
+<td>REAL</td>
+</tr>
+<tr class="row-even"><td>Edm.String</td>
+<td>CHAR(MaxLength) or VARCHAR(MaxLength)</td>
+</tr>
+<tr class="row-odd"><td>Edm.String</td>
+<td>NCHAR(MaxLength) or NVARCHAR(MaxLength) if Unicode=&#8221;true&#8221;</td>
+</tr>
+<tr class="row-even"><td>Edm.Time</td>
+<td>TIME</td>
+</tr>
+</tbody>
+</table>
+<p>Navigation properties, and complex properties do not map as easily but
+they can still be modelled.  To start with, look at the way the SQLite
+implementation turns our model into a SQL CREATE TABLE statement:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">weather</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span><span class="o">=</span><span class="n">weather</span><span class="o">.</span><span class="n">LoadMetadata</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weather</span><span class="o">.</span><span class="n">MakeContainer</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataPoints</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather.DataPoints&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dataPoints</span><span class="o">.</span><span class="n">CreateTableQuery</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">CREATE TABLE &quot;DataPoints&quot; (&quot;TimePoint&quot; TIMESTAMP NOT NULL,</span>
+<span class="go">&quot;Temperature&quot; REAL, &quot;Humidity&quot; SMALLINT, &quot;DewPoint&quot; REAL, &quot;Pressure&quot;</span>
+<span class="go">SMALLINT, &quot;WindSpeed&quot; REAL, &quot;WindDirection&quot; TEXT, &quot;WindSpeedMax&quot;</span>
+<span class="go">REAL, &quot;SunRainStart&quot; REAL, &quot;Sun&quot; REAL, &quot;Rain&quot; REAL,</span>
+<span class="go">&quot;DataPointNotes_ID&quot; INTEGER, PRIMARY KEY (&quot;TimePoint&quot;), CONSTRAINT</span>
+<span class="go">&quot;DataPointNotes&quot; FOREIGN KEY (&quot;DataPointNotes_ID&quot;) REFERENCES</span>
+<span class="go">&quot;Notes&quot;(&quot;ID&quot;))</span>
+</pre></div>
+</div>
+<p>After all the data properties there&#8217;s an additional property called
+DataPointNotes_ID which is a foreign key into into the Notes table.
+This was created automatically to model the association set that links
+the two EntitySets in the container.</p>
+<p>Pyslet generates foreign keys for the following types of association:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>0..1 to 1</td>
+<td>With UNIQUE and NOT NULL constraints</td>
+</tr>
+<tr class="row-even"><td>* to 1</td>
+<td>With a NOT NULL constraint only</td>
+</tr>
+<tr class="row-odd"><td>* to 0..1</td>
+<td>No additional constraints</td>
+</tr>
+</tbody>
+</table>
+<p>When these relationships are reversed the foreign key is of course
+created in the target table.</p>
+<p>What if your foreign key has a different name, say, NoteID?  Pyslet
+gives you the chance to override all name mappings.  To fix up this part
+of the model you need to create a derived class of the base class
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a> and override the
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLEntityContainer.MangleName" title="pyslet.odata2.sqlds.SQLEntityContainer.MangleName"><tt class="xref py py-meth docutils literal"><span class="pre">MangleName()</span></tt></a> method.</p>
+<p>In this case, the method would have been called like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">quotedName</span><span class="o">=</span><span class="n">container</span><span class="o">.</span><span class="n">MangleName</span><span class="p">((</span><span class="s">u&quot;DataPoints&quot;</span><span class="p">,</span><span class="s">u&quot;DataPointNotes&quot;</span><span class="p">,</span><span class="s">u&quot;ID&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>There is a single argument consisting of a tuple.  The first item is the
+name of the EntitySet (SQL TABLE) and the subsequent items complete a
+kind of &#8216;path&#8217; to the value.  Foreign keys have a path comprising of the
+AssociationSet name followed by the name of the key field in the target
+EntitySet.  The default implementation just joins the path with an
+underscore character.  The method must return a suitably quoted value to
+use for the column name.  To complete the example, here is how our
+subclass might implement this method to ensure that the foreign key is
+called &#8216;NoteID&#8217; instead of &#8216;DataPointNotes_ID&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">MangleName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sourcePath</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sourcePath</span><span class="o">==</span><span class="p">(</span><span class="s">u&quot;DataPoints&quot;</span><span class="p">,</span><span class="s">u&quot;DataPointNotes&quot;</span><span class="p">,</span><span class="s">u&quot;ID&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QuoteIdentifier</span><span class="p">(</span><span class="s">u&#39;NoteID&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MyCustomerContainer</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">MangleName</span><span class="p">(</span><span class="n">sourcePath</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You may be wondering why we don&#8217;t expose the foreign key field in the
+model. Some libraries might force you to expose the foreign key in order
+to expose the navigation property but Pyslet takes the opposite
+approach. The whole point of navigation properties is to hide away
+details like foreign keys. If you really want to access the value you
+can always use an expansion and select the key field in the target
+entity.  Exposing it in the source entity just tempts you in to writing
+code that &#8216;knows&#8217; about your model for example, if we had exposed the
+foreign key in our example as a simple property we might have been
+tempted to do something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noteID</span><span class="o">=</span><span class="n">dataPoint</span><span class="p">[</span><span class="s">&#39;DataPointNotes_ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="k">if</span> <span class="n">noteID</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">note</span><span class="o">=</span><span class="n">noteCollection</span><span class="p">[</span><span class="n">noteID</span><span class="p">]</span>
+        <span class="c"># do something with the note</span>
+</pre></div>
+</div>
+<p>When we should be doing something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>note=dataPoint[&#39;Note&#39;]
+if note is not None:
+        # do something with the note
+</pre></div>
+</div>
+<p>Complex types are handled in the same way as foreign keys, the path
+being comprised of the name(s) of the complex field(s) terminated by the
+name of a simple property.  For example, if you have a complex type called
+Address and two properties of type Address called &#8220;Home&#8221; and &#8220;Work&#8221; you
+might end up with SQL that looked like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>CREATE TABLE Employee (
+        ...
+        Home_Street NVARCHAR(50),
+        Home_City NVARCHAR(50),
+        Home_Phone NVARCHAR(50),
+        Work_Street NVARCHAR(50),
+        Work_City NVARCHAR(50),
+        Work_Phone NVARCHAR(50)
+        ...
+        )
+</pre></div>
+</div>
+<p>You often see SQL written like this anyway so if you want to tweak the
+mapping to put a Complex type in your model you can.</p>
+<p>Finally, we need to deal with the symmetric relationships, 1 to 1 and *
+to *.  These are modelled by separate tables.  1 to 1 relationships are
+best avoided, the advantages over combining the two entities into a
+single larger entity are marginal given OData&#8217;s $select option which
+allows you to pick a subset of the fields anyway.  If you have them in
+your SQL schema already you might consider creating a view to combine
+them before attempting to map them to the metadata model.</p>
+<p>Either way, both types of symmetric relationships get mapped to a table
+with the name of the AssociationSet.  There are two sets of foreign
+keys, one for each of the EntitySets being joined.  The paths are rather
+complex and are explained in detail in
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLAssociationCollection" title="pyslet.odata2.sqlds.SQLAssociationCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLAssociationCollection</span></tt></a>.</p>
+</div>
+</div>
+<div class="section" id="step-2-test-the-model">
+<h2>2.1.2.2.2. Step 2: Test the Model<a class="headerlink" href="#step-2-test-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Before we add the complication of using our model with a SQL database,
+let&#8217;s test it out using the same in-memory implementation we used
+before:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">DryRun</span><span class="p">():</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">LoadMetadata</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">InMemoryEntityContainer</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather&#39;</span><span class="p">])</span>
+        <span class="n">weatherData</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather.DataPoints&#39;</span><span class="p">]</span>
+        <span class="n">weatherNotes</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather.Notes&#39;</span><span class="p">]</span>
+        <span class="n">LoadData</span><span class="p">(</span><span class="n">weatherData</span><span class="p">,</span><span class="n">SAMPLE_DIR</span><span class="p">)</span>
+        <span class="n">LoadNotes</span><span class="p">(</span><span class="n">weatherNotes</span><span class="p">,</span><span class="s">&#39;weathernotes.txt&#39;</span><span class="p">,</span><span class="n">weatherData</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>SAMPLE_DIR here is the name of a directory containing data from the
+weather station.  The implementation of the LoadData function is fairly
+ordinary, parsing the daily text files from the station and adding them
+to the DataPoints entity set.</p>
+<p>The implementation of the LoadNotes function is more interesting as it
+demonstrates use of the API for binding entities together using
+navigation properties:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LoadNotes</span><span class="p">(</span><span class="n">weatherNotes</span><span class="p">,</span><span class="n">fileName</span><span class="p">,</span><span class="n">weatherData</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="nb">id</span><span class="o">=</span><span class="mi">1</span>
+                <span class="k">with</span> <span class="n">weatherNotes</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">,</span> <span class="n">weatherData</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+                        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                                <span class="n">line</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                                        <span class="k">break</span>
+                                <span class="k">elif</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;#&#39;</span><span class="p">:</span>
+                                        <span class="k">continue</span>
+                                <span class="n">noteWords</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="n">noteWords</span><span class="p">:</span>
+                                        <span class="n">note</span><span class="o">=</span><span class="n">collection</span><span class="o">.</span><span class="n">NewEntity</span><span class="p">()</span>
+                                        <span class="n">note</span><span class="p">[</span><span class="s">&#39;ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+                                        <span class="n">start</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="p">(</span>
+                                                <span class="n">date</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">noteWords</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                                <span class="n">time</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+                                        <span class="n">note</span><span class="p">[</span><span class="s">&#39;StartDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+                                        <span class="n">end</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">TimePoint</span><span class="p">(</span>
+                                                <span class="n">date</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">noteWords</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">Offset</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                                                <span class="n">time</span><span class="o">=</span><span class="n">iso</span><span class="o">.</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+                                        <span class="n">note</span><span class="p">[</span><span class="s">&#39;EndDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+                                        <span class="n">note</span><span class="p">[</span><span class="s">&#39;Details&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">SetFromValue</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">noteWords</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span><span class="s">&#39; &#39;</span><span class="p">))</span>
+                                        <span class="n">collection</span><span class="o">.</span><span class="n">InsertEntity</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+                                        <span class="c"># now find the data points that match</span>
+                                        <span class="n">data</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="s">&quot;TimePoint ge datetime&#39;</span><span class="si">%s</span><span class="s">&#39; and TimePoint lt datetime&#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">start</span><span class="p">),</span><span class="nb">unicode</span><span class="p">(</span><span class="n">end</span><span class="p">))))</span>
+                                        <span class="k">for</span> <span class="n">dataPoint</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                                                <span class="n">dataPoint</span><span class="p">[</span><span class="s">&#39;Note&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">BindEntity</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+                                                <span class="n">data</span><span class="o">.</span><span class="n">UpdateEntity</span><span class="p">(</span><span class="n">dataPoint</span><span class="p">)</span>
+                                        <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">with</span> <span class="n">weatherNotes</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+                <span class="n">collection</span><span class="o">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">OrderByFromString</span><span class="p">(</span><span class="s">&#39;StartDate desc&#39;</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">collection</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+                        <span class="k">with</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;DataPoints&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">affectedData</span><span class="p">:</span>
+                                <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> (</span><span class="si">%i</span><span class="s"> data points affected)&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;StartDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                        <span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;EndDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">),</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Details&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">affectedData</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The function opens collections for both Notes and DataPoints.  For each
+uncommented line in the source file it creates a new Note entity, then,
+it adds a filter to the collection of data points that narrows down the
+collection to all the data points affected by the note and then iterates
+through them binding the note to the data point and updating the entity
+(to commit the change to the data source).  Here&#8217;s a sample of the
+output on a dry-run of a small sample of the data from November 2007:</p>
+<div class="highlight-python"><div class="highlight"><pre>2007-12-25T00:00:00-2008-01-03T00:00:00: All sensors inaccurate (0 data points affected)
+2007-11-01T00:00:00-2007-11-23T00:00:00: rain sensor over reporting rainfall following malfunction (49 data points affected)
+</pre></div>
+</div>
+<p>You may wonder why we use the values function, rather than itervalues in
+the loop that updates the data points.  itervalues would certainly have
+been more efficient but, just like native Python dictionaries, it is a
+bad idea to modify the data source when iterating as unpredictable
+things may happen.  The concept is extended by this API to cover the
+entire container: a thread should not modify the container while
+iterating through a collection.</p>
+<p>Of course, this API has been designed for parallel use so there is
+always the chance that another thread or process is modifying the data
+source outside of your control.  Behaviour in that case is left to be
+implementation dependent - storage engines have widely differing
+policies on what to do in these cases.</p>
+<p>If you have large amounts of data to iterate through you should consider
+using list(collection.iterpage(True)) instead.  For a SQL data souurce
+this has the disadvantage of executing a new query for each page rather
+than spooling data from a single SELECT but it provides control over
+page size (and hence memory usage in your client) and is robust to
+modifications.</p>
+<blockquote>
+<div>As an aside, if you change the call from values to itervalues in
+the sample you may well discover a bug in the SQLite driver in
+Python 2.7. The bug means that a commit on a database connection
+while you are fetching data on another cursor causes subsequent data
+access commands to fail.  It&#8217;s a bit technical, but the details are
+here: <a class="reference external" href="http://bugs.python.org/issue10513">http://bugs.python.org/issue10513</a></div></blockquote>
+<p>Having tested the model using the in-memory provider we can implement a
+full test using the SQL back-end we created in MakeContainer above.
+This test function prints the 30 strongest wind gusts in the database,
+along with any linked note:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">TestModel</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">LoadMetadata</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">MakeContainer</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span><span class="n">drop</span><span class="p">)</span>
+        <span class="n">weatherData</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather.DataPoints&#39;</span><span class="p">]</span>
+        <span class="n">weatherNotes</span><span class="o">=</span><span class="n">doc</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">DataServices</span><span class="p">[</span><span class="s">&#39;WeatherSchema.CambridgeWeather.Notes&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">drop</span><span class="p">:</span>
+                <span class="n">LoadData</span><span class="p">(</span><span class="n">weatherData</span><span class="p">,</span><span class="n">SAMPLE_DIR</span><span class="p">)</span>
+                <span class="n">LoadNotes</span><span class="p">(</span><span class="n">weatherNotes</span><span class="p">,</span><span class="s">&#39;weathernotes.txt&#39;</span><span class="p">,</span><span class="n">weatherData</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">weatherData</span><span class="o">.</span><span class="n">OpenCollection</span><span class="p">()</span> <span class="k">as</span> <span class="n">collection</span><span class="p">:</span>
+                <span class="n">collection</span><span class="o">.</span><span class="n">OrderBy</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">CommonExpression</span><span class="o">.</span><span class="n">OrderByFromString</span><span class="p">(</span><span class="s">&#39;WindSpeedMax desc&#39;</span><span class="p">))</span>
+                <span class="n">collection</span><span class="o">.</span><span class="n">SetPage</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">collection</span><span class="o">.</span><span class="n">iterpage</span><span class="p">():</span>
+                        <span class="n">note</span><span class="o">=</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;Note&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">GetEntity</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;WindSpeedMax&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">e</span><span class="p">[</span><span class="s">&#39;Pressure&#39;</span><span class="p">]:</span>
+                                <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: Pressure </span><span class="si">%i</span><span class="s">mb, max wind speed </span><span class="si">%0.1f</span><span class="s"> knots (</span><span class="si">%0.1f</span><span class="s"> mph); </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;TimePoint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                        <span class="n">e</span><span class="p">[</span><span class="s">&#39;Pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;WindSpeedMax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">e</span><span class="p">[</span><span class="s">&#39;WindSpeedMax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">*</span><span class="mf">1.15078</span><span class="p">,</span>
+                                        <span class="n">note</span><span class="p">[</span><span class="s">&#39;Details&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">note</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here&#8217;s some sample output:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">weather</span><span class="o">.</span><span class="n">TestModel</span><span class="p">()</span>
+<span class="go">2002-10-27T10:30:00: Pressure 988mb, max wind speed 74.0 knots (85.2 mph);</span>
+<span class="go">2004-03-20T15:30:00: Pressure 993mb, max wind speed 72.0 knots (82.9 mph);</span>
+<span class="go">2007-01-18T14:30:00: Pressure 984mb, max wind speed 70.0 knots (80.6 mph);</span>
+<span class="gp">... </span><span class="p">[</span> <span class="ow">and</span> <span class="n">so</span> <span class="n">on</span> <span class="p">]</span>
+<span class="gp">...</span>
+<span class="go">2007-01-11T10:30:00: Pressure 998mb, max wind speed 58.0 knots (66.7 mph);</span>
+<span class="go">2007-01-18T07:30:00: Pressure 980mb, max wind speed 58.0 knots (66.7 mph);</span>
+<span class="go">1996-02-18T04:30:00: Pressure 998mb, max wind speed 56.0 knots (64.4 mph); humidity and dewpoint readings may be inaccurate, particularly high humidity readings</span>
+<span class="go">2000-12-13T01:30:00: Pressure 991mb, max wind speed 56.0 knots (64.4 mph);</span>
+<span class="go">2002-10-27T13:00:00: Pressure 996mb, max wind speed 56.0 knots (64.4 mph);</span>
+<span class="go">2004-01-31T17:30:00: Pressure 983mb, max wind speed 56.0 knots (64.4 mph);</span>
+</pre></div>
+</div>
+<p>Notice that the reading from 1996 has a related note.</p>
+</div>
+<div class="section" id="step-4-link-the-data-source-to-the-odata-server">
+<h2>2.1.2.2.3. Step 4: Link the Data Source to the OData Server<a class="headerlink" href="#step-4-link-the-data-source-to-the-odata-server" title="Permalink to this headline">¶</a></h2>
+<p>This data set is designed to be updated by some offline process that
+polls the weather station for the latest readings and adds them to the
+database behind the scenes.  Unlike the memory-cache example, the OData
+interface should be read-only so we use the
+<tt class="xref py py-class docutils literal"><span class="pre">ReadOnlyServer</span></tt> sub-class of the OData
+server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">runWeatherServer</span><span class="p">(</span><span class="n">weatherApp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Starts the web server running&quot;&quot;&quot;</span>
+        <span class="n">server</span><span class="o">=</span><span class="n">make_server</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">SERVICE_PORT</span><span class="p">,</span><span class="n">weatherApp</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;HTTP server on port </span><span class="si">%i</span><span class="s"> running&quot;</span><span class="o">%</span><span class="n">SERVICE_PORT</span><span class="p">)</span>
+        <span class="c"># Respond to requests until process is killed</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Executed when we are launched&quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">LoadMetadata</span><span class="p">()</span>
+        <span class="n">container</span><span class="o">=</span><span class="n">MakeContainer</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">=</span><span class="n">ReadOnlyServer</span><span class="p">(</span><span class="n">serviceRoot</span><span class="o">=</span><span class="n">SERVICE_ROOT</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">SetModel</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">runWeatherServer</span><span class="p">,</span><span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;weatherApp&#39;</span><span class="p">:</span><span class="n">server</span><span class="p">})</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Starting HTTP server on </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">SERVICE_ROOT</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once the script is running we test in a browser.  I&#8217;ve loaded the full data set into
+the server, how many data points?  Here&#8217;s how we can find out, in our browser we
+go to:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/DataPoints/$count
+</pre></div>
+</div>
+<p>The result is 325213.  Firefox recognises that the feeds are in Atom format and
+renders the feed customisations we made earlier.</p>
+<img alt="_images/temperatures.png" src="_images/temperatures.png" />
+<p>When we access this page with logging turned up to INFO we get the
+following output on the console, interspersed with the simple HTTP
+server output:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:SELECT COUNT(*) FROM &quot;DataPoints&quot;; []
+127.0.0.1 - - [21/Feb/2014 22:57:01] &quot;GET /DataPoints/$count HTTP/1.1&quot; 200 6
+INFO:root:SELECT &quot;TimePoint&quot;, &quot;Temperature&quot;, &quot;Humidity&quot;, &quot;DewPoint&quot;, &quot;Pressure&quot;, &quot;WindSpeed&quot;, &quot;WindDirection&quot;, &quot;WindSpeedMax&quot;, &quot;SunRainStart&quot;, &quot;Sun&quot;, &quot;Rain&quot;, &quot;Temperature&quot; AS o_1, &quot;TimePoint&quot; FROM &quot;DataPoints&quot; ORDER BY o_1 DESC, &quot;TimePoint&quot; ASC; []
+127.0.0.1 - - [21/Feb/2014 22:57:18] &quot;GET /DataPoints?$orderby=Temperature%20desc&amp;$top=30 HTTP/1.1&quot; 200 31006
+</pre></div>
+</div>
+<p>You may wonder what those square brackets are doing at the end of the
+SQL statements. They&#8217;re actually used for logging the parameter values
+when the query has been parameterised.  If we add a filter you&#8217;ll see
+what they do:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://localhost:8080/DataPoints?$filter=Temperature%20gt%20-100&amp;$orderby=Temperature%20asc&amp;$top=30
+</pre></div>
+</div>
+<p>And here&#8217;s the output on the console:</p>
+<div class="highlight-python"><div class="highlight"><pre>INFO:root:SELECT &quot;TimePoint&quot;, &quot;Temperature&quot;, &quot;Humidity&quot;, &quot;DewPoint&quot;, &quot;Pressure&quot;, &quot;WindSpeed&quot;, &quot;WindDirection&quot;, &quot;WindSpeedMax&quot;, &quot;SunRainStart&quot;, &quot;Sun&quot;, &quot;Rain&quot;, &quot;Temperature&quot; AS o_1, &quot;TimePoint&quot; FROM &quot;DataPoints&quot; WHERE (&quot;Temperature&quot; &gt; ?) ORDER BY o_1 DESC, &quot;TimePoint&quot; ASC; [-100]
+127.0.0.1 - - [21/Feb/2014 16:35:09] &quot;GET /DataPoints?$filter=Temperature%20gt%20-100&amp;$orderby=Temperature%20desc&amp;$top=30 HTTP/1.1&quot; 200 31006
+</pre></div>
+</div>
+<p>Yes, all Pyslet queries are fully parameterized for security and performance!</p>
+</div>
 </div>
 
 
@@ -66,6 +571,19 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1.2.2. A SQL-Backed Data Service</a><ul>
+<li><a class="reference internal" href="#step-1-creating-the-metadata-model">2.1.2.2.1. Step 1: Creating the Metadata Model</a><ul>
+<li><a class="reference internal" href="#modelling-an-existing-database">2.1.2.2.1.1. Modelling an Existing Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-2-test-the-model">2.1.2.2.2. Step 2: Test the Model</a></li>
+<li><a class="reference internal" href="#step-4-link-the-data-source-to-the-odata-server">2.1.2.2.3. Step 4: Link the Data Source to the OData Server</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="odatav2_memexample.html"
                         title="previous chapter">2.1.2.1. Sample Project: InMemory Data Service</a></p>
@@ -109,7 +627,7 @@
         <li class="right" >
           <a href="odatav2_memexample.html" title="2.1.2.1. Sample Project: InMemory Data Service"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li>
           <li><a href="odatav2_provider.html" >2.1.2. OData Providers</a> &raquo;</li> 

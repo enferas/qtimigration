@@ -1,0 +1,1070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.10. ISO 8601 Dates and Times &mdash; Pyslet 0.4.20140511 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.20140511',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
+    <link rel="up" title="2. Supporting Standards" href="general.html" />
+    <link rel="prev" title="2.9. The Atom Publishing Protocol (RFC5023)" href="rfc5023.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rfc5023.html" title="2.9. The Atom Publishing Protocol (RFC5023)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
+          <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-pyslet.iso8601">
+<span id="iso-8601-dates-and-times"></span><h1>2.10. ISO 8601 Dates and Times<a class="headerlink" href="#module-pyslet.iso8601" title="Permalink to this headline">¶</a></h1>
+<p>This module defines special classes for handling ISO 8601 dates
+and times.</p>
+<dl class="class">
+<dt id="pyslet.iso8601.Date">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">Date</tt><big>(</big><em>src=None</em>, <em>base=None</em>, <em>century=None</em>, <em>decade=None</em>, <em>year=None</em>, <em>month=None</em>, <em>day=None</em>, <em>week=None</em>, <em>weekday=None</em>, <em>ordinalDay=None</em>, <em>absoluteDay=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class for representing ISO dates.</p>
+<p>Values can be represent dates with reduced precision, for
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>represents December 2013, no specific day.</p>
+<p>There are a number of different forms of the constructor based on
+named parameters, the simplest is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">69</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">day</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also use weekday format (note that decade must be provided
+separately):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">decade</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">week</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span><span class="n">weekday</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>Ordinal format (where day 1 is 1st Jan):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">69</span><span class="p">,</span><span class="n">ordinalDay</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>Absolute format (where day 1 is the notional 1st Jan 0001):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">(</span><span class="n">absoluteDay</span><span class="o">=</span><span class="mi">718998</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An empty constructor is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Date</span><span class="p">()</span><span class="o">==</span><span class="n">Date</span><span class="p">(</span><span class="n">absoluteDay</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All constructors except the absolute form allow the passing of a
+<em>base</em> date which allows the most-significant values to be omitted,
+for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">base</span><span class="o">=</span><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">69</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">day</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">newDate</span><span class="o">=</span><span class="n">Date</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span><span class="n">base</span><span class="o">=</span><span class="n">base</span><span class="p">)</span>  <span class="c">#: 21st July 1969</span>
+</pre></div>
+</div>
+<p>Note that <em>base</em> always represents a date <em>before</em> the newly constructed date,
+so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">base</span><span class="o">=</span><span class="n">Date</span><span class="p">(</span><span class="n">century</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">year</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">day</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+<span class="n">newDate</span><span class="o">=</span><span class="n">Date</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">base</span><span class="o">=</span><span class="n">base</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>constructs a Date representing the 5th January 2000</p>
+<dl class="attribute">
+<dt id="pyslet.iso8601.Date.century">
+<tt class="descname">century</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Date.century" title="Permalink to this definition">¶</a></dt>
+<dd><p>the century, 0..99</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Date.year">
+<tt class="descname">year</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Date.year" title="Permalink to this definition">¶</a></dt>
+<dd><p>the year, 0..99</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Date.month">
+<tt class="descname">month</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Date.month" title="Permalink to this definition">¶</a></dt>
+<dd><p>the month, 1..12 (for dates stored in calendar form)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Date.week">
+<tt class="descname">week</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Date.week" title="Permalink to this definition">¶</a></dt>
+<dd><p>the week (for dates stored in week form)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Date.day">
+<tt class="descname">day</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Date.day" title="Permalink to this definition">¶</a></dt>
+<dd><p>the day, 1..31 (or 1..7 when <a class="reference internal" href="#pyslet.iso8601.Date.week" title="pyslet.iso8601.Date.week"><tt class="xref py py-attr docutils literal"><span class="pre">week</span></tt></a> is not None)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetAbsoluteDay">
+<tt class="descname">GetAbsoluteDay</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetAbsoluteDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a notional day number - with 1 being the 0001-01-01 which is the base day of our calendar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetCalendarDay">
+<tt class="descname">GetCalendarDay</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetCalendarDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of: (century,year,month,day)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetOrdinalDay">
+<tt class="descname">GetOrdinalDay</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetOrdinalDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (century,year,ordinalDay)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetWeekDay">
+<tt class="descname">GetWeekDay</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetWeekDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (century,decade,year,week,weekday), note
+that Monday is 1 and Sunday is 7</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Date.FromStructTime">
+<em class="property">classmethod </em><tt class="descname">FromStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.FromStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> from a struct_time, such as
+might be returned from time.gmtime() and related functions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.UpdateStructTime">
+<tt class="descname">UpdateStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.UpdateStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>UpdateStructTime changes the year, month, date, wday and ydat
+fields of t, a struct_time, to match the values in this date.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Date.FromNow">
+<em class="property">classmethod </em><tt class="descname">FromNow</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.FromNow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> from the current local time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.Offset">
+<tt class="descname">Offset</tt><big>(</big><em>centuries=0</em>, <em>years=0</em>, <em>months=0</em>, <em>weeks=0</em>, <em>days=0</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.Offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> from the current date + a given offset</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Date.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>src</em>, <em>base=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> instance from a <em>src</em> string.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Date.FromStringFormat">
+<em class="property">classmethod </em><tt class="descname">FromStringFormat</tt><big>(</big><em>src</em>, <em>base=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.FromStringFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#pyslet.iso8601.Date.FromString" title="pyslet.iso8601.Date.FromString"><tt class="xref py py-meth docutils literal"><span class="pre">FromString()</span></tt></a> except that a tuple is
+returned, the first item is the resulting <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a>
+instance, the second is a string describing the format parsed.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">d</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">Date</span><span class="o">.</span><span class="n">FromStringFormat</span><span class="p">(</span><span class="s">&quot;1969-07-20&quot;</span><span class="p">)</span>
+<span class="c"># f is set to &quot;YYYY-MM-DD&quot;.     </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetCalendarString">
+<tt class="descname">GetCalendarString</tt><big>(</big><em>basic=False</em>, <em>truncation=0</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetCalendarString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this date using calendar form, for example 1969-07-20</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 19690720.  Default
+is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get &#8211;07-20 or
+&#8211;0720.  Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.</dd>
+</dl>
+</div></blockquote>
+<p>Note that Calendar format only supports Century, Year and Month
+truncated forms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetOrdinalString">
+<tt class="descname">GetOrdinalString</tt><big>(</big><em>basic=False</em>, <em>truncation=0</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetOrdinalString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this date using ordinal form, for example 1969-201</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 1969201.  Default
+is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get -201. 
+Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.</dd>
+</dl>
+</div></blockquote>
+<p>Note that ordinal format only supports century and year
+truncated forms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetWeekString">
+<tt class="descname">GetWeekString</tt><big>(</big><em>basic=False</em>, <em>truncation=0</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetWeekString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this date using week form, for example 1969-W29-7</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 1969W297.  Default
+is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get -W297. 
+Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.</dd>
+</dl>
+</div></blockquote>
+<p>Note that week format only supports century, decade, year and
+week truncated forms.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Date.FromJulian">
+<em class="property">classmethod </em><tt class="descname">FromJulian</tt><big>(</big><em>year</em>, <em>month</em>, <em>day</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.FromJulian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Date" title="pyslet.iso8601.Date"><tt class="xref py py-class docutils literal"><span class="pre">Date</span></tt></a> from a year, month and day
+expressed in the Julian calendar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetJulianDay">
+<tt class="descname">GetJulianDay</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetJulianDay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of: (year,month,day) representing the
+equivalent date in the Julian calendar.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.LeapYear">
+<tt class="descname">LeapYear</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.LeapYear" title="Permalink to this definition">¶</a></dt>
+<dd><p>LeapYear returns True if this date is (in) a leap year and
+False otherwise.</p>
+<p>Note that leap years fall on all years that divide by 4 except
+those that divide by 100 but including those that divide by
+400.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.Complete">
+<tt class="descname">Complete</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.Complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this date has a complete representation,
+i.e., does not use one of the reduced precision forms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Date.GetPrecision">
+<tt class="descname">GetPrecision</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Date.GetPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one of the <a class="reference internal" href="#pyslet.iso8601.Precision" title="pyslet.iso8601.Precision"><tt class="xref py py-class docutils literal"><span class="pre">Precision</span></tt></a> constants
+representing the precision of this date.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.iso8601.Time">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">Time</tt><big>(</big><em>src=None</em>, <em>hour=None</em>, <em>minute=None</em>, <em>second=None</em>, <em>totalSeconds=None</em>, <em>zDirection=None</em>, <em>zHour=None</em>, <em>zMinute=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class for representing ISO times</p>
+<p>Values can be represent times with reduced precision, for
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>represents 8pm without a specific minute/seconds value.</p>
+<p>There are a number of different forms of the constructor based on
+named parameters, the simplest is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To indicate UTC (Zulu time) by providing a zone direction of 0:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">zDirection</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To indicate a UTC offset provide additional values for hours (and
+optionally minutes):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">zDirection</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span><span class="n">zHour</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">zMinute</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A UTC offset of 0 hours and minutes results in a value that compares
+as equal to the corresponding Zulu time but is formatted using an
+explicit offset by str() or unicode() rather than using the
+canonical &#8220;Z&#8221; form.</p>
+<p>You may also specify a total number of seconds past midnight (no zone):</p>
+<blockquote>
+<div>Time(totalSeconds=73060)</div></blockquote>
+<p>If totalSeconds overflows an error is raised.  To create a time from
+an arbitrary number of seconds and catch overflow use Offset instead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Time</span><span class="p">(</span><span class="n">totalSeconds</span><span class="o">=</span><span class="mi">159460</span><span class="p">)</span>
+<span class="c"># raises DateTimeError</span>
+
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">Time</span><span class="p">()</span><span class="o">.</span><span class="n">Offset</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">159460</span><span class="p">)</span>
+<span class="c"># sets t to 20:40:17 and overflow=1</span>
+</pre></div>
+</div>
+<p>Time supports two representations of midnight: 00:00:00 and 24:00:00
+in keeping with the ISO specification.  These are considered
+equivalent by comparisons!</p>
+<p>Truncated forms can be created directly from the base time, see
+<a class="reference internal" href="#pyslet.iso8601.Time.Extend" title="pyslet.iso8601.Time.Extend"><tt class="xref py py-meth docutils literal"><span class="pre">Extend()</span></tt></a> for more information.</p>
+<dl class="attribute">
+<dt id="pyslet.iso8601.Time.hour">
+<tt class="descname">hour</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Time.hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>the hour, 0..24</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Time.minute">
+<tt class="descname">minute</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Time.minute" title="Permalink to this definition">¶</a></dt>
+<dd><p>the minute, 0..59</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Time.second">
+<tt class="descname">second</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Time.second" title="Permalink to this definition">¶</a></dt>
+<dd><p>the seconds, 0..60 (to include leap seconds)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Time.zDirection">
+<tt class="descname">zDirection</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Time.zDirection" title="Permalink to this definition">¶</a></dt>
+<dd><p>an integer with the sign of the zone offset or None</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Time.zOffset">
+<tt class="descname">zOffset</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.iso8601.Time.zOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>the difference in minutes to UTC</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetTotalSeconds">
+<tt class="descname">GetTotalSeconds</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetTotalSeconds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Note that leap seconds are handled as if they were invisible,
+e.g., 23:00:60 returns the same total seconds as 23:00:59.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetTime">
+<tt class="descname">GetTime</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (hour,minute,second).</p>
+<p>Times with reduced precision will return None for second and or
+minute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetZone">
+<tt class="descname">GetZone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">zDirection</span><span class="p">,</span><span class="n">zOffset</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>zDirection is defined as per Time&#8217;s constructor, zOffset is a
+non-negative integer minute offset or None, if the zone is
+unspecified for this Time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetZoneOffset">
+<tt class="descname">GetZoneOffset</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetZoneOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single integer representing the zone offset (in
+minutes) or None if this time does not have a time zone
+offset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetZone3">
+<tt class="descname">GetZone3</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetZone3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">zDirection</span><span class="p">,</span><span class="n">zHour</span><span class="p">,</span><span class="n">zMinute</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These values are defined as per Time&#8217;s constructor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetCanonicalZone">
+<tt class="descname">GetCanonicalZone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetCanonicalZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">zDirection</span><span class="p">,</span><span class="n">zHour</span><span class="p">,</span><span class="n">zMinute</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These values are defined as per Time&#8217;s constructor but zero
+offsets always return zDirection=0.  If present, the zone is
+always returned with complete (minute) precision.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetTimeAndZone">
+<tt class="descname">GetTimeAndZone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetTimeAndZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of (hour,minute,second,zone direction,zone
+offset) as defined in GetTime and GetZone.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.Extend">
+<tt class="descname">Extend</tt><big>(</big><em>hour=None</em>, <em>minute=None</em>, <em>second=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.Extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time,
+extended a (possibly) truncated hour/minute/second value.</p>
+<p>The time zone is always copied if present.  The result is a
+tuple of (&lt;Time instance&gt;,overflow) where overflow 0 or 1
+indicating whether or not the time overflowed.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># set base to 20:17:40Z</span>
+<span class="n">base</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">zDirection</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">base</span><span class="o">.</span><span class="n">Extend</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span>
+<span class="c"># t is 20:37:40Z, overflow is 0</span>
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">base</span><span class="o">.</span><span class="n">Extend</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="c"># t is 21:07:40Z, overflow is 0</span>
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">base</span><span class="o">.</span><span class="n">Extend</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="c"># t is 19:07:40Z, overflow is 1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.Offset">
+<tt class="descname">Offset</tt><big>(</big><em>hours=0</em>, <em>minutes=0</em>, <em>seconds=0</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.Offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time
+and an offset number of hours, minutes and or seconds.</p>
+<p>The time zone is always copied (if present).  The result is a
+tuple of (&lt;Time instance&gt;,overflow) where overflow is 0 or 1
+indicating whether or not the time overflowed.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># set base to 20:17:40Z</span>
+<span class="n">base</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">zDirection</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">base</span><span class="o">.</span><span class="n">Offset</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span>
+<span class="c"># t is 20:54:40Z, overflow is 0</span>
+<span class="n">t</span><span class="p">,</span><span class="n">overflow</span><span class="o">=</span><span class="n">base</span><span class="o">.</span><span class="n">Offset</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">minutes</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span>
+<span class="c"># t is 00:54:40Z, overflow is 1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.WithZone">
+<tt class="descname">WithZone</tt><big>(</big><em>zDirection</em>, <em>zHour=None</em>, <em>zMinute=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.WithZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time but with the time zone specified.</p>
+<p>The time zone of the existing time is ignored.  Pass
+<em>zDirection</em>=None to strip the zone information completely.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.ShiftZone">
+<tt class="descname">ShiftZone</tt><big>(</big><em>zDirection</em>, <em>zHour=None</em>, <em>zMinute=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.ShiftZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time
+but shifted so that it is in the time zone specified.  The return
+value is a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre>(&lt;Time instance&gt;, overflow)
+</pre></div>
+</div>
+<p>overflow is one of -1, 0 or 1 indicating if the time over- or
+under-flowed as a result of the time zone shift.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Time.FromStructTime">
+<em class="property">classmethod </em><tt class="descname">FromStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.FromStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a zone-less <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> from a struct_time,
+such as might be returned from time.gmtime() and related
+functions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.UpdateStructTime">
+<tt class="descname">UpdateStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.UpdateStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>UpdateStructTime changes the hour, minute, second and isdst
+fields of t, a struct_time, to match the values in this time.</p>
+<p>isdst is always set to -1</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Time.FromNow">
+<em class="property">classmethod </em><tt class="descname">FromNow</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.FromNow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> from the current local time.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Time.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>src</em>, <em>base=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from a string
+representation, truncated forms are returned as the earliest
+time on or after <em>base</em> and may have overflowed.  See
+<a class="reference internal" href="#pyslet.iso8601.Time.FromStringFormat" title="pyslet.iso8601.Time.FromStringFormat"><tt class="xref py py-meth docutils literal"><span class="pre">FromStringFormat()</span></tt></a> for more.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.WithZoneString">
+<tt class="descname">WithZoneString</tt><big>(</big><em>zoneStr</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.WithZoneString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time
+but with the time zone parsed from <em>zoneStr</em>.  The time zone of
+the existing time is ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.WithZoneStringFormat">
+<tt class="descname">WithZoneStringFormat</tt><big>(</big><em>zoneStr</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.WithZoneStringFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time
+but with the time zone parsed from <em>zoneStr</em>.  The time zone of
+the existing time is ignored.</p>
+<p>Returns a tuple of: (&lt;Time instance&gt;,format)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.Time.FromStringFormat">
+<em class="property">classmethod </em><tt class="descname">FromStringFormat</tt><big>(</big><em>src</em>, <em>base=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.FromStringFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from a string
+representation, truncated forms are returned as the earliest
+time on or after <em>base</em>.</p>
+<p>Returns a tuple of (&lt;Time instance&gt;,overflow,format) where
+overflow is 0 or 1 indicating whether or not a truncated form
+overflowed and format is a string representation of the format
+parsed, e.g., &#8220;hhmmss&#8221;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetString">
+<tt class="descname">GetString</tt><big>(</big><em>basic=False</em>, <em>truncation=0</em>, <em>ndp=0</em>, <em>zonePrecision=7</em>, <em>dp='</em>, <em>'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this time, including zone, for example 20:17:40</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 201740.  Default
+is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the time.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Hour" title="pyslet.iso8601.Truncation.Hour"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Hour</span></tt></a> you&#8217;ll get -17:40 or
+-1740.  Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.</dd>
+<dt><em>ndp</em></dt>
+<dd>Specifies the number of decimal places to display for
+the least significant component, the default is 0.</dd>
+<dt><em>dp</em></dt>
+<dd>The character to use as the decimal point, the default
+is the <em>comma</em>, as per the ISO standard.</dd>
+<dt><em>zonePrecision</em></dt>
+<dd>One of <a class="reference internal" href="#pyslet.iso8601.Precision.Hour" title="pyslet.iso8601.Precision.Hour"><tt class="xref py py-attr docutils literal"><span class="pre">Precision.Hour</span></tt></a> or
+<a class="reference internal" href="#pyslet.iso8601.Precision.Complete" title="pyslet.iso8601.Precision.Complete"><tt class="xref py py-attr docutils literal"><span class="pre">Precision.Complete</span></tt></a> to control the precision
+of the zone offset.</dd>
+</dl>
+</div></blockquote>
+<p>Note that time formats only support Minute and Second truncated
+forms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetZoneString">
+<tt class="descname">GetZoneString</tt><big>(</big><em>basic=False</em>, <em>zonePrecision=7</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetZoneString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this time&#8217;s zone, for example -05:00.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., -0500.  Default
+is False</dd>
+<dt><em>zonePrecision</em></dt>
+<dd>One of <a class="reference internal" href="#pyslet.iso8601.Precision.Hour" title="pyslet.iso8601.Precision.Hour"><tt class="xref py py-attr docutils literal"><span class="pre">Precision.Hour</span></tt></a> or
+<a class="reference internal" href="#pyslet.iso8601.Precision.Complete" title="pyslet.iso8601.Precision.Complete"><tt class="xref py py-attr docutils literal"><span class="pre">Precision.Complete</span></tt></a> to control the precision
+of the zone offset.</dd>
+</dl>
+</div></blockquote>
+<p>Times constructed with a zDirection value of 0 are always
+rendered using &#8220;Z&#8221; for Zulu time (the name is taken from the
+phonetic alphabet).  To force use of the offset format you must
+construct the time with a non-zero value for zDirection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.Complete">
+<tt class="descname">Complete</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.Complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this date has a complete representation,
+i.e., does not use one of the reduced precision forms.</p>
+<p>(Whether or not a time is complete refers only to the precision
+of the time value, it says nothing about the presence or absence
+of a time zone offset.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.GetPrecision">
+<tt class="descname">GetPrecision</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.GetPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one of the <a class="reference internal" href="#pyslet.iso8601.Precision" title="pyslet.iso8601.Precision"><tt class="xref py py-class docutils literal"><span class="pre">Precision</span></tt></a> constants
+representing the precision of this time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.Time.WithPrecision">
+<tt class="descname">WithPrecision</tt><big>(</big><em>precision</em>, <em>truncate=False</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Time.WithPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.Time" title="pyslet.iso8601.Time"><tt class="xref py py-class docutils literal"><span class="pre">Time</span></tt></a> instance from an existing time but
+with the precision specified by <em>precision</em>.</p>
+<p><em>precision</em> is one of the <a class="reference internal" href="#pyslet.iso8601.Precision" title="pyslet.iso8601.Precision"><tt class="xref py py-class docutils literal"><span class="pre">Precision</span></tt></a> constants, only
+hour, minute and complete precision are valid.</p>
+<p><em>truncate</em> is True/False indicating whether or not the time
+value should be truncated so that all values are integers.  For
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">tm</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">WithPrecision</span><span class="p">(</span><span class="n">Precision</span><span class="o">.</span><span class="n">Minute</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">tm</span><span class="o">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">ndp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c">#       20:17,667</span>
+<span class="n">tm</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">WithPrecision</span><span class="p">(</span><span class="n">Precision</span><span class="o">.</span><span class="n">Minute</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">tm</span><span class="o">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">ndp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c">#       20:17,000       </span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.iso8601.TimePoint">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">TimePoint</tt><big>(</big><em>src=None</em>, <em>date=None</em>, <em>time=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class for representing ISO timepoints</p>
+<p>TimePoints are constructed from a date and a time (which may or
+may not have a time zone), for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TimePoint</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">Date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1969</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span><span class="n">day</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+        <span class="n">time</span><span class="o">=</span><span class="n">Time</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">minute</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span><span class="n">second</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">zDirection</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the date is missing then the date origin is used, Date() or
+0001-01-01.  Similarly, if the time is missing then the time origin
+is used, Time() or 00:00:00</p>
+<p>Times may be given with reduced precision but the date must be
+complete. In other words, there is no such thing as a timepoint
+with, month precision, use Date instead.</p>
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetCalendarTimePoint">
+<tt class="descname">GetCalendarTimePoint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetCalendarTimePoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">century</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetOrdinalTimePoint">
+<tt class="descname">GetOrdinalTimePoint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetOrdinalTimePoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">century</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ordinalDay</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetWeekDayTimePoint">
+<tt class="descname">GetWeekDayTimePoint</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetWeekDayTimePoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">century</span><span class="p">,</span><span class="n">decade</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">week</span><span class="p">,</span><span class="n">weekday</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetZone">
+<tt class="descname">GetZone</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple of</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">(</span><span class="n">zDirection</span><span class="p">,</span><span class="n">zOffset</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="#pyslet.iso8601.Time.GetZone" title="pyslet.iso8601.Time.GetZone"><tt class="xref py py-meth docutils literal"><span class="pre">Time.GetZone()</span></tt></a> for details.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.WithZone">
+<tt class="descname">WithZone</tt><big>(</big><em>zDirection</em>, <em>zHour=None</em>, <em>zMinute=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.WithZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt></a> instance from an existing
+TimePoint but with the time zone specified.  The time zone of
+the existing TimePoint is ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.ShiftZone">
+<tt class="descname">ShiftZone</tt><big>(</big><em>zDirection</em>, <em>zHour=None</em>, <em>zMinute=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.ShiftZone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt></a> instance from an existing TimePoint
+but shifted so that it is in the time zone specified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.UpdateStructTime">
+<tt class="descname">UpdateStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.UpdateStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>UpdateStructTime changes the year, month, date, hour, minute
+and second fields of t, a struct_time, to match the values in
+this date.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromStructTime">
+<em class="property">classmethod </em><tt class="descname">FromStructTime</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromStructTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt></a> from a struct_time, such as
+might be returned from time.gmtime() and related functions.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>src</em>, <em>base=None</em>, <em>tDesignators='T'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a TimePoint from a string representation. 
+Truncated forms are parsed with reference to <em>base</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromStringFormat">
+<em class="property">classmethod </em><tt class="descname">FromStringFormat</tt><big>(</big><em>src</em>, <em>base=None</em>, <em>tDesignators='T'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromStringFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#pyslet.iso8601.TimePoint.FromString" title="pyslet.iso8601.TimePoint.FromString"><tt class="xref py py-meth docutils literal"><span class="pre">FromString()</span></tt></a> except that a tuple is
+returned, the first item is the resulting <a class="reference internal" href="#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt></a>
+instance, the second is a string describing the format parsed.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tp</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">TimePoint</span><span class="o">.</span><span class="n">FromStringFormat</span><span class="p">(</span><span class="s">&quot;1969-07-20T20:40:17&quot;</span><span class="p">)</span>
+<span class="c"># f is set to &quot;YYYY-MM-DDTmm:hh:ss&quot;.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetCalendarString">
+<tt class="descname">GetCalendarString</tt><big>(</big><em>basic=False</em>, <em>truncation=0</em>, <em>ndp=0</em>, <em>zonePrecision=7</em>, <em>dp='</em>, <em>'</em>, <em>tDesignator='T'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetCalendarString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this TimePoint using calendar form, for example 1969-07-20T20:17:40</p>
+<dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 19690720T201740. 
+Default is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get
+&#8211;07-20T20:17:40 or &#8211;0720T201740.  Default is
+<tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.  Note that Calendar format only
+:supports Century, Year and Month truncated forms, the
+time component cannot be truncated.</dd>
+<dt><em>ndp</em>, <em>dp</em> and <em>zonePrecision</em></dt>
+<dd>As specified in <a class="reference internal" href="#pyslet.iso8601.Time.GetString" title="pyslet.iso8601.Time.GetString"><tt class="xref py py-meth docutils literal"><span class="pre">Time.GetString()</span></tt></a></dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetOrdinalString">
+<tt class="descname">GetOrdinalString</tt><big>(</big><em>basic=0</em>, <em>truncation=0</em>, <em>ndp=0</em>, <em>zonePrecision=7</em>, <em>dp='</em>, <em>'</em>, <em>tDesignator='T'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetOrdinalString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this TimePoint using ordinal form, for example 1969-201T20-17-40</p>
+<dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 1969201T201740. 
+Default is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get
+-201T20-17-40. Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>.  Note
+that ordinal format only supports century and year
+truncated forms, the time component cannot be
+truncated.</dd>
+<dt><em>ndp</em>, <em>dp</em> and <em>zonePrecision</em></dt>
+<dd>As specified in <a class="reference internal" href="#pyslet.iso8601.Time.GetString" title="pyslet.iso8601.Time.GetString"><tt class="xref py py-meth docutils literal"><span class="pre">Time.GetString()</span></tt></a></dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetWeekString">
+<tt class="descname">GetWeekString</tt><big>(</big><em>basic=0</em>, <em>truncation=0</em>, <em>ndp=0</em>, <em>zonePrecision=7</em>, <em>dp='</em>, <em>'</em>, <em>tDesignator='T'</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetWeekString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats this TimePoint using week form, for example 1969-W29-7T20:17:40</p>
+<dl class="docutils">
+<dt><em>basic</em></dt>
+<dd>True/False, selects basic form, e.g., 1969W297T201740. 
+Default is False</dd>
+<dt><em>truncation</em></dt>
+<dd>One of the <a class="reference internal" href="#pyslet.iso8601.Truncation" title="pyslet.iso8601.Truncation"><tt class="xref py py-class docutils literal"><span class="pre">Truncation</span></tt></a> constants used to
+select truncated forms of the date.  For example, if you
+specify <a class="reference internal" href="#pyslet.iso8601.Truncation.Year" title="pyslet.iso8601.Truncation.Year"><tt class="xref py py-attr docutils literal"><span class="pre">Truncation.Year</span></tt></a> you&#8217;ll get
+-W297T20-17-40. Default is <tt class="xref py py-attr docutils literal"><span class="pre">NoTruncation</span></tt>. 
+Note that week format only supports century, decade,
+year and week truncated forms, the time component cannot
+be truncated.</dd>
+<dt><em>ndp</em>, <em>dp</em> and <em>zonePrecision</em></dt>
+<dd>As specified in <a class="reference internal" href="#pyslet.iso8601.Time.GetString" title="pyslet.iso8601.Time.GetString"><tt class="xref py py-meth docutils literal"><span class="pre">Time.GetString()</span></tt></a></dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromUnixTime">
+<em class="property">classmethod </em><tt class="descname">FromUnixTime</tt><big>(</big><em>unixTime</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromUnixTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a TimePoint from <em>unixTime</em>, the number of seconds
+since the time origin.  The resulting time has no zone.</p>
+<p>This method uses python&#8217;s gmtime(0) to obtain the Unix origin
+time.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromNow">
+<em class="property">classmethod </em><tt class="descname">FromNow</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromNow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a TimePoint from the current local date and time.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.iso8601.TimePoint.FromNowUTC">
+<em class="property">classmethod </em><tt class="descname">FromNowUTC</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.FromNowUTC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a TimePoint from the current UTC date and time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.Complete">
+<tt class="descname">Complete</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.Complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this TimePoint has a complete representation,
+i.e., does not use one of the reduced precision forms.</p>
+<p>(Whether or not a TimePoint is complete refers only to the
+precision of the time value, it says nothing about the presence
+or absence of a time zone offset.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.GetPrecision">
+<tt class="descname">GetPrecision</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.GetPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns one of the <a class="reference internal" href="#pyslet.iso8601.Precision" title="pyslet.iso8601.Precision"><tt class="xref py py-class docutils literal"><span class="pre">Precision</span></tt></a> constants
+representing the precision of this TimePoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.iso8601.TimePoint.WithPrecision">
+<tt class="descname">WithPrecision</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.iso8601.TimePoint.WithPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <a class="reference internal" href="#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">TimePoint</span></tt></a> instance from an existing
+TimePoint but with the precision specified by <em>precision</em>.  For
+more details see <a class="reference internal" href="#pyslet.iso8601.Time.WithPrecision" title="pyslet.iso8601.Time.WithPrecision"><tt class="xref py py-meth docutils literal"><span class="pre">Time.WithPrecision()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.iso8601.Duration">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">Duration</tt><big>(</big><em>value=None</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.Duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for representing ISO durations</p>
+</dd></dl>
+
+<div class="section" id="supporting-constants">
+<h2>2.10.1. Supporting Constants<a class="headerlink" href="#supporting-constants" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.iso8601.Truncation">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">Truncation</tt><a class="headerlink" href="#pyslet.iso8601.Truncation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines constants to use when formatting to truncated forms.</p>
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.No">
+<tt class="descname">No</tt><em class="property"> = 0</em><a class="headerlink" href="#pyslet.iso8601.Truncation.No" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for no truncation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Century">
+<tt class="descname">Century</tt><em class="property"> = 1</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Century" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to century</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Decade">
+<tt class="descname">Decade</tt><em class="property"> = 2</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Decade" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to decade</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Year">
+<tt class="descname">Year</tt><em class="property"> = 3</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Year" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to year</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Month">
+<tt class="descname">Month</tt><em class="property"> = 4</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Month" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to month</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Week">
+<tt class="descname">Week</tt><em class="property"> = 5</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Week" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to week</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Hour">
+<tt class="descname">Hour</tt><em class="property"> = 6</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to hour</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Truncation.Minute">
+<tt class="descname">Minute</tt><em class="property"> = 7</em><a class="headerlink" href="#pyslet.iso8601.Truncation.Minute" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for truncating to minute</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.iso8601.Precision">
+<em class="property">class </em><tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">Precision</tt><a class="headerlink" href="#pyslet.iso8601.Precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines constants for representing reduced precision.</p>
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Century">
+<tt class="descname">Century</tt><em class="property"> = 1</em><a class="headerlink" href="#pyslet.iso8601.Precision.Century" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for century precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Year">
+<tt class="descname">Year</tt><em class="property"> = 2</em><a class="headerlink" href="#pyslet.iso8601.Precision.Year" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for year precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Month">
+<tt class="descname">Month</tt><em class="property"> = 3</em><a class="headerlink" href="#pyslet.iso8601.Precision.Month" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for month precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Week">
+<tt class="descname">Week</tt><em class="property"> = 4</em><a class="headerlink" href="#pyslet.iso8601.Precision.Week" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for week precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Hour">
+<tt class="descname">Hour</tt><em class="property"> = 5</em><a class="headerlink" href="#pyslet.iso8601.Precision.Hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for hour precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Minute">
+<tt class="descname">Minute</tt><em class="property"> = 6</em><a class="headerlink" href="#pyslet.iso8601.Precision.Minute" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for minute precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.iso8601.Precision.Complete">
+<tt class="descname">Complete</tt><em class="property"> = 7</em><a class="headerlink" href="#pyslet.iso8601.Precision.Complete" title="Permalink to this definition">¶</a></dt>
+<dd><p>constant for complete representations</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions">
+<h2>2.10.2. Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyslet.iso8601.LeapYear">
+<tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">LeapYear</tt><big>(</big><em>year</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.LeapYear" title="Permalink to this definition">¶</a></dt>
+<dd><p>LeapYear returns True if <em>year</em> is a leap year and False otherwise.</p>
+<p>Note that leap years famously fall on all years that divide by 4
+except those that divide by 100 but including those that divide
+by 400.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.iso8601.DayOfWeek">
+<tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">DayOfWeek</tt><big>(</big><em>year</em>, <em>month</em>, <em>day</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.DayOfWeek" title="Permalink to this definition">¶</a></dt>
+<dd><p>DayOfWeek returns the day of week 1-7, 1 being Monday for the given year, month
+and day</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.iso8601.WeekCount">
+<tt class="descclassname">pyslet.iso8601.</tt><tt class="descname">WeekCount</tt><big>(</big><em>year</em><big>)</big><a class="headerlink" href="#pyslet.iso8601.WeekCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Week count returns the number of calendar weeks in a year.  Most years have 52
+weeks of course, but if the year begins on a Thursday or a leap year begins on a
+Wednesday then it has 53.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.10. ISO 8601 Dates and Times</a><ul>
+<li><a class="reference internal" href="#supporting-constants">2.10.1. Supporting Constants</a></li>
+<li><a class="reference internal" href="#utility-functions">2.10.2. Utility Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="rfc5023.html"
+                        title="previous chapter">2.9. The Atom Publishing Protocol (RFC5023)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/iso8601.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rfc5023.html" title="2.9. The Atom Publishing Protocol (RFC5023)"
+             >previous</a> |</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
+          <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright ©2008-2014, Steve Lay.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

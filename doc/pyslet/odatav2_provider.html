@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.1.2. OData Providers &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.1.2. OData Providers &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2.1. The Open Data Protocol (OData)" href="odatav2.html" />
     <link rel="next" title="2.1.2.1. Sample Project: InMemory Data Service" href="odatav2_memexample.html" />
     <link rel="prev" title="2.1.1. Data Consumers" href="odatav2_consumer.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="odatav2_consumer.html" title="2.1.1. Data Consumers"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" accesskey="U">2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>
@@ -112,7 +112,12 @@ your own application you can stop at item 3 above.</p>
 <li class="toctree-l2"><a class="reference internal" href="odatav2_memexample.html#conclusion">2.1.2.1.5. Conclusion</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="odatav2_sqlexample.html">2.1.2.2. Sample Project: SQL Data Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odatav2_sqlexample.html">2.1.2.2. A SQL-Backed Data Service</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_sqlexample.html#step-1-creating-the-metadata-model">2.1.2.2.1. Step 1: Creating the Metadata Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_sqlexample.html#step-2-test-the-model">2.1.2.2.2. Step 2: Test the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="odatav2_sqlexample.html#step-4-link-the-data-source-to-the-odata-server">2.1.2.2.3. Step 4: Link the Data Source to the OData Server</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="odatav2_customexample.html">2.1.2.3. Sample Project: Custom Data Service</a></li>
 </ul>
 </div>
@@ -135,20 +140,20 @@ database, then you should use the Python DB ABI-based implementation as
 a starting point.</p>
 <p>If your data is in a database other than a SQLite database you will have
 to provide a few tweaks by deriving a new class from
-<tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt>.  This can&#8217;t be helped,
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLEntityContainer" title="pyslet.odata2.sqlds.SQLEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityContainer</span></tt></a>.  This can&#8217;t be helped,
 the DB API does a good job at dealing with most issues, such as
 variation in parameterization conventions and expected data types, but
 SQL connection parameters and the occasional differences in the SQL
 syntax mean there is likely to be a small amount of work to do.</p>
 <p>A look at the customisations required for
-<tt class="xref py py-class docutils literal"><span class="pre">SQLiteEntityContainer</span></tt> where a handful of
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLiteEntityContainer" title="pyslet.odata2.sqlds.SQLiteEntityContainer"><tt class="xref py py-class docutils literal"><span class="pre">SQLiteEntityContainer</span></tt></a> where a handful of
 methods have had to be overridden should point the way.  You may want to
 override the default
-<tt class="xref py py-class docutils literal"><span class="pre">SQLEntityCollection</span></tt> object too where
+<a class="reference internal" href="odatav2_sqlds.html#pyslet.odata2.sqlds.SQLEntityCollection" title="pyslet.odata2.sqlds.SQLEntityCollection"><tt class="xref py py-class docutils literal"><span class="pre">SQLEntityCollection</span></tt></a> object too where
 functions and operators from the the expression language can be mapped
 on to parameterized SQL queries.</p>
 <p>Once you have a class that can connect to your chosen database move on to
-<a class="reference internal" href="odatav2_sqlexample.html"><em>Sample Project: SQL Data Service</em></a>.</p>
+<a class="reference internal" href="odatav2_sqlexample.html"><em>A SQL-Backed Data Service</em></a>.</p>
 </div>
 <div class="section" id="customer-provider">
 <h3>2.1.2.4.3. Customer Provider<a class="headerlink" href="#customer-provider" title="Permalink to this headline">¶</a></h3>
@@ -265,7 +270,7 @@ out to me via the <a class="reference external" href="https://code.google.com/p/
         <li class="right" >
           <a href="odatav2_consumer.html" title="2.1.1. Data Consumers"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li>
           <li><a href="odatav2.html" >2.1. The Open Data Protocol (OData)</a> &raquo;</li> 
       </ul>

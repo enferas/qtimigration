@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2.7. Hypertext Transfer Protocol (RFC2616) &mdash; Pyslet 0.4.20140217 documentation</title>
+    <title>2.7. Hypertext Transfer Protocol (RFC2616) &mdash; Pyslet 0.4.20140511 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.20140217',
+        VERSION:     '0.4.20140511',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Pyslet 0.4.20140217 documentation" href="index.html" />
+    <link rel="top" title="Pyslet 0.4.20140511 documentation" href="index.html" />
     <link rel="up" title="2. Supporting Standards" href="general.html" />
     <link rel="next" title="2.8. The Atom Syndication Format (RFC4287)" href="rfc4287.html" />
     <link rel="prev" title="2.6. Uniform Resource Identifiers (RFC2396)" href="rfc2396.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" accesskey="U">2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,40 +57,1221 @@
   <div class="section" id="module-pyslet.rfc2616">
 <span id="hypertext-transfer-protocol-rfc2616"></span><h1>2.7. Hypertext Transfer Protocol (RFC2616)<a class="headerlink" href="#module-pyslet.rfc2616" title="Permalink to this headline">¶</a></h1>
 <p>This module defines functions and classes for working with HTTP as defined by
-RFC2396: <a class="reference external" href="http://www.ietf.org/rfc/rfc2616.txt">http://www.ietf.org/rfc/rfc2616.txt</a></p>
-<p>The purpose of this module is to expose some of the basic constructs (including
-the synax of protocol components) to allow them to be used normatively in other
-context.  The module does contain a functional HTTP client.</p>
-<div class="section" id="http-parameters">
-<h2>2.7.1. HTTP Parameters<a class="headerlink" href="#http-parameters" title="Permalink to this headline">¶</a></h2>
+RFC2616: <a class="reference external" href="http://www.ietf.org/rfc/rfc2616.txt">http://www.ietf.org/rfc/rfc2616.txt</a></p>
+<p>The purpose of this module is to expose some of the basic constructs
+(including the synax of protocol components) to allow them to be used
+normatively in other contexts.  The module also contains a functional
+HTTP client designed to support non-blocking and persistent HTTP client
+operations.</p>
+<div class="section" id="http-messages">
+<h2>2.7.1. HTTP Messages<a class="headerlink" href="#http-messages" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.rfc2616.HTTPMessage">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPMessage</tt><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>An abstract class to represent an HTTP message.</p>
+<p>The methods of this class are thread safe, using <a class="reference internal" href="#pyslet.rfc2616.HTTPMessage.lock" title="pyslet.rfc2616.HTTPMessage.lock"><tt class="xref py py-attr docutils literal"><span class="pre">lock</span></tt></a> to
+protect all access to internal structures.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPMessage.lock">
+<tt class="descname">lock</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>a lock used by <tt class="xref py py-class docutils literal"><span class="pre">HTTPClient</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.Reset">
+<tt class="descname">Reset</tt><big>(</big><em>resetHeaders=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.Reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets this messages allowing it to be reused.</p>
+<dl class="docutils">
+<dt><em>resetHeaders</em></dt>
+<dd>Removes all existing headers.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetHeaderList">
+<tt class="descname">GetHeaderList</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetHeaderList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an alphabetically sorted list of lower-cased header names.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.HasHeader">
+<tt class="descname">HasHeader</tt><big>(</big><em>fieldName</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.HasHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if this message has a header with <em>fieldName</em>, False otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetHeader">
+<tt class="descname">GetHeader</tt><big>(</big><em>fieldName</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the header with <em>fieldName</em> as a string.</p>
+<p>If there is no header with <em>fieldName</em> then None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetHeader">
+<tt class="descname">SetHeader</tt><big>(</big><em>fieldName</em>, <em>fieldValue</em>, <em>appendMode=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the header with <em>fieldName</em> to the string <em>fieldValue</em>.</p>
+<p>If <em>fieldValue</em> is None then the header is removed (if present).</p>
+<p>If a header already exists with <em>fieldName</em> then the behaviour is
+determined by <em>appendMode</em>:</p>
+<dl class="docutils">
+<dt>appendMode==True</dt>
+<dd><em>fieldValue</em> is joined to the existing value using &#8221;, &#8221; as
+a separator.</dd>
+<dt>appendMode==False (Default)</dt>
+<dd><em>fieldValue</em> replaces the existing value.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetAllow">
+<tt class="descname">GetAllow</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetAllow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <a class="reference internal" href="#pyslet.rfc2616.Allow" title="pyslet.rfc2616.Allow"><tt class="xref py py-class docutils literal"><span class="pre">Allow</span></tt></a> instance or None if no &#8220;Allow&#8221;
+header is present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetAllow">
+<tt class="descname">SetAllow</tt><big>(</big><em>allowed</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetAllow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the &#8220;Allow&#8221; header, replacing any existing value.</p>
+<dl class="docutils">
+<dt><em>allowed</em></dt>
+<dd>A <a class="reference internal" href="#pyslet.rfc2616.Allow" title="pyslet.rfc2616.Allow"><tt class="xref py py-class docutils literal"><span class="pre">Allow</span></tt></a> instance or a string that one can be
+parsed from.</dd>
+</dl>
+<p>If allowed is None any existing Allow header is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetCacheControl">
+<tt class="descname">GetCacheControl</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetCacheControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <a class="reference internal" href="#pyslet.rfc2616.CacheControl" title="pyslet.rfc2616.CacheControl"><tt class="xref py py-class docutils literal"><span class="pre">CacheControl</span></tt></a> instance or None if no
+&#8220;Cache-Control&#8221; header is present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetCacheControl">
+<tt class="descname">SetCacheControl</tt><big>(</big><em>cc</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetCacheControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the &#8220;Cache-Control&#8221; header, replacing any existing value.</p>
+<dl class="docutils">
+<dt><em>cc</em></dt>
+<dd>A <a class="reference internal" href="#pyslet.rfc2616.CacheControl" title="pyslet.rfc2616.CacheControl"><tt class="xref py py-class docutils literal"><span class="pre">CacheControl</span></tt></a> instance or a string that one can
+be parsed from.</dd>
+</dl>
+<p>If <em>cc</em> is None any existing Cache-Control header is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetConnection">
+<tt class="descname">GetConnection</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of connection tokens from the Connection header</p>
+<p>If no Connection header was present an empty set is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetConnection">
+<tt class="descname">SetConnection</tt><big>(</big><em>connectionTokens</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Connection tokens from a an iterable set of <em>connectionTokens</em></p>
+<p>If the list is empty any existing header is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentEncoding">
+<tt class="descname">GetContentEncoding</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentEncoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <em>list</em> of lower-cased content-coding tokens from
+the Content-Encoding header</p>
+<p>If no Content-Encoding header was present an empty list is
+returned.</p>
+<p>Content-codings are always listed in the order they have been
+applied.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentEncoding">
+<tt class="descname">SetContentEncoding</tt><big>(</big><em>contentCodings</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentEncoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Encoding header from a an iterable list of
+<em>content-coding</em> tokens.  If the list is empty any existing
+header is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentLanguage">
+<tt class="descname">GetContentLanguage</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <em>list</em> of <a class="reference internal" href="#pyslet.rfc2616.LanguageTag" title="pyslet.rfc2616.LanguageTag"><tt class="xref py py-class docutils literal"><span class="pre">LanguageTag</span></tt></a> instances from
+the Content-Language header</p>
+<p>If no Content-Language header was present an empty list is
+returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentLanguage">
+<tt class="descname">SetContentLanguage</tt><big>(</big><em>langList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentLanguage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Language header from a an iterable list of
+<a class="reference internal" href="#pyslet.rfc2616.LanguageTag" title="pyslet.rfc2616.LanguageTag"><tt class="xref py py-class docutils literal"><span class="pre">LanguageTag</span></tt></a> instances.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentLength">
+<tt class="descname">GetContentLength</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the integer size of the entity from the
+Content-Length header</p>
+<p>If no Content-Length header was present None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentLength">
+<tt class="descname">SetContentLength</tt><big>(</big><em>length</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Length header from an integer or removes it
+if <em>length</em> is None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentLocation">
+<tt class="descname">GetContentLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance created from
+the Content-Location header.</p>
+<p>If no Content-Location header was present None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentLocation">
+<tt class="descname">SetContentLocation</tt><big>(</big><em>location</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Location header from location, a
+<a class="reference internal" href="rfc2396.html#pyslet.rfc2396.URI" title="pyslet.rfc2396.URI"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.URI</span></tt></a> instance or removes it if
+<em>location</em> is None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentMD5">
+<tt class="descname">GetContentMD5</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentMD5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a 16-byte binary string read from the Content-MD5
+header or None if no Content-MD5 header was present.</p>
+<p>The result is suitable for comparing directly with the output
+of the Python&#8217;s MD5 digest method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentMD5">
+<tt class="descname">SetContentMD5</tt><big>(</big><em>digest</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentMD5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-MD5 header from a 16-byte binary string
+returned by Python&#8217;s MD5 digest method or similar.  If digest is
+None any existing Content-MD5 header is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentRange">
+<tt class="descname">GetContentRange</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#pyslet.rfc2616.ContentRange" title="pyslet.rfc2616.ContentRange"><tt class="xref py py-class docutils literal"><span class="pre">ContentRange</span></tt></a> instance parsed from the
+Content-Range header.</p>
+<p>If no Content-Range header was present None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentRange">
+<tt class="descname">SetContentRange</tt><big>(</big><em>range</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Range header from range, a
+<a class="reference internal" href="#pyslet.rfc2616.ContentRange" title="pyslet.rfc2616.ContentRange"><tt class="xref py py-class docutils literal"><span class="pre">ContentRange</span></tt></a> instance or removes it if
+<em>range</em> is None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetContentType">
+<tt class="descname">GetContentType</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetContentType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#pyslet.rfc2616.MediaType" title="pyslet.rfc2616.MediaType"><tt class="xref py py-class docutils literal"><span class="pre">MediaType</span></tt></a> instance parsed from the
+Content-Type header.</p>
+<p>If no Content-Type header was present None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetContentType">
+<tt class="descname">SetContentType</tt><big>(</big><em>mtype=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetContentType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Content-Type header from mtype, a
+<a class="reference internal" href="#pyslet.rfc2616.MediaType" title="pyslet.rfc2616.MediaType"><tt class="xref py py-class docutils literal"><span class="pre">MediaType</span></tt></a> instance, or removes it if
+<em>mtype</em> is None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.GetDate">
+<tt class="descname">GetDate</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.GetDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#pyslet.rfc2616.FullDate" title="pyslet.rfc2616.FullDate"><tt class="xref py py-class docutils literal"><span class="pre">FullDate</span></tt></a> instance parsed from the
+Date header.</p>
+<p>If no Date header was present None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.SetDate">
+<tt class="descname">SetDate</tt><big>(</big><em>date=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.SetDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the Date header from <em>date</em>, a
+<a class="reference internal" href="#pyslet.rfc2616.FullDate" title="pyslet.rfc2616.FullDate"><tt class="xref py py-class docutils literal"><span class="pre">FullDate</span></tt></a> instance, or removes it if
+<em>date</em> is None.</p>
+<p>To set the date header to the current date use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SetDate</span><span class="p">(</span><span class="n">FullDate</span><span class="o">.</span><span class="n">FromNowUTC</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPMessage.CalculateTransferLength">
+<tt class="descname">CalculateTransferLength</tt><big>(</big><em>body=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPMessage.CalculateTransferLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>See section 4.4 of RFC2616.
+The transfer-length of a message is the length of the message-body as
+it appears in the message; that is, after any transfer-codings have
+been applied. When a message-body is included with a message, the
+transfer-length of that body is determined by one of the following
+(in order of precedence)....</p>
+<p>Note that the body may be a string or None and is compared
+with or used to set the headers appropriately.  Use None if you
+don&#8217;t know the size of the body or you have already set the
+Content-Length.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sending-requests">
+<h2>2.7.2. Sending Requests<a class="headerlink" href="#sending-requests" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.rfc2616.HTTPRequestManager">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPRequestManager</tt><big>(</big><em>maxConnections=100</em>, <em>ca_certs=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>An object for managing the sending of HTTP/1.1 requests and
+receiving of responses.  There are a number of keyword arguments
+that can be used to set operational parameters:</p>
+<dl class="docutils">
+<dt>maxConnections</dt>
+<dd>The maximum number of HTTP connections that may be open at any one
+time.  The method <a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.QueueRequest" title="pyslet.rfc2616.HTTPRequestManager.QueueRequest"><tt class="xref py py-meth docutils literal"><span class="pre">QueueRequest()</span></tt></a> will block (or raise
+<tt class="xref py py-class docutils literal"><span class="pre">RequestManagerBusy</span></tt>) if an attempt to queue a request
+would cause this limit to be exceeded.</dd>
+<dt>ca_certs</dt>
+<dd>The file name of a certificate file to use when checking SSL
+connections.  For more information see
+<a class="reference external" href="http://docs.python.org/2.7/library/ssl.html">http://docs.python.org/2.7/library/ssl.html</a></dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">By default, ca_certs is optional and can be passed as None.  In this
+mode certificates will not be checked and your connections are not
+secure from man in the middle attacks.  In production use you should
+always specify a certificate file if you expect to use the object to
+make calls to https URLs.</p>
+</div>
+<p>Although maxConnections allows you to make multiple connections to
+the same host+port the request manager imposes an additional
+restriction. Each thread can make at most 1 connection to each
+host+port.  If multiple requests are made to the same host+port from
+the same thread then they are queued and will be sent to the server
+over the same connection using HTTP/1.1 pipelining. The manager
+(mostly) takes care of the following restriction imposed by RFC2616:</p>
+<blockquote>
+<div>Clients SHOULD NOT pipeline requests using non-idempotent
+methods or non-idempotent sequences of methods</div></blockquote>
+<p>In other words, a POST  (or CONNECT) request will cause the
+pipeline to stall until all the responses have been received.  Users
+should beware of non-idempotent sequences as these are not
+automatically detected by the manager.  For example, a GET,PUT
+sequence on the same resource is not idempotent. Users should wait
+for the GET request to finish fetching the resource before queuing a
+PUT request that overwrites it.</p>
+<p>In summary, to take advantage of multiple simultaneous connections
+to the same host+port you must use multiple threads.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ConnectionClass">
+<tt class="descname">ConnectionClass</tt><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ConnectionClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc2616.Connection" title="pyslet.rfc2616.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.cActiveThreadTargets">
+<tt class="descname">cActiveThreadTargets</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.cActiveThreadTargets" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of active connections keyed on thread and target (always unique)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.cActiveThreads">
+<tt class="descname">cActiveThreads</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.cActiveThreads" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of dicts of active connections keyed on thread id then connection id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.cIdleTargets">
+<tt class="descname">cIdleTargets</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.cIdleTargets" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of dicts of idle connections keyed on target and then connection id</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.cIdleList">
+<tt class="descname">cIdleList</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.cIdleList" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of idle connections keyed on connection id (for keeping count)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.maxConnections">
+<tt class="descname">maxConnections</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.maxConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p>maximum number of connections to manage (set only on construction)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPRequestManager.httpUserAgent">
+<tt class="descname">httpUserAgent</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.httpUserAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default User-Agent string to use.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.QueueRequest">
+<tt class="descname">QueueRequest</tt><big>(</big><em>request</em>, <em>timeout=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.QueueRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instructs the manager to start processing <em>request</em>.</p>
+<dl class="docutils">
+<dt>request</dt>
+<dd>A <a class="reference internal" href="#pyslet.rfc2616.Connection" title="pyslet.rfc2616.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> object.</dd>
+<dt>timeout</dt>
+<dd><p class="first">Number of seconds to wait for a free connection before timing
+out.  A timeout raises <tt class="xref py py-class docutils literal"><span class="pre">RequestManagerBusy</span></tt></p>
+<p class="last">None means wait forever, 0 means don&#8217;t block.</p>
+</dd>
+</dl>
+<p>The default implementation adds a User-Agent header from
+<a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.httpUserAgent" title="pyslet.rfc2616.HTTPRequestManager.httpUserAgent"><tt class="xref py py-attr docutils literal"><span class="pre">httpUserAgent</span></tt></a> if none has been specified already. 
+You can override this method to add other headers appropriate
+for a specific context but you must pass this call on to this
+implementation for proper processing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ActiveCount">
+<tt class="descname">ActiveCount</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ActiveCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of active connections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ThreadActiveCount">
+<tt class="descname">ThreadActiveCount</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ThreadActiveCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of active connections associated
+with the current thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ThreadTask">
+<tt class="descname">ThreadTask</tt><big>(</big><em>timeout=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ThreadTask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes all connections bound to the current thread then
+blocks for at most timeout (0 means don&#8217;t block) while waiting
+to send/receive data from any active sockets.</p>
+<p>Each active connection receives one call to
+<a class="reference internal" href="#pyslet.rfc2616.Connection.ConnectionTask" title="pyslet.rfc2616.Connection.ConnectionTask"><tt class="xref py py-meth docutils literal"><span class="pre">Connection.ConnectionTask()</span></tt></a> There are some situations
+where this method may still block even with timeout=0.  For
+example, DNS name resolution and SSL handshaking.  These may be
+improved in future.</p>
+<p>Returns True if at least one connection is active, otherwise
+returns False.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ThreadLoop">
+<tt class="descname">ThreadLoop</tt><big>(</big><em>timeout=60</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ThreadLoop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repeatedly calls <a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.ThreadTask" title="pyslet.rfc2616.HTTPRequestManager.ThreadTask"><tt class="xref py py-meth docutils literal"><span class="pre">ThreadTask()</span></tt></a> until it returns False.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ProcessRequest">
+<tt class="descname">ProcessRequest</tt><big>(</big><em>request</em>, <em>timeout=60</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ProcessRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process an <tt class="xref py py-class docutils literal"><span class="pre">HTTPRequest</span></tt> object.</p>
+<p>The request is queued and then <a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.ThreadLoop" title="pyslet.rfc2616.HTTPRequestManager.ThreadLoop"><tt class="xref py py-meth docutils literal"><span class="pre">ThreadLoop()</span></tt></a> is called to exhaust all
+HTTP activity initiated by the current thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.IdleCleanup">
+<tt class="descname">IdleCleanup</tt><big>(</big><em>maxInactive=15</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.IdleCleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleans up any idle connections that have been inactive for
+more than <em>maxInactive</em> seconds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.ActiveCleanup">
+<tt class="descname">ActiveCleanup</tt><big>(</big><em>maxInactive=90</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.ActiveCleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean up active connections that have been inactive for
+more than <em>maxInactive</em> seconds.</p>
+<p>This method can be called from any thread and can be used to
+remove connections that have been abandoned by their owning
+thread.  This can happen if the owning thread stops calling
+<a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.ThreadTask" title="pyslet.rfc2616.HTTPRequestManager.ThreadTask"><tt class="xref py py-meth docutils literal"><span class="pre">ThreadTask()</span></tt></a> leaving some connections active.</p>
+<p>Inactive connections are killed using <a class="reference internal" href="#pyslet.rfc2616.Connection.Kill" title="pyslet.rfc2616.Connection.Kill"><tt class="xref py py-meth docutils literal"><span class="pre">Connection.Kill()</span></tt></a>
+and then removed from the active list.  Should the owning thread
+wake up and attempt to finish processing the requests a socket
+error or <a class="reference internal" href="#pyslet.rfc2616.HTTPException" title="pyslet.rfc2616.HTTPException"><tt class="xref py py-class docutils literal"><span class="pre">HTTPException</span></tt></a> will be reported.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.Close">
+<tt class="descname">Close</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.Close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes all connections and sets the manager to a state where
+new connections cannot not be created.</p>
+<p>Active connections are killed, idle connections are closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.AddCredentials">
+<tt class="descname">AddCredentials</tt><big>(</big><em>credentials</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.AddCredentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2617.Credentials</span></tt> instance to this
+manager.</p>
+<p>Credentials are used in response to challenges received in HTTP
+401 responses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.DNSLookup">
+<tt class="descname">DNSLookup</tt><big>(</big><em>host</em>, <em>port</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.DNSLookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a host name (string) and a port number performs a DNS lookup
+using the native socket.getaddrinfo function.  The resulting value is
+added to an internal dns cache so that subsequent calls for the same
+host name and port do not use the network unnecessarily.</p>
+<p>If you want to flush the cache you must do so manually using
+<a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager.DNSFlush" title="pyslet.rfc2616.HTTPRequestManager.DNSFlush"><tt class="xref py py-meth docutils literal"><span class="pre">DNSFlush()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.DNSFlush">
+<tt class="descname">DNSFlush</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.DNSFlush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes the DNS cache.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.FindCredentials">
+<tt class="descname">FindCredentials</tt><big>(</big><em>challenge</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.FindCredentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for credentials that match <em>challenge</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPRequestManager.FindCredentialsForURL">
+<tt class="descname">FindCredentialsForURL</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPRequestManager.FindCredentialsForURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for credentials that match <em>url</em></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.Connection">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">Connection</tt><big>(</big><em>manager</em>, <em>scheme</em>, <em>hostname</em>, <em>port</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents an HTTP connection.  Used internally by the request
+manager to manage connections to HTTP servers.  Each connection is
+assigned a unique <a class="reference internal" href="#pyslet.rfc2616.Connection.id" title="pyslet.rfc2616.Connection.id"><tt class="xref py py-attr docutils literal"><span class="pre">id</span></tt></a> on construction.  In normal use you
+won&#8217;t need to call any of these methods yourself but the interfaces
+are documented to make it easier to override the behaviour of the
+<tt class="xref py py-class docutils literal"><span class="pre">HTTPRequest</span></tt> object that <em>may</em> call some of these
+connection methods to indicate protocol exceptions.</p>
+<p>Connections define comparison methods, if c1 and c2 are both
+instances then:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">c1</span> <span class="o">&lt;</span> <span class="n">c2</span> <span class="o">==</span> <span class="bp">True</span> 
+</pre></div>
+</div>
+<p>...if c1 was last active before c2.  The connection&#8217;s active time is
+updated each time <a class="reference internal" href="#pyslet.rfc2616.Connection.ConnectionTask" title="pyslet.rfc2616.Connection.ConnectionTask"><tt class="xref py py-meth docutils literal"><span class="pre">ConnectionTask()</span></tt></a> is called.</p>
+<p>Connections are shared across threads but are never in use by more
+than one thread at a time.  The thread currently bound to a
+connection is indicated by <a class="reference internal" href="#pyslet.rfc2616.Connection.threadId" title="pyslet.rfc2616.Connection.threadId"><tt class="xref py py-attr docutils literal"><span class="pre">threadId</span></tt></a>.  The value of this
+attribute is managed by the associated
+<a class="reference internal" href="#pyslet.rfc2616.HTTPRequestManager" title="pyslet.rfc2616.HTTPRequestManager"><tt class="xref py py-class docutils literal"><span class="pre">HTTPRequestManager</span></tt></a>. Methods <em>must only</em> be called
+from this thread unless otherwise stated.</p>
+<p>The scheme, hostname and port are defined on construction and
+do not change.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.manager">
+<tt class="descname">manager</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>the RequestManager that owns this connection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.id">
+<tt class="descname">id</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the id of this connection object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.scheme">
+<tt class="descname">scheme</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>the http scheme in use, &#8216;http&#8217; or &#8216;https&#8217;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.host">
+<tt class="descname">host</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.host" title="Permalink to this definition">¶</a></dt>
+<dd><p>the target host of this connection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.port">
+<tt class="descname">port</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.port" title="Permalink to this definition">¶</a></dt>
+<dd><p>the target port of this connection</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.threadId">
+<tt class="descname">threadId</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.threadId" title="Permalink to this definition">¶</a></dt>
+<dd><p>the thread we&#8217;re currently bound to</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.lastActive">
+<tt class="descname">lastActive</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.lastActive" title="Permalink to this definition">¶</a></dt>
+<dd><p>time at which this connection was last active</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.requestQueue">
+<tt class="descname">requestQueue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.requestQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>the queue of requests we are waiting to process</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.request">
+<tt class="descname">request</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>the current request we are processing</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.responseQueue">
+<tt class="descname">responseQueue</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.responseQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>the queue of responses we are waiting to process</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.Connection.response">
+<tt class="descname">response</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.Connection.response" title="Permalink to this definition">¶</a></dt>
+<dd><p>the current response we are processing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Connection.ConnectionTask">
+<tt class="descname">ConnectionTask</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection.ConnectionTask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the requests and responses for this connection.</p>
+<p>This method is mostly non-blocking.  It returns a (r,w) pair of
+file numbers suitable for passing to select indicating whether
+the connection is waiting to read and/or write data.  It will
+return None,None if the connection is not currently blocked on
+I/O.</p>
+<p>The connection object acts as a small buffer between the HTTP
+message itself and the server.  The implementation breaks down
+in to a number of phases:</p>
+<ol class="arabic">
+<li><p class="first">Start processing a request if one is queued and we&#8217;re ready
+for it.  For idempotent requests (in practice, everything
+except POST) we take advantage of HTTP pipelining to send
+the request without waiting for the previous response(s).</p>
+<p>The only exception is when the request has an Expect:
+100-continue header.  In this case the pipeline stalls until
+the server has caught up with us and sent the 100 response
+code.</p>
+</li>
+<li><p class="first">Send as much data to the server as we can without blocking.</p>
+</li>
+<li><p class="first">Read and process as much data from the server as we can
+without blocking.</p>
+</li>
+</ol>
+<p>The above steps are repeated until we are blocked at which point
+we return.</p>
+<p>Although data is streamed in a non-blocking manner there are
+situations in which the method will block.  DNS name resolution
+and creation/closure of sockets may block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Connection.RequestDisconnect">
+<tt class="descname">RequestDisconnect</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection.RequestDisconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnects the connection, aborting the current request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Connection.Continue">
+<tt class="descname">Continue</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection.Continue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instructs the connection to start sending any pending request body.</p>
+<p>If a request had an &#8220;Expect: 100-continue&#8221; header then the
+connection will not send the data until instructed to do so by a
+call to this method, or
+<tt class="xref py py-attr docutils literal"><span class="pre">continueWaitMax</span></tt> seconds have elapsed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Connection.Close">
+<tt class="descname">Close</tt><big>(</big><em>err=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection.Close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes this connection nicelly, optionally logging the
+exception <em>err</em></p>
+<p>The connection disconnects from the current request and
+terminates any responses we are waiting for by calling their
+<tt class="xref py py-meth docutils literal"><span class="pre">HTTPResponse.ServerDisconnect()</span></tt> methods.</p>
+<p>Finally, the socket is closed and all internal structures are
+reset ready to reconnect when the next request is queued.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Connection.Kill">
+<tt class="descname">Kill</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Connection.Kill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kills the connection, typically called from a different
+thread than the one currently bound (if any).</p>
+<p>No request methods are invoked, it is assumed that after this
+method the manager will relinquish control of the connection
+object creating space in the pool for other connections.  Once
+killed, a connection is never reconnected.</p>
+<p>If the owning thread calls ConnectionTask after Kill completes
+it will get a socket error or unexpectedly get zero-bytes on
+recv indicating the connection is broken.  We don&#8217;t close the
+socket here, just shut it down to be nice to the server.</p>
+<p>If the owning thread really died, Python&#8217;s garbage collection
+will take care of actually closing the socket and freeing up the
+file descriptor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.SecureConnection">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">SecureConnection</tt><big>(</big><em>manager</em>, <em>scheme</em>, <em>hostname</em>, <em>port</em>, <em>ca_certs=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.SecureConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyslet.rfc2616.Connection" title="pyslet.rfc2616.Connection"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616.Connection</span></tt></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="http-headers">
+<h2>2.7.3. HTTP Headers<a class="headerlink" href="#http-headers" title="Permalink to this headline">¶</a></h2>
+<p>This section defines objects that represent the values of HTTP headers
+and a special-purpose parser for parsing them from strings of octets.</p>
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptList">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptList</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the value of an Accept header</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they are constructed from
+one or more <a class="reference internal" href="#pyslet.rfc2616.AcceptItem" title="pyslet.rfc2616.AcceptItem"><tt class="xref py py-class docutils literal"><span class="pre">AcceptItem</span></tt></a> instances.  There are no
+comparison methods.</p>
+<p>Instances behave like read-only lists implementing len, indexing and
+iteration in the usual way.</p>
+<dl class="method">
+<dt id="pyslet.rfc2616.AcceptList.SelectType">
+<tt class="descname">SelectType</tt><big>(</big><em>mTypeList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptList.SelectType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the best match from mTypeList, a list of media-types.</p>
+<p>In the event of a tie, the first item in mTypeList is returned.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.AcceptList.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptList.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an AcceptList from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptItem">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptItem</tt><big>(</big><em>range=MediaType('*'</em>, <em>'*'</em>, <em>{})</em>, <em>qvalue=1.0</em>, <em>extensions={}</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.MediaRange</span></tt></p>
+<p>Represents a single item in an Accept header</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<p>Accept items are sorted by their media ranges.  Equal media ranges
+sort by <em>descending</em> qvalue, for example:</p>
+<blockquote>
+<div>text/plain;q=0.75 &lt; text/plain;q=0.5</div></blockquote>
+<p>Extension parameters are ignored in all comparisons.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptItem.range">
+<tt class="descname">range</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.AcceptItem.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>the <a class="reference internal" href="#pyslet.rfc2616.MediaRange" title="pyslet.rfc2616.MediaRange"><tt class="xref py py-class docutils literal"><span class="pre">MediaRange</span></tt></a> instance that is acceptable</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptItem.q">
+<tt class="descname">q</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.AcceptItem.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>the q-value (defaults to 1.0)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptItem.params">
+<tt class="descname">params</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.AcceptItem.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>any accept-extension parameters</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.AcceptItem.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptItem.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single AcceptItem instance from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.MediaRange">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">MediaRange</tt><big>(</big><em>type='*'</em>, <em>subtype='*'</em>, <em>parameters={}</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.MediaRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_params.MediaType</span></tt></p>
+<p>Represents an HTTP media-range.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.  Quoting from the specification:</p>
+<blockquote>
+<div>&#8220;Media ranges can be overridden by more specific media ranges or specific
+media types. If more than one media range applies to a given type, the
+most specific reference has precedence.&#8221;</div></blockquote>
+<p>In other words, the following media ranges would be sorted in the
+order shown:</p>
+<ol class="arabic simple">
+<li>image/png</li>
+<li>image/*</li>
+<li>text/plain;charset=utf-8</li>
+<li>text/plain</li>
+<li>text/*</li>
+<li>*/*</li>
+</ol>
+<p>If we have two rules with identical precedence then we sort them
+alphabetically by type; sub-type and ultimately alphabetically by
+parameters</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.MediaRange.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.MediaRange.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a media-rannge from a <em>source</em> string.</p>
+<p>Unlike the parent media-type we ignore all spaces.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.MediaRange.MatchMediaType">
+<tt class="descname">MatchMediaType</tt><big>(</big><em>mType</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.MediaRange.MatchMediaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests whether a media-type matches this range.</p>
+<dl class="docutils">
+<dt><em>mtype</em></dt>
+<dd>A <a class="reference internal" href="#pyslet.rfc2616.MediaType" title="pyslet.rfc2616.MediaType"><tt class="xref py py-class docutils literal"><span class="pre">MediaType</span></tt></a> instance to be compared to this
+range.</dd>
+</dl>
+<p>The matching algorithm takes in to consideration wild-cards so
+that */* matches all types, image/* matches any image type and
+so on.</p>
+<p>If a media-range contains parameters then each of these must be
+matched exactly in the media-type being tested. Parameter names
+are treated case-insensitively and any additional parameters in
+the media type are ignored.  As a result:</p>
+<ul class="simple">
+<li>text/plain <em>does not match</em> the range
+text/plain;charset=utf-8</li>
+<li>application/myapp;charset=utf-8;option=on <em>does</em> match the
+range application/myapp;option=on</li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptCharsetItem">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptCharsetItem</tt><big>(</big><em>token='*'</em>, <em>qvalue=1.0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptCharsetItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptToken</span></tt></p>
+<p>Represents a single item in an Accept-Charset header</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptCharsetList">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptCharsetList</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptCharsetList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptTokenList</span></tt></p>
+<p>Represents an Accept-Charset header</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptCharsetList.ItemClass">
+<tt class="descname">ItemClass</tt><a class="headerlink" href="#pyslet.rfc2616.AcceptCharsetList.ItemClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc2616.AcceptCharsetItem" title="pyslet.rfc2616.AcceptCharsetItem"><tt class="xref py py-class docutils literal"><span class="pre">AcceptCharsetItem</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.AcceptCharsetList.SelectToken">
+<tt class="descname">SelectToken</tt><big>(</big><em>tokenList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptCharsetList.SelectToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to provide default handling of iso-8859-1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptEncodingItem">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptEncodingItem</tt><big>(</big><em>token='*'</em>, <em>qvalue=1.0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptEncodingItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptToken</span></tt></p>
+<p>Represents a single item in an Accept-Encoding header</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptEncodingList">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptEncodingList</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptEncodingList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptTokenList</span></tt></p>
+<p>Represents an Accept-Encoding header</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptEncodingList.ItemClass">
+<tt class="descname">ItemClass</tt><a class="headerlink" href="#pyslet.rfc2616.AcceptEncodingList.ItemClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc2616.AcceptEncodingItem" title="pyslet.rfc2616.AcceptEncodingItem"><tt class="xref py py-class docutils literal"><span class="pre">AcceptEncodingItem</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.AcceptEncodingList.SelectToken">
+<tt class="descname">SelectToken</tt><big>(</big><em>tokenList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptEncodingList.SelectToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overridden to provide default handling of identity</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptLanguageItem">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptLanguageItem</tt><big>(</big><em>token='*'</em>, <em>qvalue=1.0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptLanguageItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptToken</span></tt></p>
+<p>Represents a single item in an Accept-Language header.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptLanguageList">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptLanguageList</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptLanguageList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_headers.AcceptTokenList</span></tt></p>
+<p>Represents an Accept-Language header</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptLanguageList.ItemClass">
+<tt class="descname">ItemClass</tt><a class="headerlink" href="#pyslet.rfc2616.AcceptLanguageList.ItemClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc2616.AcceptLanguageItem" title="pyslet.rfc2616.AcceptLanguageItem"><tt class="xref py py-class docutils literal"><span class="pre">AcceptLanguageItem</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.AcceptLanguageList.SelectToken">
+<tt class="descname">SelectToken</tt><big>(</big><em>tokenList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptLanguageList.SelectToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remapped to <tt class="xref py py-meth docutils literal"><span class="pre">SelectLanguage()</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptToken">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptToken</tt><big>(</big><em>token='*'</em>, <em>qvalue=1.0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents a single item in a token-based Accept-* header</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<p>AcceptToken items are sorted by their token, with wild cards sorting
+behind specified tokens.  Equal values sort by <em>descending</em> qvalue,
+for example:</p>
+<blockquote>
+<div>iso-8859-2;q=0.75 &lt; iso-8859-2;q=0.5</div></blockquote>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptToken.token">
+<tt class="descname">token</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.AcceptToken.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>the token that is acceptable or &#8220;*&#8221; for any token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptToken.q">
+<tt class="descname">q</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.AcceptToken.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>the q-value (defaults to 1.0)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.AcceptToken.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptToken.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single AcceptToken instance from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptTokenList">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptTokenList</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptTokenList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the value of a token-based Accept-* header</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they are constructed from
+one or more <a class="reference internal" href="#pyslet.rfc2616.AcceptToken" title="pyslet.rfc2616.AcceptToken"><tt class="xref py py-class docutils literal"><span class="pre">AcceptToken</span></tt></a> instances.  There are no
+comparison methods.</p>
+<p>Instances behave like read-only lists implementing len, indexing and
+iteration in the usual way.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.AcceptTokenList.ItemClass">
+<tt class="descname">ItemClass</tt><a class="headerlink" href="#pyslet.rfc2616.AcceptTokenList.ItemClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pyslet.rfc2616.AcceptToken" title="pyslet.rfc2616.AcceptToken"><tt class="xref py py-class docutils literal"><span class="pre">AcceptToken</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.AcceptTokenList.SelectToken">
+<tt class="descname">SelectToken</tt><big>(</big><em>tokenList</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptTokenList.SelectToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the best match from tokenList, a list of tokens.</p>
+<p>In the event of a tie, the first item in tokenList is returned.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.AcceptTokenList.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptTokenList.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an AcceptTokenList from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.AcceptRanges">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">AcceptRanges</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptRanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the value of an Accept-Ranges response header.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they are constructed from
+a list of string arguments.  If the argument list is empty then a
+value of &#8220;none&#8221; is assumed.</p>
+<p>Instances behave like read-only lists implementing len, indexing and
+iteration in the usual way.  Comparison methods are provided.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.AcceptRanges.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.AcceptRanges.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an AcceptRanges value from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.Allow">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">Allow</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Allow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the value of an Allow entity header.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they are constructed from
+a list of string arguments which may be empty.</p>
+<p>Instances behave like read-only lists implementing len, indexing and
+iteration in the usual way.  Comparison methods are provided.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.Allow.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Allow.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an Allow value from a <em>source</em> string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.Allow.Allowed">
+<tt class="descname">Allowed</tt><big>(</big><em>method</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.Allow.Allowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests is <em>method</em> is allowed by this value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.CacheControl">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">CacheControl</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.CacheControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the value of a Cache-Control general header.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they are constructed from
+a list of arguments which must not be empty.  Arguments are treated
+as follows:</p>
+<dl class="docutils">
+<dt>string</dt>
+<dd>a simple directive with no parmeter</dd>
+<dt>2-tuple of string and non-tuple</dt>
+<dd>a directive with a simple parameter</dd>
+<dt>2-tuple of string and tuple</dt>
+<dd>a directive with a quoted list-style parameter</dd>
+</dl>
+<p>Instances behave like read-only lists implementing len, indexing and
+iteration in the usual way.  Instances also support basic key lookup
+of directive names by implementing __contains__ and __getitem__
+(which returns None for defined directives with no parameter and
+raises KeyError for undefined directives.  Instances are not truly
+dictionary like.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.CacheControl.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.CacheControl.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Cache-Control value from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.ContentRange">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ContentRange</tt><big>(</big><em>firstByte=None</em>, <em>lastByte=None</em>, <em>totalLength=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ContentRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents a single content range</p>
+<dl class="docutils">
+<dt>firstByte</dt>
+<dd>Specifies the first byte of the range</dd>
+<dt>lastByte</dt>
+<dd>Specifies the last byte of the range</dd>
+<dt>totalLength</dt>
+<dd>Specifies the total length of the entity</dd>
+</dl>
+<p>With no arguments an invalid range representing an unsatisfied
+range request from an entity of unknown length is created.</p>
+<p>If firstByte is specified on construction lastByte must also
+be specified or TypeError is raised.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.ContentRange.firstByte">
+<tt class="descname">firstByte</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.ContentRange.firstByte" title="Permalink to this definition">¶</a></dt>
+<dd><p>first byte in the range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.ContentRange.lastByte">
+<tt class="descname">lastByte</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.ContentRange.lastByte" title="Permalink to this definition">¶</a></dt>
+<dd><p>last byte in the range</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.ContentRange.totalLength">
+<tt class="descname">totalLength</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.ContentRange.totalLength" title="Permalink to this definition">¶</a></dt>
+<dd><p>total length of the entity or None if not known</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.ContentRange.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ContentRange.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single ContentRange instance from a <em>source</em> string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ContentRange.IsValid">
+<tt class="descname">IsValid</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ContentRange.IsValid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this range is valid, False otherwise.</p>
+<p>A valid range is any non-empty byte range wholly within the entity
+described by the total length.  Unsatisfied content ranges
+are treated as <em>invalid</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.HeaderParser">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HeaderParser</tt><big>(</big><em>source</em>, <em>ignoreSpace=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_params.ParameterParser</span></tt></p>
+<p>A special parser extended to include methods for parsing HTTP headers.</p>
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireMediaRange">
+<tt class="descname">RequireMediaRange</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireMediaRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a media range returning a <a class="reference internal" href="#pyslet.rfc2616.MediaRange" title="pyslet.rfc2616.MediaRange"><tt class="xref py py-class docutils literal"><span class="pre">MediaRange</span></tt></a>
+instance.  Raises SyntaxError if no media-type was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireAcceptItem">
+<tt class="descname">RequireAcceptItem</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireAcceptItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single item from an Accept header, returning a
+<a class="reference internal" href="#pyslet.rfc2616.AcceptItem" title="pyslet.rfc2616.AcceptItem"><tt class="xref py py-class docutils literal"><span class="pre">AcceptItem</span></tt></a> instance.  Raises SyntaxError if no
+item was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireAcceptList">
+<tt class="descname">RequireAcceptList</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireAcceptList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a list of accept items, returning a
+<a class="reference internal" href="#pyslet.rfc2616.AcceptList" title="pyslet.rfc2616.AcceptList"><tt class="xref py py-class docutils literal"><span class="pre">AcceptList</span></tt></a> instance.  Raises SyntaxError if no valid
+items were found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireAcceptToken">
+<tt class="descname">RequireAcceptToken</tt><big>(</big><em>cls=&lt;class 'pyslet.rfc2616_headers.AcceptToken'&gt;</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireAcceptToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single item from a token-based Accept header,
+returning a <a class="reference internal" href="#pyslet.rfc2616.AcceptToken" title="pyslet.rfc2616.AcceptToken"><tt class="xref py py-class docutils literal"><span class="pre">AcceptToken</span></tt></a> instance.  Raises
+SyntaxError if no item was found.</p>
+<dl class="docutils">
+<dt>cls</dt>
+<dd>An optional sub-class of <a class="reference internal" href="#pyslet.rfc2616.AcceptToken" title="pyslet.rfc2616.AcceptToken"><tt class="xref py py-class docutils literal"><span class="pre">AcceptToken</span></tt></a> to create
+instead.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireAcceptTokenList">
+<tt class="descname">RequireAcceptTokenList</tt><big>(</big><em>cls=&lt;class 'pyslet.rfc2616_headers.AcceptTokenList'&gt;</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireAcceptTokenList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a list of token-based accept items, returning an
+<a class="reference internal" href="#pyslet.rfc2616.AcceptTokenList" title="pyslet.rfc2616.AcceptTokenList"><tt class="xref py py-class docutils literal"><span class="pre">AcceptTokenList</span></tt></a> instance.  If no
+tokens were found then an <em>empty</em> list is returned.</p>
+<dl class="docutils">
+<dt>cls</dt>
+<dd>An optional sub-class of <a class="reference internal" href="#pyslet.rfc2616.AcceptTokenList" title="pyslet.rfc2616.AcceptTokenList"><tt class="xref py py-class docutils literal"><span class="pre">AcceptTokenList</span></tt></a> to
+create instead.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HeaderParser.RequireContentRangeSpec">
+<tt class="descname">RequireContentRangeSpec</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HeaderParser.RequireContentRangeSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a content-range-spec, returning an
+<a class="reference internal" href="#pyslet.rfc2616.ContentRange" title="pyslet.rfc2616.ContentRange"><tt class="xref py py-class docutils literal"><span class="pre">ContentRange</span></tt></a> instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="protocol-parameters">
+<h2>2.7.4. Protocol Parameters<a class="headerlink" href="#protocol-parameters" title="Permalink to this headline">¶</a></h2>
+<p>This section defines objects that are reused in a variety of contexts
+and a special-purpose parser for parsing them from strings of octets.</p>
 <dl class="class">
 <dt id="pyslet.rfc2616.HTTPVersion">
-<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPVersion</tt><big>(</big><em>source=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents the HTTP Version.</p>
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPVersion</tt><big>(</big><em>major=1</em>, <em>minor=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents the HTTP Version.</p>
+<p>HTTPVersion objects can be created from their string representation
+passed in <em>source</em>.  If <em>source</em> is None then the protocol version
+is set to 1.1.</p>
+<p>HTTPVersion objects must be treated as immutable, they define
+comparison functions (such that 1.1&gt;1.0 and  1.2&lt;1.25) and can also
+be used as keys in dictionaries if required.</p>
+<p>Finally, on conversion to a string the output is of the form:</p>
+<div class="highlight-python"><div class="highlight"><pre>HTTP/&lt;major&gt;.&lt;minor&gt;
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="pyslet.rfc2616.HTTPVersion.major">
 <tt class="descname">major</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion.major" title="Permalink to this definition">¶</a></dt>
-<dd><p>major protocol version</p>
+<dd><p>major protocol version (read only)</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pyslet.rfc2616.HTTPVersion.minor">
 <tt class="descname">minor</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion.minor" title="Permalink to this definition">¶</a></dt>
-<dd><p>minor protocol version</p>
+<dd><p>minor protocol version (read only)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.HTTPVersion.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an <a class="reference internal" href="#pyslet.rfc2616.HTTPVersion" title="pyslet.rfc2616.HTTPVersion"><tt class="xref py py-class docutils literal"><span class="pre">HTTPVersion</span></tt></a> object from a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.HTTPURL">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPURL</tt><big>(</big><em>octets='http://localhost/'</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2396.ServerBasedURL</span></tt></p>
+<p>Represents http URLs</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPURL.DEFAULT_PORT">
+<tt class="descname">DEFAULT_PORT</tt><em class="property"> = 80</em><a class="headerlink" href="#pyslet.rfc2616.HTTPURL.DEFAULT_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default HTTP port</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyslet.rfc2616.HTTPVersion.ParseWords">
-<tt class="descname">ParseWords</tt><big>(</big><em>wp</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion.ParseWords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses the protocol version from a <tt class="xref py py-class docutils literal"><span class="pre">WordParser</span></tt> instance.</p>
-<p>If no protocol version is found HTTPParameterError is raised.</p>
+<dt id="pyslet.rfc2616.HTTPURL.Canonicalize">
+<tt class="descname">Canonicalize</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPURL.Canonicalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a canonical form of this URI</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pyslet.rfc2616.HTTPVersion.Parse">
-<tt class="descname">Parse</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPVersion.Parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses the protocol version from <em>source</em>.</p>
-<p>If the protocol version is not parsed correctly HTTPParameterError is raised.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.HTTPSURL">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPSURL</tt><big>(</big><em>octets='https://localhost/'</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPSURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_params.HTTPURL</span></tt></p>
+<p>Represents https URLs</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.HTTPSURL.DEFAULT_PORT">
+<tt class="descname">DEFAULT_PORT</tt><em class="property"> = 443</em><a class="headerlink" href="#pyslet.rfc2616.HTTPSURL.DEFAULT_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><p>the default HTTPS port</p>
 </dd></dl>
 
 </dd></dl>
@@ -98,59 +1279,28 @@ context.  The module does contain a functional HTTP client.</p>
 <dl class="class">
 <dt id="pyslet.rfc2616.FullDate">
 <em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">FullDate</tt><big>(</big><em>src=None</em>, <em>date=None</em>, <em>time=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.FullDate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt></p>
-<p>A sub-class of <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> which adds parsing
+<dd><p>Bases: <a class="reference internal" href="iso8601.html#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt></a></p>
+<p>A sub-class of <a class="reference internal" href="iso8601.html#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt></a> which adds parsing
 and formatting methods for HTTP-formatted dates.</p>
-<blockquote>
-<div><ul class="simple">
-<li>source is an optional string to parse the date from</li>
-</ul>
-</div></blockquote>
-<dl class="classmethod">
-<dt id="pyslet.rfc2616.FullDate.FromWords">
-<em class="property">classmethod </em><tt class="descname">FromWords</tt><big>(</big><em>wp</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.FullDate.FromWords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance
-from a <tt class="xref py py-class docutils literal"><span class="pre">WordParser</span></tt> instance, parsing an HTTP-style
-date.</p>
-<p>There are three supported formats as described in the specification:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;Sun, 06 Nov 1994 08:49:37 GMT&quot;</span>
-<span class="s">&quot;Sunday, 06-Nov-94 08:49:37 GMT&quot;</span>
-<span class="s">&quot;Sun Nov  6 08:49:37 1994&quot;</span>
-</pre></div>
-</div>
-<p>The first of these is the preferred format.</p>
-<p>The function returns a tuple of:</p>
-<div class="highlight-python"><div class="highlight"><pre>(&lt;TimePoint instance&gt;, integer number of words parsed)
-</pre></div>
-</div>
-<p>Fatal parsing errors raise HTTPParameterError.</p>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="pyslet.rfc2616.FullDate.FromHTTPString">
 <em class="property">classmethod </em><tt class="descname">FromHTTPString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.FullDate.FromHTTPString" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance from an HTTP
+<dd><p>Parses a <a class="reference internal" href="iso8601.html#pyslet.iso8601.TimePoint" title="pyslet.iso8601.TimePoint"><tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt></a> instance from an HTTP
 formatted string.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.rfc2616.FullDate.__str__">
-<tt class="descname">__str__</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.FullDate.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats a <tt class="xref py py-class docutils literal"><span class="pre">pyslet.iso8601.TimePoint</span></tt> instance in the
-following format:</p>
-<div class="highlight-python"><div class="highlight"><pre>Sun, 06 Nov 1994 08:49:37 GMT
-</pre></div>
-</div>
-<p>Note that this overrides the default behaviour which would be to use one
-of the iso8601 formats.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pyslet.rfc2616.TransferEncoding">
-<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">TransferEncoding</tt><big>(</big><em>source=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents an HTTP transfer-encoding.</p>
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">TransferEncoding</tt><big>(</big><em>token='chunked'</em>, <em>parameters={}</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents an HTTP transfer-encoding.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
 <dl class="attribute">
 <dt id="pyslet.rfc2616.TransferEncoding.token">
 <tt class="descname">token</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding.token" title="Permalink to this definition">¶</a></dt>
@@ -163,163 +1313,282 @@ of the iso8601 formats.</p>
 <dd><p>declared extension parameters</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="pyslet.rfc2616.TransferEncoding.ParseWords">
-<tt class="descname">ParseWords</tt><big>(</big><em>wp</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding.ParseWords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses the transfer-encoding from a <tt class="xref py py-class docutils literal"><span class="pre">WordParser</span></tt> instance.</p>
-<p>If no transfer-encoding is found HTTPParameterError is raised.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyslet.rfc2616.TransferEncoding.Parse">
-<tt class="descname">Parse</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding.Parse" title="Permalink to this definition">¶</a></dt>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.TransferEncoding.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.TransferEncoding.FromString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses the transfer-encoding from a <em>source</em> string.</p>
-<p>If the protocol version is not parsed correctly HTTPParameterError is raised.</p>
+<p>If the protocol version is not parsed correctly SyntaxError is raised.</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="basic-grammar">
-<h2>2.7.2. Basic Grammar<a class="headerlink" href="#basic-grammar" title="Permalink to this headline">¶</a></h2>
-<p>This section defines functions for handling basic elements of the HTTP grammar.</p>
-<div class="section" id="formatting-functions">
-<h3>2.7.2.1. Formatting Functions<a class="headerlink" href="#formatting-functions" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="pyslet.rfc2616.QuoteString">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">QuoteString</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.QuoteString" title="Permalink to this definition">¶</a></dt>
-<dd><p>Places a string in double quotes, returning the quoted string.</p>
-<p>This is the reverse of <a class="reference internal" href="#pyslet.rfc2616.DecodeQuotedString" title="pyslet.rfc2616.DecodeQuotedString"><tt class="xref py py-func docutils literal"><span class="pre">DecodeQuotedString()</span></tt></a>.  Note that only the
-double quote and characters are quoted in the output.</p>
-</dd></dl>
-
-</div>
-<div class="section" id="parsing-functions">
-<h3>2.7.2.2. Parsing Functions<a class="headerlink" href="#parsing-functions" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="pyslet.rfc2616.ParseLWS">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParseLWS</tt><big>(</big><em>source</em>, <em>pos=0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParseLWS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the <em>source</em> string (starting from pos) for LWS</p>
-<p>Parses a single instance of the production LWS.  The return value is the
-length of the matching string or 0 if no LWS was found at <em>pos</em>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.rfc2616.ParseTEXT">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParseTEXT</tt><big>(</big><em>source</em>, <em>pos=0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParseTEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the source string (starting from pos) for TEXT</p>
-<p>Parses a single instance of the production TEXT.  The return value is the
-length of the matching TEXT string (including any LWS) or 0 if no TEXT was
-found at <em>pos</em>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.rfc2616.UnfoldTEXT">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">UnfoldTEXT</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.UnfoldTEXT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a new string equivalent to <em>source</em> with all folded lines unfolded.</p>
-<p>The source string is assumed to be legal TEXT so bare controls or other
-characters that are not allowed in TEXT may still appear in the output.</p>
-<p>Line folding sequences are replaced with a single SP.  A line folding
-sequence is a LWS that starts with a CRLF.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyslet.rfc2616.SplitWords">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">SplitWords</tt><big>(</big><em>source</em>, <em>ignoreSpace=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.SplitWords" title="Permalink to this definition">¶</a></dt>
-<dd><p>Splits a <em>source</em> string into words.</p>
-<p><em>source</em> is assumed to be <em>unfolded</em> TEXT.</p>
-<p>The words are returned as a list of strings. A word may be a token, a single
-separator character, a comment or a quoted string.  To determine the type of
-word, look at the first character.</p>
+<dl class="class">
+<dt id="pyslet.rfc2616.MediaType">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">MediaType</tt><big>(</big><em>type='application'</em>, <em>subtype='octet-stream'</em>, <em>parameters={}</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.MediaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents an HTTP media-type.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.  Media-types are compared by type, subtype and
+ultimately parameters.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.MediaType.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.MediaType.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a media-type from a <em>source</em> string.</p>
+<p>Enforces the following rule from the specification:</p>
 <blockquote>
-<div><ul class="simple">
-<li>&#8216;(&#8216; means the word is a comment, surrounded by &#8216;(&#8216; and &#8216;)&#8217;</li>
-<li>a double quote means the word is an unencoded quoted string (use
-py:func:<cite>DecodeQuotedString</cite> for how to decode it)</li>
-<li>other separator chars are just themselves and only appear as single
-character strings.  (HT is never returned.)</li>
-<li>Any other character indicates a token.</li>
-</ul>
-</div></blockquote>
-<p>By default the function ignores spaces according to the rules for implied
-<em>LWS in the specification and neither SP nor HT will be returned in the word
-list.  If you set *ignoreSpace</em> to False then LWS is not ignored and each
-run of LWS is returned as a single SP in the resulting word list.</p>
+<div>Linear white space (LWS) MUST NOT be used between the type and
+subtype, nor between an attribute and its value</div></blockquote>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.rfc2616.SplitItems">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">SplitItems</tt><big>(</big><em>words</em>, <em>sep='</em>, <em>'</em>, <em>ignoreNulls=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.SplitItems" title="Permalink to this definition">¶</a></dt>
-<dd><p>Splits a word list into a list of words lists representing separate items.</p>
-<ul class="simple">
-<li>words is a word list such as that returned by <a class="reference internal" href="#pyslet.rfc2616.SplitWords" title="pyslet.rfc2616.SplitWords"><tt class="xref py py-func docutils literal"><span class="pre">SplitWords()</span></tt></a></li>
-<li>sep is the separator to use for splitting the words, it defaults to &#8221;,&#8221;</li>
-<li>ignoreNulls controls the output of empty items (defaults to True)</li>
-</ul>
-<p>If ignoreNulls is False, empty items are added to the result as empty lists.
-For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyslet.rfc2616</span> <span class="kn">as</span> <span class="nn">http</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">http</span><span class="o">.</span><span class="n">SplitItems</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">SplitWords</span><span class="p">(</span><span class="s">&quot;, Mr Brown, Mr Pink, Mr Orange,&quot;</span><span class="p">),</span><span class="s">&#39;,&#39;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
-<span class="go">[[], [&#39;Mr&#39;, &#39;Brown&#39;], [&#39;Mr&#39;, &#39;Pink&#39;], [&#39;Mr&#39;, &#39;Orange&#39;], []]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">http</span><span class="o">.</span><span class="n">SplitItems</span><span class="p">(</span><span class="n">http</span><span class="o">.</span><span class="n">SplitWords</span><span class="p">(</span><span class="s">&quot;, Mr Brown, Mr Pink, Mr Orange,&quot;</span><span class="p">))</span>
-<span class="go">[[&#39;Mr&#39;, &#39;Brown&#39;], [&#39;Mr&#39;, &#39;Pink&#39;], [&#39;Mr&#39;, &#39;Orange&#39;]]</span>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.ProductToken">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ProductToken</tt><big>(</big><em>token=None</em>, <em>version=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ProductToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents an HTTP product token.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<p>The comparison operations use a more interesting sort than plain
+text on version in order to provide a more intuitive ordering.  As
+it is common practice to use dotted decimal notation for versions
+(with some alphanumeric modifiers) the version string is exploded
+(see <a class="reference internal" href="#pyslet.rfc2616.ProductToken.Explode" title="pyslet.rfc2616.ProductToken.Explode"><tt class="xref py py-meth docutils literal"><span class="pre">Explode()</span></tt></a>) internally on construction and this
+exploded value is used in comparisons.  The upshot is that version
+1.0.3 sorts before 1.0.10 as you would expect and 1.0a &lt; 1.0 &lt;
+1.0.3a3 &lt; 1.0.3a20 &lt; 1.0.3b1 &lt; 1.0.3; there are limits to this
+algorithm.  1.0dev &gt; 1.0b1 even though it looks like it should be
+the other way around.  Similarly 1.0-live &lt; 1.0-prod etc.</p>
+<p>You shouldn&#8217;t use this comparison as a definitive way to determine
+that one release is more recent or up-to-date than another unless
+you know that the product in question uses a numbering scheme
+compatible with these rules.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.ProductToken.token">
+<tt class="descname">token</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.ProductToken.token" title="Permalink to this definition">¶</a></dt>
+<dd><p>the product&#8217;s token</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.ProductToken.version">
+<tt class="descname">version</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.ProductToken.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>the product&#8217;s version</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.ProductToken.Explode">
+<em class="property">classmethod </em><tt class="descname">Explode</tt><big>(</big><em>version</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ProductToken.Explode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an exploded version string.</p>
+<p>Version strings are split by dot and then by runs of non-digit
+characters resulting in a list of tuples.  Examples will help:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Explode</span><span class="p">(</span><span class="s">&quot;2.15&quot;</span><span class="p">)</span><span class="o">==</span><span class="p">((</span><span class="mi">2</span><span class="p">),(</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">Explode</span><span class="p">(</span><span class="s">&quot;2.17b3&quot;</span><span class="p">)</span><span class="o">==</span><span class="p">((</span><span class="mi">2</span><span class="p">),(</span><span class="mi">17</span><span class="p">,</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">Explode</span><span class="p">(</span><span class="s">&quot;2.b3&quot;</span><span class="p">)</span><span class="o">==</span><span class="p">((</span><span class="mi">2</span><span class="p">),(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>If words is empty an empty list is always returned.</p>
+<p>Note that a missing leading numeric component is treated as -1
+to force &#8220;a3&#8221; to sort before &#8220;0a3&#8221;.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.rfc2616.DecodeQuotedString">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">DecodeQuotedString</tt><big>(</big><em>qstring</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.DecodeQuotedString" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decodes a quoted string, returning the unencoded string.</p>
-<p>Surrounding double quotes are removed and quoted characters (characters
-preceded by ) are unescaped.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.ProductToken.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ProductToken.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a product token from a <em>source</em> string.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.rfc2616.ParseToken">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParseToken</tt><big>(</big><em>words</em>, <em>pos=0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParseToken" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a token from a list of words (starting at <em>pos</em>).</p>
-<p>Returns 1 if the word at position <em>pos</em> is a token and 0 otherwise.</p>
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.ProductToken.ListFromString">
+<em class="property">classmethod </em><tt class="descname">ListFromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ProductToken.ListFromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of product tokens from a <em>source</em> string.</p>
+<p>Individual tokens are separated by white space.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.rfc2616.ParseSP">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParseSP</tt><big>(</big><em>words</em>, <em>pos=0</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParseSP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a SP from a list of words (starting at <em>pos</em>).</p>
-<p>Returns 1 if the word at position <em>pos</em> is a SP and 0 otherwise.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="pyslet.rfc2616.ParseParameters">
-<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParseParameters</tt><big>(</big><em>words</em>, <em>parameters</em>, <em>pos=0</em>, <em>ignoreAllSpace=True</em>, <em>caseSensitive=False</em>, <em>qMode=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParseParameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a set of parameters from a list of words.</p>
+<dl class="class">
+<dt id="pyslet.rfc2616.LanguageTag">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">LanguageTag</tt><big>(</big><em>primary</em>, <em>*subtags</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.LanguageTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents an HTTP language-tag.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<dl class="method">
+<dt id="pyslet.rfc2616.LanguageTag.PartialMatch">
+<tt class="descname">PartialMatch</tt><big>(</big><em>range</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.LanguageTag.PartialMatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this tag is a partial match against <em>range</em>, False otherwise.</p>
+<dl class="docutils">
+<dt>range</dt>
+<dd>A tuple of lower-cased subtags.  An empty tuple matches
+all instances.</dd>
+</dl>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>lang=LanguageTag(&quot;en&quot;,(&quot;US&quot;,&quot;Texas&quot;))
+lang.PartialMatch(())==True
+lang.PartialMatch((&quot;en&quot;,)==True
+lang.PartialMatch((&quot;en&quot;,&quot;us&quot;)==True
+lang.PartialMatch((&quot;en&quot;,&quot;us&quot;,&quot;texas&quot;)==True
+lang.PartialMatch((&quot;en&quot;,&quot;gb&quot;)==False
+lang.PartialMatch((&quot;en&quot;,&quot;us&quot;,&quot;tex&quot;)==False
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.LanguageTag.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.LanguageTag.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a language tag from a <em>source</em> string.</p>
+<p>Enforces the following rules from the specification:</p>
 <blockquote>
-<div><ul class="simple">
-<li><em>parameters</em> is the dictionary in which to store the parsed parameters</li>
-<li><em>pos</em> is the position from which to start parsing (defaults to 0)</li>
-<li><em>ignoreAllSpace</em> is a boolean (defaults to True) which causes the
-function to ignore all LWS in the word list.  If set to False then space
-around the &#8216;=&#8217; separator is treated as an error and raises HTTPParameterError.</li>
-<li>caseSensitive controls whether parameter names are treated as case
-sensitive, defaults to False.</li>
-<li>qMode allows you to pass a special parameter name that will
-terminate parameter parsing (without being parsed itself).  This is
-used to support headers such as the &#8220;Accept&#8221; header in which the
-parameter called &#8220;q&#8221; marks the boundary between media-type
-parameters and Accept extension parameters.</li>
-</ul>
-</div></blockquote>
-<p>Returns the number of words parsed and updates the parameters dictionary
-with the new parameter definitions.  The key in the dictionary is the
-parameter name (converted to lower case if parameters are being dealt with
-case insensitively) and the value is a 2-item list of [ name, value ]
-preserving the original case of the parameter name.</p>
+<div>White space is not allowed within the tag</div></blockquote>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.LanguageTag.ListFromString">
+<em class="property">classmethod </em><tt class="descname">ListFromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.LanguageTag.ListFromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of language tags from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.EntityTag">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">EntityTag</tt><big>(</big><em>tag</em>, <em>weak=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.EntityTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an HTTP entity-tag.</p>
+<dl class="docutils">
+<dt>tag</dt>
+<dd>The opaque tag</dd>
+<dt>weak</dt>
+<dd>A boolean indicating if the entity-tag is a weak or strong
+entity tag.</dd>
+</dl>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.EntityTag.weak">
+<tt class="descname">weak</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.EntityTag.weak" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if this is a weak tag</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.EntityTag.tag">
+<tt class="descname">tag</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.EntityTag.tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>the opaque tag</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pyslet.rfc2616.EntityTag.FromString">
+<em class="property">classmethod </em><tt class="descname">FromString</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.EntityTag.FromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an entity-tag from a <em>source</em> string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.ParameterParser">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">ParameterParser</tt><big>(</big><em>source</em>, <em>ignoreSpace=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_core.WordParser</span></tt></p>
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.ParseHTTPVersion">
+<tt class="descname">ParseHTTPVersion</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.ParseHTTPVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an <a class="reference internal" href="#pyslet.rfc2616.HTTPVersion" title="pyslet.rfc2616.HTTPVersion"><tt class="xref py py-class docutils literal"><span class="pre">HTTPVersion</span></tt></a> instance or None if no
+version was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireFullDate">
+<tt class="descname">RequireFullDate</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireFullDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a <a class="reference internal" href="#pyslet.rfc2616.FullDate" title="pyslet.rfc2616.FullDate"><tt class="xref py py-class docutils literal"><span class="pre">FullDate</span></tt></a> instance raising
+<a class="reference internal" href="#pyslet.rfc2616.SyntaxError" title="pyslet.rfc2616.SyntaxError"><tt class="xref py py-class docutils literal"><span class="pre">SyntaxError</span></tt></a> if none is found.</p>
+<p>There are three supported formats as described in the specification:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;Sun, 06 Nov 1994 08:49:37 GMT&quot;</span>
+<span class="s">&quot;Sunday, 06-Nov-94 08:49:37 GMT&quot;</span>
+<span class="s">&quot;Sun Nov  6 08:49:37 1994&quot;</span>
+</pre></div>
+</div>
+<p>The first of these is the preferred format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.ParseDeltaSeconds">
+<tt class="descname">ParseDeltaSeconds</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.ParseDeltaSeconds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a delta-seconds value, see <a class="reference internal" href="#pyslet.rfc2616.WordParser.ParseInteger" title="pyslet.rfc2616.WordParser.ParseInteger"><tt class="xref py py-meth docutils literal"><span class="pre">WordParser.ParseInteger()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.ParseCharset">
+<tt class="descname">ParseCharset</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.ParseCharset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a charset, see <a class="reference internal" href="#pyslet.rfc2616.WordParser.ParseTokenLower" title="pyslet.rfc2616.WordParser.ParseTokenLower"><tt class="xref py py-meth docutils literal"><span class="pre">WordParser.ParseTokenLower()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.ParseContentCoding">
+<tt class="descname">ParseContentCoding</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.ParseContentCoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a content-coding, see <a class="reference internal" href="#pyslet.rfc2616.WordParser.ParseTokenLower" title="pyslet.rfc2616.WordParser.ParseTokenLower"><tt class="xref py py-meth docutils literal"><span class="pre">WordParser.ParseTokenLower()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireTransferEncoding">
+<tt class="descname">RequireTransferEncoding</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireTransferEncoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a transfer-encoding returning a
+<a class="reference internal" href="#pyslet.rfc2616.TransferEncoding" title="pyslet.rfc2616.TransferEncoding"><tt class="xref py py-class docutils literal"><span class="pre">TransferEncoding</span></tt></a> instance or None if no
+transfer-encoding was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireMediaType">
+<tt class="descname">RequireMediaType</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireMediaType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a media type returning a <a class="reference internal" href="#pyslet.rfc2616.MediaType" title="pyslet.rfc2616.MediaType"><tt class="xref py py-class docutils literal"><span class="pre">MediaType</span></tt></a>
+instance.  Raises SyntaxError if no media-type was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireProductToken">
+<tt class="descname">RequireProductToken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireProductToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a product token returning a <a class="reference internal" href="#pyslet.rfc2616.ProductToken" title="pyslet.rfc2616.ProductToken"><tt class="xref py py-class docutils literal"><span class="pre">ProductToken</span></tt></a>
+instance.  Raises SyntaxError if no product token was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.ParseQualityValue">
+<tt class="descname">ParseQualityValue</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.ParseQualityValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a qvalue from returning the float equivalent value or
+None if no qvalue was found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireLanguageTag">
+<tt class="descname">RequireLanguageTag</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireLanguageTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a language tag returning a <a class="reference internal" href="#pyslet.rfc2616.LanguageTag" title="pyslet.rfc2616.LanguageTag"><tt class="xref py py-class docutils literal"><span class="pre">LanguageTag</span></tt></a>
+instance.  Raises SyntaxError if no language tag was
+found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.ParameterParser.RequireEntityTag">
+<tt class="descname">RequireEntityTag</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.ParameterParser.RequireEntityTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an entity-tag returning a <a class="reference internal" href="#pyslet.rfc2616.EntityTag" title="pyslet.rfc2616.EntityTag"><tt class="xref py py-class docutils literal"><span class="pre">EntityTag</span></tt></a>
+instance.  Raises SyntaxError if no language tag was
+found.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
-<div class="section" id="test-functions">
-<h3>2.7.2.3. Test Functions<a class="headerlink" href="#test-functions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="generic-grammar">
+<h2>2.7.5. Generic Grammar<a class="headerlink" href="#generic-grammar" title="Permalink to this headline">¶</a></h2>
+<p>This section defines functions for handling basic elements of the HTTP grammar.</p>
 <dl class="function">
 <dt id="pyslet.rfc2616.IsOCTET">
 <tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">IsOCTET</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.IsOCTET" title="Permalink to this definition">¶</a></dt>
@@ -385,13 +1654,407 @@ we process characters as if they were octets.</p>
 <p>Empty strings return False</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="pyslet.rfc2616.IsSEPARATOR">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">IsSEPARATOR</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.IsSEPARATOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a characters returns True if it matches the production for separators</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.HTTPParser">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPParser</tt><big>(</big><em>source</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.unicode5.BasicParser</span></tt></p>
+<p>A special purpose parser for parsing core HTTP productions.</p>
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseLWS">
+<tt class="descname">ParseLWS</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseLWS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single instance of the production LWS</p>
+<p>The return value is the LWS string parsed of None if there is no
+LWS.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseOneTEXT">
+<tt class="descname">ParseOneTEXT</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseOneTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single TEXT instance.</p>
+<p>Parses a single character or run of LWS matching the production
+TEXT.  The return value is the matching character, LWS string or
+None if no TEXT was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseTEXT">
+<tt class="descname">ParseTEXT</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses TEXT.</p>
+<p>Parses a run of characters matching the production TEXT.  The
+return value is the matching TEXT string (including any LWS) or
+None if no TEXT was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseToken">
+<tt class="descname">ParseToken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a token.</p>
+<p>Parses a single instance of the production token.  The return
+value is the matching token string or None if no token was
+found.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseComment">
+<tt class="descname">ParseComment</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseComment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a comment.</p>
+<p>Parses a single instance of the production comment.  The return
+value is the entire matching comment string (including the
+brackets, quoted pairs and any nested comments) or None if no
+comment was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseCText">
+<tt class="descname">ParseCText</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseCText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses ctext.</p>
+<p>Parses a run of characters matching the production ctext.  The
+return value is the matching ctext string (including any LWS) or
+None if no ctext was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+<p>Although the production for ctext would include the backslash
+character we stop if we encounter one as the grammar is
+ambiguous at this point.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseQuotedString">
+<tt class="descname">ParseQuotedString</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseQuotedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a quoted-string.</p>
+<p>Parses a single instance of the production quoted-string.  The
+return value is the entire matching string (including the quotes
+and any quoted pairs or None if no quoted-string was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseQDText">
+<tt class="descname">ParseQDText</tt><big>(</big><em>unfold=False</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseQDText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses qdtext.</p>
+<p>Parses a run of characters matching the production qdtext.  The
+return value is the matching qdtext string (including any LWS)
+or None if no qdtext was found.</p>
+<p>If <em>unfold</em> is True then any folding LWS is replaced with a
+single SP.  It defaults to False</p>
+<p>Although the production for qdtext would include the backslash
+character we stop if we encounter one as the grammar is
+ambiguous at this point.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.HTTPParser.ParseQuotedPair">
+<tt class="descname">ParseQuotedPair</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.HTTPParser.ParseQuotedPair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a single quoted-pair.</p>
+<p>The return value is the matching string including the backslash
+so it will always be of length 2 or None if no quoted-pair was
+found.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.rfc2616.CheckToken">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">CheckToken</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.CheckToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if <em>t</em> is <em>not</em> a valid token</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.rfc2616.QuoteString">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">QuoteString</tt><big>(</big><em>s</em>, <em>force=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.QuoteString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Places a string in double quotes, returning the quoted string.</p>
+<p>This is the reverse of <a class="reference internal" href="#pyslet.rfc2616.DecodeQuotedString" title="pyslet.rfc2616.DecodeQuotedString"><tt class="xref py py-func docutils literal"><span class="pre">DecodeQuotedString()</span></tt></a>.  Note that
+only the double quote, and CTL characters other than SP and HT
+are quoted in the output.</p>
+<p>If <em>force</em> is False then valid tokens are <em>not</em> quoted.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyslet.rfc2616.DecodeQuotedString">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">DecodeQuotedString</tt><big>(</big><em>qstring</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.DecodeQuotedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes a quoted string, returning the unencoded string.</p>
+<p>Surrounding double quotes are removed and quoted characters (characters
+preceded by ) are unescaped.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyslet.rfc2616.WordParser">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">WordParser</tt><big>(</big><em>source</em>, <em>ignoreSpace=True</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A word-level parser and tokeniser for the HTTP grammar.</p>
+<p><em>source</em> is the string to be parsed into words.  It will normally be
+valid TEXT but it can contain control characters if they are escaped
+as part of a comment or quoted string.</p>
+<p>LWS is unfolded automatically.  By default the parser ignores spaces
+according to the rules for implied LWS in the specification and
+neither SP nor HT will be stored in the word list.  If you set
+<em>ignoreSpace</em> to False then LWS is not ignored and each run of LWS
+is returned as a single SP in the word list.</p>
+<p>The resulting words may be a token, a single separator character, a
+comment or a quoted string.  To determine the type of word, look at
+the first character.</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;(&#8216; means the word is a comment, surrounded by &#8216;(&#8216; and &#8216;)&#8217;</li>
+<li>a double quote means the word is an encoded quoted string (use
+py:func:<cite>DecodeQuotedString</cite> to decode it)</li>
+<li>other separator chars are just themselves and only appear as single
+character strings.  (HT is never returned.)</li>
+<li>Any other character indicates a token.</li>
+</ul>
+</div></blockquote>
+<p>Method of the form Require* raise <a class="reference internal" href="#pyslet.rfc2616.SyntaxError" title="pyslet.rfc2616.SyntaxError"><tt class="xref py py-class docutils literal"><span class="pre">SyntaxError</span></tt></a> if the
+production is not found.</p>
+<dl class="attribute">
+<dt id="pyslet.rfc2616.WordParser.pos">
+<tt class="descname">pos</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.WordParser.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>a pointer to the current word in the list</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyslet.rfc2616.WordParser.cWord">
+<tt class="descname">cWord</tt><em class="property"> = None</em><a class="headerlink" href="#pyslet.rfc2616.WordParser.cWord" title="Permalink to this definition">¶</a></dt>
+<dd><p>the current word or None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.SetPos">
+<tt class="descname">SetPos</tt><big>(</big><em>pos</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.SetPos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current position of the parser.</p>
+<p>Example usage for look-ahead:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># wp is a WordParser instance</span>
+<span class="n">savePos</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">pos</span>
+<span class="k">try</span><span class="p">:</span>
+        <span class="c"># parse a token/sub-token combination</span>
+        <span class="n">token</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">RequireToken</span><span class="p">()</span>
+        <span class="n">wp</span><span class="o">.</span><span class="n">RequireSeparator</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">subtoken</span><span class="o">=</span><span class="n">wp</span><span class="o">.</span><span class="n">RequireToken</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">token</span><span class="p">,</span><span class="n">subtoken</span>
+<span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
+        <span class="n">wp</span><span class="o">.</span><span class="n">SetPos</span><span class="p">(</span><span class="n">savePos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span><span class="bp">None</span>
+</pre></div>
 </div>
-<div class="section" id="string-constants">
-<h3>2.7.2.4. String Constants<a class="headerlink" href="#string-constants" title="Permalink to this headline">¶</a></h3>
-</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.Peek">
+<tt class="descname">Peek</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.Peek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next word or an empty string if there are no more words.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.Error">
+<tt class="descname">Error</tt><big>(</big><em>expected</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises <a class="reference internal" href="#pyslet.rfc2616.SyntaxError" title="pyslet.rfc2616.SyntaxError"><tt class="xref py py-class docutils literal"><span class="pre">SyntaxError</span></tt></a>.</p>
+<p><em>expected</em> a descriptive string indicating the expected
+production.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireProduction">
+<tt class="descname">RequireProduction</tt><big>(</big><em>result</em>, <em>production=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireProduction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <em>result</em> if not None or raises SyntaxError.</p>
+<dl class="docutils">
+<dt><em>production</em></dt>
+<dd>can be used to customize the error message with the name of
+the expected production.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseProduction">
+<tt class="descname">ParseProduction</tt><big>(</big><em>requireMethod</em>, <em>*args</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseProduction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes the bound method <em>requireMethod</em> passing <em>args</em>.</p>
+<p>If successful the result of the method is returned.  If
+SyntaxError is raised, the exception is caught, the parser
+rewound and None is returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireProductionEnd">
+<tt class="descname">RequireProductionEnd</tt><big>(</big><em>result</em>, <em>production=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireProductionEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <em>result</em> if not None and parsing is complete or raises SyntaxError.</p>
+<dl class="docutils">
+<dt><em>production</em></dt>
+<dd>can be used to customize the error message with the name of
+the expected production.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireEnd">
+<tt class="descname">RequireEnd</tt><big>(</big><em>production=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises SyntaxError unless the parser is at the end of the word list.</p>
+<dl class="docutils">
+<dt><em>production</em></dt>
+<dd>can be used to customize the error message with the name of
+the production being parsed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseWord">
+<tt class="descname">ParseWord</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseWord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses any word from the list returning the word consumed by the parser</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.IsToken">
+<tt class="descname">IsToken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.IsToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the current word is a token</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseToken">
+<tt class="descname">ParseToken</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a token from the list of words, returning the token or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseTokenLower">
+<tt class="descname">ParseTokenLower</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseTokenLower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a token from the list of words, returning the lower-cased token or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseTokenList">
+<tt class="descname">ParseTokenList</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseTokenList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a token list from the list of words, returning the list or [].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireToken">
+<tt class="descname">RequireToken</tt><big>(</big><em>expected='token'</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current token or raises SyntaxError.</p>
+<dl class="docutils">
+<dt><em>expected</em></dt>
+<dd>the name of the expected production, it defaults to
+&#8220;token&#8221;.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.IsInteger">
+<tt class="descname">IsInteger</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.IsInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the current word is an integer token</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseInteger">
+<tt class="descname">ParseInteger</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an integer from the list of words, returning the integer value or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireInteger">
+<tt class="descname">RequireInteger</tt><big>(</big><em>expected='integer'</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireInteger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an integer or raises SyntaxError.</p>
+<ul class="simple">
+<li><em>expected</em> can be set to the name of the expected object.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.IsSeparator">
+<tt class="descname">IsSeparator</tt><big>(</big><em>sep</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.IsSeparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the current word matches <em>sep</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseSeparator">
+<tt class="descname">ParseSeparator</tt><big>(</big><em>sep</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseSeparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a <em>sep</em> from the list of words.</p>
+<p>Returns True if the current word matches <em>sep</em> and False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.RequireSeparator">
+<tt class="descname">RequireSeparator</tt><big>(</big><em>sep</em>, <em>expected=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.RequireSeparator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses <em>sep</em> or raises SyntaxError.</p>
+<ul class="simple">
+<li><em>expected</em> can be set to the name of the expected object.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.IsQuotedString">
+<tt class="descname">IsQuotedString</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.IsQuotedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the current word is a quoted string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseQuotedString">
+<tt class="descname">ParseQuotedString</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseQuotedString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a quoted string from the list of words.</p>
+<p>Returns the <em>unencoded</em> quoted string or None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseSP">
+<tt class="descname">ParseSP</tt><big>(</big><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseSP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a SP from the list of words.</p>
+<p>Returns True if the current word is a SP and False otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseParameters">
+<tt class="descname">ParseParameters</tt><big>(</big><em>parameters</em>, <em>ignoreAllSpace=True</em>, <em>caseSensitive=False</em>, <em>qMode=None</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a set of parameters from a list of words.</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>parameters</em> is the dictionary in which to store the parsed parameters</li>
+<li><em>ignoreAllSpace</em> is a boolean (defaults to True) which causes the
+function to ignore all LWS in the word list.  If set to False then space
+around the &#8216;=&#8217; separator is treated as an error and raises SyntaxError.</li>
+<li>caseSensitive controls whether parameter names are treated as case
+sensitive, defaults to False.</li>
+<li>qMode allows you to pass a special parameter name that will
+terminate parameter parsing (without being parsed itself).  This is
+used to support headers such as the &#8220;Accept&#8221; header in which the
+parameter called &#8220;q&#8221; marks the boundary between media-type
+parameters and Accept extension parameters.</li>
+</ul>
+</div></blockquote>
+<p>Updates the parameters dictionary with the new parameter definitions.
+The key in the dictionary is the parameter name (converted to lower case
+if parameters are being dealt with case insensitively) and the value is
+a 2-item list of [ name, value ] always preserving the original case of
+the parameter name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyslet.rfc2616.WordParser.ParseRemainder">
+<tt class="descname">ParseRemainder</tt><big>(</big><em>sep=''</em><big>)</big><a class="headerlink" href="#pyslet.rfc2616.WordParser.ParseRemainder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the rest of the words, joining them into a single string with <em>sep</em>.</p>
+<p>Returns an empty string if the parser is at the end of the word list.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="exceptions">
-<h2>2.7.3. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>2.7.6. Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyslet.rfc2616.SyntaxError">
+<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">SyntaxError</tt><a class="headerlink" href="#pyslet.rfc2616.SyntaxError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyslet.rfc2616_core.HTTPException</span></tt></p>
+<p>Raised when a syntax error is encountered parsing an HTTP production.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="pyslet.rfc2616.HTTPException">
 <em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPException</tt><a class="headerlink" href="#pyslet.rfc2616.HTTPException" title="Permalink to this definition">¶</a></dt>
@@ -399,11 +2062,66 @@ we process characters as if they were octets.</p>
 <p>Abstract class for all HTTP errors.</p>
 </dd></dl>
 
-<dl class="class">
-<dt id="pyslet.rfc2616.HTTPParameterError">
-<em class="property">class </em><tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPParameterError</tt><a class="headerlink" href="#pyslet.rfc2616.HTTPParameterError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
-<p>Raised when an expected parameter is missing.</p>
+</div>
+<div class="section" id="misc-definitions">
+<h2>2.7.7. Misc Definitions<a class="headerlink" href="#misc-definitions" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pyslet.rfc2616.HTTP_PORT">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTP_PORT</tt><em class="property"> = 80</em><a class="headerlink" href="#pyslet.rfc2616.HTTP_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><p>symbolic name for the default HTTP port</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc2616.HTTPS_PORT">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTPS_PORT</tt><em class="property"> = 443</em><a class="headerlink" href="#pyslet.rfc2616.HTTPS_PORT" title="Permalink to this definition">¶</a></dt>
+<dd><p>symbolic name for the default HTTPS port</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc2616.HTTP_VERSION">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">HTTP_VERSION</tt><em class="property"> = &lt;pyslet.rfc2616_params.HTTPVersion object at 0x1037d19d0&gt;</em><a class="headerlink" href="#pyslet.rfc2616.HTTP_VERSION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the HTTP Version.</p>
+<p>HTTPVersion objects can be created from their string representation
+passed in <em>source</em>.  If <em>source</em> is None then the protocol version
+is set to 1.1.</p>
+<p>HTTPVersion objects must be treated as immutable, they define
+comparison functions (such that 1.1&gt;1.0 and  1.2&lt;1.25) and can also
+be used as keys in dictionaries if required.</p>
+<p>Finally, on conversion to a string the output is of the form:</p>
+<div class="highlight-python"><div class="highlight"><pre>HTTP/&lt;major&gt;.&lt;minor&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc2616.USER_AGENT">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">USER_AGENT</tt><em class="property"> = ProductToken('pyslet','0.4.20140511')</em><a class="headerlink" href="#pyslet.rfc2616.USER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an HTTP product token.</p>
+<p>The built-in str function can be used to format instances according
+to the grammar defined in the specification.</p>
+<p>Instances must be treated as immutable, they define comparison
+methods and a hash implementation to allow them to be used as keys
+in dictionaries.</p>
+<p>The comparison operations use a more interesting sort than plain
+text on version in order to provide a more intuitive ordering.  As
+it is common practice to use dotted decimal notation for versions
+(with some alphanumeric modifiers) the version string is exploded
+(see <tt class="xref py py-meth docutils literal"><span class="pre">Explode()</span></tt>) internally on construction and this
+exploded value is used in comparisons.  The upshot is that version
+1.0.3 sorts before 1.0.10 as you would expect and 1.0a &lt; 1.0 &lt;
+1.0.3a3 &lt; 1.0.3a20 &lt; 1.0.3b1 &lt; 1.0.3; there are limits to this
+algorithm.  1.0dev &gt; 1.0b1 even though it looks like it should be
+the other way around.  Similarly 1.0-live &lt; 1.0-prod etc.</p>
+<p>You shouldn&#8217;t use this comparison as a definitive way to determine
+that one release is more recent or up-to-date than another unless
+you know that the product in question uses a numbering scheme
+compatible with these rules.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pyslet.rfc2616.SOCKET_CHUNK">
+<tt class="descclassname">pyslet.rfc2616.</tt><tt class="descname">SOCKET_CHUNK</tt><em class="property"> = 8192</em><a class="headerlink" href="#pyslet.rfc2616.SOCKET_CHUNK" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default chunk size to use when reading from network sockets.</p>
 </dd></dl>
 
 </div>
@@ -418,15 +2136,13 @@ we process characters as if they were octets.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">2.7. Hypertext Transfer Protocol (RFC2616)</a><ul>
-<li><a class="reference internal" href="#http-parameters">2.7.1. HTTP Parameters</a></li>
-<li><a class="reference internal" href="#basic-grammar">2.7.2. Basic Grammar</a><ul>
-<li><a class="reference internal" href="#formatting-functions">2.7.2.1. Formatting Functions</a></li>
-<li><a class="reference internal" href="#parsing-functions">2.7.2.2. Parsing Functions</a></li>
-<li><a class="reference internal" href="#test-functions">2.7.2.3. Test Functions</a></li>
-<li><a class="reference internal" href="#string-constants">2.7.2.4. String Constants</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#exceptions">2.7.3. Exceptions</a></li>
+<li><a class="reference internal" href="#http-messages">2.7.1. HTTP Messages</a></li>
+<li><a class="reference internal" href="#sending-requests">2.7.2. Sending Requests</a></li>
+<li><a class="reference internal" href="#http-headers">2.7.3. HTTP Headers</a></li>
+<li><a class="reference internal" href="#protocol-parameters">2.7.4. Protocol Parameters</a></li>
+<li><a class="reference internal" href="#generic-grammar">2.7.5. Generic Grammar</a></li>
+<li><a class="reference internal" href="#exceptions">2.7.6. Exceptions</a></li>
+<li><a class="reference internal" href="#misc-definitions">2.7.7. Misc Definitions</a></li>
 </ul>
 </li>
 </ul>
@@ -474,7 +2190,7 @@ we process characters as if they were octets.</p>
         <li class="right" >
           <a href="rfc2396.html" title="2.6. Uniform Resource Identifiers (RFC2396)"
              >previous</a> |</li>
-        <li><a href="index.html">Pyslet 0.4.20140217 documentation</a> &raquo;</li>
+        <li><a href="index.html">Pyslet 0.4.20140511 documentation</a> &raquo;</li>
           <li><a href="general.html" >2. Supporting Standards</a> &raquo;</li> 
       </ul>
     </div>

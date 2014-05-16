@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE message SYSTEM 'test4.1.6.dtd' [
+
+<!ENTITY % markup '<!ENTITY pepling "!">' >
+
+<!ENTITY pling '!'>
+
+<!ENTITY % badpling '&bad;'>
+
+%markup;
+
+<!ATTLIST greeting season CDATA 'Christmas&pling;'>
+
+]>
+<message><greeting season='Christmas'>&lt;Hello, &quot;friends&quot;, romans &amp; &apos;countrymen&apos;&gt;</greeting><body>Goodbye&pling;</body></message>

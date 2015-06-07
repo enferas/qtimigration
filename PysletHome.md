@@ -1,0 +1,1 @@
+The latest package documentation can be found here http://qtimigration.googlecode.com/svn/doc/pyslet/index.html

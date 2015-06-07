@@ -1,0 +1,11 @@
+## History of the QTI Migration Tool ##
+
+The migration script project started alongside the project to develop version 2 of the QTI specification itself. Its purpose was to demonstrate that there was a forward-migration route while at the same time highlighting any problems before the specification itself was finalized.
+
+One of the criticisms of version 1 was that there were often several different ways to represent the same information. As a result different tools often implemented the specification in different ways resulting in limited interoperability. A key requirement of version 2 was that there should be just one way of representing each use case. Inevitably this lead to a new specification that was not backwards compatible with version 1, however, the project team felt that it should be possible to create a forward transform that mapped each of the possible representations in version 1 onto the single new representation in version 2. The migration script was written to demonstrate that this was indeed possible.
+
+The script was also used to help provide material for the QTI migration guide. Issues encountered when writing the migration script were likely to be issues encountered by other tool developers looking to extend a version 1-based product to work in version 2 so it made sense to write those up as and when they were encountered. One of the most important jobs that the script does is to map the response/render model in version 1 onto the updated response declaration/interaction model in version 2. This work owes much to Niall Barr's work on investigating existing practice in the use of version 1 and his suggestions for a sensible mapping.
+
+The code was updated a couple of times during 2006-2008 (after version 2.0 of the specification was released) mainly based on feedback obtained at CETIS-organized code bashes.
+
+The code was moved to Google Code when the main author, Steve Lay, moved away from his job at CARET in the University of Cambridge.  There was little development during 2009 and 2010, in part because there was uncertainty around version 2 of the QTI Specification itself.  However, at the beginning of 2011 a new project started.  This project aims to create a suitable QTI version 2 profile for the UK community and the migration code is currently being upgraded in parallel following renewed interest.
